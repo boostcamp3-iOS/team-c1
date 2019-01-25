@@ -9,7 +9,7 @@
 import UIKit
 
 extension UIViewController {
-    /// UIAlertController 간편 메서드, Main thread에서 동작한다.
+    /// UIAlertController 간편 메서드, Main thread에서 동작한다
     func alert(_ message: String, completaionHandler: (() -> Void)? = nil) {
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
