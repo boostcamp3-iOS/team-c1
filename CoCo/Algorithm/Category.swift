@@ -8,7 +8,7 @@
 
 import Foundation
 
-// MARK: - CategoryType
+// MARK: - CategoryType & Category
 
 enum CategoryType: String {
     case feed = "사료"
@@ -22,8 +22,6 @@ enum CategoryType: String {
     case outdoorProducts = "야외용품"
     case tablewareWaterDispenser = "식기/급수기"
 }
-
-// MARK: - Category
 
 struct Category {
     // MARK: - Properties
@@ -46,7 +44,23 @@ struct Category {
         _detailCategories = getDetailCategories(type, pet: _pet)
     }
     
-    // MARK: - Private methods - get detail categories
+    // MARK: - Create search key
+    
+    func createSearchKeys() -> [String] {
+        var keys = [String]()
+        for detailCategory in detailCategories {
+            if let _keys = createSearchKey(with: detailCategory) {
+                keys += _keys
+            }
+        }
+        return keys.map { "\(pet) \($0)" }
+    }
+    
+    private func createSearchKey(with detailCategory: String) -> [String]? {
+        return detailCategory.splitSearchKey
+    }
+    
+    // MARK: - Get detail categories
     
     private func getDetailCategories(_ type: CategoryType, pet: PetType) -> [String] {
         switch type {
@@ -112,7 +126,7 @@ struct Category {
     private func getBeautyBath(_ pet: PetType) -> [String] {
         switch pet {
         case .dog:
-            return ["샴푸/린스/비누", "에센스/향수", "브러시/빗", "이발기", "미용가위", "발톱/발 관리", "드라이기", "타월/가운", "기타 미용/목욕용품"]
+            return ["샴푸/린스/비누", "에센스/향수", "브러시/빗", "이발기", "미용가위", "발톱/발 관리", "드라이기", "타월/가운", "기타용품"]
         case .cat:
             return ["샴푸", "에센스/향수", "브러시/빗", "이발기/가위", "발톱/발 관리", "드라이기", "드라이룸", "타월/가운", "물티슈"]
         }
