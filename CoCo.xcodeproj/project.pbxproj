@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1039DC7921FAA56800E9EB64 /* UIViewController+Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1039DC7821FAA56700E9EB64 /* UIViewController+Alert.swift */; };
+		1039DC7B21FAA71B00E9EB64 /* Array+SafeIndex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1039DC7A21FAA71B00E9EB64 /* Array+SafeIndex.swift */; };
 		106C603921F6AA9200F0AFE6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 106C603821F6AA9200F0AFE6 /* AppDelegate.swift */; };
 		106C603B21F6AA9200F0AFE6 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 106C603A21F6AA9200F0AFE6 /* ViewController.swift */; };
 		106C603E21F6AA9200F0AFE6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 106C603C21F6AA9200F0AFE6 /* Main.storyboard */; };
@@ -18,6 +19,7 @@
 
 /* Begin PBXFileReference section */
 		1039DC7821FAA56700E9EB64 /* UIViewController+Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Alert.swift"; sourceTree = "<group>"; };
+		1039DC7A21FAA71B00E9EB64 /* Array+SafeIndex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+SafeIndex.swift"; sourceTree = "<group>"; };
 		106C603521F6AA9200F0AFE6 /* CoCo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CoCo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		106C603821F6AA9200F0AFE6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		106C603A21F6AA9200F0AFE6 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -43,6 +45,7 @@
 			isa = PBXGroup;
 			children = (
 				1039DC7821FAA56700E9EB64 /* UIViewController+Alert.swift */,
+				1039DC7A21FAA71B00E9EB64 /* Array+SafeIndex.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -216,6 +219,7 @@
 			files = (
 				106C603B21F6AA9200F0AFE6 /* ViewController.swift in Sources */,
 				106C603921F6AA9200F0AFE6 /* AppDelegate.swift in Sources */,
+				1039DC7B21FAA71B00E9EB64 /* Array+SafeIndex.swift in Sources */,
 				106C604121F6AA9200F0AFE6 /* CoCo.xcdatamodeld in Sources */,
 				1039DC7921FAA56800E9EB64 /* UIViewController+Alert.swift in Sources */,
 			);
