@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1039DC7921FAA56800E9EB64 /* UIViewController+Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1039DC7821FAA56700E9EB64 /* UIViewController+Alert.swift */; };
 		106C603921F6AA9200F0AFE6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 106C603821F6AA9200F0AFE6 /* AppDelegate.swift */; };
 		106C603B21F6AA9200F0AFE6 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 106C603A21F6AA9200F0AFE6 /* ViewController.swift */; };
 		106C603E21F6AA9200F0AFE6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 106C603C21F6AA9200F0AFE6 /* Main.storyboard */; };
@@ -16,6 +17,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1039DC7821FAA56700E9EB64 /* UIViewController+Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Alert.swift"; sourceTree = "<group>"; };
 		106C603521F6AA9200F0AFE6 /* CoCo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CoCo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		106C603821F6AA9200F0AFE6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		106C603A21F6AA9200F0AFE6 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -37,6 +39,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1039DC7721FAA3FA00E9EB64 /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				1039DC7821FAA56700E9EB64 /* UIViewController+Alert.swift */,
+			);
+			path = Extension;
+			sourceTree = "<group>";
+		};
 		106C602C21F6AA9200F0AFE6 = {
 			isa = PBXGroup;
 			children = (
@@ -59,6 +69,7 @@
 				106C603821F6AA9200F0AFE6 /* AppDelegate.swift */,
 				106C603A21F6AA9200F0AFE6 /* ViewController.swift */,
 				106C603C21F6AA9200F0AFE6 /* Main.storyboard */,
+				1039DC7721FAA3FA00E9EB64 /* Extension */,
 				30B8A62621FAA2CD0048EB61 /* DataModel */,
 				30B8A62821FAA2F40048EB61 /* Network */,
 				30B8A62721FAA2DF0048EB61 /* Algorithm */,
@@ -206,6 +217,7 @@
 				106C603B21F6AA9200F0AFE6 /* ViewController.swift in Sources */,
 				106C603921F6AA9200F0AFE6 /* AppDelegate.swift in Sources */,
 				106C604121F6AA9200F0AFE6 /* CoCo.xcdatamodeld in Sources */,
+				1039DC7921FAA56800E9EB64 /* UIViewController+Alert.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
