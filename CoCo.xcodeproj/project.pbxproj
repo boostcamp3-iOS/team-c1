@@ -59,12 +59,36 @@
 				106C603821F6AA9200F0AFE6 /* AppDelegate.swift */,
 				106C603A21F6AA9200F0AFE6 /* ViewController.swift */,
 				106C603C21F6AA9200F0AFE6 /* Main.storyboard */,
+				30B8A62621FAA2CD0048EB61 /* DataModel */,
+				30B8A62821FAA2F40048EB61 /* Network */,
+				30B8A62721FAA2DF0048EB61 /* Algorithm */,
 				106C604221F6AA9300F0AFE6 /* Assets.xcassets */,
 				106C604421F6AA9300F0AFE6 /* LaunchScreen.storyboard */,
 				106C604721F6AA9300F0AFE6 /* Info.plist */,
 				106C603F21F6AA9200F0AFE6 /* CoCo.xcdatamodeld */,
 			);
 			path = CoCo;
+			sourceTree = "<group>";
+		};
+		30B8A62621FAA2CD0048EB61 /* DataModel */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = DataModel;
+			sourceTree = "<group>";
+		};
+		30B8A62721FAA2DF0048EB61 /* Algorithm */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Algorithm;
+			sourceTree = "<group>";
+		};
+		30B8A62821FAA2F40048EB61 /* Network */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Network;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
