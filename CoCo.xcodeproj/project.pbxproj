@@ -11,7 +11,7 @@
 		1039DC7B21FAA71B00E9EB64 /* Array+SafeIndex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1039DC7A21FAA71B00E9EB64 /* Array+SafeIndex.swift */; };
 		1039DC7D21FAC92200E9EB64 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1039DC7C21FAC92200E9EB64 /* Category.swift */; };
 		1039DC8221FAD5EB00E9EB64 /* Keyword.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1039DC8121FAD5EB00E9EB64 /* Keyword.swift */; };
-		1039DCB221FB098D00E9EB64 /* String+SearchKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1039DCB121FB098D00E9EB64 /* String+SearchKey.swift */; };
+		1051076021FCB0CA005F14B6 /* String+SearchWords.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1051075F21FCB0CA005F14B6 /* String+SearchWords.swift */; };
 		106C603921F6AA9200F0AFE6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 106C603821F6AA9200F0AFE6 /* AppDelegate.swift */; };
 		106C603B21F6AA9200F0AFE6 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 106C603A21F6AA9200F0AFE6 /* ViewController.swift */; };
 		106C603E21F6AA9200F0AFE6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 106C603C21F6AA9200F0AFE6 /* Main.storyboard */; };
@@ -25,7 +25,7 @@
 		1039DC7A21FAA71B00E9EB64 /* Array+SafeIndex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+SafeIndex.swift"; sourceTree = "<group>"; };
 		1039DC7C21FAC92200E9EB64 /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Category.swift; path = CoCo/Algorithm/Category.swift; sourceTree = SOURCE_ROOT; };
 		1039DC8121FAD5EB00E9EB64 /* Keyword.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keyword.swift; sourceTree = "<group>"; };
-		1039DCB121FB098D00E9EB64 /* String+SearchKey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+SearchKey.swift"; sourceTree = "<group>"; };
+		1051075F21FCB0CA005F14B6 /* String+SearchWords.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+SearchWords.swift"; sourceTree = "<group>"; };
 		106C603521F6AA9200F0AFE6 /* CoCo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CoCo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		106C603821F6AA9200F0AFE6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		106C603A21F6AA9200F0AFE6 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -52,7 +52,7 @@
 			children = (
 				1039DC7821FAA56700E9EB64 /* UIViewController+Alert.swift */,
 				1039DC7A21FAA71B00E9EB64 /* Array+SafeIndex.swift */,
-				1039DCB121FB098D00E9EB64 /* String+SearchKey.swift */,
+				1051075F21FCB0CA005F14B6 /* String+SearchWords.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -228,7 +228,7 @@
 			files = (
 				1039DC8221FAD5EB00E9EB64 /* Keyword.swift in Sources */,
 				106C603B21F6AA9200F0AFE6 /* ViewController.swift in Sources */,
-				1039DCB221FB098D00E9EB64 /* String+SearchKey.swift in Sources */,
+				1051076021FCB0CA005F14B6 /* String+SearchWords.swift in Sources */,
 				106C603921F6AA9200F0AFE6 /* AppDelegate.swift in Sources */,
 				1039DC7B21FAA71B00E9EB64 /* Array+SafeIndex.swift in Sources */,
 				106C604121F6AA9200F0AFE6 /* CoCo.xcdatamodeld in Sources */,

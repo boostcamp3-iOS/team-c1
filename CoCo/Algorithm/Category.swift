@@ -32,7 +32,7 @@ struct Category {
         return _detailCategories
     }
     
-    // MARk: - Private properties
+    // MARK: - Private properties
     
     private var _detailCategories = [String]()
     
@@ -44,20 +44,21 @@ struct Category {
         _detailCategories = getDetailCategories(type, pet: _pet)
     }
     
-    // MARK: - Create search key
+    // MARK: - Get search word
     
-    func createSearchKeys() -> [String] {
-        var keys = [String]()
+    /// 카테고리의 상세 카테고리들로 생성된 검색어 리스트를 반환한다
+    func getSearchWords() -> [String] {
+        var searchWords = [String]()
         for detailCategory in detailCategories {
-            if let _keys = createSearchKey(with: detailCategory) {
-                keys += _keys
-            }
+            searchWords += createSearchWords(with: detailCategory)
         }
-        return keys.map { "\(pet) \($0)" }
+        // 생성된 각각의 검색어 앞부분에 애완동물 종류를 추가한다
+        return searchWords.map { "\(pet) \($0)" }
     }
     
-    private func createSearchKey(with detailCategory: String) -> [String]? {
-        return detailCategory.splitSearchKey
+    private func createSearchWords(with detailCategory: String) -> [String] {
+        // 상세 카테고리별 검색어 리스트를 생성한다
+        return detailCategory.createSearchWords
     }
     
     // MARK: - Get detail categories

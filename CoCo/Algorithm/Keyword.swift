@@ -36,6 +36,8 @@ struct Keyword {
         return _categories
     }
     
+    // MARK: - Private properties
+    
     private var _categories = [Category]()
     
     // MARK: - Initializer
