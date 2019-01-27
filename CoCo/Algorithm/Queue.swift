@@ -37,6 +37,12 @@ struct Queue<T: Comparable> {
         _data.append(element)
     }
     
+    mutating func enqueue(_ elements: [T] ) {
+        for element in elements {
+            enqueue(element)
+        }
+    }
+    
     @discardableResult mutating func dequeue() -> T? {
         return _data.removeFirst()
     }
