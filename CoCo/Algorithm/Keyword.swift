@@ -30,25 +30,25 @@ enum KeywordType: String {
 
 struct Keyword {
     // MARK: - Properties
-    
+
     let name: String
     var categories: [Category] {
         return _categories
     }
-    
+
     // MARK: - Private properties
-    
+
     private var _categories = [Category]()
-    
+
     // MARK: - Initializer
-    
+
     init(_ type: KeywordType, pet _pet: PetType) {
         name = type.rawValue
         _categories = getCategories(type, pet: _pet)
     }
-    
+
     // MARK: - Get categories
-    
+
     private func getCategories(_ type: KeywordType, pet: PetType) -> [Category] {
         switch type {
         case .play:

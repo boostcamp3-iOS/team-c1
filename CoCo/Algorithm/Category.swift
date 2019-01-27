@@ -25,27 +25,27 @@ enum CategoryType: String {
 
 struct Category {
     // MARK: - Properties
-    
+
     let name: String
     let pet: String
     var detailCategories: [String] {
         return _detailCategories
     }
-    
+
     // MARK: - Private properties
-    
+
     private var _detailCategories = [String]()
-    
+
     // MARK: - Initializer
-    
+
     init(_ type: CategoryType, pet _pet: PetType) {
         name = type.rawValue
         pet = _pet.rawValue
         _detailCategories = getDetailCategories(type, pet: _pet)
     }
-    
+
     // MARK: - Get search word
-    
+
     /// 카테고리의 상세 카테고리들로 생성된 검색어 리스트를 반환한다
     func getSearchWords() -> [String] {
         var searchWords = [String]()
@@ -55,14 +55,14 @@ struct Category {
         // 생성된 각각의 검색어 앞부분에 애완동물 종류를 추가한다
         return searchWords.map { "\(pet) \($0)" }
     }
-    
+
     private func createSearchWords(with detailCategory: String) -> [String] {
         // 상세 카테고리별 검색어 리스트를 생성한다
         return detailCategory.createSearchWords
     }
-    
+
     // MARK: - Get detail categories
-    
+
     private func getDetailCategories(_ type: CategoryType, pet: PetType) -> [String] {
         switch type {
         case .feed:
@@ -87,7 +87,7 @@ struct Category {
             return getTablewareWaterDispenser(pet)
         }
     }
-    
+
     private func getFeed(_ pet: PetType) -> [String] {
         switch pet {
         case .dog:
@@ -96,7 +96,7 @@ struct Category {
             return ["건식사료", "캔사료", "파우치사료", "분유", "수제사료"]
         }
     }
-    
+
     private func getSnack(_ pet: PetType) -> [String] {
         switch pet {
         case .dog:
@@ -105,7 +105,7 @@ struct Category {
             return ["캔/파우치", "스틱", "츄르", "건조간식", "쿠키", "사사미", "캣닢/캣그라스", "수제간식", "소시지"]
         }
     }
-    
+
     private func getBowelProducts(_ pet: PetType) -> [String] {
         switch pet {
         case .dog:
@@ -114,7 +114,7 @@ struct Category {
             return ["모래", "모래삽", "배변유도제", "후드형화장실", "평판형화장실", "거름망형화장실", "탈취제/소독제", "기저귀/팬티"]
         }
     }
-    
+
     private func getHealthCare(_ pet: PetType) -> [String] {
         switch pet {
         case .dog:
@@ -123,7 +123,7 @@ struct Category {
             return ["영양제", "유산균", "구강 관리용품", "오메가3", "귀세척", "눈세정"]
         }
     }
-    
+
     private func getBeautyBath(_ pet: PetType) -> [String] {
         switch pet {
         case .dog:
@@ -132,7 +132,7 @@ struct Category {
             return ["샴푸", "에센스/향수", "브러시/빗", "이발기/가위", "발톱/발 관리", "드라이기", "드라이룸", "타월/가운", "물티슈"]
         }
     }
-    
+
     private func getToyTraining(_ pet: PetType) -> [String] {
         switch pet {
         case .dog:
@@ -141,7 +141,7 @@ struct Category {
             return ["낚시/막대", "오뎅꼬치", "카샤카샤", "토이/쿠션/공", "터널/주머니", "자동장난감", "스크래쳐", "레이저포인터"]
         }
     }
-    
+
     private func getCushionHouse(_ pet: PetType) -> [String] {
         switch pet {
         case .dog:
@@ -150,7 +150,7 @@ struct Category {
             return ["캣타워", "숨숨집", "하우스", "방석"]
         }
     }
-    
+
     private func getFashionProducts(_ pet: PetType) -> [String] {
         switch pet {
         case .dog:
@@ -159,7 +159,7 @@ struct Category {
             return ["옷", "신발"]
         }
     }
-    
+
     private func getOutdoorProducts(_ pet: PetType) -> [String] {
         switch pet {
         case .dog:
@@ -168,7 +168,7 @@ struct Category {
             return ["가슴줄", "목걸이/인식표", "리드줄", "이동가방", "슬링백"]
         }
     }
-    
+
     private func getTablewareWaterDispenser(_ pet: PetType) -> [String] {
         switch pet {
         case .dog:

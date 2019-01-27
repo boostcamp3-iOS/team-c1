@@ -1,6 +1,6 @@
 //
 //  String+SearchWords.swift
-//  YJCoCo
+//  CoCo
 //
 //  Created by 최영준 on 25/01/2019.
 //  Copyright © 2019 Team CoCo. All rights reserved.
