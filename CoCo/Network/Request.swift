@@ -25,5 +25,5 @@ protocol Request {
     var path: String { get }
     var method: HTTPMethod { get }
     var parameters: RequestParams { get }
-    var headers: [String: Any]? { get }
+    var headerDic: [String: Any]? { get }
 }

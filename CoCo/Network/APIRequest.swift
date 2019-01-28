@@ -13,8 +13,8 @@ enum APIRequest {
 }
 
 extension APIRequest: Request {
-    // MARK: - Properties
 
+    // MARK: - Properties
     var path: String {
         switch self {
         case .getShopingAPI :
@@ -30,14 +30,13 @@ extension APIRequest: Request {
     var parameters: RequestParams {
         switch self {
         case .getShopingAPI (let query, let display, let start, let sort):
-            return .url(["query": query, "display": String(display), "start": String(start), "sort": sort.rawValue])
+            return .url(["query": query, "display": "\(display)", "start": "\(start)", "sort": sort.rawValue])
         }
     }
-    var headers: [String: Any]? {
+    var headerDic: [String: Any]? {
         switch self {
         case .getShopingAPI :
             return [:]
         }
     }
-
 }

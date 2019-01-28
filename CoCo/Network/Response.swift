@@ -19,8 +19,8 @@ protocol Response {
 }
 
 class ResponseAPI: Response {
-    // MARK: - Methods
 
+    // MARK: - Methods
     func parse<T: Decodable>(data: Data, completion: (T) -> Void) {
         do {
             let apiResponse: T = try JSONDecoder().decode(T.self, from: data)
@@ -29,5 +29,4 @@ class ResponseAPI: Response {
             print(error.localizedDescription)
         }
     }
-    
 }

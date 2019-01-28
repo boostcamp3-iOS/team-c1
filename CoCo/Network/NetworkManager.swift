@@ -17,16 +17,14 @@ enum SortOption: String {
 
 class NetworkManager {
 
-    static let shared: NetworkManager = NetworkManager()
+    static let shared = NetworkManager()
 
     // MARK: - Private Properties
-
     private let headers =  ["X-Naver-Client-Secret": "HRzkmrNKSs", "X-Naver-Client-Id": "qHtcfM1UHhWZXTx9mwYI"]
     private let host = "https://openapi.naver.com/v1/search/shop.json?"
 
     // MARK: - Methods
-
-    func getShoppingData(search query: String, count display: Int, start: Int, sort: SortOption, completion: @escaping (APIResponseShoppingData) -> Void) {
+    func getShoppingData(search query: String, count display: Int = 10, start: Int = 1, sort: SortOption = .similar, completion: @escaping (APIResponseShoppingData) -> Void) {
 
         let enviroment = Environment(host: host, headers: headers)
         let dispatcher = NetworkDispatcher.init(environment: enviroment).makeNetworkProvider()
@@ -39,7 +37,6 @@ class NetworkManager {
     }
 
     // MARK: - Private Methods
-
     private func dispatchAPI(in dispatcher: Dispatcher, request: APIRequest, completion: @escaping (Data) -> Void) {
         do {
             try dispatcher.execute(request: request) { response in
@@ -49,5 +46,4 @@ class NetworkManager {
             print(error)
         }
     }
-
 }

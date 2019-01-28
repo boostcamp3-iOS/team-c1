@@ -11,15 +11,13 @@ import Foundation
 struct Environment {
 
     // MARK: - Properties
-
     // base URL
     var host: String
-    var headers: [String: Any] = [:]
+    var headerDic: [String: Any] = [:]
 
     // MARK: - Initializer
-
     init(host: String, headers: [String: Any]) {
         self.host = host
-        self.headers = headers
+        self.headerDic = headers
     }
 }
