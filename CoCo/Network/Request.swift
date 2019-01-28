@@ -8,32 +8,22 @@
 
 import Foundation
 
-class Request {
-    // MARK: - Methods
+enum HTTPMethod: String {
+    case post = "POST"
+    case put = "PUT"
+    case get = "GET"
+    case delete = "DELETE"
+    case patch = "PATCH"
+}
 
-    func request<T: Decodable>(url: URLRequest, completion: @escaping (T) -> Void, errorHandler: @escaping () -> Void) {
+enum RequestParams {
+    case body(_ : [String: String]?)
+    case url(_ : [String: String]?)
+}
 
-        let session: URLSession = URLSession(configuration: .default)
-        let dataTask: URLSessionDataTask = session.dataTask(with: url) { (data: Data?, _: URLResponse?, error: Error?) in
-            if let error = error {
-                print(error.localizedDescription)
-                errorHandler()
-                return
-            }
-
-            guard let data = data else {
-                errorHandler()
-                return
-            }
-            do {
-                let apiResponse: T = try JSONDecoder().decode(T.self, from: data)
-                completion(apiResponse)
-            } catch let error {
-                errorHandler()
-                print(error.localizedDescription)
-            }
-        }
-        dataTask.resume()
-    }
-
+protocol Request {
+    var path: String { get }
+    var method: HTTPMethod { get }
+    var parameters: RequestParams { get }
+    var headers: [String: Any]? { get }
 }
