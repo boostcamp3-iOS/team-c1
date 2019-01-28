@@ -8,52 +8,56 @@
 
 import Foundation
 
-fileprivate let queueCapacity = 10
+fileprivate let defaultCapacity = 10
 
 struct Queue<T: Comparable> {
     // MARK: - Properties
     
     /// 최신 등록 순의 데이터
-    var data: [T] {
-        // 큐에 추가된 순서(오래된순)의 데이터를 최신순으로 뒤집는다
-        return _data.reversed()
-    }
-    var count: Int { return _data.count }
-    var isFull: Bool { return _data.count == capacity }
-    var isEmpty: Bool { return _data.isEmpty }
+    var latestData: [T] { return data.reversed() }
+    var count: Int { return data.count }
+    var isFull: Bool { return data.count == capacity }
+    var isEmpty: Bool { return data.isEmpty }
     
     // MARK: - Private properties
     
-    private var _data = [T]()
-    private let capacity = queueCapacity
+    private var data = [T]()
+    private let capacity: Int
+    
+    // MARK: - Initializer
+    
+    init(_ capacity: Int = defaultCapacity, elements: [T] = []) {
+        self.capacity = capacity
+        if !elements.isEmpty { enqueue(elements) }
+    }
     
     // MARK: - Enqueue & Dequeue
     
     mutating func enqueue(_ element: T) {
         // 중복된 원소인 경우 제외시킨다
-        _data = _data.filter { $0 != element }
+        data = data.filter { $0 != element }
         // 큐가 꽉 찼다면, 오래된 원소를 제거 후 새로운 원소 추가
         if isFull { dequeue() }
-        _data.append(element)
+        data.append(element)
     }
     
-    mutating func enqueue(_ elements: [T] ) {
+    mutating func enqueue(_ elements: [T]) {
         for element in elements {
             enqueue(element)
         }
     }
     
     @discardableResult mutating func dequeue() -> T? {
-        return _data.removeFirst()
+        return data.removeFirst()
     }
     
     // MARK: - Convenience methods
     
     func shuffled() -> [T] {
-        return _data.shuffled()
+        return data.shuffled()
     }
     
     mutating func clear() {
-        _data.removeAll()
+        data.removeAll()
     }
 }

@@ -15,9 +15,9 @@ enum PetType: String {
     case cat = "고양이"
 }
 
-// MAKR; - KeywordType & Keyword
+// MAKR: - KeywordType & Keyword
 
-enum KeywordType: String {
+enum KeywordType: String, CaseIterable {
     case play = "놀이"
     case beauty = "뷰티"
     case health = "헬스"
@@ -30,25 +30,24 @@ enum KeywordType: String {
 
 struct Keyword {
     // MARK: - Properties
-
+    
     let name: String
-    var categories: [Category] {
-        return _categories
-    }
-
+    let type: KeywordType
+    
     // MARK: - Private properties
-
-    private var _categories = [Category]()
-
+    
+    private(set) var categories = [Category]()
+    
     // MARK: - Initializer
-
-    init(_ type: KeywordType, pet _pet: PetType) {
+    
+    init(_ type: KeywordType, pet: PetType) {
         name = type.rawValue
-        _categories = getCategories(type, pet: _pet)
+        self.type = type
+        categories = getCategories(type, pet: pet)
     }
-
+    
     // MARK: - Get categories
-
+    
     private func getCategories(_ type: KeywordType, pet: PetType) -> [Category] {
         switch type {
         case .play:

@@ -19,8 +19,8 @@ extension String {
         // 생성한 배열에서 "/"가 포함된 원소를 다시 "/"을 기준으로 나누어 배열을 생성한다
         let dividedWords = components.filter { $0.contains("/") }.flatMap { $0.components(separatedBy: "/") }
         // 대체할 원소("/"가 포함된 문자열)의 인덱스를 찾는다
-        let _index = components.firstIndex { $0.contains("/") }
-        if let index = _index {
+        let firstIndex = components.firstIndex { $0.contains("/") }
+        if let index = firstIndex {
             // 나눠진 단어들을 대체할 인덱스에 할당하여 검색어를 생성한다
             for word in dividedWords {
                 components[index] = word
