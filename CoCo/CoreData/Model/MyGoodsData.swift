@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import CoreData
 
 struct MyGoodsData {
     let date: Date
@@ -29,5 +30,21 @@ struct MyGoodsData {
 }
 
 extension MyGoodsData: CoreDataEntity {
+    func toCoreData(context: NSManagedObjectContext?) -> NSManagedObject? {
+        guard let context = context else { return nil }
+        let myGoods = MyGoods(context: context)
+        if self is MyGoodsData {
+            myGoods.date = self.date as NSDate
+            myGoods.title = self.title
+            myGoods.link = self.link
+            myGoods.image = self.image
+            myGoods.isFavorite = self.isFavorite
+            myGoods.price = self.price
+            myGoods.productId = self.productId
+            return myGoods
+        } else {
+            return nil
+        }
+    }
 
 }

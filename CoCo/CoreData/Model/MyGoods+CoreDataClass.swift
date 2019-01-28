@@ -2,7 +2,7 @@
 //  MyGoods+CoreDataClass.swift
 //  CoCo
 //
-//  Created by 강준영 on 27/01/2019.
+//  Created by 강준영 on 28/01/2019.
 //  Copyright © 2019 Team CoCo. All rights reserved.
 //
 //

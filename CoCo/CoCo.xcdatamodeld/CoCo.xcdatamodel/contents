@@ -4,12 +4,13 @@
         <attribute name="date" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="image" attributeType="String" syncable="YES"/>
         <attribute name="isFavorite" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="isTwoAttribute" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="link" attributeType="String" syncable="YES"/>
         <attribute name="price" attributeType="String" syncable="YES"/>
         <attribute name="productId" attributeType="String" syncable="YES"/>
         <attribute name="title" attributeType="String" syncable="YES"/>
     </entity>
     <elements>
-        <element name="MyGoods" positionX="-63" positionY="-18" width="128" height="150"/>
+        <element name="MyGoods" positionX="-63" positionY="-18" width="128" height="165"/>
     </elements>
 </model>

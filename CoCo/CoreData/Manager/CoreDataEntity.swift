@@ -7,6 +7,12 @@
 //
 
 import Foundation
+import CoreData
 
 protocol CoreDataEntity {
+    func toCoreData(context: NSManagedObjectContext?) -> NSManagedObject?
+}
+
+extension CoreDataEntity {
+
 }

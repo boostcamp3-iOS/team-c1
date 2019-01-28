@@ -13,12 +13,13 @@
 		106C604121F6AA9200F0AFE6 /* CoCo.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 106C603F21F6AA9200F0AFE6 /* CoCo.xcdatamodeld */; };
 		106C604321F6AA9300F0AFE6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 106C604221F6AA9300F0AFE6 /* Assets.xcassets */; };
 		106C604621F6AA9300F0AFE6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 106C604421F6AA9300F0AFE6 /* LaunchScreen.storyboard */; };
-		510F318321FAF8930025D929 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510F318221FAF8930025D929 /* CoreDataManager.swift */; };
-		510F319021FCE14A0025D929 /* MyGoods+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510F318E21FCE14A0025D929 /* MyGoods+CoreDataClass.swift */; };
-		510F319121FCE14A0025D929 /* MyGoods+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510F318F21FCE14A0025D929 /* MyGoods+CoreDataProperties.swift */; };
+		510F318321FAF8930025D929 /* MyGoodsDAO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510F318221FAF8930025D929 /* MyGoodsDAO.swift */; };
 		510F319321FCE1C90025D929 /* MyGoodsData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510F319221FCE1C80025D929 /* MyGoodsData.swift */; };
 		510F31C221FD62770025D929 /* CoreDataEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510F31C121FD62770025D929 /* CoreDataEntity.swift */; };
 		510F31C521FE28A10025D929 /* CoreDataError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510F31C421FE28A10025D929 /* CoreDataError.swift */; };
+		510F31C821FEBAF10025D929 /* MyGoods+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510F31C621FEBAF10025D929 /* MyGoods+CoreDataClass.swift */; };
+		510F31C921FEBAF10025D929 /* MyGoods+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510F31C721FEBAF10025D929 /* MyGoods+CoreDataProperties.swift */; };
+		510F31CB21FEC76B0025D929 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510F31CA21FEC76B0025D929 /* CoreDataManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,12 +31,13 @@
 		106C604221F6AA9300F0AFE6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		106C604521F6AA9300F0AFE6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		106C604721F6AA9300F0AFE6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		510F318221FAF8930025D929 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
-		510F318E21FCE14A0025D929 /* MyGoods+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MyGoods+CoreDataClass.swift"; sourceTree = "<group>"; };
-		510F318F21FCE14A0025D929 /* MyGoods+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MyGoods+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		510F318221FAF8930025D929 /* MyGoodsDAO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyGoodsDAO.swift; sourceTree = "<group>"; };
 		510F319221FCE1C80025D929 /* MyGoodsData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyGoodsData.swift; sourceTree = "<group>"; };
 		510F31C121FD62770025D929 /* CoreDataEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataEntity.swift; sourceTree = "<group>"; };
 		510F31C421FE28A10025D929 /* CoreDataError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataError.swift; sourceTree = "<group>"; };
+		510F31C621FEBAF10025D929 /* MyGoods+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MyGoods+CoreDataClass.swift"; sourceTree = "<group>"; };
+		510F31C721FEBAF10025D929 /* MyGoods+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MyGoods+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		510F31CA21FEC76B0025D929 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -109,8 +111,8 @@
 			isa = PBXGroup;
 			children = (
 				510F319221FCE1C80025D929 /* MyGoodsData.swift */,
-				510F318E21FCE14A0025D929 /* MyGoods+CoreDataClass.swift */,
-				510F318F21FCE14A0025D929 /* MyGoods+CoreDataProperties.swift */,
+				510F31C621FEBAF10025D929 /* MyGoods+CoreDataClass.swift */,
+				510F31C721FEBAF10025D929 /* MyGoods+CoreDataProperties.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -120,7 +122,8 @@
 			children = (
 				510F31C421FE28A10025D929 /* CoreDataError.swift */,
 				510F31C121FD62770025D929 /* CoreDataEntity.swift */,
-				510F318221FAF8930025D929 /* CoreDataManager.swift */,
+				510F318221FAF8930025D929 /* MyGoodsDAO.swift */,
+				510F31CA21FEC76B0025D929 /* CoreDataManager.swift */,
 			);
 			path = Manager;
 			sourceTree = "<group>";
@@ -237,14 +240,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				510F319021FCE14A0025D929 /* MyGoods+CoreDataClass.swift in Sources */,
 				106C603B21F6AA9200F0AFE6 /* ViewController.swift in Sources */,
 				106C603921F6AA9200F0AFE6 /* AppDelegate.swift in Sources */,
+				510F31C921FEBAF10025D929 /* MyGoods+CoreDataProperties.swift in Sources */,
 				106C604121F6AA9200F0AFE6 /* CoCo.xcdatamodeld in Sources */,
-				510F319121FCE14A0025D929 /* MyGoods+CoreDataProperties.swift in Sources */,
 				510F31C521FE28A10025D929 /* CoreDataError.swift in Sources */,
-				510F318321FAF8930025D929 /* CoreDataManager.swift in Sources */,
+				510F31C821FEBAF10025D929 /* MyGoods+CoreDataClass.swift in Sources */,
+				510F318321FAF8930025D929 /* MyGoodsDAO.swift in Sources */,
 				510F319321FCE1C90025D929 /* MyGoodsData.swift in Sources */,
+				510F31CB21FEC76B0025D929 /* CoreDataManager.swift in Sources */,
 				510F31C221FD62770025D929 /* CoreDataEntity.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
