@@ -9,7 +9,6 @@
 import Foundation
 
 // MARK: - CategoryType & Category
-
 enum CategoryType: String, CaseIterable {
     case feed = "사료"
     case snack = "간식"
@@ -25,17 +24,14 @@ enum CategoryType: String, CaseIterable {
 
 struct Category {
     // MARK: - Properties
-    
     let name: String
     let type: CategoryType
     let pet: String
     
     // MARK: - Private properties
-    
     private(set) var detailCategories = [String]()
     
     // MARK: - Initializer
-    
     init(_ type: CategoryType, pet: PetType) {
         name = type.rawValue
         self.type = type
@@ -44,7 +40,6 @@ struct Category {
     }
     
     // MARK: - Get search word
-    
     /// 카테고리의 상세 카테고리들로 생성된 검색어 리스트를 반환한다
     func getSearchWords() -> [String] {
         var searchWords = [String]()
@@ -61,7 +56,6 @@ struct Category {
     }
     
     // MARK: - Get detail categories
-    
     private func getDetailCategories(_ type: CategoryType, pet: PetType) -> [String] {
         switch type {
         case .feed:

@@ -9,14 +9,12 @@
 import Foundation
 
 // MARK: - PetType
-
 enum PetType: String {
     case dog = "강아지"
     case cat = "고양이"
 }
 
 // MAKR: - KeywordType & Keyword
-
 enum KeywordType: String, CaseIterable {
     case play = "놀이"
     case beauty = "뷰티"
@@ -30,16 +28,13 @@ enum KeywordType: String, CaseIterable {
 
 struct Keyword {
     // MARK: - Properties
-    
     let name: String
     let type: KeywordType
     
     // MARK: - Private properties
-    
     private(set) var categories = [Category]()
     
     // MARK: - Initializer
-    
     init(_ type: KeywordType, pet: PetType) {
         name = type.rawValue
         self.type = type
@@ -47,7 +42,6 @@ struct Keyword {
     }
     
     // MARK: - Get categories
-    
     private func getCategories(_ type: KeywordType, pet: PetType) -> [Category] {
         switch type {
         case .play:
