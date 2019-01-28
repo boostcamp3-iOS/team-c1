@@ -13,6 +13,9 @@
 		106C604121F6AA9200F0AFE6 /* CoCo.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 106C603F21F6AA9200F0AFE6 /* CoCo.xcdatamodeld */; };
 		106C604321F6AA9300F0AFE6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 106C604221F6AA9300F0AFE6 /* Assets.xcassets */; };
 		106C604621F6AA9300F0AFE6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 106C604421F6AA9300F0AFE6 /* LaunchScreen.storyboard */; };
+		30B8A62A21FAA3E90048EB61 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B8A62921FAA3E90048EB61 /* NetworkManager.swift */; };
+		30B8A62C21FAA4020048EB61 /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B8A62B21FAA4020048EB61 /* Request.swift */; };
+		30B8A63021FAA40F0048EB61 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B8A62F21FAA40F0048EB61 /* Model.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +27,9 @@
 		106C604221F6AA9300F0AFE6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		106C604521F6AA9300F0AFE6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		106C604721F6AA9300F0AFE6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		30B8A62921FAA3E90048EB61 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
+		30B8A62B21FAA4020048EB61 /* Request.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
+		30B8A62F21FAA40F0048EB61 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,6 +93,9 @@
 		30B8A62821FAA2F40048EB61 /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				30B8A62921FAA3E90048EB61 /* NetworkManager.swift */,
+				30B8A62B21FAA4020048EB61 /* Request.swift */,
+				30B8A62F21FAA40F0048EB61 /* Model.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -203,7 +212,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				30B8A63021FAA40F0048EB61 /* Model.swift in Sources */,
+				30B8A62A21FAA3E90048EB61 /* NetworkManager.swift in Sources */,
 				106C603B21F6AA9200F0AFE6 /* ViewController.swift in Sources */,
+				30B8A62C21FAA4020048EB61 /* Request.swift in Sources */,
 				106C603921F6AA9200F0AFE6 /* AppDelegate.swift in Sources */,
 				106C604121F6AA9200F0AFE6 /* CoCo.xcdatamodeld in Sources */,
 			);
