@@ -30,17 +30,17 @@ struct Keyword {
     // MARK: - Properties
     let name: String
     let type: KeywordType
-    
+
     // MARK: - Private properties
     private(set) var categories = [Category]()
-    
+
     // MARK: - Initializer
     init(_ type: KeywordType, pet: PetType) {
         name = type.rawValue
         self.type = type
         categories = getCategories(type, pet: pet)
     }
-    
+
     // MARK: - Get categories
     private func getCategories(_ type: KeywordType, pet: PetType) -> [Category] {
         switch type {

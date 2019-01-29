@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		10366CB8220004E1009579FF /* AlgorithmManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10366CB7220004E1009579FF /* AlgorithmManager.swift */; };
 		1039DC7921FAA56800E9EB64 /* UIViewController+Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1039DC7821FAA56700E9EB64 /* UIViewController+Alert.swift */; };
 		1039DC7B21FAA71B00E9EB64 /* Array+SafeIndex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1039DC7A21FAA71B00E9EB64 /* Array+SafeIndex.swift */; };
 		1039DC7D21FAC92200E9EB64 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1039DC7C21FAC92200E9EB64 /* Category.swift */; };
@@ -22,6 +23,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		10366CB7220004E1009579FF /* AlgorithmManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgorithmManager.swift; sourceTree = "<group>"; };
 		1039DC7821FAA56700E9EB64 /* UIViewController+Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Alert.swift"; sourceTree = "<group>"; };
 		1039DC7A21FAA71B00E9EB64 /* Array+SafeIndex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+SafeIndex.swift"; sourceTree = "<group>"; };
 		1039DC7C21FAC92200E9EB64 /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Category.swift; path = CoCo/Algorithm/Category.swift; sourceTree = SOURCE_ROOT; };
@@ -65,6 +67,7 @@
 				1039DC8121FAD5EB00E9EB64 /* Keyword.swift */,
 				1039DC7C21FAC92200E9EB64 /* Category.swift */,
 				1051076321FDE607005F14B6 /* Queue.swift */,
+				10366CB7220004E1009579FF /* AlgorithmManager.swift */,
 			);
 			path = Algorithm;
 			sourceTree = "<group>";
@@ -232,6 +235,7 @@
 				1039DC8221FAD5EB00E9EB64 /* Keyword.swift in Sources */,
 				106C603B21F6AA9200F0AFE6 /* ViewController.swift in Sources */,
 				1051076021FCB0CA005F14B6 /* String+SearchWords.swift in Sources */,
+				10366CB8220004E1009579FF /* AlgorithmManager.swift in Sources */,
 				106C603921F6AA9200F0AFE6 /* AppDelegate.swift in Sources */,
 				1039DC7B21FAA71B00E9EB64 /* Array+SafeIndex.swift in Sources */,
 				106C604121F6AA9200F0AFE6 /* CoCo.xcdatamodeld in Sources */,

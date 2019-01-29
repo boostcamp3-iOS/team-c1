@@ -8,7 +8,7 @@
 
 import Foundation
 
-fileprivate let defaultCapacity = 10
+private let defaultCapacity = 10
 
 struct Queue<T: Comparable> {
     // MARK: - Properties
@@ -17,17 +17,17 @@ struct Queue<T: Comparable> {
     var count: Int { return data.count }
     var isFull: Bool { return data.count == capacity }
     var isEmpty: Bool { return data.isEmpty }
-    
+
     // MARK: - Private properties
     private var data = [T]()
     private let capacity: Int
-    
+
     // MARK: - Initializer
     init(_ capacity: Int = defaultCapacity, elements: [T] = []) {
         self.capacity = capacity
         if !elements.isEmpty { enqueue(elements) }
     }
-    
+
     // MARK: - Enqueue & Dequeue
     mutating func enqueue(_ element: T) {
         // 중복된 원소인 경우 제외시킨다
@@ -36,22 +36,22 @@ struct Queue<T: Comparable> {
         if isFull { dequeue() }
         data.append(element)
     }
-    
+
     mutating func enqueue(_ elements: [T]) {
         for element in elements {
             enqueue(element)
         }
     }
-    
+
     @discardableResult mutating func dequeue() -> T? {
         return data.removeFirst()
     }
-    
+
     // MARK: - Convenience methods
     func shuffled() -> [T] {
         return data.shuffled()
     }
-    
+
     mutating func clear() {
         data.removeAll()
     }
