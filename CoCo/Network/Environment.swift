@@ -16,8 +16,8 @@ struct Environment {
     var headerDic: [String: Any] = [:]
 
     // MARK: - Initializer
-    init(host: String, headers: [String: Any]) {
+    init(host: String, headerDic: [String: Any]) {
         self.host = host
-        self.headerDic = headers
+        self.headerDic = headerDic
     }
 }

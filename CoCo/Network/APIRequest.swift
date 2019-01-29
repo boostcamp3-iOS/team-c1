@@ -9,7 +9,7 @@
 import Foundation
 
 enum APIRequest {
-    case getShopingAPI(query: String, display: Int, start: Int, sort: SortOption)
+    case getShoppingAPI(query: String, display: Int, start: Int, sort: SortOption)
 }
 
 extension APIRequest: Request {
@@ -17,25 +17,25 @@ extension APIRequest: Request {
     // MARK: - Properties
     var path: String {
         switch self {
-        case .getShopingAPI :
+        case .getShoppingAPI :
             return ""
         }
     }
     var method: HTTPMethod {
         switch self {
-        case .getShopingAPI :
+        case .getShoppingAPI :
             return .get
         }
     }
     var parameters: RequestParams {
         switch self {
-        case .getShopingAPI (let query, let display, let start, let sort):
+        case .getShoppingAPI (let query, let display, let start, let sort):
             return .url(["query": query, "display": "\(display)", "start": "\(start)", "sort": sort.rawValue])
         }
     }
     var headerDic: [String: Any]? {
         switch self {
-        case .getShopingAPI :
+        case .getShoppingAPI :
             return [:]
         }
     }

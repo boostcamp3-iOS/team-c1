@@ -14,10 +14,10 @@ struct APIResponseShoppingData: Codable {
     let start: Int
     let display: Int
 
-    let items: [ShoppingItems]
+    let items: [ShoppingItem]
 }
 
-struct ShoppingItems: Codable {
+struct ShoppingItem: Codable {
     let title: String
     let link: String
     let image: String

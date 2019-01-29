@@ -9,21 +9,21 @@
 import Foundation
 
 protocol Dispatcher {
-    
-    func execute(request: Request, completion: @escaping (Data) -> ()) throws
-    func prepare(request: Request) throws -> URLRequest?
-    
+
+    func execute(request: Request, completion: @escaping (Data) -> Void) throws
+    func prepare(request: Request) throws -> URLRequest
+
     init(environment: Environment)
 }
 
 class NetworkDispatcher {
-    
+
     // MARK: - Properties
     let session: URLSession
-    
+
     // MARK: - Private Properties
     private var environment: Environment
-    
+
     // MARK: - Initializer
     required init(environment: Environment) {
         self.session = URLSession(configuration: .default)
@@ -36,13 +36,12 @@ class NetworkDispatcher {
 }
 
 extension NetworkDispatcher: Dispatcher {
-    
+
     // MARK: - Methods
-    func execute(request: Request, completion: @escaping (Data) -> ()) throws {
-        guard let request = try self.prepare(request: request) else {
-            return
-        }
-        URLSession.shared.dataTask(with: request) { (data, response, error) in
+    func execute(request: Request, completion: @escaping (Data) -> Void) throws {
+        let request = try self.prepare(request: request)
+
+        URLSession.shared.dataTask(with: request) { (data, _, error) in
             if let error = error {
                 print(error.localizedDescription)
                 // 에러 처리 구문 만들기
@@ -51,14 +50,14 @@ extension NetworkDispatcher: Dispatcher {
             completion(data)
             }.resume()
     }
-    func prepare(request: Request) throws -> URLRequest? {
-        
+    func prepare(request: Request) throws -> URLRequest {
+
         let fullUrl = "\(environment.host)/\(request.path)"
         guard let url = URL(string: fullUrl) else {
-            return nil
+            throw NetworkErrors.badInput
         }
         var apiRequest = URLRequest(url: url)
-        
+
         // 파라미터 설정
         switch request.parameters {
         case .body(let params):
@@ -66,22 +65,21 @@ extension NetworkDispatcher: Dispatcher {
                 let body = try? JSONEncoder().encode(params)
                 apiRequest.httpBody = body
             } else {
-                throw NetworkErrors.badInput
+                throw NetworkErrors.withoutParams
             }
-            
         case .url(let params):
             if let params = params {
                 let queryParams = params.map { URLQueryItem(name: $0.key, value: $0.value) }
                 guard var components = URLComponents(string: fullUrl) else {
-                    throw NetworkErrors.badInput
+                    throw NetworkErrors.invalidComponent
                 }
                 components.queryItems = queryParams
                 apiRequest.url = components.url
             } else {
-                throw NetworkErrors.badInput
+                throw NetworkErrors.withoutParams
             }
         }
-        
+
         // 헤더 값 설정
         environment.headerDic.forEach { apiRequest.setValue("\($0.value)", forHTTPHeaderField: $0.key) }
         request.headerDic?.forEach { apiRequest.setValue("\($0.value)", forHTTPHeaderField: $0.key) }

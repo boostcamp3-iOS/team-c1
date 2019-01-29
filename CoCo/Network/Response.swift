@@ -12,6 +12,9 @@ enum NetworkErrors: Error {
     // 에러 처리 하는걸 만들어야함
     case badInput
     case noData
+    case withoutParams
+    case invalidComponent
+    case failParsing
 }
 
 protocol Response {
@@ -27,6 +30,7 @@ class ResponseAPI: Response {
             completion(apiResponse)
         } catch let error {
             print(error.localizedDescription)
+//            throw NetworkErrors.failParsing
         }
     }
 }
