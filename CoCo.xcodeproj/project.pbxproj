@@ -64,10 +64,10 @@
 		1039DC7E21FACC7100E9EB64 /* Algorithm */ = {
 			isa = PBXGroup;
 			children = (
+				10366CB7220004E1009579FF /* AlgorithmManager.swift */,
 				1039DC8121FAD5EB00E9EB64 /* Keyword.swift */,
 				1039DC7C21FAC92200E9EB64 /* Category.swift */,
 				1051076321FDE607005F14B6 /* Queue.swift */,
-				10366CB7220004E1009579FF /* AlgorithmManager.swift */,
 			);
 			path = Algorithm;
 			sourceTree = "<group>";
