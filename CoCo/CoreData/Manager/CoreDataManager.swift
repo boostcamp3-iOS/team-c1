@@ -6,7 +6,6 @@
 //  Copyright © 2019 Team CoCo. All rights reserved.
 //
 
-import Foundation
 import CoreData
 import UIKit
 
@@ -17,8 +16,10 @@ protocol CoreDataManager {
 
     // MARK: - Method
     func fetchObjects<T: NSManagedObject>(_ entityClass: T.Type, sortBy: [NSSortDescriptor]?, predicate: NSPredicate?) throws -> [T]?
-    func insertCoreData<T: CoreDataEntity>(coreDataType: T)
+    func insertCoreData<T: CoreDataEntity>(coreDataType: T) throws -> Bool
     func deleteObject<T: NSManagedObject>(_ entityClass: T.Type, predicate: NSPredicate?) throws -> Bool
+  //  func update<T: CoreDataEntity>(coreDataType: T) throws ->  Bool
+    func afterOperation(context: NSManagedObjectContext?)
 }
 
 extension CoreDataManager {
@@ -90,4 +91,12 @@ extension CoreDataManager {
         }
     }
 
+    func afterOperation(context: NSManagedObjectContext?) {
+        guard let context = context else { return }
+        do {
+            try context.save()
+        } catch {
+            context.rollback()
+        }
+    }
 }

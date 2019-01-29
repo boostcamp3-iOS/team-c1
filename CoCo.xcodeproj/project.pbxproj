@@ -10,16 +10,25 @@
 		106C603921F6AA9200F0AFE6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 106C603821F6AA9200F0AFE6 /* AppDelegate.swift */; };
 		106C603B21F6AA9200F0AFE6 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 106C603A21F6AA9200F0AFE6 /* ViewController.swift */; };
 		106C603E21F6AA9200F0AFE6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 106C603C21F6AA9200F0AFE6 /* Main.storyboard */; };
-		106C604121F6AA9200F0AFE6 /* CoCo.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 106C603F21F6AA9200F0AFE6 /* CoCo.xcdatamodeld */; };
 		106C604321F6AA9300F0AFE6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 106C604221F6AA9300F0AFE6 /* Assets.xcassets */; };
 		106C604621F6AA9300F0AFE6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 106C604421F6AA9300F0AFE6 /* LaunchScreen.storyboard */; };
 		510F318321FAF8930025D929 /* MyGoodsDAO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510F318221FAF8930025D929 /* MyGoodsDAO.swift */; };
 		510F319321FCE1C90025D929 /* MyGoodsData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510F319221FCE1C80025D929 /* MyGoodsData.swift */; };
 		510F31C221FD62770025D929 /* CoreDataEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510F31C121FD62770025D929 /* CoreDataEntity.swift */; };
 		510F31C521FE28A10025D929 /* CoreDataError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510F31C421FE28A10025D929 /* CoreDataError.swift */; };
-		510F31C821FEBAF10025D929 /* MyGoods+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510F31C621FEBAF10025D929 /* MyGoods+CoreDataClass.swift */; };
-		510F31C921FEBAF10025D929 /* MyGoods+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510F31C721FEBAF10025D929 /* MyGoods+CoreDataProperties.swift */; };
 		510F31CB21FEC76B0025D929 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510F31CA21FEC76B0025D929 /* CoreDataManager.swift */; };
+		510F31CD21FF1D490025D929 /* MockCoreData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510F31CC21FF1D490025D929 /* MockCoreData.swift */; };
+		518CD28721FF592D00C38268 /* PetKeyword+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 518CD28521FF592D00C38268 /* PetKeyword+CoreDataClass.swift */; };
+		518CD28821FF592D00C38268 /* PetKeyword+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 518CD28621FF592D00C38268 /* PetKeyword+CoreDataProperties.swift */; };
+		518CD28A21FF594200C38268 /* PetKeywordData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 518CD28921FF594200C38268 /* PetKeywordData.swift */; };
+		519928AF21FF74F6004D74EF /* SearchKeywordDAO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 519928AE21FF74F6004D74EF /* SearchKeywordDAO.swift */; };
+		51A02AAB21FF5E1300EF38F3 /* SearchKeywordData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51A02AAA21FF5E1300EF38F3 /* SearchKeywordData.swift */; };
+		51A02AAC21FF61D200EF38F3 /* CoCo.xcdatamodeld in Resources */ = {isa = PBXBuildFile; fileRef = 106C603F21F6AA9200F0AFE6 /* CoCo.xcdatamodeld */; };
+		51A02AAE21FF620C00EF38F3 /* PetKeywordDAO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51A02AAD21FF620C00EF38F3 /* PetKeywordDAO.swift */; };
+		51A870AB2200086600089CC4 /* SearchKeyword+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51A870A92200086600089CC4 /* SearchKeyword+CoreDataClass.swift */; };
+		51A870AC2200086600089CC4 /* SearchKeyword+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51A870AA2200086600089CC4 /* SearchKeyword+CoreDataProperties.swift */; };
+		51A870B3220016DC00089CC4 /* MyGoods+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51A870B1220016DC00089CC4 /* MyGoods+CoreDataClass.swift */; };
+		51A870B4220016DC00089CC4 /* MyGoods+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51A870B2220016DC00089CC4 /* MyGoods+CoreDataProperties.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -35,9 +44,18 @@
 		510F319221FCE1C80025D929 /* MyGoodsData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyGoodsData.swift; sourceTree = "<group>"; };
 		510F31C121FD62770025D929 /* CoreDataEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataEntity.swift; sourceTree = "<group>"; };
 		510F31C421FE28A10025D929 /* CoreDataError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataError.swift; sourceTree = "<group>"; };
-		510F31C621FEBAF10025D929 /* MyGoods+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MyGoods+CoreDataClass.swift"; sourceTree = "<group>"; };
-		510F31C721FEBAF10025D929 /* MyGoods+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MyGoods+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		510F31CA21FEC76B0025D929 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
+		510F31CC21FF1D490025D929 /* MockCoreData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockCoreData.swift; sourceTree = "<group>"; };
+		518CD28521FF592D00C38268 /* PetKeyword+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PetKeyword+CoreDataClass.swift"; sourceTree = "<group>"; };
+		518CD28621FF592D00C38268 /* PetKeyword+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PetKeyword+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		518CD28921FF594200C38268 /* PetKeywordData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetKeywordData.swift; sourceTree = "<group>"; };
+		519928AE21FF74F6004D74EF /* SearchKeywordDAO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchKeywordDAO.swift; sourceTree = "<group>"; };
+		51A02AAA21FF5E1300EF38F3 /* SearchKeywordData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchKeywordData.swift; sourceTree = "<group>"; };
+		51A02AAD21FF620C00EF38F3 /* PetKeywordDAO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetKeywordDAO.swift; sourceTree = "<group>"; };
+		51A870A92200086600089CC4 /* SearchKeyword+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchKeyword+CoreDataClass.swift"; sourceTree = "<group>"; };
+		51A870AA2200086600089CC4 /* SearchKeyword+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchKeyword+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		51A870B1220016DC00089CC4 /* MyGoods+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MyGoods+CoreDataClass.swift"; sourceTree = "<group>"; };
+		51A870B2220016DC00089CC4 /* MyGoods+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MyGoods+CoreDataProperties.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -110,9 +128,16 @@
 		510F318021FAF8780025D929 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				510F31C421FE28A10025D929 /* CoreDataError.swift */,
+				51A870A92200086600089CC4 /* SearchKeyword+CoreDataClass.swift */,
+				51A870AA2200086600089CC4 /* SearchKeyword+CoreDataProperties.swift */,
+				51A02AAA21FF5E1300EF38F3 /* SearchKeywordData.swift */,
+				518CD28521FF592D00C38268 /* PetKeyword+CoreDataClass.swift */,
+				518CD28621FF592D00C38268 /* PetKeyword+CoreDataProperties.swift */,
+				518CD28921FF594200C38268 /* PetKeywordData.swift */,
+				51A870B1220016DC00089CC4 /* MyGoods+CoreDataClass.swift */,
+				51A870B2220016DC00089CC4 /* MyGoods+CoreDataProperties.swift */,
 				510F319221FCE1C80025D929 /* MyGoodsData.swift */,
-				510F31C621FEBAF10025D929 /* MyGoods+CoreDataClass.swift */,
-				510F31C721FEBAF10025D929 /* MyGoods+CoreDataProperties.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -120,10 +145,12 @@
 		510F318121FAF8820025D929 /* Manager */ = {
 			isa = PBXGroup;
 			children = (
-				510F31C421FE28A10025D929 /* CoreDataError.swift */,
-				510F31C121FD62770025D929 /* CoreDataEntity.swift */,
-				510F318221FAF8930025D929 /* MyGoodsDAO.swift */,
 				510F31CA21FEC76B0025D929 /* CoreDataManager.swift */,
+				510F31C121FD62770025D929 /* CoreDataEntity.swift */,
+				510F31CC21FF1D490025D929 /* MockCoreData.swift */,
+				510F318221FAF8930025D929 /* MyGoodsDAO.swift */,
+				51A02AAD21FF620C00EF38F3 /* PetKeywordDAO.swift */,
+				519928AE21FF74F6004D74EF /* SearchKeywordDAO.swift */,
 			);
 			path = Manager;
 			sourceTree = "<group>";
@@ -191,6 +218,7 @@
 				106C604621F6AA9300F0AFE6 /* LaunchScreen.storyboard in Resources */,
 				106C604321F6AA9300F0AFE6 /* Assets.xcassets in Resources */,
 				106C603E21F6AA9200F0AFE6 /* Main.storyboard in Resources */,
+				51A02AAC21FF61D200EF38F3 /* CoCo.xcdatamodeld in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -241,15 +269,23 @@
 			buildActionMask = 2147483647;
 			files = (
 				106C603B21F6AA9200F0AFE6 /* ViewController.swift in Sources */,
+				51A870AC2200086600089CC4 /* SearchKeyword+CoreDataProperties.swift in Sources */,
+				51A870B4220016DC00089CC4 /* MyGoods+CoreDataProperties.swift in Sources */,
+				510F31CD21FF1D490025D929 /* MockCoreData.swift in Sources */,
+				519928AF21FF74F6004D74EF /* SearchKeywordDAO.swift in Sources */,
 				106C603921F6AA9200F0AFE6 /* AppDelegate.swift in Sources */,
-				510F31C921FEBAF10025D929 /* MyGoods+CoreDataProperties.swift in Sources */,
-				106C604121F6AA9200F0AFE6 /* CoCo.xcdatamodeld in Sources */,
+				518CD28A21FF594200C38268 /* PetKeywordData.swift in Sources */,
+				518CD28721FF592D00C38268 /* PetKeyword+CoreDataClass.swift in Sources */,
+				51A02AAE21FF620C00EF38F3 /* PetKeywordDAO.swift in Sources */,
+				51A02AAB21FF5E1300EF38F3 /* SearchKeywordData.swift in Sources */,
+				518CD28821FF592D00C38268 /* PetKeyword+CoreDataProperties.swift in Sources */,
+				51A870AB2200086600089CC4 /* SearchKeyword+CoreDataClass.swift in Sources */,
 				510F31C521FE28A10025D929 /* CoreDataError.swift in Sources */,
-				510F31C821FEBAF10025D929 /* MyGoods+CoreDataClass.swift in Sources */,
 				510F318321FAF8930025D929 /* MyGoodsDAO.swift in Sources */,
 				510F319321FCE1C90025D929 /* MyGoodsData.swift in Sources */,
 				510F31CB21FEC76B0025D929 /* CoreDataManager.swift in Sources */,
 				510F31C221FD62770025D929 /* CoreDataEntity.swift in Sources */,
+				51A870B3220016DC00089CC4 /* MyGoods+CoreDataClass.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -3,14 +3,25 @@
     <entity name="MyGoods" representedClassName=".MyGoods" syncable="YES">
         <attribute name="date" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="image" attributeType="String" syncable="YES"/>
-        <attribute name="isFavorite" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="isTwoAttribute" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="isFavorite" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="isLatest" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="link" attributeType="String" syncable="YES"/>
         <attribute name="price" attributeType="String" syncable="YES"/>
         <attribute name="productId" attributeType="String" syncable="YES"/>
+        <attribute name="searchWord" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="title" attributeType="String" syncable="YES"/>
     </entity>
+    <entity name="PetKeyword" representedClassName=".PetKeyword" syncable="YES">
+        <attribute name="keywords" attributeType="Transformable" syncable="YES"/>
+        <attribute name="pet" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="SearchKeyword" representedClassName=".SearchKeyword" syncable="YES">
+        <attribute name="date" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="searchWord" attributeType="String" syncable="YES"/>
+    </entity>
     <elements>
-        <element name="MyGoods" positionX="-63" positionY="-18" width="128" height="165"/>
+        <element name="MyGoods" positionX="-63" positionY="-18" width="128" height="180"/>
+        <element name="PetKeyword" positionX="-63" positionY="45" width="128" height="75"/>
+        <element name="SearchKeyword" positionX="-54" positionY="54" width="128" height="75"/>
     </elements>
 </model>
