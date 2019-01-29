@@ -41,13 +41,13 @@ struct Category {
 
     // MARK: - Get search word
     /// 카테고리의 상세 카테고리들로 생성된 검색어 리스트를 반환한다
-    func getSearchWords() -> [String] {
+    func getSearchWords(with petType: Bool = false) -> [String] {
         var searchWords = [String]()
         for detailCategory in detailCategories {
             searchWords += createSearchWords(with: detailCategory)
         }
         // 생성된 각각의 검색어 앞부분에 애완동물 종류를 추가한다
-        return searchWords.map { "\(pet) \($0)" }
+        return (petType) ? searchWords.map { "\(pet) \($0)" } : searchWords
     }
 
     private func createSearchWords(with detailCategory: String) -> [String] {
