@@ -22,6 +22,12 @@ struct MyGoodsData {
     var searchWord = ""
 }
 
+extension MyGoodsData: Comparable {
+    static func < (lhs: MyGoodsData, rhs: MyGoodsData) -> Bool {
+        return lhs.searchWord < rhs.searchWord
+    }
+}
+
 extension MyGoodsData: CoreDataEntity {
     func toCoreData(context: NSManagedObjectContext?) -> NSManagedObject? {
         guard let context = context else { return nil }

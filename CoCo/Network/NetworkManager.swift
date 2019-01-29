@@ -16,11 +16,11 @@ enum SortOption: String {
 }
 
 protocol NetworkManagerType {
-    
+
     associatedtype Params
-    
+
     func getAPIData(_ params: Params, completion: @escaping (APIResponseShoppingData) -> Void)
-    
+
     init(headerDic: [String: String], host: String)
 }
 
@@ -37,31 +37,31 @@ extension NetworkManagerType {
 }
 
 class ShoppingNetworkManager: NetworkManagerType {
-    
+
     typealias Params = Parameters
-    
+
     struct Parameters {
         var search: String
         var count: Int = 10
         var start: Int = 1
         var sort: SortOption = .similar
     }
-    
+
     // MARK: - Private Properties
     private var environment: Environment
-    
+
     // MARK: - Initializer
-    required init(headerDic: [String : String], host: String) {
+    required init(headerDic: [String: String], host: String) {
         self.environment = Environment(host: host, headerDic: headerDic)
-    
+
     }
-    
+
     // MARK: - Methods
     func getAPIData(_ params: ShoppingNetworkManager.Parameters, completion: @escaping (APIResponseShoppingData) -> Void) {
         let dispatcher = NetworkDispatcher(environment: environment).makeNetworkProvider()
         let responseAPI = ResponseAPI()
         let request = APIRequest.getShoppingAPI(query: params.search, display: params.count, start: params.start, sort: params.sort)
-        
+
         dispatchAPI(in: dispatcher, request: request) { data in
             responseAPI.parse(data: data, completion: completion)
         }
@@ -70,9 +70,9 @@ class ShoppingNetworkManager: NetworkManagerType {
 
 // MockData
 class MockNetworkManager: NetworkManagerType {
-    
+
     typealias Params = String?
-    
+
     let mockData: String = """
     {
     "lastBuildDate": "Mon, 28 Jan 2019 20:25:32 +0900",
@@ -114,8 +114,8 @@ class MockNetworkManager: NetworkManagerType {
 
     }]}
 """
-    
-    required init(headerDic: [String : String], host: String) {
+
+    required init(headerDic: [String: String], host: String) {
         print("mockData")
     }
 
