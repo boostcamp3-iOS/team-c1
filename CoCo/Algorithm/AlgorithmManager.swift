@@ -10,7 +10,7 @@ import Foundation
 
 private let defaultCount = 10
 
-class AlgorithmManager {
+class AlgorithmManager: Algorithm {
     // MARK: - Properties
     var categories: [Category] { return getAllCategories() }
 
@@ -22,7 +22,7 @@ class AlgorithmManager {
     private(set) var favoriteProducts = Queue<MyGoodsData>()
 
     // MARK: - Initializer
-    init(pet: PetType, keywords: [KeywordType]) {
+    required init(pet: PetType, keywords: [KeywordType]) {
         self.pet = pet
         addKeywords(keywords)
     }

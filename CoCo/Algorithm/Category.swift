@@ -22,7 +22,7 @@ enum CategoryType: String, CaseIterable {
     case tablewareWaterDispenser = "식기/급수기"
 }
 
-struct Category {
+struct Category: Word {
     // MARK: - Properties
     let name: String
     let type: CategoryType

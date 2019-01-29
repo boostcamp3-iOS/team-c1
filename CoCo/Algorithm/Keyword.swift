@@ -26,7 +26,7 @@ enum KeywordType: String, CaseIterable {
     case bowelMovement = "배변"
 }
 
-struct Keyword {
+struct Keyword: Word {
     // MARK: - Properties
     let name: String
     let type: KeywordType

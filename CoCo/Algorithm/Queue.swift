@@ -10,7 +10,8 @@ import Foundation
 
 private let defaultCapacity = 10
 
-struct Queue<T: Comparable> {
+struct Queue<T: Comparable>: QueueOperation {
+
     // MARK: - Properties
     /// 최신 등록 순의 데이터
     var latestData: [T] { return data.reversed() }
