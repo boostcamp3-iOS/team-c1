@@ -29,4 +29,12 @@ extension String {
         }
         return (searchWords.isEmpty) ? [self] : searchWords
     }
+    
+    /// 검색 페이지에서 사용자 검색어에 활용된다
+    var isContainsPet: Bool {
+        if contains(PetType.cat.rawValue) || contains(PetType.dog.rawValue) {
+            return true
+        }
+        return false
+    }
 }
