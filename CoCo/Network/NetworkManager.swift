@@ -19,7 +19,7 @@ protocol NetworkManagerType {
     associatedtype Params
 
     func getAPIData(_ params: Params, completion: @escaping (APIResponseShoppingData) -> Void, errorHandler: @escaping () -> Void)
-    init(headerDic: [String: String], host: String)
+    init()
 }
 
 extension NetworkManagerType {
@@ -40,15 +40,20 @@ class ShoppingNetworkManager: NetworkManagerType {
         var count: Int = 10
         var start: Int = 1
         var sort: SortOption = .similar
+        
+        init(search: String) {
+            self.search = search
+        }
     }
 
     // MARK: - Private Properties
+    private let host = "https://openapi.naver.com/v1/search/shop.json?"
+    private let headerDic = ["X-Naver-Client-Id": "qHtcfM1UHhWZXTx9mwYI", "X-Naver-Client-Secret": "HRzkmrNKSs"]
     private var environment: Environment
 
     // MARK: - Initializer
-    required init(headerDic: [String: String], host: String) {
-        self.environment = Environment(host: host, headerDic: headerDic)
-
+    required init() {
+         self.environment = Environment(host: host, headerDic: headerDic)
     }
 
     // MARK: - Methods
@@ -70,6 +75,18 @@ class ShoppingNetworkManager: NetworkManagerType {
             errorHandler()
         }
     }
+    
+    /* 호출 예시
+     
+     let shoppingAPI = ShoppingNetworkManager()
+     let param = ShoppingNetworkManager.Parameters(search: "강아지 옷")
+     shoppingAPI.getAPIData(param, completion: { data in
+     print(data)
+     }) {
+     print("error")
+     }
+ 
+     */
 }
 
 // MockData
@@ -120,7 +137,7 @@ class MockNetworkManager: NetworkManagerType {
 """
     
     // MARK: - Initializer
-    required init(headerDic: [String: String], host: String) {
+    required init() {
         print("mockData")
     }
 
