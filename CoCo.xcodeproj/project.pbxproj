@@ -510,7 +510,6 @@
 				106C603B21F6AA9200F0AFE6 /* ViewController.swift in Sources */,
 				30B8A62C21FAA4020048EB61 /* Request.swift in Sources */,
 				1039DC8221FAD5EB00E9EB64 /* Keyword.swift in Sources */,
-				106C603B21F6AA9200F0AFE6 /* ViewController.swift in Sources */,
 				51A870AC2200086600089CC4 /* SearchKeyword+CoreDataProperties.swift in Sources */,
 				51A870B4220016DC00089CC4 /* MyGoods+CoreDataProperties.swift in Sources */,
 				510F31CD21FF1D490025D929 /* MockCoreData.swift in Sources */,
