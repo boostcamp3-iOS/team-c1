@@ -16,28 +16,23 @@ enum SortOption: String {
 }
 
 protocol NetworkManagerType {
-
     associatedtype Params
 
-    func getAPIData(_ params: Params, completion: @escaping (APIResponseShoppingData) -> Void)
-
+    func getAPIData(_ params: Params, completion: @escaping (APIResponseShoppingData) -> Void, errorHandler: @escaping () -> Void)
     init(headerDic: [String: String], host: String)
 }
 
 extension NetworkManagerType {
-    fileprivate func dispatchAPI(in dispatcher: Dispatcher, request: APIRequest, completion: @escaping (Data) -> Void) {
+    fileprivate func dispatchAPI(in dispatcher: Dispatcher, request: APIRequest, completion: @escaping (Data) -> Void) throws {
         do {
             try dispatcher.execute(request: request) { response in
                 completion(response)
             }
-        } catch let error {
-            print(error)
         }
     }
 }
 
 class ShoppingNetworkManager: NetworkManagerType {
-
     typealias Params = Parameters
 
     struct Parameters {
@@ -57,23 +52,32 @@ class ShoppingNetworkManager: NetworkManagerType {
     }
 
     // MARK: - Methods
-    func getAPIData(_ params: ShoppingNetworkManager.Parameters, completion: @escaping (APIResponseShoppingData) -> Void) {
+    func getAPIData(_ params: ShoppingNetworkManager.Parameters, completion: @escaping (APIResponseShoppingData) -> Void, errorHandler: @escaping () -> Void) {
         let dispatcher = NetworkDispatcher(environment: environment).makeNetworkProvider()
         let responseAPI = ResponseAPI()
         let request = APIRequest.getShoppingAPI(query: params.search, display: params.count, start: params.start, sort: params.sort)
-
-        dispatchAPI(in: dispatcher, request: request) { data in
-            responseAPI.parse(data: data, completion: completion)
+        do {
+            try dispatchAPI(in: dispatcher, request: request) { data in
+                do {
+                    try responseAPI.parse(data: data, completion: completion)
+                } catch let err {
+                    print(err)
+                    errorHandler()
+                }
+            }
+        } catch let err {
+            print(err)
+            errorHandler()
         }
     }
 }
 
 // MockData
 class MockNetworkManager: NetworkManagerType {
-
     typealias Params = String?
 
-    let mockData: String = """
+    // MARK: - Private Properties
+    private let mockData: String = """
     {
     "lastBuildDate": "Mon, 28 Jan 2019 20:25:32 +0900",
     "total": 825811,
@@ -114,14 +118,21 @@ class MockNetworkManager: NetworkManagerType {
 
     }]}
 """
-
+    
+    // MARK: - Initializer
     required init(headerDic: [String: String], host: String) {
         print("mockData")
     }
 
-    func getAPIData(_ params: String?, completion: @escaping (APIResponseShoppingData) -> Void) {
+    // MARK: - Methods
+    func getAPIData(_ params: String?, completion: @escaping (APIResponseShoppingData) -> Void, errorHandler: @escaping () -> Void) {
         let data = Data(mockData.utf8)
         let responseAPI = ResponseAPI()
-        responseAPI.parse(data: data, completion: completion)
+        do {
+            try responseAPI.parse(data: data, completion: completion)
+        } catch let err {
+            print(err)
+            errorHandler()
+        }
     }
 }

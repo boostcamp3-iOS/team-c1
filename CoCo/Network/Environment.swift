@@ -9,7 +9,6 @@
 import Foundation
 
 struct Environment {
-
     // MARK: - Properties
     // base URL
     var host: String

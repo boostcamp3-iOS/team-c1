@@ -9,7 +9,6 @@
 import Foundation
 
 enum NetworkErrors: Error {
-    // 에러 처리 하는걸 만들어야함
     case badInput
     case noData
     case withoutParams
@@ -18,19 +17,17 @@ enum NetworkErrors: Error {
 }
 
 protocol Response {
-    func parse<T: Decodable>(data: Data, completion: (T) -> Void)
+    func parse<T: Decodable>(data: Data, completion: (T) -> Void) throws
 }
 
 class ResponseAPI: Response {
-
     // MARK: - Methods
-    func parse<T: Decodable>(data: Data, completion: (T) -> Void) {
+    func parse<T: Decodable>(data: Data, completion: (T) -> Void) throws {
         do {
             let apiResponse: T = try JSONDecoder().decode(T.self, from: data)
             completion(apiResponse)
-        } catch let error {
-            print(error.localizedDescription)
-//            throw NetworkErrors.failParsing
+        } catch {
+            throw NetworkErrors.failParsing
         }
     }
 }

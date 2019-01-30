@@ -9,7 +9,6 @@
 import Foundation
 
 protocol Dispatcher {
-
     func execute(request: Request, completion: @escaping (Data) -> Void) throws
     func prepare(request: Request) throws -> URLRequest
 
@@ -17,7 +16,6 @@ protocol Dispatcher {
 }
 
 class NetworkDispatcher {
-
     // MARK: - Properties
     let session: URLSession
 
@@ -36,22 +34,19 @@ class NetworkDispatcher {
 }
 
 extension NetworkDispatcher: Dispatcher {
-
     // MARK: - Methods
     func execute(request: Request, completion: @escaping (Data) -> Void) throws {
         let request = try self.prepare(request: request)
 
-        URLSession.shared.dataTask(with: request) { (data, _, error) in
+        URLSession.shared.dataTask(with: request) {  (data, _, error) in
             if let error = error {
                 print(error.localizedDescription)
-                // 에러 처리 구문 만들기
             }
             guard let data = data else { return }
             completion(data)
             }.resume()
     }
     func prepare(request: Request) throws -> URLRequest {
-
         let fullUrl = "\(environment.host)/\(request.path)"
         guard let url = URL(string: fullUrl) else {
             throw NetworkErrors.badInput

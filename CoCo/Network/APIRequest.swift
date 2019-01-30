@@ -13,7 +13,6 @@ enum APIRequest {
 }
 
 extension APIRequest: Request {
-
     // MARK: - Properties
     var path: String {
         switch self {
