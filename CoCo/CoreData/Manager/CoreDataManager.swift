@@ -16,9 +16,8 @@ protocol CoreDataManager {
 
     // MARK: - Method
     func fetchObjects<T: NSManagedObject>(_ entityClass: T.Type, sortBy: [NSSortDescriptor]?, predicate: NSPredicate?) throws -> [T]?
-    func insertCoreData<T: CoreDataEntity>(coreDataType: T) throws -> Bool
+    func insertCoreData<T: CoreDataEntity>(_ coreDataType: T) throws -> Bool
     func deleteObject<T: NSManagedObject>(_ entityClass: T.Type, predicate: NSPredicate?) throws -> Bool
-  //  func update<T: CoreDataEntity>(coreDataType: T) throws ->  Bool
     func afterOperation(context: NSManagedObjectContext?)
 }
 
@@ -40,7 +39,8 @@ extension CoreDataManager {
 }
 
 extension CoreDataManager {
-    //Define default method
+    // MARK: - Fetch Method
+    // Define default method
     func fetchObjects<T: NSManagedObject>(_ entityClass: T.Type, sortBy: [NSSortDescriptor]?, predicate: NSPredicate?) throws -> [T]? {
         guard let context = context else {
             return nil
@@ -62,6 +62,7 @@ extension CoreDataManager {
         return fetchedResult
     }
 
+    // MARK: - Delete Method
     func deleteObject<T: NSManagedObject>(_ entityClass: T.Type, predicate: NSPredicate?) throws -> Bool {
         guard let context = context else {
             return false
@@ -69,21 +70,17 @@ extension CoreDataManager {
         guard let appDelegate = appDelegate else {
             return false
         }
-        var object: NSManagedObject?
+
         do {
             guard let fetchObject = try fetchObjects(entityClass.self, sortBy: nil, predicate: predicate) else {
                 return false
             }
-            guard let firstObject = fetchObject.first else {
-                return false
-            }
-            object = firstObject
-            if let object = object {
-                context.delete(object)
+            if let firstObject = fetchObject.first {
+                context.delete(firstObject)
                 appDelegate.saveContext()
                 return true
             } else {
-                return false
+                throw CoreDataError.delete(message: "Can not fetch Data")
             }
         } catch let error as NSError {
             print("fetch error \(error)")
@@ -91,6 +88,8 @@ extension CoreDataManager {
         }
     }
 
+    // MARK: - Util Method
+    // 데이터의 연산결과가 반영되게 하는 함수
     func afterOperation(context: NSManagedObjectContext?) {
         guard let context = context else { return }
         do {

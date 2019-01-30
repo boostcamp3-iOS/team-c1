@@ -10,6 +10,7 @@ import Foundation
 import CoreData
 
 struct MyGoodsData {
+    // MARK: - Propertise
     var date = Date() //시간 자동저장?
     var title: String = ""
     var link: String = ""
@@ -29,10 +30,10 @@ extension MyGoodsData: Comparable {
 }
 
 extension MyGoodsData: CoreDataEntity {
-    func toCoreData(context: NSManagedObjectContext?) -> NSManagedObject? {
-        guard let context = context else { return nil }
+    // MARK: - Method
+    func toCoreData(context: NSManagedObjectContext?) {
+        guard let context = context else { return }
         let myGoods = MyGoods(context: context)
-
         myGoods.date = self.date as NSDate
         myGoods.title = self.title
         myGoods.link = self.link
@@ -41,7 +42,6 @@ extension MyGoodsData: CoreDataEntity {
         myGoods.price = self.price
         myGoods.productId = self.productId
         myGoods.searchWord = self.searchWord
-        return myGoods
 
     }
 

@@ -10,7 +10,6 @@
 import Foundation
 import CoreData
 
-@objc(PetKeyword)
 public class PetKeyword: NSManagedObject {
 
 }

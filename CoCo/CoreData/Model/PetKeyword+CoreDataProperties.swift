@@ -16,7 +16,7 @@ extension PetKeyword {
         return NSFetchRequest<PetKeyword>(entityName: "PetKeyword")
     }
 
-    @NSManaged public var keywords: NSObject
     @NSManaged public var pet: String
+    @NSManaged public var keywords: NSObject
 
 }

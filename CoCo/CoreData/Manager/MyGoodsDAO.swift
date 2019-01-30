@@ -11,11 +11,12 @@ import UIKit
 import CoreData
 
 class MyGoodsDAO: CoreDataManager {
-
     // MARK: - Properties
     static let shared = MyGoodsDAO()
 
-    func insertCoreData<T: CoreDataEntity>(coreDataType: T) throws -> Bool {
+    // MARK: - Methodes
+    // MARK: - Insert Method
+    @discardableResult func insertCoreData<T: CoreDataEntity>(_ coreDataType: T) throws -> Bool {
         guard let context = context else {
             return false
         }
@@ -25,18 +26,21 @@ class MyGoodsDAO: CoreDataManager {
             guard let myGoodsData = coreDataType as? MyGoodsData else {
                 return false
             }
+            // 삽입하려는 데이터와 동일한 데이터가 MyGoods Entity에 존재하는 지 확인하기 위해
+            // 삽입하려는 데이터의 productID를 Entity에 존재하는 지 확인
             let object = fetchObjectId(productId: myGoodsData.productId)
 
-            // 해당 아이디가 존재하지 않을 때
+            // 삽입하려는 데이터의 productID와 동일한 데이터가 없는 경우 삽입을 진행
             if object == nil {
-                let myGoods = myGoodsData.toCoreData(context: context)
+                myGoodsData.toCoreData(context: context)
                 afterOperation(context: context)
                 print("succesive insert \(myGoodsData.productId)")
                 return true
+                // 삽입하려는 데이터와 동일한 productID가 존재하면 기존 데이터 업데이트
             } else {
-                updateAll(myGoodsData: myGoodsData)
+                try updateMyGoods(myGoodsData: myGoodsData)
                 print("Already Inserted , So Update")
-                return false
+                return true
                 }
         default:
             break
@@ -44,13 +48,15 @@ class MyGoodsDAO: CoreDataManager {
         return false
     }
 
-    // MARK: - Fetch MyGoods Func
-    // Fetch MyGoods
-    func fetchAll() -> [MyGoodsData]? {
+    // MARK: - Fetch Methodes
+    // Fetch All MyGoods Data - MyGoods의 모든 데이터를 가져옴
+    func fetchMyGoodsDatas() throws -> [MyGoodsData]? {
         var dataResults: [MyGoodsData] = []
         let sort = NSSortDescriptor(key: #keyPath(MyGoods.productId), ascending: true)
         do {
-            guard let objects = try fetchObjects(MyGoods.self, sortBy: [sort], predicate: nil) else { return  nil}
+            guard let objects = try fetchObjects(MyGoods.self, sortBy: [sort], predicate: nil) else {
+                throw CoreDataError.fetch(message: "MyGoods Entity has not data, So can not fetch data")
+            }
             for object in objects {
                 var myGoodsData = MyGoodsData()
                 myGoodsData.date = object.date as Date
@@ -71,58 +77,105 @@ class MyGoodsDAO: CoreDataManager {
         }
     }
 
-    // Fetch MyGoods CoreData
-    func fetchGoods(isFavoriteGoods: Bool) -> [MyGoodsData] {
-        guard let objects = fetchGoods(isFavorite: isFavoriteGoods) else {
-            return []
+    // Fetch Favorite Datas - 즐겨찾기 한 모든 데이터를 가져옴
+    func fetchFavoriteGoods() throws -> [MyGoodsData]? {
+        // 즐겨찾기 한 상품 오름차순으로 정렬
+        let sort = NSSortDescriptor(key: #keyPath(MyGoods.date), ascending: true)
+        let predicate = NSPredicate(format: "isFavorite = true")
+        var myGoodsDatas: [MyGoodsData] = []
+        do {
+            guard let objects = try fetchObjects(MyGoods.self, sortBy: [sort], predicate: predicate) else {
+                throw CoreDataError.fetch(message: "MyGoods Entity has not favorite data, So can not fetch favorite data")
+            }
+            if objects.count > 0 {
+                for index in objects.indices {
+                    let tempObject = objects[index]
+                    var myGoodsData = MyGoodsData()
+                    myGoodsData.date = tempObject.date as Date
+                    myGoodsData.image = tempObject.image
+                    myGoodsData.isFavorite = tempObject.isFavorite
+                    myGoodsData.isLatest = tempObject.isLatest
+                    myGoodsData.link = tempObject.link
+                    myGoodsData.objectId = tempObject.objectID
+                    myGoodsData.price = tempObject.price
+                    myGoodsData.productId = tempObject.productId
+                    myGoodsData.searchWord = tempObject.searchWord
+                    myGoodsData.title = tempObject.title
+                    myGoodsDatas.append(myGoodsData)
+                }
+                return myGoodsDatas
+            } else {
+                throw CoreDataError.fetch(message: "MyGoods Entity has not favorite data, So can not fetch favorite data")
+            }
+        } catch let error as NSError {
+                print("fetch error \(error)")
         }
-        var myGoodsData: [MyGoodsData] = []
-        for index in objects.indices {
-            let tempObject = objects[index]
-            let myData = MyGoodsData()
-            myGoodsData.append(MyGoodsData(date: tempObject.date as Date, title: tempObject.title, link: tempObject.link, image: tempObject.image, isFavorite: tempObject.isFavorite, isLatest: tempObject.isLatest, price: tempObject.price, productId: tempObject.productId, objectId: tempObject.objectID, searchWord: tempObject.searchWord))
-        }
-        return myGoodsData
+        return nil
     }
 
+    // Fetch Latest Datas - 최근본 상품을 모두 가져옴
+    func fetchLatestGoods() throws -> [MyGoodsData]? {
+        // 오름차순으로 정렬
+        let sort = NSSortDescriptor(key: #keyPath(MyGoods.date), ascending: true)
+        let predicate = NSPredicate(format: "isLatest = true")
+        var myGoodsDatas: [MyGoodsData] = []
+        do {
+            guard let objects = try fetchObjects(MyGoods.self, sortBy: [sort], predicate: predicate) else {
+                throw CoreDataError.fetch(message: "MyGoods Entity has not latest data, So can not fetch favorite data")
+            }
+            if objects.count > 0 {
+                for index in objects.indices {
+                    let tempObject = objects[index]
+                    var myGoodsData = MyGoodsData()
+                    myGoodsData.date = tempObject.date as Date
+                    myGoodsData.image = tempObject.image
+                    myGoodsData.isFavorite = tempObject.isFavorite
+                    myGoodsData.isLatest = tempObject.isLatest
+                    myGoodsData.link = tempObject.link
+                    myGoodsData.objectId = tempObject.objectID
+                    myGoodsData.price = tempObject.price
+                    myGoodsData.productId = tempObject.productId
+                    myGoodsData.searchWord = tempObject.searchWord
+                    myGoodsData.title = tempObject.title
+                    myGoodsDatas.append(myGoodsData)
+                }
+                return myGoodsDatas
+            } else {
+                throw CoreDataError.fetch(message: "MyGoods Entity has not latest data, So can not fetch favorite data")
+            }
+        } catch let error as NSError {
+            print("fetch error \(error)")
+        }
+        return nil
+    }
+
+    // Fetch MyGoods Data using productID - 동일한 상품이 Entity에 존재하는 지 확인
     private func fetchObjectId(productId: String) -> MyGoods? {
         let predicate = NSPredicate(format: "productId = %@", productId)
         do {
             guard let object = try fetchObjects(MyGoods.self, sortBy: nil, predicate: predicate) else {
+                // 기존에 동일한 product가 존재 하는 지 아닌 지 확인하기위해 오류를 던지지 않음
                 return nil
             }
             guard let first = object.first else {
-                return nil
+                throw CoreDataError.fetch(message: "MyGoods Entity has not \(productId) data, So can not fetch data")
             }
             return first
-        } catch let error {
-            print("fetch error \(error)")
-            return nil
-        }
-
-    }
-
-    private func fetchGoods(isFavorite: Bool) -> [MyGoods]? {
-        let sort = NSSortDescriptor(key: #keyPath(MyGoods.date), ascending: true)
-        let predicate = NSPredicate(format: isFavorite ? "isFavorite = true" : "isFavorite = false")
-        do {
-            guard let fetchResult = try fetchObjects(MyGoods.self, sortBy: [sort], predicate: predicate) else {
-                return nil
-            }
-            return fetchResult
         } catch let error as NSError {
             print("fetch error \(error)")
             return nil
         }
     }
 
-    // Update MyGoods
-     func updateAll (myGoodsData: MyGoodsData) {
-        print("update \(myGoodsData.objectId)")
-        guard let objectID = myGoodsData.objectId else { return }
-        guard let context = context else { return }
+    // MARK: - Update Method
+    // Update MyGoods All - 모든 내용을 업데이트한다.
+     @discardableResult func updateMyGoods (myGoodsData: MyGoodsData) throws -> Bool {
+        guard let objectID = myGoodsData.objectId else { throw CoreDataError.update(message: "Can not find data, So can not update")
+        }
+        guard let context = context else { return  false }
         guard let object = context.object(with: objectID) as? MyGoods
-                else { return }
+            else { throw CoreDataError.update(message: "Can not find data, So can not update")
+        }
         object.date = myGoodsData.date as NSDate
         object.isLatest = myGoodsData.isLatest
         object.isFavorite = myGoodsData.isFavorite
@@ -131,37 +184,21 @@ class MyGoodsDAO: CoreDataManager {
         object.link = myGoodsData.link
         object.price = myGoodsData.price
         object.searchWord = myGoodsData.searchWord
-
         afterOperation(context: context)
+        return true
     }
 
+    // MARK: - Delete Method
     // delete My Goods Data
-    func deleteMyGoods(myGoodsData: MyGoodsData) throws {
-        guard let context = context else { return  }
-        guard let objectID = myGoodsData.objectId else { return }
-        print(context.object(with: objectID))
-        guard let object = context.object(with: objectID) as? MyGoods else { return }
-        if object != nil {
+    @discardableResult func deleteMyGoods(myGoodsData: MyGoodsData) throws -> Bool {
+        guard let context = context else { return false }
+        if let objectID = myGoodsData.objectId {
+            let object = context.object(with: objectID)
             context.delete(object)
             afterOperation(context: context)
-            print("delete success")
+            return true
         } else {
-            print("Delete fail")
-        }
-    }
-
-    func deleteMyGoods(productId: String) {
-        guard let context = context else { return  }
-        let predicate = NSPredicate(format: "productId = %@", productId)
-        do {
-            let delete = try deleteObject(MyGoods.self, predicate: predicate)
-            if delete {
-                print("delete success")
-            } else {
-                print("delete fail")
-            }
-        } catch let error as NSError {
-            print("")
+            throw CoreDataError.delete(message: "Can not found data, So can not delete.")
         }
     }
 }

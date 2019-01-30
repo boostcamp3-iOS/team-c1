@@ -36,8 +36,8 @@
 		510F31C521FE28A10025D929 /* CoreDataError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510F31C421FE28A10025D929 /* CoreDataError.swift */; };
 		510F31CB21FEC76B0025D929 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510F31CA21FEC76B0025D929 /* CoreDataManager.swift */; };
 		510F31CD21FF1D490025D929 /* MockCoreData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510F31CC21FF1D490025D929 /* MockCoreData.swift */; };
-		518CD28721FF592D00C38268 /* PetKeyword+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 518CD28521FF592D00C38268 /* PetKeyword+CoreDataClass.swift */; };
-		518CD28821FF592D00C38268 /* PetKeyword+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 518CD28621FF592D00C38268 /* PetKeyword+CoreDataProperties.swift */; };
+		513332F72200752C00950DB1 /* PetKeyword+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 513332F52200752C00950DB1 /* PetKeyword+CoreDataClass.swift */; };
+		513332F82200752C00950DB1 /* PetKeyword+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 513332F62200752C00950DB1 /* PetKeyword+CoreDataProperties.swift */; };
 		518CD28A21FF594200C38268 /* PetKeywordData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 518CD28921FF594200C38268 /* PetKeywordData.swift */; };
 		519928AF21FF74F6004D74EF /* SearchKeywordDAO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 519928AE21FF74F6004D74EF /* SearchKeywordDAO.swift */; };
 		51A02AAB21FF5E1300EF38F3 /* SearchKeywordData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51A02AAA21FF5E1300EF38F3 /* SearchKeywordData.swift */; };
@@ -112,8 +112,8 @@
 		510F31C421FE28A10025D929 /* CoreDataError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataError.swift; sourceTree = "<group>"; };
 		510F31CA21FEC76B0025D929 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		510F31CC21FF1D490025D929 /* MockCoreData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockCoreData.swift; sourceTree = "<group>"; };
-		518CD28521FF592D00C38268 /* PetKeyword+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PetKeyword+CoreDataClass.swift"; sourceTree = "<group>"; };
-		518CD28621FF592D00C38268 /* PetKeyword+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PetKeyword+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		513332F52200752C00950DB1 /* PetKeyword+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PetKeyword+CoreDataClass.swift"; sourceTree = "<group>"; };
+		513332F62200752C00950DB1 /* PetKeyword+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PetKeyword+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		518CD28921FF594200C38268 /* PetKeywordData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetKeywordData.swift; sourceTree = "<group>"; };
 		519928AE21FF74F6004D74EF /* SearchKeywordDAO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchKeywordDAO.swift; sourceTree = "<group>"; };
 		51A02AAA21FF5E1300EF38F3 /* SearchKeywordData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchKeywordData.swift; sourceTree = "<group>"; };
@@ -272,11 +272,11 @@
 			isa = PBXGroup;
 			children = (
 				510F31C421FE28A10025D929 /* CoreDataError.swift */,
-				51A870A92200086600089CC4 /* SearchKeyword+CoreDataClass.swift */,
 				51A870AA2200086600089CC4 /* SearchKeyword+CoreDataProperties.swift */,
+				51A870A92200086600089CC4 /* SearchKeyword+CoreDataClass.swift */,
 				51A02AAA21FF5E1300EF38F3 /* SearchKeywordData.swift */,
-				518CD28521FF592D00C38268 /* PetKeyword+CoreDataClass.swift */,
-				518CD28621FF592D00C38268 /* PetKeyword+CoreDataProperties.swift */,
+				513332F52200752C00950DB1 /* PetKeyword+CoreDataClass.swift */,
+				513332F62200752C00950DB1 /* PetKeyword+CoreDataProperties.swift */,
 				518CD28921FF594200C38268 /* PetKeywordData.swift */,
 				51A870B1220016DC00089CC4 /* MyGoods+CoreDataClass.swift */,
 				51A870B2220016DC00089CC4 /* MyGoods+CoreDataProperties.swift */,
@@ -512,14 +512,14 @@
 				1039DC8221FAD5EB00E9EB64 /* Keyword.swift in Sources */,
 				51A870AC2200086600089CC4 /* SearchKeyword+CoreDataProperties.swift in Sources */,
 				51A870B4220016DC00089CC4 /* MyGoods+CoreDataProperties.swift in Sources */,
+				513332F72200752C00950DB1 /* PetKeyword+CoreDataClass.swift in Sources */,
 				510F31CD21FF1D490025D929 /* MockCoreData.swift in Sources */,
+				513332F82200752C00950DB1 /* PetKeyword+CoreDataProperties.swift in Sources */,
 				519928AF21FF74F6004D74EF /* SearchKeywordDAO.swift in Sources */,
 				106C603921F6AA9200F0AFE6 /* AppDelegate.swift in Sources */,
 				518CD28A21FF594200C38268 /* PetKeywordData.swift in Sources */,
-				518CD28721FF592D00C38268 /* PetKeyword+CoreDataClass.swift in Sources */,
 				51A02AAE21FF620C00EF38F3 /* PetKeywordDAO.swift in Sources */,
 				51A02AAB21FF5E1300EF38F3 /* SearchKeywordData.swift in Sources */,
-				518CD28821FF592D00C38268 /* PetKeyword+CoreDataProperties.swift in Sources */,
 				51A870AB2200086600089CC4 /* SearchKeyword+CoreDataClass.swift in Sources */,
 				510F31C521FE28A10025D929 /* CoreDataError.swift in Sources */,
 				510F318321FAF8930025D929 /* MyGoodsDAO.swift in Sources */,
