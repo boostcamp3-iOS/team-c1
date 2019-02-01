@@ -33,7 +33,11 @@ extension CoreDataManager {
     }
 }
 
-extension CoreDataManager {
+protocol CoreDataManagerFunctionImplementType: CoreDataManagerType {
+    
+}
+
+extension CoreDataManagerFunctionImplementType {
     // MARK: - Fetch Method
     // Define default method
     @discardableResult func fetchObjects<T: NSManagedObject>(_ entityClass: T.Type, sortBy: [NSSortDescriptor]?, predicate: NSPredicate?) throws -> [T]? {

@@ -9,7 +9,7 @@
 import Foundation
 import CoreData
 
-class SearchKeywordCoreDataManager: CoreDataManager {
+class SearchKeywordCoreDataManager: SearchKeywordCoreDataManagerType {
     func fetch<T>(_ coreDataType: T.Type, sortBy: [NSSortDescriptor]?, predicate: NSPredicate?) throws -> [T]? where T : CoreDataEntity {
         return nil
     }

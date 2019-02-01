@@ -19,6 +19,13 @@ protocol CoreDataManagerType {
 }
 
 
+protocol MyGoodsCoreDataManagerType: CoreDataManagerType {
+    func fetchMyGoodsDatas() throws -> [MyGoodsData]?
+    func fetchFavoriteGoods() throws -> [MyGoodsData]?
+    func fetchLatestGoods() throws -> [MyGoodsData]?
+    
+}
+
 protocol SearchKeywordCoreDataManagerType: CoreDataManagerType {
     func fetchOnlySearchWord() -> [String]?
 }
@@ -27,3 +34,5 @@ protocol SearchKeywordCoreDataManagerType: CoreDataManagerType {
 protocol PetKeywordCoreDataManagerType: CoreDataManagerType {
     func fetchOnlyKeyword() throws -> [String]?
 }
+
+

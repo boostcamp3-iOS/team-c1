@@ -15,6 +15,7 @@ import CoreData
 //}
 
 class MockSearchKeywordCoreDataManager: SearchKeywordCoreDataManagerType {
+    
     func fetchOnlySearchWord() -> [String]? {
         return []
     }
@@ -36,8 +37,6 @@ class MockSearchKeywordCoreDataManager: SearchKeywordCoreDataManagerType {
     func updateObject<T>(_ coreDataType: T) throws -> Bool where T : CoreDataEntity {
         
     }
-    
-    
 }
 
 class MockSearchKeywordInfo {

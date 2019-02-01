@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import CoreData
 
-class MyGoodsCoreDataManager: CoreDataManager {
+class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctionImplementType {
     func fetch<T>(_ coreDataType: T.Type, sortBy: [NSSortDescriptor]?, predicate: NSPredicate?) throws -> [T]? where T : CoreDataEntity {
         return nil
     }
