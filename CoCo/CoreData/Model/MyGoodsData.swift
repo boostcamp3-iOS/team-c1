@@ -9,9 +9,10 @@
 import Foundation
 import CoreData
 
-struct MyGoodsData {
+struct MyGoodsData: CoreDataEntity {
+  
     // MARK: - Propertise
-    var date = Date() //시간 자동저장?
+    var date: String?
     var title: String = ""
     var link: String = ""
     var image: String = ""
@@ -19,30 +20,21 @@ struct MyGoodsData {
     var isLatest: Bool = false
     var price: String = ""
     var productId: String = ""
-    var objectId: NSManagedObjectID?
-    var searchWord = ""
+    var objectID: NSManagedObjectID?
+    var searchWord: String?
+    var shoppingmall: String = ""
+
+    func createDate() -> String {
+        let date = Date()
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale(identifier: "ko_KR")
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        return dateFormatter.string(from: date)
+    }
 }
 
 extension MyGoodsData: Comparable {
     static func < (lhs: MyGoodsData, rhs: MyGoodsData) -> Bool {
-        return lhs.searchWord < rhs.searchWord
+        return lhs.productId < rhs.productId
     }
-}
-
-extension MyGoodsData: CoreDataEntity {
-    // MARK: - Method
-    func toCoreData(context: NSManagedObjectContext?) {
-        guard let context = context else { return }
-        let myGoods = MyGoods(context: context)
-        myGoods.date = self.date as NSDate
-        myGoods.title = self.title
-        myGoods.link = self.link
-        myGoods.image = self.image
-        myGoods.isFavorite = self.isFavorite
-        myGoods.price = self.price
-        myGoods.productId = self.productId
-        myGoods.searchWord = self.searchWord
-
-    }
-
 }

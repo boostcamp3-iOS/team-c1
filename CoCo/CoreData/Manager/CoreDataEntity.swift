@@ -10,10 +10,5 @@ import Foundation
 import CoreData
 
 protocol CoreDataEntity {
-    // MARK: - Method
-    func toCoreData(context: NSManagedObjectContext?)
-}
-
-extension CoreDataEntity {
-
+    var objectID: NSManagedObjectID? { get set }
 }

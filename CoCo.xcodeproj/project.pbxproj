@@ -30,23 +30,24 @@
 		30DBFF1021FECB160094D559 /* Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30DBFF0F21FECB160094D559 /* Environment.swift */; };
 		30DBFF1221FECB440094D559 /* Dispatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30DBFF1121FECB440094D559 /* Dispatcher.swift */; };
 		30DBFF1421FECB5E0094D559 /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30DBFF1321FECB5E0094D559 /* Response.swift */; };
-		510F318321FAF8930025D929 /* MyGoodsDAO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510F318221FAF8930025D929 /* MyGoodsDAO.swift */; };
+		510F318321FAF8930025D929 /* MyGoodsCoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510F318221FAF8930025D929 /* MyGoodsCoreDataManager.swift */; };
 		510F319321FCE1C90025D929 /* MyGoodsData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510F319221FCE1C80025D929 /* MyGoodsData.swift */; };
 		510F31C221FD62770025D929 /* CoreDataEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510F31C121FD62770025D929 /* CoreDataEntity.swift */; };
 		510F31C521FE28A10025D929 /* CoreDataError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510F31C421FE28A10025D929 /* CoreDataError.swift */; };
-		510F31CB21FEC76B0025D929 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510F31CA21FEC76B0025D929 /* CoreDataManager.swift */; };
-		510F31CD21FF1D490025D929 /* MockCoreData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510F31CC21FF1D490025D929 /* MockCoreData.swift */; };
+		510F31CB21FEC76B0025D929 /* CoreDataManagerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510F31CA21FEC76B0025D929 /* CoreDataManagerProtocol.swift */; };
 		513332F72200752C00950DB1 /* PetKeyword+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 513332F52200752C00950DB1 /* PetKeyword+CoreDataClass.swift */; };
 		513332F82200752C00950DB1 /* PetKeyword+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 513332F62200752C00950DB1 /* PetKeyword+CoreDataProperties.swift */; };
 		518CD28A21FF594200C38268 /* PetKeywordData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 518CD28921FF594200C38268 /* PetKeywordData.swift */; };
-		519928AF21FF74F6004D74EF /* SearchKeywordDAO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 519928AE21FF74F6004D74EF /* SearchKeywordDAO.swift */; };
+		519025DB22033807000BEE92 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 519025DA22033807000BEE92 /* CoreDataManager.swift */; };
+		519025DD220338AB000BEE92 /* MockCoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 519025DC220338AB000BEE92 /* MockCoreDataManager.swift */; };
+		519025E022034689000BEE92 /* MyGoods+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 519025DE22034689000BEE92 /* MyGoods+CoreDataClass.swift */; };
+		519025E122034689000BEE92 /* MyGoods+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 519025DF22034689000BEE92 /* MyGoods+CoreDataProperties.swift */; };
+		519928AF21FF74F6004D74EF /* SearchKeywordCoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 519928AE21FF74F6004D74EF /* SearchKeywordCoreDataManager.swift */; };
 		51A02AAB21FF5E1300EF38F3 /* SearchKeywordData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51A02AAA21FF5E1300EF38F3 /* SearchKeywordData.swift */; };
 		51A02AAC21FF61D200EF38F3 /* CoCo.xcdatamodeld in Resources */ = {isa = PBXBuildFile; fileRef = 106C603F21F6AA9200F0AFE6 /* CoCo.xcdatamodeld */; };
-		51A02AAE21FF620C00EF38F3 /* PetKeywordDAO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51A02AAD21FF620C00EF38F3 /* PetKeywordDAO.swift */; };
+		51A02AAE21FF620C00EF38F3 /* PetKeywordCoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51A02AAD21FF620C00EF38F3 /* PetKeywordCoreDataManager.swift */; };
 		51A870AB2200086600089CC4 /* SearchKeyword+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51A870A92200086600089CC4 /* SearchKeyword+CoreDataClass.swift */; };
 		51A870AC2200086600089CC4 /* SearchKeyword+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51A870AA2200086600089CC4 /* SearchKeyword+CoreDataProperties.swift */; };
-		51A870B3220016DC00089CC4 /* MyGoods+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51A870B1220016DC00089CC4 /* MyGoods+CoreDataClass.swift */; };
-		51A870B4220016DC00089CC4 /* MyGoods+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51A870B2220016DC00089CC4 /* MyGoods+CoreDataProperties.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -106,22 +107,23 @@
 		30DBFF0F21FECB160094D559 /* Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Environment.swift; sourceTree = "<group>"; };
 		30DBFF1121FECB440094D559 /* Dispatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dispatcher.swift; sourceTree = "<group>"; };
 		30DBFF1321FECB5E0094D559 /* Response.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Response.swift; sourceTree = "<group>"; };
-		510F318221FAF8930025D929 /* MyGoodsDAO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyGoodsDAO.swift; sourceTree = "<group>"; };
+		510F318221FAF8930025D929 /* MyGoodsCoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyGoodsCoreDataManager.swift; sourceTree = "<group>"; };
 		510F319221FCE1C80025D929 /* MyGoodsData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyGoodsData.swift; sourceTree = "<group>"; };
 		510F31C121FD62770025D929 /* CoreDataEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataEntity.swift; sourceTree = "<group>"; };
 		510F31C421FE28A10025D929 /* CoreDataError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataError.swift; sourceTree = "<group>"; };
-		510F31CA21FEC76B0025D929 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
-		510F31CC21FF1D490025D929 /* MockCoreData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockCoreData.swift; sourceTree = "<group>"; };
+		510F31CA21FEC76B0025D929 /* CoreDataManagerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManagerProtocol.swift; sourceTree = "<group>"; };
 		513332F52200752C00950DB1 /* PetKeyword+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PetKeyword+CoreDataClass.swift"; sourceTree = "<group>"; };
 		513332F62200752C00950DB1 /* PetKeyword+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PetKeyword+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		518CD28921FF594200C38268 /* PetKeywordData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetKeywordData.swift; sourceTree = "<group>"; };
-		519928AE21FF74F6004D74EF /* SearchKeywordDAO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchKeywordDAO.swift; sourceTree = "<group>"; };
+		519025DA22033807000BEE92 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
+		519025DC220338AB000BEE92 /* MockCoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockCoreDataManager.swift; sourceTree = "<group>"; };
+		519025DE22034689000BEE92 /* MyGoods+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MyGoods+CoreDataClass.swift"; sourceTree = "<group>"; };
+		519025DF22034689000BEE92 /* MyGoods+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MyGoods+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		519928AE21FF74F6004D74EF /* SearchKeywordCoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchKeywordCoreDataManager.swift; sourceTree = "<group>"; };
 		51A02AAA21FF5E1300EF38F3 /* SearchKeywordData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchKeywordData.swift; sourceTree = "<group>"; };
-		51A02AAD21FF620C00EF38F3 /* PetKeywordDAO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetKeywordDAO.swift; sourceTree = "<group>"; };
+		51A02AAD21FF620C00EF38F3 /* PetKeywordCoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetKeywordCoreDataManager.swift; sourceTree = "<group>"; };
 		51A870A92200086600089CC4 /* SearchKeyword+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchKeyword+CoreDataClass.swift"; sourceTree = "<group>"; };
 		51A870AA2200086600089CC4 /* SearchKeyword+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchKeyword+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		51A870B1220016DC00089CC4 /* MyGoods+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MyGoods+CoreDataClass.swift"; sourceTree = "<group>"; };
-		51A870B2220016DC00089CC4 /* MyGoods+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MyGoods+CoreDataProperties.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -248,8 +250,9 @@
 		30B8A62621FAA2CD0048EB61 /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
-				510F318121FAF8820025D929 /* Manager */,
+				5133330F22028A1800950DB1 /* Utility */,
 				510F318021FAF8780025D929 /* Model */,
+				510F318121FAF8820025D929 /* Manager */,
 			);
 			path = CoreData;
 			sourceTree = "<group>";
@@ -271,16 +274,15 @@
 		510F318021FAF8780025D929 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				510F31C421FE28A10025D929 /* CoreDataError.swift */,
+				519025DE22034689000BEE92 /* MyGoods+CoreDataClass.swift */,
+				519025DF22034689000BEE92 /* MyGoods+CoreDataProperties.swift */,
+				510F319221FCE1C80025D929 /* MyGoodsData.swift */,
 				51A870AA2200086600089CC4 /* SearchKeyword+CoreDataProperties.swift */,
 				51A870A92200086600089CC4 /* SearchKeyword+CoreDataClass.swift */,
 				51A02AAA21FF5E1300EF38F3 /* SearchKeywordData.swift */,
 				513332F52200752C00950DB1 /* PetKeyword+CoreDataClass.swift */,
 				513332F62200752C00950DB1 /* PetKeyword+CoreDataProperties.swift */,
 				518CD28921FF594200C38268 /* PetKeywordData.swift */,
-				51A870B1220016DC00089CC4 /* MyGoods+CoreDataClass.swift */,
-				51A870B2220016DC00089CC4 /* MyGoods+CoreDataProperties.swift */,
-				510F319221FCE1C80025D929 /* MyGoodsData.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -288,14 +290,23 @@
 		510F318121FAF8820025D929 /* Manager */ = {
 			isa = PBXGroup;
 			children = (
-				510F31CA21FEC76B0025D929 /* CoreDataManager.swift */,
+				510F31CA21FEC76B0025D929 /* CoreDataManagerProtocol.swift */,
+				519025DA22033807000BEE92 /* CoreDataManager.swift */,
+				519025DC220338AB000BEE92 /* MockCoreDataManager.swift */,
 				510F31C121FD62770025D929 /* CoreDataEntity.swift */,
-				510F31CC21FF1D490025D929 /* MockCoreData.swift */,
-				510F318221FAF8930025D929 /* MyGoodsDAO.swift */,
-				51A02AAD21FF620C00EF38F3 /* PetKeywordDAO.swift */,
-				519928AE21FF74F6004D74EF /* SearchKeywordDAO.swift */,
+				510F318221FAF8930025D929 /* MyGoodsCoreDataManager.swift */,
+				51A02AAD21FF620C00EF38F3 /* PetKeywordCoreDataManager.swift */,
+				519928AE21FF74F6004D74EF /* SearchKeywordCoreDataManager.swift */,
 			);
 			path = Manager;
+			sourceTree = "<group>";
+		};
+		5133330F22028A1800950DB1 /* Utility */ = {
+			isa = PBXGroup;
+			children = (
+				510F31C421FE28A10025D929 /* CoreDataError.swift */,
+			);
+			path = Utility;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -474,7 +485,8 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if which swiftlint >/dev/null; then\nswiftlint\nelse\necho \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+			shellScript = "
+";
 		};
 		3049D8D921F6B21D005FC011 /* swiftlint autocorrect */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -492,7 +504,8 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if which swiftlint >/dev/null; then\nswiftlint autocorrect\nelse\necho \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+			shellScript = "
+";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -511,22 +524,23 @@
 				30B8A62C21FAA4020048EB61 /* Request.swift in Sources */,
 				1039DC8221FAD5EB00E9EB64 /* Keyword.swift in Sources */,
 				51A870AC2200086600089CC4 /* SearchKeyword+CoreDataProperties.swift in Sources */,
-				51A870B4220016DC00089CC4 /* MyGoods+CoreDataProperties.swift in Sources */,
 				513332F72200752C00950DB1 /* PetKeyword+CoreDataClass.swift in Sources */,
-				510F31CD21FF1D490025D929 /* MockCoreData.swift in Sources */,
 				513332F82200752C00950DB1 /* PetKeyword+CoreDataProperties.swift in Sources */,
-				519928AF21FF74F6004D74EF /* SearchKeywordDAO.swift in Sources */,
+				519025E122034689000BEE92 /* MyGoods+CoreDataProperties.swift in Sources */,
+				519928AF21FF74F6004D74EF /* SearchKeywordCoreDataManager.swift in Sources */,
 				106C603921F6AA9200F0AFE6 /* AppDelegate.swift in Sources */,
 				518CD28A21FF594200C38268 /* PetKeywordData.swift in Sources */,
-				51A02AAE21FF620C00EF38F3 /* PetKeywordDAO.swift in Sources */,
+				51A02AAE21FF620C00EF38F3 /* PetKeywordCoreDataManager.swift in Sources */,
 				51A02AAB21FF5E1300EF38F3 /* SearchKeywordData.swift in Sources */,
 				51A870AB2200086600089CC4 /* SearchKeyword+CoreDataClass.swift in Sources */,
+				519025DB22033807000BEE92 /* CoreDataManager.swift in Sources */,
 				510F31C521FE28A10025D929 /* CoreDataError.swift in Sources */,
-				510F318321FAF8930025D929 /* MyGoodsDAO.swift in Sources */,
+				510F318321FAF8930025D929 /* MyGoodsCoreDataManager.swift in Sources */,
+				519025E022034689000BEE92 /* MyGoods+CoreDataClass.swift in Sources */,
+				519025DD220338AB000BEE92 /* MockCoreDataManager.swift in Sources */,
 				510F319321FCE1C90025D929 /* MyGoodsData.swift in Sources */,
-				510F31CB21FEC76B0025D929 /* CoreDataManager.swift in Sources */,
+				510F31CB21FEC76B0025D929 /* CoreDataManagerProtocol.swift in Sources */,
 				510F31C221FD62770025D929 /* CoreDataEntity.swift in Sources */,
-				51A870B3220016DC00089CC4 /* MyGoods+CoreDataClass.swift in Sources */,
 				1051076021FCB0CA005F14B6 /* String+SearchWords.swift in Sources */,
 				10366CBC220029F2009579FF /* AlgorithmProtocol.swift in Sources */,
 				10366CB8220004E1009579FF /* AlgorithmManager.swift in Sources */,

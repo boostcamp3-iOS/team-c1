@@ -9,20 +9,10 @@
 import Foundation
 import CoreData
 
-struct SearchKeywordData {
+struct SearchKeywordData: CoreDataEntity {
     // MARK: Properties
     var date = Date()
     var searchWord = ""
     var objectID: NSManagedObjectID?
 }
 
-extension SearchKeywordData: CoreDataEntity {
-    // MARK: - Method
-    func toCoreData(context: NSManagedObjectContext?) {
-        guard let context = context else { return }
-        let searchKeyword = SearchKeyword(context: context)
-        searchKeyword.date = self.date as NSDate
-        searchKeyword.searchWord = self.searchWord
-    }
-
-}

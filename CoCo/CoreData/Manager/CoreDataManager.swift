@@ -2,22 +2,17 @@
 //  CoreDataManager.swift
 //  CoCo
 //
-//  Created by 강준영 on 28/01/2019.
+//  Created by 강준영 on 31/01/2019.
 //  Copyright © 2019 Team CoCo. All rights reserved.
 //
 
-import CoreData
 import UIKit
+import CoreData
 
-protocol CoreDataManager {
+protocol CoreDataManager: CoreDataManagerProtocol {
     // MARK: - Properties
     var appDelegate: AppDelegate? { get }
     var context: NSManagedObjectContext? { get }
-
-    // MARK: - Method
-    func fetchObjects<T: NSManagedObject>(_ entityClass: T.Type, sortBy: [NSSortDescriptor]?, predicate: NSPredicate?) throws -> [T]?
-    func insertCoreData<T: CoreDataEntity>(_ coreDataType: T) throws -> Bool
-    func deleteObject<T: NSManagedObject>(_ entityClass: T.Type, predicate: NSPredicate?) throws -> Bool
     func afterOperation(context: NSManagedObjectContext?)
 }
 
@@ -41,7 +36,7 @@ extension CoreDataManager {
 extension CoreDataManager {
     // MARK: - Fetch Method
     // Define default method
-    func fetchObjects<T: NSManagedObject>(_ entityClass: T.Type, sortBy: [NSSortDescriptor]?, predicate: NSPredicate?) throws -> [T]? {
+    @discardableResult func fetchObjects<T: NSManagedObject>(_ entityClass: T.Type, sortBy: [NSSortDescriptor]?, predicate: NSPredicate?) throws -> [T]? {
         guard let context = context else {
             return nil
         }
@@ -53,24 +48,24 @@ extension CoreDataManager {
             let entityName = String(describing: entityClass)
             request = NSFetchRequest(entityName: entityName)
         }
-
+        
         request.returnsObjectsAsFaults = false
         request.predicate = predicate
         request.sortDescriptors = sortBy
-
+        
         let fetchedResult = try context.fetch(request)
         return fetchedResult
     }
-
+    
     // MARK: - Delete Method
-    func deleteObject<T: NSManagedObject>(_ entityClass: T.Type, predicate: NSPredicate?) throws -> Bool {
+    @discardableResult func deleteObject<T: NSManagedObject>(_ entityClass: T.Type, predicate: NSPredicate?) throws -> Bool {
         guard let context = context else {
             return false
         }
         guard let appDelegate = appDelegate else {
             return false
         }
-
+        
         do {
             guard let fetchObject = try fetchObjects(entityClass.self, sortBy: nil, predicate: predicate) else {
                 return false
@@ -87,7 +82,7 @@ extension CoreDataManager {
             return false
         }
     }
-
+    
     // MARK: - Util Method
     // 데이터의 연산결과가 반영되게 하는 함수
     func afterOperation(context: NSManagedObjectContext?) {

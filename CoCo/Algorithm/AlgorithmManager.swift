@@ -114,14 +114,14 @@ class AlgorithmManager: Algorithm {
         if !favoriteProducts.isEmpty {
             for product in favoriteProducts.latestData {
                 if products.count >= favoriteCount { break }
-                products.insert(product.searchWord)
+                products.insert(product.searchWord ?? "")
             }
         }
         // 최근 본 상품에서 검색어를 추출한다
         if products.count < favoriteCount, !recentProducts.isEmpty {
             for product in recentProducts.latestData {
                 if products.count >= favoriteCount { break }
-                products.insert(product.searchWord)
+                products.insert(product.searchWord ?? "")
             }
         }
         // 키워드-카테고리-상세카테고리에서 검색어를 랜덤으로 가져온다
