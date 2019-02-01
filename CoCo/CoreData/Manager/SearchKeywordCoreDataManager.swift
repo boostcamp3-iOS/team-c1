@@ -42,7 +42,7 @@ class SearchKeywordCoreDataManager: CoreDataManager {
                     // 존재하지 않으면 검색어 데이터 추가
                 } else {
                     let searchKeyword = SearchKeyword(context: context)
-                    searchKeyword.date = searchKeywordData.date as NSDate
+                    searchKeyword.date = searchKeywordData.date
                     searchKeyword.searchWord = searchKeywordData.searchWord
                     afterOperation(context: context)
                     print("Insert Successive, word: \(searchKeyword.searchWord)")
@@ -70,7 +70,7 @@ class SearchKeywordCoreDataManager: CoreDataManager {
             }
             for object in objects {
                 var search = SearchKeywordData()
-                search.date = object.date as Date
+                search.date = object.date 
                 search.searchWord = object.searchWord
                 search.objectID = object.objectID
                 searchKeywordResults.append(search)
@@ -126,7 +126,7 @@ class SearchKeywordCoreDataManager: CoreDataManager {
         guard let object = context.object(with: objectID) as? SearchKeyword else {
             return false
         }
-        object.date = searchKeyword.date as NSDate
+        object.date = searchKeyword.date 
         object.searchWord = searchKeyword.searchWord
         afterOperation(context: context)
         print("Update Successive => \(object)")

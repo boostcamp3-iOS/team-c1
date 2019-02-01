@@ -11,8 +11,16 @@ import CoreData
 
 struct SearchKeywordData: CoreDataEntity {
     // MARK: Properties
-    var date = Date()
+    var date: String?
     var searchWord = ""
     var objectID: NSManagedObjectID?
+    
+    func createDate() -> String {
+        let date = Date()
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale(identifier: "ko_KR")
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        return dateFormatter.string(from: date)
+    }
 }
 

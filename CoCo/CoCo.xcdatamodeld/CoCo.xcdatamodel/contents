@@ -17,7 +17,7 @@
         <attribute name="pet" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="SearchKeyword" representedClassName=".SearchKeyword" syncable="YES">
-        <attribute name="date" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="date" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="searchWord" attributeType="String" syncable="YES"/>
     </entity>
     <elements>
