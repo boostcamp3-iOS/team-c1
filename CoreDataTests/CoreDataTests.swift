@@ -10,9 +10,13 @@ import XCTest
 import CoreData
 @testable import CoCo
 
+
 class CoreDataTests: XCTestCase {
 
     let mockCoreDataManager = MockCoreDataManager()
+    let mockNWManager = MockShoppingNetworkManager()
+    
+    lazy var service = SearchService(core: mockCoreDataManager, network: mockNWManager)
     override func setUp() {
         // Put setup code here. This method is called before the invocation of each test method in the class.
     }
@@ -32,7 +36,8 @@ class CoreDataTests: XCTestCase {
     }
     
     func testFetchCoreData() {
-        
+        let result = service.fetchRecentSearchWord()
+        XCTAssert(result.count == 4 , "Fetch Fail")
     }
     
     func testUpdateCoreData() {

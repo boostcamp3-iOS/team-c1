@@ -24,7 +24,6 @@
 		3061894D2200370D005280B8 /* NetworkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3061894C2200370D005280B8 /* NetworkTests.swift */; };
 		30618969220037A0005280B8 /* AlgorithmTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30618968220037A0005280B8 /* AlgorithmTests.swift */; };
 		308DB6592203DCA600AB7A4B /* SearchServiceClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 308DB6582203DCA600AB7A4B /* SearchServiceClass.swift */; };
-		308DB65B2203DF7F00AB7A4B /* MockShoppingNetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 308DB65A2203DF7F00AB7A4B /* MockShoppingNetworkManager.swift */; };
 		308DB65D2203DFA200AB7A4B /* MockShoppingNetworkManagerDummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 308DB65C2203DFA200AB7A4B /* MockShoppingNetworkManagerDummy.swift */; };
 		30B8A62A21FAA3E90048EB61 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B8A62921FAA3E90048EB61 /* NetworkManager.swift */; };
 		30B8A62C21FAA4020048EB61 /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B8A62B21FAA4020048EB61 /* Request.swift */; };
@@ -48,6 +47,7 @@
 		519025E022034689000BEE92 /* MyGoods+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 519025DE22034689000BEE92 /* MyGoods+CoreDataClass.swift */; };
 		519025E122034689000BEE92 /* MyGoods+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 519025DF22034689000BEE92 /* MyGoods+CoreDataProperties.swift */; };
 		519928AF21FF74F6004D74EF /* SearchKeywordCoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 519928AE21FF74F6004D74EF /* SearchKeywordCoreDataManager.swift */; };
+		519B1D722203E8C500D844FD /* MockShoppingNetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 308DB65A2203DF7F00AB7A4B /* MockShoppingNetworkManager.swift */; };
 		51A02AAB21FF5E1300EF38F3 /* SearchKeywordData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51A02AAA21FF5E1300EF38F3 /* SearchKeywordData.swift */; };
 		51A02AAC21FF61D200EF38F3 /* CoCo.xcdatamodeld in Resources */ = {isa = PBXBuildFile; fileRef = 106C603F21F6AA9200F0AFE6 /* CoCo.xcdatamodeld */; };
 		51A02AAE21FF620C00EF38F3 /* PetKeywordCoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51A02AAD21FF620C00EF38F3 /* PetKeywordCoreDataManager.swift */; };
@@ -240,7 +240,6 @@
 			isa = PBXGroup;
 			children = (
 				3061894C2200370D005280B8 /* NetworkTests.swift */,
-				308DB65A2203DF7F00AB7A4B /* MockShoppingNetworkManager.swift */,
 				308DB65C2203DFA200AB7A4B /* MockShoppingNetworkManagerDummy.swift */,
 				3061894E2200370D005280B8 /* Info.plist */,
 			);
@@ -276,6 +275,7 @@
 				30DBFF1321FECB5E0094D559 /* Response.swift */,
 				30B8A62921FAA3E90048EB61 /* NetworkManager.swift */,
 				30B8A62F21FAA40F0048EB61 /* Model.swift */,
+				308DB65A2203DF7F00AB7A4B /* MockShoppingNetworkManager.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -523,6 +523,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				519B1D722203E8C500D844FD /* MockShoppingNetworkManager.swift in Sources */,
 				30B8A63021FAA40F0048EB61 /* Model.swift in Sources */,
 				30DBFF1021FECB160094D559 /* Environment.swift in Sources */,
 				30DBFF1221FECB440094D559 /* Dispatcher.swift in Sources */,
@@ -573,7 +574,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				308DB65B2203DF7F00AB7A4B /* MockShoppingNetworkManager.swift in Sources */,
 				308DB65D2203DFA200AB7A4B /* MockShoppingNetworkManagerDummy.swift in Sources */,
 				3061894D2200370D005280B8 /* NetworkTests.swift in Sources */,
 			);

@@ -10,6 +10,10 @@ import Foundation
 import CoreData
 
 class MockCoreDataManager: CoreDataManagerProtocol {
+    func fetch<T>(_ coreDataType: T.Type, sortBy: [NSSortDescriptor]?, predicate: NSPredicate?) throws -> [T]? where T : CoreDataEntity {
+        return mockSearchKeywordCoreDataFir as? [T]
+    }
+    
     
     var mockCoreData: [CoreDataEntity]?
     var mockMyGoodsCoreData = [MyGoodsData]()
@@ -65,9 +69,10 @@ class MockCoreDataManager: CoreDataManagerProtocol {
         searchKeywords.append(searchKeyword4)
         return searchKeywords
     }()
+    var strSearch = ["강아지 옷", "강아지 간식", "강아지 사료"]
     
-    func fetchObjects<T>(_ entityClass: T.Type, sortBy: [NSSortDescriptor]?, predicate: NSPredicate?) throws -> [T]? where T : NSManagedObject {
-        return mockCoreData as? [T]
+    func fetchObjects<T>(_ entityClass: T.Type, sortBy: [NSSortDescriptor]?, predicate: NSPredicate?) throws -> [T]? where T : CoreDataEntity {
+        return strSearch as? [T]
         
     }
     

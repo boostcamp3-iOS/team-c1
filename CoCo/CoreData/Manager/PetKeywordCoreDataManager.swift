@@ -10,6 +10,11 @@ import Foundation
 import CoreData
 
 class PetKeywordCoreDataManager: CoreDataManager {
+    
+    func fetch<T>(_ coreDataType: T.Type, sortBy: [NSSortDescriptor]?, predicate: NSPredicate?) throws -> [T]? where T : CoreDataEntity {
+        return nil
+    }
+    
     // MARK: - Properties
     let appDelegate: AppDelegate?
     let context: NSManagedObjectContext?
