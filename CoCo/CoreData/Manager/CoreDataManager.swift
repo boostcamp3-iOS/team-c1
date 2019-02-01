@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-protocol CoreDataManager: CoreDataManagerProtocol {
+protocol CoreDataManager: CoreDataManagerType {
     // MARK: - Properties
     var appDelegate: AppDelegate? { get }
     var context: NSManagedObjectContext? { get }

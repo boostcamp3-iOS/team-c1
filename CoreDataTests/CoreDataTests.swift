@@ -10,34 +10,98 @@ import XCTest
 import CoreData
 @testable import CoCo
 
+//class MockCoreDataManager: CoreDataManagerType{
+//    
+//}
+
+class MockSearchKeywordCoreDataManager: SearchKeywordCoreDataManagerType {
+    func fetchOnlySearchWord() -> [String]? {
+        return []
+    }
+    
+    
+    var strSearch: [String]! //= ["강아지 옷", "강아지 간식", "강아지 사료"]
+    func fetch<T>(_ coreDataType: T.Type, sortBy: [NSSortDescriptor]?, predicate: NSPredicate?) throws -> [T]? where T : CoreDataEntity {
+        return []
+    }
+    
+    func insertCoreData<T>(_ coreDataType: T) throws -> Bool where T : CoreDataEntity {
+        
+    }
+    
+    func deleteObject<T>(_ entityClass: T.Type, predicate: NSPredicate?) throws -> Bool where T : NSManagedObject {
+        
+    }
+    
+    func updateObject<T>(_ coreDataType: T) throws -> Bool where T : CoreDataEntity {
+        
+    }
+    
+    
+}
+
+class MockSearchKeywordInfo {
+    static let strSearch = ["강아지 옷", "강아지 간식", "강아지 사료"]
+}
+
+class MockPetKeywordCoreDataManager: PetKeywordCoreDataManagerType {
+    func fetchOnlyKeyword() throws -> [String]? {
+        return []
+    }
+    
+    func fetch<T>(_ coreDataType: T.Type, sortBy: [NSSortDescriptor]?, predicate: NSPredicate?) throws -> [T]? where T : CoreDataEntity {
+        return []
+    }
+    
+    func insertCoreData<T>(_ coreDataType: T) throws -> Bool where T : CoreDataEntity {
+        
+    }
+    
+    func deleteObject<T>(_ entityClass: T.Type, predicate: NSPredicate?) throws -> Bool where T : NSManagedObject {
+        
+    }
+    
+    func updateObject<T>(_ coreDataType: T) throws -> Bool where T : CoreDataEntity {
+        
+    }
+    
+}
 
 class CoreDataTests: XCTestCase {
 
-    let mockCoreDataManager = MockCoreDataManager()
+    let mockSearchKeywordCoreDataManager = MockSearchKeywordCoreDataManager()
+    let mockPetKeywordCoreDataManager = MockPetKeywordCoreDataManager()
     let mockNWManager = MockShoppingNetworkManager()
     
-    lazy var service = SearchService(core: mockCoreDataManager, network: mockNWManager)
+    lazy var service = SearchService(serachCoreData: mockSearchKeywordCoreDataManager,
+                                     petCoreData: mockPetKeywordCoreDataManager,
+                                     network: mockNWManager)
     override func setUp() {
         // Put setup code here. This method is called before the invocation of each test method in the class.
     }
-
+    
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
-
-    func testInsertMyGoodsCoreData() {
-        let myGoodsData = MyGoodsData()
-        do {
-            let result = try mockCoreDataManager.insertCoreData(myGoodsData)
-            XCTAssert(result, "Insert Fail")
-        } catch let error {
-            print(error)
-        }
-    }
     
     func testFetchCoreData() {
+        // given
+        mockSearchKeywordCoreDataManager.strSearch = MockSearchKeywordInfo.strSearch
+        
+        // when
         let result = service.fetchRecentSearchWord()
-        XCTAssert(result.count == 4 , "Fetch Fail")
+        
+        // then
+        XCTAssert(result.count == MockSearchKeywordInfo.strSearch.count , "Fetch Fail")
+    }
+    
+    func testInsert() {
+//        2. insert(recentSearchWord: String) -> Void
+        service.insert(recenteSearchWord: "고양이")
+        let result = mockPetKeywordCoreDataManager.fetchOnlyKeyword()
+        
+        result?.contains("고양이")
+//        mockCoreDataManager.fetch(<#T##coreDataType: CoreDataEntity.Protocol##CoreDataEntity.Protocol#>, sortBy: <#T##[NSSortDescriptor]?#>, predicate: <#T##NSPredicate?#>)
     }
     
     func testUpdateCoreData() {

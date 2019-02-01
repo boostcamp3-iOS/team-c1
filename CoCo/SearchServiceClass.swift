@@ -13,16 +13,21 @@ import CoreData
 2. insert(recentSearchWord: String) -> Void
 3. getSearchData(search: String, count: Int, display: Int, sort: SortOption) -> [ShoppingItem]
 4. fetchRecommandSearchWord() -> [String]
-5. pagination(Index: Int) -> Int */
+5. pagination(Index: Int) -> Int
+ */
 
 
 class SearchService {
-    let coreDataManager: CoreDataManagerProtocol
+    let searchCoreDataManager: SearchKeywordCoreDataManagerType
+    let petKeywordCoreDataManager: PetKeywordCoreDataManagerType
     let networkManager: NetworkManagerType
     let algorithmManager: Algorithm?
     
-    init(core: CoreDataManagerProtocol, network: NetworkManagerType, algorithm: Algorithm? = nil) {
-        self.coreDataManager = core
+    init(serachCoreData: SearchKeywordCoreDataManagerType,
+         petCoreData: PetKeywordCoreDataManagerType,
+         network: NetworkManagerType, algorithm: Algorithm? = nil) {
+        self.searchCoreDataManager = serachCoreData
+        self.petKeywordCoreDataManager = petCoreData
         self.networkManager = network
         self.algorithmManager = algorithm
     }
@@ -31,7 +36,7 @@ class SearchService {
         var fetchSearchWord = [CoreDataEntity]()
         let sort = NSSortDescriptor(key: #keyPath(SearchKeyword.date), ascending: true)
         do {
-            fetchSearchWord =  try coreDataManager.fetch(SearchKeywordData.self, sortBy: nil, predicate: nil)!
+            fetchSearchWord =  try searchCoreDataManager.fetch(SearchKeywordData.self, sortBy: nil, predicate: nil)!
         } catch let error {
             
         }

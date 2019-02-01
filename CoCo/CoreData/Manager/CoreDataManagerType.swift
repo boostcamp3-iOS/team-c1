@@ -9,7 +9,7 @@
 import CoreData
 import UIKit
 
-protocol CoreDataManagerProtocol {
+protocol CoreDataManagerType {
     // MARK: - Method
 //    func fetchObjects<T: CoreDataEntity>(_ entityClass: T.Type, sortBy: [NSSortDescriptor]?, predicate: NSPredicate?) throws -> [T]?
     func fetch <T: CoreDataEntity>(_ coreDataType: T.Type, sortBy: [NSSortDescriptor]?, predicate: NSPredicate?) throws -> [T]?
@@ -18,3 +18,12 @@ protocol CoreDataManagerProtocol {
     @discardableResult func updateObject<T: CoreDataEntity>(_ coreDataType: T) throws -> Bool
 }
 
+
+protocol SearchKeywordCoreDataManagerType: CoreDataManagerType {
+    func fetchOnlySearchWord() -> [String]?
+}
+
+
+protocol PetKeywordCoreDataManagerType: CoreDataManagerType {
+    func fetchOnlyKeyword() throws -> [String]?
+}
