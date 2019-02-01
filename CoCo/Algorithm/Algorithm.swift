@@ -1,5 +1,5 @@
 //
-//  AlgorithmManager.swift
+//  Algorithm.swift
 //  CoCo
 //
 //  Created by 최영준 on 29/01/2019.
@@ -10,10 +10,10 @@ import Foundation
 
 private let defaultCount = 10
 
-class AlgorithmManager: AlgorithmType { }
+class Algorithm: AlgorithmType { }
 
 // MARK: - MakeSearchWordsType
-extension AlgorithmManager {
+extension Algorithm {
     /**
      네이버 쇼핑 검색 서비스 API에 전달할 쿼리를 생성한다.
      - Author: 0jun0815.github.io
@@ -85,7 +85,7 @@ extension AlgorithmManager {
 }
 
 // MARK: - WordType
-extension AlgorithmManager {
+extension Algorithm {
     /**
      문자열에 동물(강아지, 고양이) 단어가 포함되었는지 확인한다.
      - Author: 0jun0815.github.io

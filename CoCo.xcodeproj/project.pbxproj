@@ -14,7 +14,7 @@
 		106C603E21F6AA9200F0AFE6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 106C603C21F6AA9200F0AFE6 /* Main.storyboard */; };
 		106C604321F6AA9300F0AFE6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 106C604221F6AA9300F0AFE6 /* Assets.xcassets */; };
 		106C604621F6AA9300F0AFE6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 106C604421F6AA9300F0AFE6 /* LaunchScreen.storyboard */; };
-		10976CD322043D0A0006450B /* AlgorithmManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10976CCD22043D0A0006450B /* AlgorithmManager.swift */; };
+		10976CD322043D0A0006450B /* Algorithm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10976CCD22043D0A0006450B /* Algorithm.swift */; };
 		10976CD422043D0A0006450B /* Keyword.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10976CCE22043D0A0006450B /* Keyword.swift */; };
 		10976CD522043D0A0006450B /* Pet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10976CCF22043D0A0006450B /* Pet.swift */; };
 		10976CD622043D0A0006450B /* Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10976CD022043D0A0006450B /* Queue.swift */; };
@@ -84,7 +84,7 @@
 		106C604221F6AA9300F0AFE6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		106C604521F6AA9300F0AFE6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		106C604721F6AA9300F0AFE6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		10976CCD22043D0A0006450B /* AlgorithmManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AlgorithmManager.swift; path = CoCo/Algorithm/AlgorithmManager.swift; sourceTree = SOURCE_ROOT; };
+		10976CCD22043D0A0006450B /* Algorithm.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Algorithm.swift; path = CoCo/Algorithm/Algorithm.swift; sourceTree = SOURCE_ROOT; };
 		10976CCE22043D0A0006450B /* Keyword.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Keyword.swift; path = CoCo/Algorithm/Keyword.swift; sourceTree = SOURCE_ROOT; };
 		10976CCF22043D0A0006450B /* Pet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Pet.swift; path = CoCo/Algorithm/Pet.swift; sourceTree = SOURCE_ROOT; };
 		10976CD022043D0A0006450B /* Queue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Queue.swift; path = CoCo/Algorithm/Queue.swift; sourceTree = SOURCE_ROOT; };
@@ -208,7 +208,7 @@
 			isa = PBXGroup;
 			children = (
 				10976CD122043D0A0006450B /* AlgorithmType.swift */,
-				10976CCD22043D0A0006450B /* AlgorithmManager.swift */,
+				10976CCD22043D0A0006450B /* Algorithm.swift */,
 				10976CCF22043D0A0006450B /* Pet.swift */,
 				10976CCE22043D0A0006450B /* Keyword.swift */,
 				10976CD222043D0A0006450B /* Category.swift */,
@@ -506,7 +506,7 @@
 				30DBFF1021FECB160094D559 /* Environment.swift in Sources */,
 				30DBFF1221FECB440094D559 /* Dispatcher.swift in Sources */,
 				30DBFF0E21FECAFE0094D559 /* APIRequest.swift in Sources */,
-				10976CD322043D0A0006450B /* AlgorithmManager.swift in Sources */,
+				10976CD322043D0A0006450B /* Algorithm.swift in Sources */,
 				10976CD722043D0A0006450B /* AlgorithmType.swift in Sources */,
 				30DBFF1421FECB5E0094D559 /* Response.swift in Sources */,
 				30B8A62A21FAA3E90048EB61 /* NetworkManager.swift in Sources */,
