@@ -9,14 +9,14 @@
 import UIKit
 import CoreData
 
-protocol CoreDataManager: CoreDataManagerType {
+protocol CoreDataManagerFunctionImplementType: CoreDataManagerType {
     // MARK: - Properties
     var appDelegate: AppDelegate? { get }
     var context: NSManagedObjectContext? { get }
     func afterOperation(context: NSManagedObjectContext?)
 }
 
-extension CoreDataManager {
+extension CoreDataManagerFunctionImplementType {
     //Define default properties
     weak var appDelegate: AppDelegate? {
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
@@ -31,10 +31,6 @@ extension CoreDataManager {
         let context = appdelegate.persistentContainer.viewContext
         return context
     }
-}
-
-protocol CoreDataManagerFunctionImplementType: CoreDataManagerType {
-    
 }
 
 extension CoreDataManagerFunctionImplementType {

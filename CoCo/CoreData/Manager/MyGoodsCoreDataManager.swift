@@ -14,16 +14,6 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
     func fetch<T>(_ coreDataType: T.Type, sortBy: [NSSortDescriptor]?, predicate: NSPredicate?) throws -> [T]? where T : CoreDataEntity {
         return nil
     }
-    
-   
-    // MARK: - Properties
-    let appDelegate: AppDelegate?
-    let context: NSManagedObjectContext?
-    
-    init(appDelegate: AppDelegate, context: NSManagedObjectContext) {
-        self.appDelegate = appDelegate
-        self.context = context
-    }
 
     // MARK: - Methodes
     // MARK: - Insert Method

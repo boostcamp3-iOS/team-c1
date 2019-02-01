@@ -15,15 +15,7 @@ class PetKeywordCoreDataManager: PetKeywordCoreDataManagerType, CoreDataManagerF
         return nil
     }
     
-    // MARK: - Properties
-    let appDelegate: AppDelegate?
-    let context: NSManagedObjectContext?
-    
-    init(appDelegate: AppDelegate, context: NSManagedObjectContext) {
-        self.appDelegate = appDelegate
-        self.context = context
-    }
-
+ 
     // MARK: - Methodes
     // MARK: - Insert Method
     @discardableResult func insertCoreData<T>(_ coreDataType: T) throws -> Bool {

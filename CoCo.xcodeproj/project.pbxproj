@@ -43,7 +43,7 @@
 		513332F72200752C00950DB1 /* PetKeyword+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 513332F52200752C00950DB1 /* PetKeyword+CoreDataClass.swift */; };
 		513332F82200752C00950DB1 /* PetKeyword+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 513332F62200752C00950DB1 /* PetKeyword+CoreDataProperties.swift */; };
 		518CD28A21FF594200C38268 /* PetKeywordData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 518CD28921FF594200C38268 /* PetKeywordData.swift */; };
-		519025DB22033807000BEE92 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 519025DA22033807000BEE92 /* CoreDataManager.swift */; };
+		519025DB22033807000BEE92 /* CoreDataManagerFunctionImplementType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 519025DA22033807000BEE92 /* CoreDataManagerFunctionImplementType.swift */; };
 		519025E022034689000BEE92 /* MyGoods+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 519025DE22034689000BEE92 /* MyGoods+CoreDataClass.swift */; };
 		519025E122034689000BEE92 /* MyGoods+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 519025DF22034689000BEE92 /* MyGoods+CoreDataProperties.swift */; };
 		519928AF21FF74F6004D74EF /* SearchKeywordCoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 519928AE21FF74F6004D74EF /* SearchKeywordCoreDataManager.swift */; };
@@ -123,7 +123,7 @@
 		513332F52200752C00950DB1 /* PetKeyword+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PetKeyword+CoreDataClass.swift"; sourceTree = "<group>"; };
 		513332F62200752C00950DB1 /* PetKeyword+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PetKeyword+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		518CD28921FF594200C38268 /* PetKeywordData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetKeywordData.swift; sourceTree = "<group>"; };
-		519025DA22033807000BEE92 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
+		519025DA22033807000BEE92 /* CoreDataManagerFunctionImplementType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManagerFunctionImplementType.swift; sourceTree = "<group>"; };
 		519025DC220338AB000BEE92 /* MockCoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockCoreDataManager.swift; sourceTree = "<group>"; };
 		519025DE22034689000BEE92 /* MyGoods+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MyGoods+CoreDataClass.swift"; sourceTree = "<group>"; };
 		519025DF22034689000BEE92 /* MyGoods+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MyGoods+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -301,7 +301,7 @@
 			isa = PBXGroup;
 			children = (
 				510F31CA21FEC76B0025D929 /* CoreDataManagerType.swift */,
-				519025DA22033807000BEE92 /* CoreDataManager.swift */,
+				519025DA22033807000BEE92 /* CoreDataManagerFunctionImplementType.swift */,
 				510F31C121FD62770025D929 /* CoreDataEntity.swift */,
 				510F318221FAF8930025D929 /* MyGoodsCoreDataManager.swift */,
 				51A02AAD21FF620C00EF38F3 /* PetKeywordCoreDataManager.swift */,
@@ -542,7 +542,7 @@
 				51A02AAE21FF620C00EF38F3 /* PetKeywordCoreDataManager.swift in Sources */,
 				51A02AAB21FF5E1300EF38F3 /* SearchKeywordData.swift in Sources */,
 				511E41572203D8A400541DA6 /* SearchKeyword+CoreDataProperties.swift in Sources */,
-				519025DB22033807000BEE92 /* CoreDataManager.swift in Sources */,
+				519025DB22033807000BEE92 /* CoreDataManagerFunctionImplementType.swift in Sources */,
 				510F31C521FE28A10025D929 /* CoreDataError.swift in Sources */,
 				510F318321FAF8930025D929 /* MyGoodsCoreDataManager.swift in Sources */,
 				511E41562203D8A400541DA6 /* SearchKeyword+CoreDataClass.swift in Sources */,
