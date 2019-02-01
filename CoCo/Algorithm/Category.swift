@@ -23,7 +23,7 @@ enum Category: String, CaseIterable {
     // MARK: - Methods
     /**
      해당 Category에 포함되는 상세 카테고리 String 리스트를 반환한다.
-     - Author: 0jun0815.github.io
+     - Author: github.com/0jun0815
      - Parameters:
         - pet: Pet 타입(강아지/고양이)
      */

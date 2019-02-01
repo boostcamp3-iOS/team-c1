@@ -16,7 +16,7 @@ class Algorithm: AlgorithmType { }
 extension Algorithm {
     /**
      네이버 쇼핑 검색 서비스 API에 전달할 쿼리를 생성한다.
-     - Author: 0jun0815.github.io
+     - Author: github.com/0jun0815
      - Parameters:
         - favorite: 찜한 상품 리스트
         - recent: 최근 본 상품 리스트
@@ -41,7 +41,7 @@ extension Algorithm {
     }
     /**
      문자열 리스트에서 지정된 개수의 검색어를 생성한다.
-     - Author: 0jun0815.github.io
+     - Author: github.com/0jun0815
      - Parameters:
         - words: 단어 리스트
         - count: 받아올 개수, 기본값은 10
@@ -58,7 +58,7 @@ extension Algorithm {
     }
     /**
      문자열에서 검색어를 생성한다.
-     - Author: 0jun0815.github.io
+     - Author: github.com/0jun0815
      - Parameters:
         - word: 단어
      */
@@ -88,7 +88,7 @@ extension Algorithm {
 extension Algorithm {
     /**
      문자열에 동물(강아지, 고양이) 단어가 포함되었는지 확인한다.
-     - Author: 0jun0815.github.io
+     - Author: github.com/0jun0815
      - Parameters:
      - word: 검사할 단어
      */
