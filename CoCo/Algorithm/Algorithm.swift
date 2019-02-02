@@ -99,6 +99,20 @@ extension Algorithm {
         return false
     }
     /**
+     문자열 리스트에 동물(강아지, 고양이) 단어를 결합시킨다.
+     - Author: [최영준](https://github.com/0jun0815)
+     - Parameters:
+        - pet: 강아지/고양이
+        - words: 결합시킬 단어 리스트
+     */
+    func combinePet(_ pet: Pet, and words: [String]) -> [String] {
+        var result = [String]()
+        for word in words {
+            result.append(combinePet(pet, and: word))
+        }
+        return result
+    }
+    /**
      문자열에 동물(강아지, 고양이) 단어를 결합시킨다.
      
      검색어 생성에 사용한다("강아지" + "사료" = "강아지 사료").
@@ -109,5 +123,34 @@ extension Algorithm {
      */
     func combinePet(_ pet: Pet, and word: String) -> String {
         return "\(pet.rawValue) " + word
+    }
+    /**
+     문자열 리스트에서 동물(강아지, 고양이) 단어를 제거한다.
+     - Author: [최영준](https://github.com/0jun0815)
+     - Parameters:
+        - words: 검사할 단어 리스트
+     */
+    func removePet(from words: [String]) -> [String] {
+        var result = [String]()
+        for word in words {
+            result.append(removePet(from: word))
+        }
+        return result
+    }
+    /**
+     문자열에서 동물(강아지, 고양이) 단어를 제거한다.
+     
+     상품 정보에 검색어 저장시 사용한다("강아지 사료" = "사료").
+     - Author: [최영준](https://github.com/0jun0815)
+     - Parameters:
+        - word: 검사할 단어
+     */
+    func removePet(from word: String) -> String {
+        guard petIncluded(in: word) else { return word }
+        var result = word.replacingOccurrences(of: " ", with: "")
+        for pet in Pet.allCases {
+            result = result.replacingOccurrences(of: pet.rawValue, with: "")
+        }
+        return result
     }
 }
