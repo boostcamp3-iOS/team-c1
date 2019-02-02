@@ -21,7 +21,7 @@ enum Keyword: String, CaseIterable {
     // MARK: - Methods
     /**
      해당 Keyword에 포함되는 Category 타입의 리스트를 반환한다.
-     - Author: github.com/0jun0815
+     - Author: [최영준](https://github.com/0jun0815)
      */
     func getData() -> [Category] {
         switch self {

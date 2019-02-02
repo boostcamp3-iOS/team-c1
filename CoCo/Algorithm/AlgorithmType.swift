@@ -19,6 +19,7 @@ protocol MakeSearchWordsType: WordType {
 
 protocol WordType {
     func petIncluded(in word: String) -> Bool
+    func combinePet(_ pet: Pet, and word: String) -> String
 }
 
 protocol PaginationType { }
