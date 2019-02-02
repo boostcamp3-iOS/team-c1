@@ -10,32 +10,26 @@ import Foundation
 import CoreData
 
 class PetKeywordCoreDataManager: PetKeywordCoreDataManagerType, CoreDataManagerFunctionImplementType {
-    
-    func fetch<T>(_ coreDataType: T.Type, sortBy: [NSSortDescriptor]?, predicate: NSPredicate?) throws -> [T]? where T : CoreDataEntity {
-        return nil
-    }
-    
- 
+   
     // MARK: - Methodes
     // MARK: - Insert Method
-    @discardableResult func insertCoreData<T>(_ coreDataType: T) throws -> Bool {
-        guard let context = context else { return false }
-
-        switch coreDataType {
+    @discardableResult func insert<T: CoreDataStructEntity>(_ coreDataStructType: T) throws -> Bool {
+        switch coreDataStructType {
         case is PetKeywordData:
-            guard let petKeywordData = coreDataType as? PetKeywordData
-                else {
-                    return false
+            guard let context = context else { return false }
+            guard let petKeywordData = coreDataStructType as? PetKeywordData else {
+                return false
             }
 
             do {
                 // PetKeyword Entity는 데이터가 하나만 존재해야하기 때문에 데이터가 존재하는 지 확인
-                guard let objects = try fetchObjects(PetKeyword.self, sortBy: nil, predicate: nil) else { return false }
+                guard let objects = try fetchObjects() else { return false }
                 // 데이터가 존재하는 경우 데이터 삭제 후 추가 : 데이터는 항상 하나만 존재해야 하기 때문
-
                 if objects.count > 0 {
                     if let first = objects.first {
-                        context.delete(first)
+                        guard let objectID = first.objectID else { return false }
+                        let object = context.object(with: objectID)
+                        context.delete(object)
                         let petKeyword = PetKeyword(context: context)
                         petKeyword.keywords = petKeywordData.keywords as NSObject
                         petKeyword.pet = petKeywordData.pet
@@ -63,43 +57,50 @@ class PetKeywordCoreDataManager: PetKeywordCoreDataManagerType, CoreDataManagerF
 
     // MARK: - Fetch Methodes
     // Fetch All Data - PetKeyword의 모든 데이터 정보를 가져옴
-    func fetchPetKeyword() throws -> [PetKeywordData]? {
+    // 데이터 타입(Keyword, Pet)변경해서 리턴
+    func fetchObjects() throws -> [CoreDataStructEntity]? {
+        guard let context = context else { return nil }
         var petKeywordDatas = [PetKeywordData]()
-
-        do {
-            guard let objects = try fetchObjects(PetKeyword.self, sortBy: nil, predicate: nil) else {
-            throw CoreDataError.fetch(message: "PetKeyword Entity has not data, So can not fetch data")
-            }
+        let request: NSFetchRequest<PetKeyword>
+        
+        if #available(iOS 10.0, *) {
+            let tmpRequest: NSFetchRequest<PetKeyword> = PetKeyword.fetchRequest()
+            request = tmpRequest
+        } else {
+            let entityName = String(describing: PetKeyword.self)
+            request = NSFetchRequest(entityName: entityName)
+        }
+        
+        request.returnsObjectsAsFaults = false
+        let objects = try context.fetch(request)
+        
+        if objects.count > 0 {
             for object in objects {
+                var petKeyword = PetKeywordData()
                 guard let keywords = object.keywords as? [String] else {
                     return nil
                 }
-                var petKeywordData = PetKeywordData()
-                petKeywordData.pet = object.pet
-                petKeywordData.keywords = keywords
-                petKeywordData.objectID = object.objectID
-                petKeywordDatas.append(petKeywordData)
+                petKeyword.objectID = object.objectID
+                petKeyword.pet = object.pet
+                petKeyword.keywords = keywords
+                petKeywordDatas.append(petKeyword)
             }
             return petKeywordDatas
-        } catch let  error as NSError {
-            print("\(error)")
+        } else {
+            throw CoreDataError.fetch(message: "PetKeyword Entity has not data, So can not fetch data")
         }
-        return nil
     }
 
     // Fetch Only Keyword Data
     func fetchOnlyKeyword() throws -> [String]? {
         var keywords = [String]()
         do {
-            guard let objects = try fetchObjects(PetKeyword.self, sortBy: nil, predicate: nil) else {
+            guard let objects = try fetchObjects() else {
                 throw CoreDataError.fetch(message: "PetKeyword Entity has not  data, So can not fetch data")
             }
-            for object in objects {
-                guard let keyword = object.keywords as? [String] else {
-                    return nil
-                }
-                keywords += keyword
-            }
+            guard let petKeywordDatas = objects as? [PetKeywordData] else { return nil }
+            guard let petKeywordData = petKeywordDatas.first else { return nil }
+            keywords = petKeywordData.keywords
             return keywords
         } catch let error as NSError {
             print(error)
@@ -108,16 +109,16 @@ class PetKeywordCoreDataManager: PetKeywordCoreDataManagerType, CoreDataManagerF
     }
 
     // Fetch Only Pet
-    func fetchOnlyPet() throws -> [String]? {
-        var pets = [String]()
+    func fetchOnlyPet() throws -> String? {
+        var pet = ""
         do {
-            guard let objects = try fetchObjects(PetKeyword.self, sortBy: nil, predicate: nil) else {
+            guard let objects = try fetchObjects() else {
                 throw CoreDataError.fetch(message: "PetKeyword Entity has not  data, So can not fetch data")
             }
-            for object in objects {
-                pets.append(object.pet)
-            }
-            return pets
+            guard let petKeywordDatas = objects as? [PetKeywordData] else { return nil }
+            guard let petKeywordData = petKeywordDatas.first else { return nil }
+            pet = petKeywordData.pet
+            return pet
         } catch let error as NSError {
             print(error)
         }
@@ -126,40 +127,49 @@ class PetKeywordCoreDataManager: PetKeywordCoreDataManagerType, CoreDataManagerF
 
     // MARK: - Update Method
     // Update PetKeyword Data
-    @discardableResult func updatePetKeyword(_ petKeywordData: PetKeywordData) throws -> Bool {
-        guard let context = context else { return false }
-        guard let objectID = petKeywordData.objectID else {
-            throw CoreDataError.update(message: "Can not find this data(\(petKeywordData)), So can not update")
-        }
-        guard let object = context.object(with: objectID) as? PetKeyword else {
+    @discardableResult func updateObject<T>(_ coreDataStructType: T) throws -> Bool where T : CoreDataStructEntity {
+        switch coreDataStructType {
+        case is PetKeywordData:
+            guard let context = context else { return false }
+            guard let petKeywordData = coreDataStructType as? PetKeywordData else { return false }
+            guard let objectID = petKeywordData.objectID else {
+                throw CoreDataError.update(message: "Can not find this data(\(petKeywordData)), So can not update")
+            }
+            guard let object = context.object(with: objectID) as? PetKeyword else {
+                return false
+            }
+            object.pet = petKeywordData.pet
+            object.keywords = petKeywordData.keywords as NSObject
+            afterOperation(context: context)
+            print("Update Successive => \(object)")
+            return true
+        default:
             return false
         }
-
-        object.pet = petKeywordData.pet
-        object.keywords = petKeywordData.keywords as NSObject
-        afterOperation(context: context)
-        print("Update Successive => \(object)")
-        return true
     }
-    
-    func updateObject<T>(_ coreDataType: T) throws -> Bool where T : CoreDataEntity {
-        return false
-    }
-    
 
     // MARK: - Delete Method
     // Delete PetKeyword Data
-    @discardableResult func delete(_ petKeywordData: PetKeywordData) throws -> Bool {
-        guard let context = context else { return false }
-
-        if let objectID = petKeywordData.objectID {
-            let object = context.object(with: objectID)
-            context.delete(object)
-            afterOperation(context: context)
-            print("Delete Successive")
-            return true
-        } else {
-            throw CoreDataError.delete(message: "Can not find this data(\(petKeywordData)), So can not delete")
+    
+    @discardableResult func deleteObject<T>(_ coreDataStructType: T) throws -> Bool where T : CoreDataStructEntity {
+        switch coreDataStructType {
+        case is PetKeywordData:
+            guard let context = context else { return false }
+            guard let petKeywordData = coreDataStructType as? PetKeywordData else {
+                return false
+            }
+            if let objectID = petKeywordData.objectID {
+                let object = context.object(with: objectID)
+                context.delete(object)
+                afterOperation(context: context)
+                print("Delete Successive")
+                return true
+            } else {
+                throw CoreDataError.delete(message: "Can not find this data(\(petKeywordData)), So can not delete")
+            }
+            
+        default:
+            return false
         }
     }
 }

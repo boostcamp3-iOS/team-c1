@@ -11,28 +11,27 @@ import UIKit
 
 protocol CoreDataManagerType {
     // MARK: - Method
-//    func fetchObjects<T: CoreDataEntity>(_ entityClass: T.Type, sortBy: [NSSortDescriptor]?, predicate: NSPredicate?) throws -> [T]?
-    func fetch <T: CoreDataEntity>(_ coreDataType: T.Type, sortBy: [NSSortDescriptor]?, predicate: NSPredicate?) throws -> [T]?
-    @discardableResult func insertCoreData<T: CoreDataEntity>(_ coreDataType: T) throws -> Bool
-    @discardableResult func deleteObject<T: NSManagedObject>(_ entityClass: T.Type, predicate: NSPredicate?) throws -> Bool
-    @discardableResult func updateObject<T: CoreDataEntity>(_ coreDataType: T) throws -> Bool
+    func insert<T: CoreDataStructEntity>(_ coreDataStructType: T) throws -> Bool
+    func fetchObjects() throws -> [CoreDataStructEntity]?
+    func updateObject<T: CoreDataStructEntity>(_ coreDataStructType: T) throws -> Bool
+    func deleteObject<T: CoreDataStructEntity>(_ coreDataStructType: T) throws -> Bool
 }
-
 
 protocol MyGoodsCoreDataManagerType: CoreDataManagerType {
-    func fetchMyGoodsDatas() throws -> [MyGoodsData]?
     func fetchFavoriteGoods() throws -> [MyGoodsData]?
     func fetchLatestGoods() throws -> [MyGoodsData]?
-    
 }
-
-protocol SearchKeywordCoreDataManagerType: CoreDataManagerType {
-    func fetchOnlySearchWord() -> [String]?
-}
-
 
 protocol PetKeywordCoreDataManagerType: CoreDataManagerType {
     func fetchOnlyKeyword() throws -> [String]?
+    func fetchOnlyPet() throws -> String?
 }
+
+protocol SearchWordCoreDataManagerType: CoreDataManagerType {
+    func fetchOnlySearchWord() throws -> [String]?
+}
+
+
+
 
 

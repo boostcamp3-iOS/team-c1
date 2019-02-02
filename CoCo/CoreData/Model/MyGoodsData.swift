@@ -9,7 +9,7 @@
 import Foundation
 import CoreData
 
-struct MyGoodsData: CoreDataEntity {
+struct MyGoodsData: CoreDataStructEntity {
   
     // MARK: - Propertise
     var date: String?

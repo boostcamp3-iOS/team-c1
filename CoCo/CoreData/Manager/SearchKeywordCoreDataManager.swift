@@ -9,23 +9,15 @@
 import Foundation
 import CoreData
 
-class SearchKeywordCoreDataManager: SearchKeywordCoreDataManagerType,  CoreDataManagerFunctionImplementType {
-    func fetch<T>(_ coreDataType: T.Type, sortBy: [NSSortDescriptor]?, predicate: NSPredicate?) throws -> [T]? where T : CoreDataEntity {
-        return nil
-    }
-    
-
+class SearchKeywordCoreDataManager: SearchWordCoreDataManagerType,  CoreDataManagerFunctionImplementType {
     // MARK: - Methodes
     // Insert Method
-    @discardableResult func insertCoreData<T>(_ coreDataType: T) throws -> Bool where T: CoreDataEntity {
-        guard let context = context else {
-            return false
-        }
+    @discardableResult func insert<T>(_ coreDataType: T) throws -> Bool where T: CoreDataStructEntity {
         switch coreDataType {
-        case is SearchKeywordData:
-            guard let searchKeywordData = coreDataType as? SearchKeywordData
-                else {
-                    return false
+        case is SearchWordData:
+            guard let context = context else { return false }
+            guard let searchKeywordData = coreDataType as? SearchWordData else {
+                return false
             }
 
             do {
@@ -34,10 +26,10 @@ class SearchKeywordCoreDataManager: SearchKeywordCoreDataManagerType,  CoreDataM
                 // 검색어가 존재하면 업데이트
                 if object != nil {
                     print("Alreay stored, So Update")
-                    try updateSearchKeyword(searchKeyword: searchKeywordData)
+                    try updateObject(searchKeywordData)
                     // 존재하지 않으면 검색어 데이터 추가
                 } else {
-                    let searchKeyword = SearchKeyword(context: context)
+                    let searchKeyword = SearchWord(context: context)
                     searchKeyword.date = searchKeywordData.date
                     searchKeyword.searchWord = searchKeywordData.searchWord
                     afterOperation(context: context)
@@ -55,40 +47,52 @@ class SearchKeywordCoreDataManager: SearchKeywordCoreDataManagerType,  CoreDataM
 
     // MARK: - Fetch Method
     // Fetch All of SearchKeyWordData
-    func fetchSearchKeyword() throws -> [SearchKeywordData]? {
-        // 검색 날짜별로 오름차순 정렬
-        let sort = NSSortDescriptor(key: #keyPath(SearchKeyword.date), ascending: true)
-        var searchKeywordResults = [SearchKeywordData]()
-
-        do {
-            guard let objects = try fetchObjects(SearchKeyword.self, sortBy: [sort], predicate: nil) else {
-                throw CoreDataError.fetch(message: "SearchKeyword Entity has not data, So can not fetch data")
-            }
+    func fetchObjects() throws -> [CoreDataStructEntity]? {
+        guard let context = context else { return nil }
+        var searchWordDatas = [SearchWordData]()
+        // 검색날짜별로 오름차순
+        let sort = NSSortDescriptor(key: #keyPath(SearchWord.date), ascending: true)
+        let request: NSFetchRequest<SearchWord>
+        
+        if #available(iOS 10.0, *) {
+            let tmpRequest: NSFetchRequest<SearchWord> = SearchWord.fetchRequest()
+            request = tmpRequest
+        } else {
+            let entityName = String(describing: SearchWord.self)
+            request = NSFetchRequest(entityName: entityName)
+        }
+        
+        request.returnsObjectsAsFaults = false
+        request.sortDescriptors = [sort]
+        
+        let objects = try context.fetch(request)
+        
+        if objects.count > 0 {
             for object in objects {
-                var search = SearchKeywordData()
-                search.date = object.date 
-                search.searchWord = object.searchWord
-                search.objectID = object.objectID
-                searchKeywordResults.append(search)
+                var searchWordData = SearchWordData()
+                searchWordData.objectID = object.objectID
+                searchWordData.date = object.date
+                searchWordData.searchWord = object.searchWord
+                searchWordDatas.append(searchWordData)
             }
-            return searchKeywordResults
-        } catch let error as NSError {
-            print("fetch error \(error)")
-            return nil
+            return searchWordDatas
+        } else {
+            throw CoreDataError.fetch(message: "PetKeyword Entity has not data, So can not fetch data")
         }
     }
-
+    
     // Fetch Only SearchWords
-    func fetchOnlySearchWord() -> [String]? {
-        let sort = NSSortDescriptor(key: #keyPath(SearchKeyword.date), ascending: true)
+    func fetchOnlySearchWord() throws -> [String]? {
         var searchArrays = [String]()
-
         do {
-            guard let objects = try fetchObjects(SearchKeyword.self, sortBy: [sort], predicate: nil) else {
+            guard let objects = try fetchObjects() else {
                 throw CoreDataError.fetch(message: "SearchKeyword Entity has not search data, So can not fetch data")
             }
-            for object in objects {
-                searchArrays.append(object.searchWord)
+            guard  let searchKeywords = objects as? [SearchWordData] else {
+                return nil
+            }
+            for searchKeyword in searchKeywords {
+                searchArrays.append(searchKeyword.searchWord)
             }
             return searchArrays
         } catch let error as NSError {
@@ -98,72 +102,73 @@ class SearchKeywordCoreDataManager: SearchKeywordCoreDataManagerType,  CoreDataM
     }
 
     // Fetch SearchKeyWordData's SearchWord - 검색 데이터를 추가하기전에, 기존에 동일한 검색어가 존재하는 지 확인하기 위해 구현
-    private func fetchWord(_ searchKeywrodData: SearchKeywordData) -> SearchKeyword? {
+    private func fetchWord(_ searchKeywrodData: SearchWordData) -> SearchWordData? {
         let searchWord = searchKeywrodData.searchWord
-        let predicate = NSPredicate(format: "searchWord = %@", searchWord)
+        var searchWordData: SearchWordData?
         do {
-            guard let objects = try fetchObjects(SearchKeyword.self, sortBy: nil, predicate: predicate) else {
+            guard let objects = try fetchObjects() else {
                 // 기존에 동일한 검색 데이터가 있는 지, 없는 지  확인해야 하기 때문에 오류를 던지지 않음
                 return nil
             }
-            guard let object = objects.first else { return nil }
-            return object
+            guard let searchWordDatas = objects as? [SearchWordData] else {
+                return nil
+            }
+            searchWordDatas.forEach { (data) in
+                if data.searchWord == searchWord {
+                   searchWordData = data
+                }
+            }
         } catch let error as NSError {
             print("\(error)")
         }
-        return nil
+        return searchWordData
     }
 
     // MARK: - Update Method
     // Update SearchKeyword Data
-    @discardableResult func updateSearchKeyword(searchKeyword: SearchKeywordData) throws -> Bool {
-        guard let context = context else { return false }
-        guard let objectID = searchKeyword.objectID else { throw CoreDataError.update(message: "Can not find this data(\(searchKeyword)), So can not update")}
-        guard let object = context.object(with: objectID) as? SearchKeyword else {
+    
+    @discardableResult func updateObject<T>(_ coreDataStructType: T) throws -> Bool {
+        switch coreDataStructType {
+        case is SearchWordData:
+            guard let context = context else { return false }
+            guard let searchWordData = coreDataStructType as? SearchWordData else {
+                return false
+            }
+            guard let objectID = searchWordData.objectID else { throw CoreDataError.update(message: "Can not find this data(\(searchWordData)), So can not update")}
+            guard let object = context.object(with: objectID) as? SearchWord else {
+                return false
+            }
+            object.date = searchWordData.date
+            object.searchWord = searchWordData.searchWord
+            afterOperation(context: context)
+            print("Update Successive => \(object)")
+        default:
             return false
         }
-        object.date = searchKeyword.date 
-        object.searchWord = searchKeyword.searchWord
-        afterOperation(context: context)
-        print("Update Successive => \(object)")
-        return true
-    }
-    
-    func updateObject<T>(_ coreDataType: T) throws -> Bool where T : CoreDataEntity {
         return false
     }
-
+  
     // MARK: - Delete Method
     // Delete SearchKeyword Data
-    @discardableResult func deleteSearchKeyword(searchKeyword: SearchKeywordData) throws -> Bool {
-        guard let context = context else {
+    @discardableResult func deleteObject<T>(_ coreDataStructType: T) throws -> Bool where T : CoreDataStructEntity {
+        switch coreDataStructType {
+        case is SearchWordData:
+            guard let context = context else { return false }
+            guard let searchKeywordData = coreDataStructType as? SearchWordData else {
+                return false
+            }
+            if let objectID = searchKeywordData.objectID {
+                let object = context.object(with: objectID)
+                context.delete(object)
+                afterOperation(context: context)
+                print("Delete Successive")
+                return true
+            } else {
+                throw CoreDataError.delete(message: "Can not find this data(\(searchKeywordData)), So can not delete")
+            }
+        default:
             return false
         }
-        if let objectID = searchKeyword.objectID {
-            let object = context.object(with: objectID)
-            context.delete(object)
-            afterOperation(context: context)
-            print("Delete Successive")
-            return true
-        } else {
-            throw CoreDataError.delete(message: "Can not find this data(\(searchKeyword)), So can not delete")
-        }
-    }
-
-    // Delete using SearchWord - 검색단어로 데이터 지움
-    @discardableResult func deleteUsingKeyword(keyword: String) throws -> Bool {
-        guard let context = context else { return false }
-        let predicate = NSPredicate(format: "searchWord = %@", keyword)
-        do {
-            guard let objects = try fetchObjects(SearchKeyword.self, sortBy: nil, predicate: predicate) else {
-            throw CoreDataError.delete(message: "Can not find this keyword(\(keyword)), So can not delete")
-            }
-            guard let object = objects.first else { return false }
-            context.delete(object)
-            return true
-        } catch let error as NSError {
-            print("\(error)")
-        }
-        return false
     }
 }
+

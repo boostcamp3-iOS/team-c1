@@ -18,12 +18,12 @@ import CoreData
 
 
 class SearchService {
-    let searchCoreDataManager: SearchKeywordCoreDataManagerType
+    let searchCoreDataManager: SearchWordCoreDataManagerType
     let petKeywordCoreDataManager: PetKeywordCoreDataManagerType
     let networkManager: NetworkManagerType
     let algorithmManager: Algorithm?
     
-    init(serachCoreData: SearchKeywordCoreDataManagerType,
+    init(serachCoreData: SearchWordCoreDataManagerType,
          petCoreData: PetKeywordCoreDataManagerType,
          network: NetworkManagerType, algorithm: Algorithm? = nil) {
         self.searchCoreDataManager = serachCoreData
@@ -32,16 +32,27 @@ class SearchService {
         self.algorithmManager = algorithm
     }
     
-    func fetchRecentSearchWord() -> [CoreDataEntity] {
-        var fetchSearchWord = [CoreDataEntity]()
-        let sort = NSSortDescriptor(key: #keyPath(SearchKeyword.date), ascending: true)
+    func fetchRecentSearchWord() -> [String]? {
+        var fetchSearchWord: [String]?
         do {
-            fetchSearchWord =  try searchCoreDataManager.fetch(SearchKeywordData.self, sortBy: nil, predicate: nil)!
+            fetchSearchWord =  try searchCoreDataManager.fetchOnlySearchWord()
         } catch let error {
-            
+            print(error)
         }
         return fetchSearchWord
     }
     
+    @discardableResult func insert(recenteSearchWord: String) -> Bool {
+        var result = false
+        var searchWordData = SearchWordData()
+        searchWordData.date = searchWordData.createDate()
+        searchWordData.searchWord = recenteSearchWord
+        do {
+            result = try searchCoreDataManager.insert(searchWordData)
+        } catch let error {
+            print(error)
+        }
+        return result
+    }
     
 }
