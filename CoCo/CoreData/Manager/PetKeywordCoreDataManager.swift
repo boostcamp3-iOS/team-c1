@@ -22,8 +22,8 @@ class PetKeywordCoreDataManager: PetKeywordCoreDataManagerType, CoreDataManagerF
             }
 
             do {
-                // PetKeyword Entity는 데이터가 하나만 존재해야하기 때문에 데이터가 존재하는 지 확인
-                guard let objects = try fetchObjects() else { return false }
+                // PetKeyword Entity는 동물별로 데이터가 하나만 존재해야하기 때문에 데이터가 존재하는 지 확인
+                guard let objects = try fetchObjects(pet: petKeywordData.pet) else { return false }
                 // 데이터가 존재하는 경우 데이터 삭제 후 추가 : 데이터는 항상 하나만 존재해야 하기 때문
                 if objects.count > 0 {
                     if let first = objects.first {
@@ -58,9 +58,10 @@ class PetKeywordCoreDataManager: PetKeywordCoreDataManagerType, CoreDataManagerF
     // MARK: - Fetch Methodes
     // Fetch All Data - PetKeyword의 모든 데이터 정보를 가져옴
     // 데이터 타입(Keyword, Pet)변경해서 리턴
-    func fetchObjects() throws -> [CoreDataStructEntity]? {
+    func fetchObjects(pet: String) throws -> [CoreDataStructEntity]? {
         guard let context = context else { return nil }
         var petKeywordDatas = [PetKeywordData]()
+        let predicate = NSPredicate(format: "pet = %@", pet)
         let request: NSFetchRequest<PetKeyword>
         
         if #available(iOS 10.0, *) {
@@ -72,6 +73,7 @@ class PetKeywordCoreDataManager: PetKeywordCoreDataManagerType, CoreDataManagerF
         }
         
         request.returnsObjectsAsFaults = false
+        request.predicate = predicate
         let objects = try context.fetch(request)
         
         if objects.count > 0 {
@@ -92,10 +94,10 @@ class PetKeywordCoreDataManager: PetKeywordCoreDataManagerType, CoreDataManagerF
     }
 
     // Fetch Only Keyword Data
-    func fetchOnlyKeyword() throws -> [String]? {
+    func fetchOnlyKeyword(pet: String) throws -> [String]? {
         var keywords = [String]()
         do {
-            guard let objects = try fetchObjects() else {
+            guard let objects = try fetchObjects(pet: pet) else {
                 throw CoreDataError.fetch(message: "PetKeyword Entity has not  data, So can not fetch data")
             }
             guard let petKeywordDatas = objects as? [PetKeywordData] else { return nil }
@@ -109,10 +111,10 @@ class PetKeywordCoreDataManager: PetKeywordCoreDataManagerType, CoreDataManagerF
     }
 
     // Fetch Only Pet
-    func fetchOnlyPet() throws -> String? {
+    func fetchOnlyPet(pet: String) throws -> String? {
         var pet = ""
         do {
-            guard let objects = try fetchObjects() else {
+            guard let objects = try fetchObjects(pet: pet) else {
                 throw CoreDataError.fetch(message: "PetKeyword Entity has not  data, So can not fetch data")
             }
             guard let petKeywordDatas = objects as? [PetKeywordData] else { return nil }

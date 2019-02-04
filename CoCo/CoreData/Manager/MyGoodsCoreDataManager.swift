@@ -38,6 +38,7 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
                 object.productId = myGoodsData.productId
                 object.searchWord = myGoodsData.searchWord ?? ""
                 object.shoppingmall = myGoodsData.shoppingmall
+                object.pet = myGoodsData.pet
                 afterOperation(context: context)
                 print("succesive insert \(myGoodsData.productId)")
                 return true
@@ -55,9 +56,10 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
 
     // MARK: - Fetch Methodes
     // Fetch All MyGoods Data - MyGoods의 모든 데이터를 가져옴
-    func fetchObjects() throws -> [CoreDataStructEntity]? {
+    func fetchObjects(pet: String) throws -> [CoreDataStructEntity]? {
         guard let context = context else { return nil }
         let sort = NSSortDescriptor(key: #keyPath(MyGoods.date), ascending: true)
+        let predicate = NSPredicate(format: "pet = %@", pet)
         var myGoodsDatas: [MyGoodsData] = []
         let request: NSFetchRequest<MyGoods>
         
@@ -70,6 +72,7 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
         }
         
         request.returnsObjectsAsFaults = false
+        request.predicate = predicate
         request.sortDescriptors = [sort]
         
         let objects = try context.fetch(request)
@@ -88,6 +91,7 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
                 myGoodsData.searchWord = object.searchWord
                 myGoodsData.title = object.title
                 myGoodsData.shoppingmall = object.shoppingmall
+                myGoodsData.pet = object.pet
                 myGoodsDatas.append(myGoodsData)
             }
             return myGoodsDatas
@@ -97,13 +101,13 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
     }
     
     // Fetch Favorite Datas - 즐겨찾기 한 모든 데이터를 가져옴
-    func fetchFavoriteGoods() throws -> [MyGoodsData]? {
+    func fetchFavoriteGoods(pet: String) throws -> [MyGoodsData]? {
         guard let context = context else {
             return nil
         }
         // 즐겨찾기 한 상품 오름차순으로 정렬
         let sort = NSSortDescriptor(key: #keyPath(MyGoods.date), ascending: true)
-        let predicate = NSPredicate(format: "isFavorite = true")
+        let predicate = NSPredicate(format: "pet = %@ AND isFavorite = true", pet)
         var myGoodsDatas: [MyGoodsData] = []
         let request: NSFetchRequest<MyGoods>
         
@@ -144,11 +148,11 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
     }
 
     // Fetch Latest Datas - 최근본 상품을 모두 가져옴
-    func fetchLatestGoods() throws -> [MyGoodsData]? {
+    func fetchLatestGoods(pet: String) throws -> [MyGoodsData]? {
         guard let context = context else { return nil }
         // 오름차순으로 정렬
         let sort = NSSortDescriptor(key: #keyPath(MyGoods.date), ascending: true)
-        let predicate = NSPredicate(format: "isLatest = true")
+        let predicate = NSPredicate(format: "pet = %@ AND isLatest = true", pet)
         var myGoodsDatas: [MyGoodsData] = []
         let request: NSFetchRequest<MyGoods>
         
@@ -240,6 +244,7 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
             object.price = myGoodsData.price
             object.searchWord = myGoodsData.searchWord
             object.shoppingmall = myGoodsData.shoppingmall
+            object.pet = myGoodsData.pet
             afterOperation(context: context)
             return true
             
