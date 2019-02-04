@@ -22,6 +22,7 @@ struct MyGoodsData: CoreDataStructEntity {
     var productId: String = ""
     var objectID: NSManagedObjectID?
     var searchWord: String?
+    var pet = ""
     var shoppingmall: String = ""
 
     func createDate() -> String {

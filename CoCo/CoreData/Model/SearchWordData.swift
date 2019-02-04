@@ -13,6 +13,7 @@ struct SearchWordData: CoreDataStructEntity {
     // MARK: Properties
     var date: String?
     var searchWord = ""
+    var pet = ""
     var objectID: NSManagedObjectID?
     
     func createDate() -> String {
