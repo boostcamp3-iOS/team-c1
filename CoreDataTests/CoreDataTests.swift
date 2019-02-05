@@ -36,11 +36,15 @@ class MockSearchWordCoreDataManager: SearchWordCoreDataManagerType {
         return stringResult
     }
     
-    func fetchObjects(pet: String) throws -> [CoreDataStructEntity]? {
-        let result = mockSearchInfo.mockSearchWord.filter{ $0.searchWord.contains(pet)
+    func fetchObjects(pet: String? = nil) throws -> [CoreDataStructEntity]? {
+        if pet != nil {
+            let result = mockSearchInfo.mockSearchWord.filter{ $0.searchWord.contains(pet!)
+            }
+            return result
         }
-        return result
+        return mockSearchInfo.mockSearchWord
     }
+    
     
     func updateObject<T>(_ coreDataStructType: T) throws -> Bool {
         guard let searchWordData = coreDataStructType as? SearchWordData else {
@@ -153,7 +157,7 @@ class MockPetKeywordCoreDataManager: PetKeywordCoreDataManagerType {
         return false
     }
     
-    func fetchObjects(pet: String) throws -> [CoreDataStructEntity]? {
+    func fetchObjects(pet: String? = nil) throws -> [CoreDataStructEntity]? {
          return nil
     }
     
@@ -162,6 +166,10 @@ class MockPetKeywordCoreDataManager: PetKeywordCoreDataManagerType {
     }
     
     func deleteObject<T>(_ coreDataStructType: T) throws -> Bool {
+        return false
+    }
+    
+    @discardableResult func deleteAllObjects(pet: String) throws -> Bool {
         return false
     }
 }
@@ -179,7 +187,7 @@ class MockMyGoodsCoreDataManager: MyGoodsCoreDataManagerType {
         return false
     }
     
-    func fetchObjects(pet: String) throws -> [CoreDataStructEntity]? {
+    func fetchObjects(pet: String? = nil) throws -> [CoreDataStructEntity]? {
         return nil
     }
     
@@ -188,6 +196,14 @@ class MockMyGoodsCoreDataManager: MyGoodsCoreDataManagerType {
     }
     
     func deleteObject<T>(_ coreDataStructType: T) throws -> Bool {
+        return false
+    }
+    
+    @discardableResult func deleteFavoriteAllObjects(pet: String, isFavorite: Bool) throws -> Bool {
+        return false
+    }
+    
+    @discardableResult func deleteLatestAllObjects(pet: String, isLatest: Bool) throws -> Bool {
         return false
     }
     
