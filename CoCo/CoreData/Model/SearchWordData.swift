@@ -16,6 +16,16 @@ struct SearchWordData: CoreDataStructEntity {
     var pet = ""
     var objectID: NSManagedObjectID?
     
+    init() {
+        self.date = createDate()
+    }
+    
+    init(pet: String, searchWord: String) {
+        self.pet = pet
+        self.date = createDate()
+        self.searchWord = searchWord
+    }
+    
     func createDate() -> String {
         let date = Date()
         let dateFormatter = DateFormatter()

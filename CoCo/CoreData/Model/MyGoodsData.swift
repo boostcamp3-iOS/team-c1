@@ -24,7 +24,24 @@ struct MyGoodsData: CoreDataStructEntity {
     var searchWord: String?
     var pet = ""
     var shoppingmall: String = ""
-
+    
+    init() {
+        self.date = createDate()
+    }
+    
+    init(pet: String, title: String, link: String, image: String, isFavorite: Bool, isLatest: Bool, price: String, productId: String, searchWord: String, shoppingmall: String) {
+        self.pet = pet
+        self.title = title
+        self.link = link
+        self.image = image
+        self.isFavorite = isFavorite
+        self.isLatest = isLatest
+        self.price = price
+        self.productId = productId
+        self.searchWord = searchWord
+        self.shoppingmall = shoppingmall
+    }
+    
     func createDate() -> String {
         let date = Date()
         let dateFormatter = DateFormatter()

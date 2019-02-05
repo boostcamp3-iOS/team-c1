@@ -14,4 +14,12 @@ struct PetKeywordData: CoreDataStructEntity {
     // MARK: - Propertise
     var keywords: [String] = []
     var pet = ""
+    
+    
+    init() { }
+    
+    init(pet: String, keywords: [String]) {
+        self.pet = pet
+        self.keywords = keywords
+    }
 }
