@@ -22,7 +22,7 @@ enum RequestParams {
 }
 
 protocol Request {
-    var path: String { get }
+    var path: String? { get }
     var method: HTTPMethod { get }
     var parameters: RequestParams { get }
     var headerDic: [String: Any]? { get }

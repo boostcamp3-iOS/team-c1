@@ -15,11 +15,26 @@ enum SortOption: String {
     case descending = "dsc"
 }
 
-protocol NetworkManagerType {
-    associatedtype Params
+struct ShoppingParams {
+    var search: String
+    var count: Int = 10
+    var start: Int = 1
+    var sort: SortOption = .similar
 
-    func getAPIData(_ params: Params, completion: @escaping (APIResponseShoppingData) -> Void, errorHandler: @escaping () -> Void)
-    init()
+    init(search: String) {
+        self.search = search
+    }
+
+    init(search: String, count: Int, start: Int, sort: SortOption) {
+        self.search = search
+        self.count = count
+        self.start = start
+        self.sort = sort
+    }
+}
+
+protocol NetworkManagerType {
+    func getAPIData(_ params: ShoppingParams, completion: @escaping (APIResponseShoppingData) -> Void, errorHandler: @escaping (Error) -> Void)
 }
 
 extension NetworkManagerType {
@@ -33,58 +48,30 @@ extension NetworkManagerType {
 }
 
 class ShoppingNetworkManager: NetworkManagerType {
-    typealias Params = Parameters
-
-    struct Parameters {
-        var search: String
-        var count: Int = 10
-        var start: Int = 1
-        var sort: SortOption = .similar
-
-        init(search: String) {
-            self.search = search
-        }
-    }
 
     // MARK: - Private Properties
     private let host = "https://openapi.naver.com/v1/search/shop.json?"
-    private let headerDic = ["X-Naver-Client-Id": "qHtcfM1UHhWZXTx9mwYI", "X-Naver-Client-Secret": "HRzkmrNKSs"]
-    private var environment: Environment
+    lazy private var environment = Environment(host: host)
 
     // MARK: - Initializer
-    required init() {
-         self.environment = Environment(host: host, headerDic: headerDic)
-    }
+    static let shared = ShoppingNetworkManager()
+    private init() { }
 
     // MARK: - Methods
-    func getAPIData(_ params: ShoppingNetworkManager.Parameters, completion: @escaping (APIResponseShoppingData) -> Void, errorHandler: @escaping () -> Void) {
+    func getAPIData(_ params: ShoppingParams, completion: @escaping (APIResponseShoppingData) -> Void, errorHandler: @escaping (Error) -> Void) {
         let dispatcher = NetworkDispatcher(environment: environment).makeNetworkProvider()
         let responseAPI = ResponseAPI()
-        let request = APIRequest.getShoppingAPI(query: params.search, display: params.count, start: params.start, sort: params.sort)
+        let request = APIRequest.requestShoppingAPI(query: params.search, display: params.count, start: params.start, sort: params.sort)
         do {
             try dispatchAPI(in: dispatcher, request: request) { data in
                 do {
                     try responseAPI.parse(data: data, completion: completion)
                 } catch let err {
-                    print(err)
-                    errorHandler()
+                    errorHandler(err)
                 }
             }
         } catch let err {
-            print(err)
-            errorHandler()
+            errorHandler(err)
         }
     }
-
-    /* 호출 예시
-     
-     let shoppingAPI = ShoppingNetworkManager()
-     let param = ShoppingNetworkManager.Parameters(search: "강아지 옷")
-     shoppingAPI.getAPIData(param, completion: { data in
-     print(data)
-     }) {
-     print("error")
-     }
- 
-     */
 }

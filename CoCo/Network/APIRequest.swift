@@ -9,33 +9,43 @@
 import Foundation
 
 enum APIRequest {
-    case getShoppingAPI(query: String, display: Int, start: Int, sort: SortOption)
+    case requestShoppingAPI(query: String, display: Int, start: Int, sort: SortOption)
+    case requestAPI()
 }
 
 extension APIRequest: Request {
+
     // MARK: - Properties
-    var path: String {
+    var path: String? {
         switch self {
-        case .getShoppingAPI :
-            return ""
+        case .requestShoppingAPI :
+            return nil
+        case .requestAPI :
+            return nil
         }
     }
     var method: HTTPMethod {
         switch self {
-        case .getShoppingAPI :
+        case .requestShoppingAPI :
+            return .get
+        case .requestAPI :
             return .get
         }
     }
     var parameters: RequestParams {
         switch self {
-        case .getShoppingAPI (let query, let display, let start, let sort):
+        case .requestShoppingAPI (let query, let display, let start, let sort):
             return .url(["query": query, "display": "\(display)", "start": "\(start)", "sort": sort.rawValue])
+        case .requestAPI :
+            return .url(nil)
         }
     }
     var headerDic: [String: Any]? {
         switch self {
-        case .getShoppingAPI :
-            return [:]
+        case .requestShoppingAPI :
+            return ["X-Naver-Client-Id": "qHtcfM1UHhWZXTx9mwYI", "X-Naver-Client-Secret": "HRzkmrNKSs"]
+        case .requestAPI :
+            return nil
         }
     }
 }

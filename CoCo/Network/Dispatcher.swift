@@ -16,15 +16,12 @@ protocol Dispatcher {
 }
 
 class NetworkDispatcher {
-    // MARK: - Properties
-    let session: URLSession
 
     // MARK: - Private Properties
     private var environment: Environment
 
     // MARK: - Initializer
     required init(environment: Environment) {
-        self.session = URLSession(configuration: .default)
         self.environment = environment
     }
     // MARK: - Methods
@@ -47,7 +44,7 @@ extension NetworkDispatcher: Dispatcher {
             }.resume()
     }
     func prepare(request: Request) throws -> URLRequest {
-        let fullUrl = "\(environment.host)/\(request.path)"
+        let fullUrl = "\(environment.host)/\(request.path ?? "")"
         guard let url = URL(string: fullUrl) else {
             throw NetworkErrors.badInput
         }
@@ -60,7 +57,7 @@ extension NetworkDispatcher: Dispatcher {
                 let body = try? JSONEncoder().encode(params)
                 apiRequest.httpBody = body
             } else {
-                throw NetworkErrors.withoutParams
+                throw NetworkErrors.invalidParams
             }
         case .url(let params):
             if let params = params {
@@ -71,12 +68,12 @@ extension NetworkDispatcher: Dispatcher {
                 components.queryItems = queryParams
                 apiRequest.url = components.url
             } else {
-                throw NetworkErrors.withoutParams
+                throw NetworkErrors.invalidParams
             }
         }
 
         // 헤더 값 설정
-        environment.headerDic.forEach { apiRequest.setValue("\($0.value)", forHTTPHeaderField: $0.key) }
+        environment.headerDic?.forEach { apiRequest.setValue("\($0.value)", forHTTPHeaderField: $0.key) }
         request.headerDic?.forEach { apiRequest.setValue("\($0.value)", forHTTPHeaderField: $0.key) }
         apiRequest.httpMethod = request.method.rawValue
         return apiRequest

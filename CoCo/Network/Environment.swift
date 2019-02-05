@@ -12,9 +12,12 @@ struct Environment {
     // MARK: - Properties
     // base URL
     var host: String
-    var headerDic: [String: Any] = [:]
+    var headerDic: [String: Any]?
 
     // MARK: - Initializer
+    init(host: String) {
+        self.host = host
+    }
     init(host: String, headerDic: [String: Any]) {
         self.host = host
         self.headerDic = headerDic

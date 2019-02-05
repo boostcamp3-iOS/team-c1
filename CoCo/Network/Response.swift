@@ -11,7 +11,7 @@ import Foundation
 enum NetworkErrors: Error {
     case badInput
     case noData
-    case withoutParams
+    case invalidParams
     case invalidComponent
     case failParsing
 }

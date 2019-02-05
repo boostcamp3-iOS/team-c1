@@ -11,25 +11,20 @@ import Foundation
 
 // MockData
 class MockShoppingNetworkManager: NetworkManagerType {
-    typealias Params = String?
-
-    // MARK: - Private Properties
-    var mockData: String!
 
     // MARK: - Initializer
-    required init() {
-        print("mockData")
-    }
+    static let shared = MockShoppingNetworkManager()
+    private init() { }
 
     // MARK: - Methods
-    func getAPIData(_ params: String?, completion: @escaping (APIResponseShoppingData) -> Void, errorHandler: @escaping () -> Void) {
-        let data = Data(mockData.utf8)
+    func getAPIData(_ params: ShoppingParams, completion: @escaping (APIResponseShoppingData) -> Void, errorHandler: @escaping (Error) -> Void) {
+        let data = Data(MockShoppingNetworkManagerDummy.successDummyString.utf8)
         let responseAPI = ResponseAPI()
         do {
             try responseAPI.parse(data: data, completion: completion)
         } catch let err {
             print(err)
-            errorHandler()
+            errorHandler(err)
         }
     }
 }
