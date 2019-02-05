@@ -16,34 +16,22 @@ enum SortOption: String {
 }
 
 struct ShoppingParams {
+
+    // MARK: - Properties
     var search: String
     var count: Int = 10
     var start: Int = 1
     var sort: SortOption = .similar
 
+    // MARK: - Initializer
     init(search: String) {
         self.search = search
     }
-
     init(search: String, count: Int, start: Int, sort: SortOption) {
         self.search = search
         self.count = count
         self.start = start
         self.sort = sort
-    }
-}
-
-protocol NetworkManagerType {
-    func getAPIData(_ params: ShoppingParams, completion: @escaping (APIResponseShoppingData) -> Void, errorHandler: @escaping (Error) -> Void)
-}
-
-extension NetworkManagerType {
-    fileprivate func dispatchAPI(in dispatcher: Dispatcher, request: APIRequest, completion: @escaping (Data) -> Void) throws {
-        do {
-            try dispatcher.execute(request: request) { response in
-                completion(response)
-            }
-        }
     }
 }
 

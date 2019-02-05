@@ -23,7 +23,8 @@
 		3061893F2200342B005280B8 /* CoreDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3061893E2200342B005280B8 /* CoreDataTests.swift */; };
 		3061894D2200370D005280B8 /* NetworkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3061894C2200370D005280B8 /* NetworkTests.swift */; };
 		30618969220037A0005280B8 /* AlgorithmTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30618968220037A0005280B8 /* AlgorithmTests.swift */; };
-		30B8A62A21FAA3E90048EB61 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B8A62921FAA3E90048EB61 /* NetworkManager.swift */; };
+		308E0471220939F4001036ED /* NetworkManagerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 308E0470220939F4001036ED /* NetworkManagerType.swift */; };
+		30B8A62A21FAA3E90048EB61 /* ShoppingNetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B8A62921FAA3E90048EB61 /* ShoppingNetworkManager.swift */; };
 		30B8A62C21FAA4020048EB61 /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B8A62B21FAA4020048EB61 /* Request.swift */; };
 		30B8A63021FAA40F0048EB61 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B8A62F21FAA40F0048EB61 /* Model.swift */; };
 		30DBFF0E21FECAFE0094D559 /* APIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30DBFF0D21FECAFE0094D559 /* APIRequest.swift */; };
@@ -101,7 +102,8 @@
 		30618966220037A0005280B8 /* AlgorithmTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AlgorithmTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		30618968220037A0005280B8 /* AlgorithmTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgorithmTests.swift; sourceTree = "<group>"; };
 		3061896A220037A0005280B8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		30B8A62921FAA3E90048EB61 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
+		308E0470220939F4001036ED /* NetworkManagerType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManagerType.swift; sourceTree = "<group>"; };
+		30B8A62921FAA3E90048EB61 /* ShoppingNetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoppingNetworkManager.swift; sourceTree = "<group>"; };
 		30B8A62B21FAA4020048EB61 /* Request.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
 		30B8A62F21FAA40F0048EB61 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		30DBFF0D21FECAFE0094D559 /* APIRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIRequest.swift; sourceTree = "<group>"; };
@@ -268,7 +270,8 @@
 				30DBFF0F21FECB160094D559 /* Environment.swift */,
 				30DBFF1121FECB440094D559 /* Dispatcher.swift */,
 				30DBFF1321FECB5E0094D559 /* Response.swift */,
-				30B8A62921FAA3E90048EB61 /* NetworkManager.swift */,
+				30B8A62921FAA3E90048EB61 /* ShoppingNetworkManager.swift */,
+				308E0470220939F4001036ED /* NetworkManagerType.swift */,
 				30B8A62F21FAA40F0048EB61 /* Model.swift */,
 			);
 			path = Network;
@@ -512,7 +515,7 @@
 				30DBFF1221FECB440094D559 /* Dispatcher.swift in Sources */,
 				30DBFF0E21FECAFE0094D559 /* APIRequest.swift in Sources */,
 				30DBFF1421FECB5E0094D559 /* Response.swift in Sources */,
-				30B8A62A21FAA3E90048EB61 /* NetworkManager.swift in Sources */,
+				30B8A62A21FAA3E90048EB61 /* ShoppingNetworkManager.swift in Sources */,
 				106C603B21F6AA9200F0AFE6 /* ViewController.swift in Sources */,
 				30B8A62C21FAA4020048EB61 /* Request.swift in Sources */,
 				1039DC8221FAD5EB00E9EB64 /* Keyword.swift in Sources */,
@@ -533,6 +536,7 @@
 				510F31CB21FEC76B0025D929 /* CoreDataManager.swift in Sources */,
 				510F31C221FD62770025D929 /* CoreDataEntity.swift in Sources */,
 				51A870B3220016DC00089CC4 /* MyGoods+CoreDataClass.swift in Sources */,
+				308E0471220939F4001036ED /* NetworkManagerType.swift in Sources */,
 				1051076021FCB0CA005F14B6 /* String+SearchWords.swift in Sources */,
 				10366CBC220029F2009579FF /* AlgorithmProtocol.swift in Sources */,
 				10366CB8220004E1009579FF /* AlgorithmManager.swift in Sources */,
