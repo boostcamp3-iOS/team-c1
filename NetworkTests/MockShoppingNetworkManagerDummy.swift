@@ -6,15 +6,18 @@
 //  Copyright © 2019 Team CoCo. All rights reserved.
 //
 
+@testable import CoCo
 import Foundation
 
 class MockShoppingNetworkManagerDummy {
+
+    static let params = ShoppingParams.init(search: "강아지 옷")
     static let successDummyString: String = """
     {
     "lastBuildDate": "Mon, 28 Jan 2019 20:25:32 +0900",
     "total": 825811,
     "start": 1,
-    "display": 10,
+    "display": 3,
     "items": [
     {
     "title": "편안한 <b>강아지옷</b>",
