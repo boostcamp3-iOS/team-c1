@@ -12,7 +12,7 @@ import UIKit
 protocol CoreDataManagerType {
     // MARK: - Method
     func insert<T: CoreDataStructEntity>(_ coreDataStructType: T) throws -> Bool
-    func fetchObjects(pet: String) throws -> [CoreDataStructEntity]?
+    func fetchObjects(pet: String?) throws -> [CoreDataStructEntity]?
     func updateObject<T: CoreDataStructEntity>(_ coreDataStructType: T) throws -> Bool
     func deleteObject<T: CoreDataStructEntity>(_ coreDataStructType: T) throws -> Bool
 }
@@ -20,11 +20,14 @@ protocol CoreDataManagerType {
 protocol MyGoodsCoreDataManagerType: CoreDataManagerType {
     func fetchFavoriteGoods(pet: String) throws -> [MyGoodsData]?
     func fetchLatestGoods(pet: String) throws -> [MyGoodsData]?
+    func deleteFavoriteAllObjects(pet: String, isFavorite: Bool) throws -> Bool
+    func deleteLatestAllObjects(pet: String, isLatest: Bool) throws -> Bool
 }
 
 protocol PetKeywordCoreDataManagerType: CoreDataManagerType {
     func fetchOnlyKeyword(pet: String) throws -> [String]?
     func fetchOnlyPet(pet: String) throws -> String?
+    func deleteAllObjects(pet: String) throws -> Bool
 }
 
 protocol SearchWordCoreDataManagerType: CoreDataManagerType {

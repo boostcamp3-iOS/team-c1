@@ -9,14 +9,14 @@
 import Foundation
 import CoreData
 
-class SearchKeywordCoreDataManager: SearchWordCoreDataManagerType,  CoreDataManagerFunctionImplementType {
+class SearchKeywordCoreDataManager: SearchWordCoreDataManagerType, CoreDataManagerFunctionImplementType {
     // MARK: - Methodes
     // Insert Method
-    @discardableResult func insert<T>(_ coreDataType: T) throws -> Bool where T: CoreDataStructEntity {
-        switch coreDataType {
+    @discardableResult func insert<T>(_ coreDataStructType: T) throws -> Bool where T: CoreDataStructEntity {
+        switch coreDataStructType {
         case is SearchWordData:
             guard let context = context else { return false }
-            guard let searchKeywordData = coreDataType as? SearchWordData else {
+            guard let searchKeywordData = coreDataStructType as? SearchWordData else {
                 return false
             }
 
@@ -48,12 +48,11 @@ class SearchKeywordCoreDataManager: SearchWordCoreDataManagerType,  CoreDataMana
 
     // MARK: - Fetch Method
     // Fetch All of SearchKeyWordData
-    func fetchObjects(pet: String) throws -> [CoreDataStructEntity]? {
+    func fetchObjects(pet: String? = nil) throws -> [CoreDataStructEntity]? {
         guard let context = context else { return nil }
         var searchWordDatas = [SearchWordData]()
         // 검색날짜별로 오름차순
         let sort = NSSortDescriptor(key: #keyPath(SearchWord.date), ascending: true)
-        let predicate = NSPredicate(format: "pet = %@", pet)
         let request: NSFetchRequest<SearchWord>
         
         if #available(iOS 10.0, *) {
@@ -64,8 +63,11 @@ class SearchKeywordCoreDataManager: SearchWordCoreDataManagerType,  CoreDataMana
             request = NSFetchRequest(entityName: entityName)
         }
         
+        if pet != nil {
+            let predicate = NSPredicate(format: "pet = %@", pet!)
+            request.predicate = predicate
+        }
         request.returnsObjectsAsFaults = false
-        request.predicate = predicate
         request.sortDescriptors = [sort]
         
         let objects = try context.fetch(request)
@@ -199,7 +201,6 @@ class SearchKeywordCoreDataManager: SearchWordCoreDataManagerType,  CoreDataMana
         } catch {
             throw CoreDataError.delete(message: "Can't delete data")
         }
-        return false
     }
 }
 

@@ -56,10 +56,9 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
 
     // MARK: - Fetch Methodes
     // Fetch All MyGoods Data - MyGoods의 모든 데이터를 가져옴
-    func fetchObjects(pet: String) throws -> [CoreDataStructEntity]? {
+    func fetchObjects(pet: String? = nil) throws -> [CoreDataStructEntity]? {
         guard let context = context else { return nil }
         let sort = NSSortDescriptor(key: #keyPath(MyGoods.date), ascending: true)
-        let predicate = NSPredicate(format: "pet = %@", pet)
         var myGoodsDatas: [MyGoodsData] = []
         let request: NSFetchRequest<MyGoods>
         
@@ -71,8 +70,11 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
             request = NSFetchRequest(entityName: entityName)
         }
         
+        if pet != nil {
+            let predicate = NSPredicate(format: "pet = %@", pet!)
+            request.predicate = predicate
+        }
         request.returnsObjectsAsFaults = false
-        request.predicate = predicate
         request.sortDescriptors = [sort]
         
         let objects = try context.fetch(request)
@@ -270,6 +272,40 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
             }
         default:
             return false
+        }
+    }
+    
+    @discardableResult func deleteFavoriteAllObjects(pet: String, isFavorite: Bool) throws -> Bool {
+        guard let context = context else { return false }
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "MyGoods")
+        let predicate = NSPredicate(format: "pet = %@ AND isFavorite = true", pet)
+        
+        fetchRequest.predicate = predicate
+        let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+        
+        do {
+            try context.execute(batchDeleteRequest)
+            return true
+            
+        } catch {
+            throw CoreDataError.delete(message: "Can't delete data")
+        }
+    }
+    
+    @discardableResult func deleteLatestAllObjects(pet: String, isLatest: Bool) throws -> Bool {
+        guard let context = context else { return false }
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "MyGoods")
+        let predicate = NSPredicate(format: "pet = %@ AND isLatest = true", pet)
+        
+        fetchRequest.predicate = predicate
+        let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+        
+        do {
+            try context.execute(batchDeleteRequest)
+            return true
+            
+        } catch {
+            throw CoreDataError.delete(message: "Can't delete data")
         }
     }
     

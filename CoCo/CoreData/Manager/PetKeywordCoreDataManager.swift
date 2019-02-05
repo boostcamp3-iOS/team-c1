@@ -10,7 +10,7 @@ import Foundation
 import CoreData
 
 class PetKeywordCoreDataManager: PetKeywordCoreDataManagerType, CoreDataManagerFunctionImplementType {
-   
+    
     // MARK: - Methodes
     // MARK: - Insert Method
     @discardableResult func insert<T: CoreDataStructEntity>(_ coreDataStructType: T) throws -> Bool {
@@ -58,10 +58,9 @@ class PetKeywordCoreDataManager: PetKeywordCoreDataManagerType, CoreDataManagerF
     // MARK: - Fetch Methodes
     // Fetch All Data - PetKeyword의 모든 데이터 정보를 가져옴
     // 데이터 타입(Keyword, Pet)변경해서 리턴
-    func fetchObjects(pet: String) throws -> [CoreDataStructEntity]? {
+    func fetchObjects(pet: String? = nil) throws -> [CoreDataStructEntity]? {
         guard let context = context else { return nil }
         var petKeywordDatas = [PetKeywordData]()
-        let predicate = NSPredicate(format: "pet = %@", pet)
         let request: NSFetchRequest<PetKeyword>
         
         if #available(iOS 10.0, *) {
@@ -72,8 +71,11 @@ class PetKeywordCoreDataManager: PetKeywordCoreDataManagerType, CoreDataManagerF
             request = NSFetchRequest(entityName: entityName)
         }
         
+        if pet != nil {
+            let predicate = NSPredicate(format: "pet = %@", pet!)
+            request.predicate = predicate
+        }
         request.returnsObjectsAsFaults = false
-        request.predicate = predicate
         let objects = try context.fetch(request)
         
         if objects.count > 0 {
@@ -172,6 +174,23 @@ class PetKeywordCoreDataManager: PetKeywordCoreDataManagerType, CoreDataManagerF
             
         default:
             return false
+        }
+    }
+    
+    @discardableResult func deleteAllObjects(pet: String) throws -> Bool {
+        guard let context = context else { return false }
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "PetKeyword")
+        let predicate = NSPredicate(format: "pet = %@", pet)
+        
+        fetchRequest.predicate = predicate
+        let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+        
+        do {
+            try context.execute(batchDeleteRequest)
+            return true
+            
+        } catch {
+            throw CoreDataError.delete(message: "Can't delete data")
         }
     }
 }
