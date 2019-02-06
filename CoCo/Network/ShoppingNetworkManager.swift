@@ -45,6 +45,15 @@ class ShoppingNetworkManager: NetworkManagerType {
     private init() { }
 
     // MARK: - Methods
+    /**
+     API 데이터를 서버에 요청하고 가져온다.
+     
+     - Author: [이호찬](https://github.com/LHOCHAN)
+     - Parameters:
+        - params: 서버에 넘겨줄 파라미터
+        - completion: 서버에서 데이터를 받아와 성공적으로 파싱까지 완료 했을경우 호출된다.
+        - errorHandler: 함수를 실행하는중 에러가 발생했을 경우 호출된다.
+     */
     func getAPIData(_ params: ShoppingParams, completion: @escaping (APIResponseShoppingData) -> Void, errorHandler: @escaping (Error) -> Void) {
         let dispatcher = NetworkDispatcher(environment: environment).makeNetworkProvider()
         let responseAPI = ResponseAPI()

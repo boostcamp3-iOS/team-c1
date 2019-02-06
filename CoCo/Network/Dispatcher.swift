@@ -9,7 +9,23 @@
 import Foundation
 
 protocol Dispatcher {
+    /**
+     dataTask를 실행하여 Data를 넘겨준다.
+     
+     - Author: [이호찬](https://github.com/LHOCHAN)
+     - Parameters:
+        - request: path, method, parameter, header 등이 포함된 프로토콜
+        - completion: 데이터를 성공적으로 불러올 시 호출된다.
+                        data 서버에서 반환된 Data
+     */
     func execute(request: Request, completion: @escaping (Data) -> Void) throws
+    /**
+     URLRequest를 생성하여 파라미터와 헤더를 설정한다.
+     
+     - Author: [이호찬](https://github.com/LHOCHAN)
+     - Parameters:
+        - request: path, method, parameter, header 등이 포함된 프로토콜
+     */
     func prepare(request: Request) throws -> URLRequest
 
     init(environment: Environment)
@@ -25,8 +41,13 @@ class NetworkDispatcher {
     }
 
     // MARK: - Methods
+    /**
+     NetworkDispatcher 클래스를 Dispatcher 프로토콜 타입으로 변환한다.
+     
+     - Author: [이호찬](https://github.com/LHOCHAN)
+     */
     func makeNetworkProvider() -> Dispatcher {
-        return NetworkDispatcher(environment: environment)
+        return self
     }
 }
 
