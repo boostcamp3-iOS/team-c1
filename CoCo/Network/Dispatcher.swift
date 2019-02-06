@@ -16,7 +16,6 @@ protocol Dispatcher {
 }
 
 class NetworkDispatcher {
-
     // MARK: - Private Properties
     private var environment: Environment
 
@@ -24,6 +23,7 @@ class NetworkDispatcher {
     required init(environment: Environment) {
         self.environment = environment
     }
+
     // MARK: - Methods
     func makeNetworkProvider() -> Dispatcher {
         return NetworkDispatcher(environment: environment)
@@ -43,33 +43,24 @@ extension NetworkDispatcher: Dispatcher {
             completion(data)
             }.resume()
     }
+
     func prepare(request: Request) throws -> URLRequest {
         let fullUrl = "\(environment.host)/\(request.path ?? "")"
-        guard let url = URL(string: fullUrl) else {
-            throw NetworkErrors.badInput
-        }
+        guard let url = URL(string: fullUrl) else { throw NetworkErrors.badInput }
         var apiRequest = URLRequest(url: url)
 
         // 파라미터 설정
         switch request.parameters {
         case .body(let params):
-            if let params = params {
-                let body = try? JSONEncoder().encode(params)
-                apiRequest.httpBody = body
-            } else {
-                throw NetworkErrors.invalidParams
-            }
+            guard let params = params else { throw NetworkErrors.invalidParams }
+            let body = try JSONEncoder().encode(params)
+            apiRequest.httpBody = body
         case .url(let params):
-            if let params = params {
-                let queryParams = params.map { URLQueryItem(name: $0.key, value: $0.value) }
-                guard var components = URLComponents(string: fullUrl) else {
-                    throw NetworkErrors.invalidComponent
-                }
-                components.queryItems = queryParams
-                apiRequest.url = components.url
-            } else {
-                throw NetworkErrors.invalidParams
-            }
+            guard let params = params else { throw NetworkErrors.invalidParams }
+            let queryParams = params.map { URLQueryItem(name: $0.key, value: $0.value) }
+            guard var components = URLComponents(string: fullUrl) else { throw NetworkErrors.invalidComponent }
+            components.queryItems = queryParams
+            apiRequest.url = components.url
         }
 
         // 헤더 값 설정

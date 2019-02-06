@@ -18,6 +18,7 @@ struct Environment {
     init(host: String) {
         self.host = host
     }
+
     init(host: String, headerDic: [String: Any]) {
         self.host = host
         self.headerDic = headerDic

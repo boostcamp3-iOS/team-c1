@@ -16,7 +16,6 @@ enum SortOption: String {
 }
 
 struct ShoppingParams {
-
     // MARK: - Properties
     var search: String
     var count: Int = 10
@@ -27,6 +26,7 @@ struct ShoppingParams {
     init(search: String) {
         self.search = search
     }
+
     init(search: String, count: Int, start: Int, sort: SortOption) {
         self.search = search
         self.count = count
@@ -36,7 +36,6 @@ struct ShoppingParams {
 }
 
 class ShoppingNetworkManager: NetworkManagerType {
-
     // MARK: - Private Properties
     private let host = "https://openapi.naver.com/v1/search/shop.json?"
     lazy private var environment = Environment(host: host)

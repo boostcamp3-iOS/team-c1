@@ -14,10 +14,8 @@ protocol NetworkManagerType {
 
 extension NetworkManagerType {
     func dispatchAPI(in dispatcher: Dispatcher, request: APIRequest, completion: @escaping (Data) -> Void) throws {
-        do {
-            try dispatcher.execute(request: request) { response in
-                completion(response)
-            }
+        try dispatcher.execute(request: request) { response in
+            completion(response)
         }
     }
 }
