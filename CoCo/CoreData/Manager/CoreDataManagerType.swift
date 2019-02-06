@@ -35,8 +35,3 @@ protocol SearchWordCoreDataManagerType: CoreDataManagerType {
     func updateObject(with searchWord: String, pet: String) throws -> Bool
     func deleteAllObjects(pet: String) throws -> Bool
 }
-
-
-
-
-

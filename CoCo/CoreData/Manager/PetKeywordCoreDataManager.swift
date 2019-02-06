@@ -10,8 +10,6 @@ import Foundation
 import CoreData
 
 class PetKeywordCoreDataManager: PetKeywordCoreDataManagerType, CoreDataManagerFunctionImplementType {
-    
-    // MARK: - Methodes
     // MARK: - Insert Method
     @discardableResult func insert<T: CoreDataStructEntity>(_ coreDataStructType: T) throws -> Bool {
         switch coreDataStructType {
@@ -25,7 +23,7 @@ class PetKeywordCoreDataManager: PetKeywordCoreDataManagerType, CoreDataManagerF
                 // PetKeyword Entity는 동물별로 데이터가 하나만 존재해야하기 때문에 데이터가 존재하는 지 확인
                 guard let objects = try fetchObjects(pet: petKeywordData.pet) else { return false }
                 // 데이터가 존재하는 경우 데이터 삭제 후 추가 : 데이터는 항상 하나만 존재해야 하기 때문
-                if objects.count > 0 {
+                if !objects.isEmpty {
                     if let first = objects.first {
                         guard let objectID = first.objectID else { return false }
                         let object = context.object(with: objectID)
@@ -47,12 +45,11 @@ class PetKeywordCoreDataManager: PetKeywordCoreDataManagerType, CoreDataManagerF
                 }
                 return true
             } catch let error as NSError {
-                print("\(error)")
+                throw CoreDataError.fetch(message: "Can't fetch data .: \(error)")
             }
         default:
-            break
+             return false
         }
-        return false
     }
 
     // MARK: - Fetch Methodes
@@ -71,14 +68,14 @@ class PetKeywordCoreDataManager: PetKeywordCoreDataManagerType, CoreDataManagerF
             request = NSFetchRequest(entityName: entityName)
         }
         
-        if pet != nil {
-            let predicate = NSPredicate(format: "pet = %@", pet!)
+        if let pet = pet {
+            let predicate = NSPredicate(format: "pet = %@", pet)
             request.predicate = predicate
         }
         request.returnsObjectsAsFaults = false
         let objects = try context.fetch(request)
         
-        if objects.count > 0 {
+        if !objects.isEmpty {
             for object in objects {
                 var petKeyword = PetKeywordData()
                 guard let keywords = object.keywords as? [String] else {
@@ -107,26 +104,22 @@ class PetKeywordCoreDataManager: PetKeywordCoreDataManagerType, CoreDataManagerF
             keywords = petKeywordData.keywords
             return keywords
         } catch let error as NSError {
-            print(error)
+            throw CoreDataError.fetch(message: "Can not fetch data \(error)")
         }
-        return nil
     }
 
     // Fetch Only Pet
     func fetchOnlyPet(pet: String) throws -> String? {
-        var pet = ""
         do {
             guard let objects = try fetchObjects(pet: pet) else {
                 throw CoreDataError.fetch(message: "PetKeyword Entity has not  data, So can not fetch data")
             }
             guard let petKeywordDatas = objects as? [PetKeywordData] else { return nil }
             guard let petKeywordData = petKeywordDatas.first else { return nil }
-            pet = petKeywordData.pet
-            return pet
+            return petKeywordData.pet
         } catch let error as NSError {
-            print(error)
+            throw CoreDataError.fetch(message: "Can not fetch data \(error)")
         }
-        return nil
     }
 
     // MARK: - Update Method
@@ -154,7 +147,6 @@ class PetKeywordCoreDataManager: PetKeywordCoreDataManagerType, CoreDataManagerF
 
     // MARK: - Delete Method
     // Delete PetKeyword Data
-    
     @discardableResult func deleteObject<T>(_ coreDataStructType: T) throws -> Bool where T : CoreDataStructEntity {
         switch coreDataStructType {
         case is PetKeywordData:
@@ -168,13 +160,11 @@ class PetKeywordCoreDataManager: PetKeywordCoreDataManagerType, CoreDataManagerF
                 afterOperation(context: context)
                 print("Delete Successive")
                 return true
-            } else {
-                throw CoreDataError.delete(message: "Can not find this data(\(petKeywordData)), So can not delete")
             }
-            
         default:
             return false
         }
+        return false
     }
     
     @discardableResult func deleteAllObjects(pet: String) throws -> Bool {

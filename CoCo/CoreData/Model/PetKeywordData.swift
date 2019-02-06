@@ -10,11 +10,10 @@ import Foundation
 import CoreData
 
 struct PetKeywordData: CoreDataStructEntity {
-    var objectID: NSManagedObjectID?
     // MARK: - Propertise
+    var objectID: NSManagedObjectID?
     var keywords: [String] = []
     var pet = ""
-    
     
     init() { }
     

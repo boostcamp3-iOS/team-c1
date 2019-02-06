@@ -11,12 +11,10 @@ import Foundation
 import CoreData
 
 extension PetKeyword {
-
     @nonobjc public class func fetchRequest() -> NSFetchRequest<PetKeyword> {
         return NSFetchRequest<PetKeyword>(entityName: "PetKeyword")
     }
 
     @NSManaged public var pet: String
     @NSManaged public var keywords: NSObject
-
 }

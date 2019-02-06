@@ -10,7 +10,4 @@
 import Foundation
 import CoreData
 
-
-public class SearchWord: NSManagedObject {
-
-}
+public class SearchWord: NSManagedObject { }

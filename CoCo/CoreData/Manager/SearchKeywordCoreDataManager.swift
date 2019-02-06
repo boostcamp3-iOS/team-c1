@@ -10,7 +10,6 @@ import Foundation
 import CoreData
 
 class SearchKeywordCoreDataManager: SearchWordCoreDataManagerType, CoreDataManagerFunctionImplementType {
-    // MARK: - Methodes
     // Insert Method
     @discardableResult func insert<T>(_ coreDataStructType: T) throws -> Bool where T: CoreDataStructEntity {
         switch coreDataStructType {
@@ -19,12 +18,10 @@ class SearchKeywordCoreDataManager: SearchWordCoreDataManagerType, CoreDataManag
             guard let searchKeywordData = coreDataStructType as? SearchWordData else {
                 return false
             }
-
             do {
                 // SearchKeyword Entity에 검색에가 존재하는 지 확인
-                let object = fetchWord(searchKeywordData.searchWord, pet: searchKeywordData.pet)
                 // 검색어가 존재하면 업데이트
-                if object != nil {
+                if fetchWord(searchKeywordData.searchWord, pet: searchKeywordData.pet) != nil {
                     print("Alreay stored, So Update")
                     try updateObject(searchKeywordData)
                     // 존재하지 않으면 검색어 데이터 추가
@@ -38,12 +35,11 @@ class SearchKeywordCoreDataManager: SearchWordCoreDataManagerType, CoreDataManag
                 }
                 return true
             } catch let error as NSError {
-                print("insert error \(error)")
+                throw CoreDataError.update(message: "Can't not update \(error)")
             }
         default:
-            break
+            return false
         }
-        return false
     }
 
     // MARK: - Fetch Method
@@ -63,8 +59,8 @@ class SearchKeywordCoreDataManager: SearchWordCoreDataManagerType, CoreDataManag
             request = NSFetchRequest(entityName: entityName)
         }
         
-        if pet != nil {
-            let predicate = NSPredicate(format: "pet = %@", pet!)
+        if let pet = pet {
+            let predicate = NSPredicate(format: "pet = %@", pet)
             request.predicate = predicate
         }
         request.returnsObjectsAsFaults = false
@@ -72,7 +68,7 @@ class SearchKeywordCoreDataManager: SearchWordCoreDataManagerType, CoreDataManag
         
         let objects = try context.fetch(request)
         
-        if objects.count > 0 {
+        if !objects.isEmpty {
             for object in objects {
                 var searchWordData = SearchWordData()
                 searchWordData.objectID = object.objectID
@@ -102,13 +98,13 @@ class SearchKeywordCoreDataManager: SearchWordCoreDataManagerType, CoreDataManag
             }
             return searchArrays
         } catch let error as NSError {
-            print("fetch error \(error)")
+            throw CoreDataError.fetch(message: "Can't fetch data \(error)")
         }
         return nil
     }
 
     // Fetch SearchKeyWordData's SearchWord - 검색 데이터를 추가하기전에, 기존에 동일한 검색어가 존재하는 지 확인하기 위해 구현
-    private func fetchWord(_ searchKeyword: String, pet: String) -> SearchWordData? {
+    private func fetchWord(_ searchKeyword: String, pet: String) throws -> SearchWordData? {
         var searchWordData: SearchWordData?
         do {
             guard let objects = try fetchObjects(pet: pet) else {
@@ -124,14 +120,13 @@ class SearchKeywordCoreDataManager: SearchWordCoreDataManagerType, CoreDataManag
                 }
             }
         } catch let error as NSError {
-            print("\(error)")
+            throw CoreDataError.fetch(message: "Can't fetch data \(error)")
         }
         return searchWordData
     }
 
     // MARK: - Update Method
     // Update SearchKeyword Data
-    
     @discardableResult func updateObject<T>(_ coreDataStructType: T) throws -> Bool {
         switch coreDataStructType {
         case is SearchWordData:
@@ -146,20 +141,22 @@ class SearchKeywordCoreDataManager: SearchWordCoreDataManagerType, CoreDataManag
             object.date = searchWordData.date
             object.searchWord = searchWordData.searchWord
             afterOperation(context: context)
+            return true
             print("Update Successive => \(object)")
         default:
             return false
         }
-        return false
     }
     
     @discardableResult func updateObject(with searchWord: String, pet: String) throws -> Bool {
-        let object = fetchWord(searchWord, pet: pet)
-        if var searchWordObject = object {
-            searchWordObject.date = searchWordObject.createDate()
-            return true
-        } else {
-            return false
+        do {
+            let object = try fetchWord(searchWord, pet: pet)
+            if var searchWordObject = object {
+                searchWordObject.date = searchWordObject.createDate()
+                return true
+            }
+        } catch let error as NSError {
+            throw CoreDataError.fetch(message: "Can't fetch data \(error)")
         }
     }
   
@@ -178,8 +175,6 @@ class SearchKeywordCoreDataManager: SearchWordCoreDataManagerType, CoreDataManag
                 afterOperation(context: context)
                 print("Delete Successive")
                 return true
-            } else {
-                throw CoreDataError.delete(message: "Can not find this data(\(searchKeywordData)), So can not delete")
             }
         default:
             return false

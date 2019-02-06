@@ -25,11 +25,7 @@ extension CoreDataManagerFunctionImplementType {
         return appDelegate
     }
     var context: NSManagedObjectContext? {
-        guard let appdelegate = UIApplication.shared.delegate as? AppDelegate else {
-            return nil
-        }
-        let context = appdelegate.persistentContainer.viewContext
-        return context
+        return appDelegate?.persistentContainer.viewContext
     }
 }
 

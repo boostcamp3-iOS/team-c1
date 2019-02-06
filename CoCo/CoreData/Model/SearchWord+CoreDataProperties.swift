@@ -12,7 +12,6 @@ import CoreData
 
 
 extension SearchWord {
-
     @nonobjc public class func fetchRequest() -> NSFetchRequest<SearchWord> {
         return NSFetchRequest<SearchWord>(entityName: "SearchWord")
     }
@@ -20,5 +19,4 @@ extension SearchWord {
     @NSManaged public var date: String?
     @NSManaged public var searchWord: String
     @NSManaged public var pet: String
-
 }

@@ -10,9 +10,7 @@
 import Foundation
 import CoreData
 
-
 extension MyGoods {
-
     @nonobjc public class func fetchRequest() -> NSFetchRequest<MyGoods> {
         return NSFetchRequest<MyGoods>(entityName: "MyGoods")
     }
@@ -28,5 +26,4 @@ extension MyGoods {
     @NSManaged public var shoppingmall: String
     @NSManaged public var title: String
     @NSManaged public var pet: String
-
 }

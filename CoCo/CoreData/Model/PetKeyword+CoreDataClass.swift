@@ -10,6 +10,4 @@
 import Foundation
 import CoreData
 
-public class PetKeyword: NSManagedObject {
-
-}
+public class PetKeyword: NSManagedObject { }

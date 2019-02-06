@@ -11,7 +11,6 @@ import UIKit
 import CoreData
 
 class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctionImplementType {
-    
     // MARK: - Methodes
     // MARK: - Insert Method
     @discardableResult func insert<T: CoreDataStructEntity>(_ coreDataStructType: T) throws -> Bool  {
@@ -23,10 +22,8 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
             }
             // 삽입하려는 데이터와 동일한 데이터가 MyGoods Entity에 존재하는 지 확인하기 위해
             // 삽입하려는 데이터의 productID를 Entity에 존재하는 지 확인
-            let fetchObject = fetchProductId(productId: myGoodsData.productId)
-
             // 삽입하려는 데이터의 productID와 동일한 데이터가 없는 경우 삽입을 진행
-            if fetchObject == nil {
+            if fetchProductId(productId: myGoodsData.productId) != nil {
                 let object = MyGoods()
                 object.date =  myGoodsData.date ?? ""
                 object.title = myGoodsData.title
@@ -49,9 +46,8 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
                 return true
                 }
         default:
-            break
+            return false
         }
-        return false
     }
 
     // MARK: - Fetch Methodes
@@ -70,8 +66,8 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
             request = NSFetchRequest(entityName: entityName)
         }
         
-        if pet != nil {
-            let predicate = NSPredicate(format: "pet = %@", pet!)
+        if let pet = pet {
+            let predicate = NSPredicate(format: "pet = %@", pet)
             request.predicate = predicate
         }
         request.returnsObjectsAsFaults = false
@@ -79,7 +75,7 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
         
         let objects = try context.fetch(request)
         
-        if objects.count > 0 {
+        if !objects.isEmpty {
             for object in objects {
                 var myGoodsData = MyGoodsData()
                 myGoodsData.date = object.date
@@ -104,9 +100,7 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
     
     // Fetch Favorite Datas - 즐겨찾기 한 모든 데이터를 가져옴
     func fetchFavoriteGoods(pet: String) throws -> [MyGoodsData]? {
-        guard let context = context else {
-            return nil
-        }
+        guard let context = context else { return nil }
         // 즐겨찾기 한 상품 오름차순으로 정렬
         let sort = NSSortDescriptor(key: #keyPath(MyGoods.date), ascending: true)
         let predicate = NSPredicate(format: "pet = %@ AND isFavorite = true", pet)
@@ -127,7 +121,7 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
         
         let objects = try context.fetch(request)
         
-        if objects.count > 0 {
+        if !objects.isEmpty {
             for object in objects {
                 var myGoodsData = MyGoodsData()
                 myGoodsData.date = object.date
@@ -172,7 +166,7 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
         
         let objects = try context.fetch(request)
         
-        if objects.count > 0 {
+        if !objects.isEmpty {
             for object in objects {
                 var myGoodsData = MyGoodsData()
                 myGoodsData.date = object.date
@@ -267,12 +261,11 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
                 context.delete(deleteObjet)
                 afterOperation(context: context)
                 return true
-            } else {
-               throw CoreDataError.delete(message: "Can not found data, So can not delete.")
             }
         default:
             return false
         }
+        return false
     }
     
     @discardableResult func deleteFavoriteAllObjects(pet: String, isFavorite: Bool) throws -> Bool {
@@ -308,8 +301,4 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
             throw CoreDataError.delete(message: "Can't delete data")
         }
     }
-    
 }
-
-
-
