@@ -9,8 +9,8 @@
 import UIKit
 import CoreData
 
+// MARK: - CoreDataManagerFunctionImplementType
 protocol CoreDataManagerFunctionImplementType {
-    // MARK: - Properties
     var appDelegate: AppDelegate? { get }
     var context: NSManagedObjectContext? { get }
     func afterOperation(context: NSManagedObjectContext?)
@@ -31,7 +31,12 @@ extension CoreDataManagerFunctionImplementType {
 
 extension CoreDataManagerFunctionImplementType {
     // MARK: - Util Method
-    // 데이터의 연산결과가 반영되게 하는 함수
+    /**
+     코어데이터 연산 후 데이터들이 반영되거나 수정되기전 상태로 돌아가게 하는 메서드
+     - Author: [강준영](https://github.com/lavaKangJun)
+     - Parameter :
+        - context: managedObject를 create, fetch, save할 때 사용되는 객체
+     */
     func afterOperation(context: NSManagedObjectContext?) {
         guard let context = context else { return }
         do {

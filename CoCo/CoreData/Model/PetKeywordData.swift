@@ -15,6 +15,7 @@ struct PetKeywordData: CoreDataStructEntity {
     var keywords: [String] = []
     var pet = ""
     
+    // MARK: - Initializer
     init() { }
     
     init(pet: String, keywords: [String]) {

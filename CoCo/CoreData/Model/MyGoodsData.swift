@@ -25,8 +25,8 @@ struct MyGoodsData: CoreDataStructEntity {
     var pet = ""
     var shoppingmall: String = ""
     
+    //MARK: Initializer
     init() {
-        self.date = createDate()
     }
     
     init(pet: String, title: String, link: String, image: String, isFavorite: Bool, isLatest: Bool, price: String, productId: String, searchWord: String, shoppingmall: String) {
@@ -42,6 +42,7 @@ struct MyGoodsData: CoreDataStructEntity {
         self.shoppingmall = shoppingmall
     }
     
+    // MARK: - Method
     func createDate() -> String {
         let date = Date()
         let dateFormatter = DateFormatter()

@@ -11,6 +11,12 @@ import CoreData
 
 class PetKeywordCoreDataManager: PetKeywordCoreDataManagerType, CoreDataManagerFunctionImplementType {
     // MARK: - Insert Method
+    /**
+     PetKeyword Entity에 데이터 삽입.
+     - Author: [강준영](https://github.com/lavaKangJun)
+     - Parameter :
+     - coreDataStructType: coreDataStructType 프로토콜을 채택하는 CoreData Struct.
+     */
     @discardableResult func insert<T: CoreDataStructEntity>(_ coreDataStructType: T) throws -> Bool {
         switch coreDataStructType {
         case is PetKeywordData:
@@ -22,7 +28,7 @@ class PetKeywordCoreDataManager: PetKeywordCoreDataManagerType, CoreDataManagerF
             do {
                 // PetKeyword Entity는 동물별로 데이터가 하나만 존재해야하기 때문에 데이터가 존재하는 지 확인
                 guard let objects = try fetchObjects(pet: petKeywordData.pet) else { return false }
-                // 데이터가 존재하는 경우 데이터 삭제 후 추가 : 데이터는 항상 하나만 존재해야 하기 때문
+                // 데이터가 존재하는 경우 데이터 삭제 후 추가 : 펫별로 데이터는 항상 하나만 존재해야 하기 때문
                 if !objects.isEmpty {
                     if let first = objects.first {
                         guard let objectID = first.objectID else { return false }
@@ -53,7 +59,13 @@ class PetKeywordCoreDataManager: PetKeywordCoreDataManagerType, CoreDataManagerF
     }
 
     // MARK: - Fetch Methodes
-    // Fetch All Data - PetKeyword의 모든 데이터 정보를 가져옴
+    /**
+     PetKeyword의 모든 데이터를 오름차순으로 가져옴
+     - Author: [강준영](https://github.com/lavaKangJun)
+     - Parameter :
+        - pet: 해당하는 펫(고양이 또는 강아지)과 관련된 데이터를 가져오기 위한 파마리터.
+        기본값은 nil로, 값을 넣어주지 않으면 고양이와 강아지의 모든 데이터를 가져온다.
+     */
     // 데이터 타입(Keyword, Pet)변경해서 리턴
     func fetchObjects(pet: String? = nil) throws -> [CoreDataStructEntity]? {
         guard let context = context else { return nil }
@@ -93,6 +105,12 @@ class PetKeywordCoreDataManager: PetKeywordCoreDataManagerType, CoreDataManagerF
     }
 
     // Fetch Only Keyword Data
+    /**
+     특정펫의 키워드를 모두 가져온다.
+     - Author: [강준영](https://github.com/lavaKangJun)
+     - Parameter :
+     - pet: 해당하는 펫(고양이 또는 강아지)과 관련된 키워드를 가져오기 위한 파마리터.
+     */
     func fetchOnlyKeyword(pet: String) throws -> [String]? {
         var keywords = [String]()
         do {
@@ -109,6 +127,12 @@ class PetKeywordCoreDataManager: PetKeywordCoreDataManagerType, CoreDataManagerF
     }
 
     // Fetch Only Pet
+    /**
+     특정펫의 펫정보만을 가져온다.
+     - Author: [강준영](https://github.com/lavaKangJun)
+     - Parameter :
+        - pet: 해당하는 펫(고양이 또는 강아지)과 관련된 펫정보를 가져오기 위한 파마리터.
+     */
     func fetchOnlyPet(pet: String) throws -> String? {
         do {
             guard let objects = try fetchObjects(pet: pet) else {
@@ -123,7 +147,12 @@ class PetKeywordCoreDataManager: PetKeywordCoreDataManagerType, CoreDataManagerF
     }
 
     // MARK: - Update Method
-    // Update PetKeyword Data
+    /**
+     파라미터로 넣은 구조체와 동일한 개체의 모든 내용을 업데이트한다.
+     - Author: [강준영](https://github.com/lavaKangJun)
+     - Parameter :
+        - coreDataStructType: coreDataStructType 프로토콜을 채택하는 CoreData Struct
+     */
     @discardableResult func updateObject<T>(_ coreDataStructType: T) throws -> Bool where T : CoreDataStructEntity {
         switch coreDataStructType {
         case is PetKeywordData:
@@ -146,7 +175,12 @@ class PetKeywordCoreDataManager: PetKeywordCoreDataManagerType, CoreDataManagerF
     }
 
     // MARK: - Delete Method
-    // Delete PetKeyword Data
+    /**
+     파라미터로 넣은 구조체와 동일한 데이터를 삭제한다.
+     - Author: [강준영](https://github.com/lavaKangJun)
+     - Parameter :
+        - coreDataStructType: coreDataStructType 프로토콜을 채택하는 CoreData Struct
+     */
     @discardableResult func deleteObject<T>(_ coreDataStructType: T) throws -> Bool where T : CoreDataStructEntity {
         switch coreDataStructType {
         case is PetKeywordData:
@@ -167,6 +201,12 @@ class PetKeywordCoreDataManager: PetKeywordCoreDataManagerType, CoreDataManagerF
         return false
     }
     
+    /**
+     특정펫의 데이터를 삭제한다.
+     - Author: [강준영](https://github.com/lavaKangJun)
+     - Parameters:
+        - pet: 특정 펫의 데이터를 지우기위한 파라미터.
+     */
     @discardableResult func deleteAllObjects(pet: String) throws -> Bool {
         guard let context = context else { return false }
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "PetKeyword")
