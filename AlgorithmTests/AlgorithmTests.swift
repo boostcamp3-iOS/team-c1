@@ -11,17 +11,38 @@ import XCTest
 
 class AlgorithmTests: XCTestCase {
 
+    var algorithm: AlgorithmType!
+    let pet = Pet.dog
+    let detailCategories = ["패딩/아우터", "올인원/원피스"]
+    let searchWords = ["패딩", "아우터", "올인원", "원피스"]
+    let combineSearchWords = ["강아지 패딩", "강아지 아우터", "강아지 올인원", "강아지 원피스"]
+
     override func setUp() {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+        algorithm = Algorithm()
     }
 
     override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
 
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+    func testPetIncluded() {
+        XCTAssertTrue(algorithm.petIncluded(in: pet.rawValue + searchWords.first!),
+                      "실패: testPetIncluded()")
+    }
+
+    func testMakeSearchWords() {
+        XCTAssertEqual(algorithm.makeSearchWords(in: detailCategories, count: 10).count, searchWords.count,
+                       "실패: testMakeSearchWords()")
+    }
+
+    func testCombinePet() {
+        XCTAssertEqual(
+            algorithm.combinePet(pet, and: searchWords), combineSearchWords,
+            "실패: testCombinePet()")
+    }
+
+    func testRemovePet() {
+        XCTAssertEqual(algorithm.removePet(from: combineSearchWords), searchWords,
+                       "실패: testRemovePet()")
     }
 
     func testPerformanceExample() {
@@ -30,5 +51,4 @@ class AlgorithmTests: XCTestCase {
             // Put the code you want to measure the time of here.
         }
     }
-
 }

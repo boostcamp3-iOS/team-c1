@@ -8,14 +8,7 @@
 
 import Foundation
 
-// MARK: - PetType
-enum PetType: String {
-    case dog = "강아지"
-    case cat = "고양이"
-}
-
-// MAKR: - KeywordType & Keyword
-enum KeywordType: String, CaseIterable {
+enum Keyword: String, CaseIterable {
     case play = "놀이"
     case beauty = "뷰티"
     case health = "헬스"
@@ -24,44 +17,30 @@ enum KeywordType: String, CaseIterable {
     case living = "리빙"
     case goingOut = "외출"
     case bowelMovement = "배변"
-}
 
-struct Keyword: Word {
-    // MARK: - Properties
-    let name: String
-    let type: KeywordType
-
-    // MARK: - Private properties
-    private(set) var categories = [Category]()
-
-    // MARK: - Initializer
-    init(_ type: KeywordType, pet: PetType) {
-        name = type.rawValue
-        self.type = type
-        categories = getCategories(type, pet: pet)
-    }
-
-    // MARK: - Get categories
-    private func getCategories(_ type: KeywordType, pet: PetType) -> [Category] {
-        switch type {
+    // MARK: - Methods
+    /**
+     해당 Keyword에 포함되는 Category 타입의 리스트를 반환한다.
+     - Author: [최영준](https://github.com/0jun0815)
+     */
+    func getData() -> [Category] {
+        switch self {
         case .play:
-            return [Category(.toyTraining, pet: pet)]
+            return [.toyTraining]
         case .beauty:
-            return [Category(.beautyBath, pet: pet)]
+            return [.beautyBath]
         case .health:
-            return [Category(.healthCare, pet: pet)]
+            return [.healthCare]
         case .food:
-            return [Category(.feed, pet: pet),
-                    Category(.snack, pet: pet)]
+            return [.feed, .snack]
         case .style:
-            return [Category(.fashionProducts, pet: pet)]
+            return [.fashionProducts]
         case .living:
-            return [Category(.cushionHouse, pet: pet),
-                    Category(.tablewareWaterDispenser, pet: pet)]
+            return [.cushionHouse, .tablewareWaterDispenser]
         case .goingOut:
-            return [Category(.outdoorProducts, pet: pet)]
+            return [.outdoorProducts]
         case .bowelMovement:
-            return [Category(.bowelProducts, pet: pet)]
+            return [.bowelProducts]
         }
     }
 }
