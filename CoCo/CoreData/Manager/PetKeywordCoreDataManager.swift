@@ -20,14 +20,18 @@ class PetKeywordCoreDataManager: PetKeywordCoreDataManagerType, CoreDataManagerF
     @discardableResult func insert<T: CoreDataStructEntity>(_ coreDataStructType: T) throws -> Bool {
         switch coreDataStructType {
         case is PetKeywordData:
-            guard let context = context else { return false }
+            guard let context = context else {
+                return false
+            }
             guard let petKeywordData = coreDataStructType as? PetKeywordData else {
                 return false
             }
 
             do {
                 // PetKeyword Entity는 동물별로 데이터가 하나만 존재해야하기 때문에 데이터가 존재하는 지 확인
-                guard let objects = try fetchObjects(pet: petKeywordData.pet) else { return false }
+                guard let objects = try fetchObjects(pet: petKeywordData.pet) else {
+                    return false
+                }
                 // 데이터가 존재하는 경우 데이터 삭제 후 추가 : 펫별로 데이터는 항상 하나만 존재해야 하기 때문
                 if !objects.isEmpty {
                     if let first = objects.first {
@@ -153,11 +157,15 @@ class PetKeywordCoreDataManager: PetKeywordCoreDataManagerType, CoreDataManagerF
      - Parameter :
         - coreDataStructType: coreDataStructType 프로토콜을 채택하는 CoreData Struct
      */
-    @discardableResult func updateObject<T>(_ coreDataStructType: T) throws -> Bool where T : CoreDataStructEntity {
+    @discardableResult func updateObject<T>(_ coreDataStructType: T) throws -> Bool {
         switch coreDataStructType {
         case is PetKeywordData:
-            guard let context = context else { return false }
-            guard let petKeywordData = coreDataStructType as? PetKeywordData else { return false }
+            guard let context = context else {
+                return false
+            }
+            guard let petKeywordData = coreDataStructType as? PetKeywordData else {
+                return false
+            }
             guard let objectID = petKeywordData.objectID else {
                 throw CoreDataError.update(message: "Can not find this data(\(petKeywordData)), So can not update")
             }
@@ -181,7 +189,7 @@ class PetKeywordCoreDataManager: PetKeywordCoreDataManagerType, CoreDataManagerF
      - Parameter :
         - coreDataStructType: coreDataStructType 프로토콜을 채택하는 CoreData Struct
      */
-    @discardableResult func deleteObject<T>(_ coreDataStructType: T) throws -> Bool where T : CoreDataStructEntity {
+    @discardableResult func deleteObject<T>(_ coreDataStructType: T) throws -> Bool {
         switch coreDataStructType {
         case is PetKeywordData:
             guard let context = context else { return false }
@@ -208,7 +216,9 @@ class PetKeywordCoreDataManager: PetKeywordCoreDataManagerType, CoreDataManagerF
         - pet: 특정 펫의 데이터를 지우기위한 파라미터.
      */
     @discardableResult func deleteAllObjects(pet: String) throws -> Bool {
-        guard let context = context else { return false }
+        guard let context = context else {
+            return false
+        }
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "PetKeyword")
         let predicate = NSPredicate(format: "pet = %@", pet)
         

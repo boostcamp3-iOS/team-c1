@@ -17,10 +17,12 @@ class SearchWordCoreDataManager: SearchWordCoreDataManagerType, CoreDataManagerF
      - Parameter :
      - coreDataStructType: coreDataStructType 프로토콜을 채택하는 CoreData Struct.
      */
-    @discardableResult func insert<T>(_ coreDataStructType: T) throws -> Bool where T: CoreDataStructEntity {
+    @discardableResult func insert<T>(_ coreDataStructType: T) throws -> Bool {
         switch coreDataStructType {
         case is SearchWordData:
-            guard let context = context else { return false }
+            guard let context = context else {
+                return false
+            }
             guard let searchKeywordData = coreDataStructType as? SearchWordData else {
                 return false
             }
@@ -58,7 +60,9 @@ class SearchWordCoreDataManager: SearchWordCoreDataManagerType, CoreDataManagerF
      */
     // Fetch All of SearchKeyWordData
     func fetchObjects(pet: String? = nil) throws -> [CoreDataStructEntity]? {
-        guard let context = context else { return nil }
+        guard let context = context else {
+            return nil
+        }
         var searchWordDatas = [SearchWordData]()
         let sort = NSSortDescriptor(key: #keyPath(SearchWord.date), ascending: true)
         let request: NSFetchRequest<SearchWord>
@@ -158,7 +162,9 @@ class SearchWordCoreDataManager: SearchWordCoreDataManagerType, CoreDataManagerF
     @discardableResult func updateObject<T>(_ coreDataStructType: T) throws -> Bool {
         switch coreDataStructType {
         case is SearchWordData:
-            guard let context = context else { return false }
+            guard let context = context else {
+                return false
+            }
             guard let searchWordData = coreDataStructType as? SearchWordData else {
                 return false
             }
@@ -203,10 +209,12 @@ class SearchWordCoreDataManager: SearchWordCoreDataManagerType, CoreDataManagerF
      - Parameter :
      - coreDataStructType: coreDataStructType 프로토콜을 채택하는 CoreData Struct.
      */
-    @discardableResult func deleteObject<T>(_ coreDataStructType: T) throws -> Bool where T : CoreDataStructEntity {
+    @discardableResult func deleteObject<T>(_ coreDataStructType: T) throws -> Bool {
         switch coreDataStructType {
         case is SearchWordData:
-            guard let context = context else { return false }
+            guard let context = context else {
+                return false
+            }
             guard let searchKeywordData = coreDataStructType as? SearchWordData else {
                 return false
             }

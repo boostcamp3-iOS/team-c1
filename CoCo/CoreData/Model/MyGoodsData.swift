@@ -19,7 +19,7 @@ struct MyGoodsData: CoreDataStructEntity {
     var isFavorite: Bool = false
     var isLatest: Bool = false
     var price: String = ""
-    var productId: String = ""
+    var productID: String = ""
     var objectID: NSManagedObjectID?
     var searchWord: String?
     var pet = ""
@@ -38,7 +38,7 @@ struct MyGoodsData: CoreDataStructEntity {
         self.isFavorite = isFavorite
         self.isLatest = isLatest
         self.price = price
-        self.productId = productId
+        self.productID = productId
         self.searchWord = searchWord
         self.shoppingmall = shoppingmall
     }
@@ -55,6 +55,6 @@ struct MyGoodsData: CoreDataStructEntity {
 
 extension MyGoodsData: Comparable {
     static func < (lhs: MyGoodsData, rhs: MyGoodsData) -> Bool {
-        return lhs.productId < rhs.productId
+        return lhs.productID < rhs.productID
     }
 }

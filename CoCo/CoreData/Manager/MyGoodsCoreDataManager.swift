@@ -21,14 +21,16 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
     @discardableResult func insert<T: CoreDataStructEntity>(_ coreDataStructType: T) throws -> Bool  {
         switch coreDataStructType {
         case is MyGoodsData:
-            guard let context = context else { return false }
+            guard let context = context else {
+                return false
+            }
             guard var myGoodsData = coreDataStructType as? MyGoodsData else {
                 return false
             }
             // 삽입하려는 데이터와 동일한 productID가 존재하면 기존 데이터 업데이트
-            if let object = fetchProductId(productId: myGoodsData.productId) {
+            if let object = fetchProductId(productId: myGoodsData.productID) {
                 myGoodsData.objectID = object.objectID
-                print("Product: \(myGoodsData.productId) Already Inserted , So Update")
+                print("Product: \(myGoodsData.productID) Already Inserted , So Update")
                 try updateObject(myGoodsData)
                 return true
                 // 삽입하려는 데이터와 동일한 데이터가 MyGoods Entity에 존재하는 지 확인하기 위해 삽입하려는 데이터의 productID를 Entity에 존재하는 지 확인.
@@ -42,12 +44,12 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
                 myGoods.isLatest = myGoodsData.isLatest
                 myGoods.link = myGoodsData.link
                 myGoods.price = myGoodsData.price
-                myGoods.productId = myGoodsData.productId
+                myGoods.productId = myGoodsData.productID
                 myGoods.searchWord = myGoodsData.searchWord ?? ""
                 myGoods.shoppingmall = myGoodsData.shoppingmall
                 myGoods.pet = myGoodsData.pet
                 afterOperation(context: context)
-                print("succesive insert \(myGoodsData.productId)")
+                print("succesive insert \(myGoodsData.productID)")
                 return true
                 }
         default:
@@ -96,7 +98,7 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
                 myGoodsData.link = object.link
                 myGoodsData.objectID = object.objectID
                 myGoodsData.price = object.price
-                myGoodsData.productId = object.productId
+                myGoodsData.productID = object.productId
                 myGoodsData.searchWord = object.searchWord
                 myGoodsData.title = object.title
                 myGoodsData.shoppingmall = object.shoppingmall
@@ -116,7 +118,9 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
         - pet: 해당하는 펫(고양이 또는 강아지)과 관련된 데이터를 가져오기 위한 파마리터.
      */
     func fetchFavoriteGoods(pet: String) throws -> [MyGoodsData]? {
-        guard let context = context else { return nil }
+        guard let context = context else {
+            return nil
+        }
         let sort = NSSortDescriptor(key: #keyPath(MyGoods.date), ascending: true)
         let predicate = NSPredicate(format: "pet = %@ AND isFavorite = true", pet)
         var myGoodsDatas: [MyGoodsData] = []
@@ -146,7 +150,7 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
                 myGoodsData.link = object.link
                 myGoodsData.objectID = object.objectID
                 myGoodsData.price = object.price
-                myGoodsData.productId = object.productId
+                myGoodsData.productID = object.productId
                 myGoodsData.searchWord = object.searchWord
                 myGoodsData.title = object.title
                 myGoodsData.shoppingmall = object.shoppingmall
@@ -166,7 +170,9 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
      - isLatest: 데이터를 오름차순, 또는 내림차순으로 가져오기 위한 파라미터
      */
     func fetchLatestGoods(pet: String, isLatest: Bool, isLatestOrder: Bool) throws -> [MyGoodsData]? {
-        guard let context = context else { return nil }
+        guard let context = context else {
+            return nil
+        }
         let sort = NSSortDescriptor(key: #keyPath(MyGoods.date), ascending: isLatestOrder)
         let predicate = NSPredicate(format: "pet = %@ AND isLatest = %@", pet, NSNumber(booleanLiteral: isLatest))
         var myGoodsDatas: [MyGoodsData] = []
@@ -196,7 +202,7 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
                 myGoodsData.link = object.link
                 myGoodsData.objectID = object.objectID
                 myGoodsData.price = object.price
-                myGoodsData.productId = object.productId
+                myGoodsData.productID = object.productId
                 myGoodsData.searchWord = object.searchWord
                 myGoodsData.title = object.title
                 myGoodsData.shoppingmall = object.shoppingmall
@@ -252,16 +258,21 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
    @discardableResult func updateObject<T>(_ coreDataStructType: T) throws -> Bool  {
         switch coreDataStructType {
         case is MyGoodsData:
-            guard let context = context else { return  false }
+            guard let context = context else {
+                return  false
+            }
             guard let myGoodsData = coreDataStructType as? MyGoodsData else {
                 return false
             }
-            guard let objectID = myGoodsData.objectID else { throw CoreDataError.update(message: "Can not find data, So can not update")
+            guard let objectID = myGoodsData.objectID else {
+                throw CoreDataError.update(message: "Can not find data, So can not update")
             }
             guard let object = context.object(with: objectID) as? MyGoods
                 else { throw CoreDataError.update(message: "Can not find data, So can not update")
             }
-            guard let date = myGoodsData.date else { return false }
+            guard let date = myGoodsData.date else {
+                return false
+            }
             object.date = date
             object.isLatest = myGoodsData.isLatest
             object.isFavorite = myGoodsData.isFavorite
@@ -272,10 +283,9 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
             object.searchWord = myGoodsData.searchWord
             object.shoppingmall = myGoodsData.shoppingmall
             object.pet = myGoodsData.pet
-            print("Product: \(myGoodsData.productId) update Complete")
+            print("Product: \(myGoodsData.productID) update Complete")
             afterOperation(context: context)
             return true
-            
         default:
             return false
         }
@@ -291,7 +301,9 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
     @discardableResult func deleteObject<T: CoreDataStructEntity>(_ coreDataStructType: T) throws -> Bool {
         switch coreDataStructType {
         case is MyGoodsData:
-            guard let context = context else { return false }
+            guard let context = context else {
+                return false
+            }
             guard let object = coreDataStructType as? MyGoodsData else { return false }
             if let objectID = object.objectID {
                 let deleteObjet = context.object(with: objectID)
@@ -312,7 +324,9 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
         - pet: 특정 펫의 데이터를 지우기위한 파라미터.
      */
     @discardableResult func deleteFavoriteAllObjects(pet: String) throws -> Bool {
-        guard let context = context else { return false }
+        guard let context = context else {
+            return false
+        }
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "MyGoods")
         let predicate = NSPredicate(format: "pet = %@ AND isFavorite = true AND isLatest = false", pet)
         
@@ -321,7 +335,6 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
         do {
             try context.execute(batchDeleteRequest)
             return true
-            
         } catch {
             throw CoreDataError.delete(message: "Can't delete data")
         }
@@ -334,7 +347,9 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
      - pet: 특정 펫의 데이터를 지우기위한 파라미터.
      */
     @discardableResult func deleteLatestAllObjects(pet: String, isLatest: Bool) throws -> Bool {
-        guard let context = context else { return false }
+        guard let context = context else {
+            return false
+        }
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "MyGoods")
         let predicate = NSPredicate(format: "pet = %@ AND isLatest = %@ AND isFavorite = false", pet, NSNumber(booleanLiteral: isLatest))
         fetchRequest.predicate = predicate
@@ -342,7 +357,6 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
         do {
             try context.execute(batchDeleteRequest)
             return true
-            
         } catch {
             throw CoreDataError.delete(message: "Can't delete data")
         }
