@@ -13,15 +13,10 @@ enum APIRequest {
     case requestAPI()
 }
 
-extension APIRequest: Request {
+extension APIRequest: RequestType {
     // MARK: - Properties
     var path: String? {
-        switch self {
-        case .requestShoppingAPI :
-            return nil
-        case .requestAPI :
-            return nil
-        }
+        return nil
     }
     var method: HTTPMethod {
         switch self {

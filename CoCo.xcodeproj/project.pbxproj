@@ -270,8 +270,8 @@
 				30DBFF0F21FECB160094D559 /* Environment.swift */,
 				30DBFF1121FECB440094D559 /* Dispatcher.swift */,
 				30DBFF1321FECB5E0094D559 /* Response.swift */,
-				30B8A62921FAA3E90048EB61 /* ShoppingNetworkManager.swift */,
 				308E0470220939F4001036ED /* NetworkManagerType.swift */,
+				30B8A62921FAA3E90048EB61 /* ShoppingNetworkManager.swift */,
 				30B8A62F21FAA40F0048EB61 /* Model.swift */,
 			);
 			path = Network;

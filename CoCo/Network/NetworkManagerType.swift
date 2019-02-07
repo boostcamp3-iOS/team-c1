@@ -23,7 +23,7 @@ extension NetworkManagerType {
         - request: path, method, parameter, header 등이 정의된 열거형
         - completion: 내부의 execute 함수가 성공적으로 실행됬을경우 호출된다.
      */
-    func dispatchAPI(in dispatcher: Dispatcher, request: APIRequest, completion: @escaping (Data) -> Void) throws {
+    func dispatchAPI(in dispatcher: DispatcherType, request: APIRequest, completion: @escaping (Data) -> Void) throws {
         try dispatcher.execute(request: request) { response in
             completion(response)
         }

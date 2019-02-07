@@ -16,11 +16,11 @@ enum NetworkErrors: Error {
     case failParsing
 }
 
-protocol Response {
+protocol ResponseType {
     func parse<T: Decodable>(data: Data, completion: (T) -> Void) throws
 }
 
-class ResponseAPI: Response {
+class ResponseAPI: ResponseType {
     // MARK: - Methods
     /**
      JSON 데이터를 원하는 형식으로 파싱한다.

@@ -21,7 +21,7 @@ enum RequestParams {
     case url(_ : [String: String]?)
 }
 
-protocol Request {
+protocol RequestType {
     var path: String? { get }
     var method: HTTPMethod { get }
     var parameters: RequestParams { get }
