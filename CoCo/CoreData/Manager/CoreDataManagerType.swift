@@ -9,28 +9,34 @@
 import CoreData
 import UIKit
 
+// MARK: - CoreDataManagerType
 protocol CoreDataManagerType {
-    // MARK: - Method
     func insert<T: CoreDataStructEntity>(_ coreDataStructType: T) throws -> Bool
     func fetchObjects(pet: String?) throws -> [CoreDataStructEntity]?
     func updateObject<T: CoreDataStructEntity>(_ coreDataStructType: T) throws -> Bool
     func deleteObject<T: CoreDataStructEntity>(_ coreDataStructType: T) throws -> Bool
 }
 
+// MARK: - MyGoodsCoreDataManagerType
 protocol MyGoodsCoreDataManagerType: CoreDataManagerType {
+    // MARK: - Methodes
     func fetchFavoriteGoods(pet: String) throws -> [MyGoodsData]?
-    func fetchLatestGoods(pet: String) throws -> [MyGoodsData]?
-    func deleteFavoriteAllObjects(pet: String, isFavorite: Bool) throws -> Bool
+    func fetchLatestGoods(pet: String, isLatest: Bool, isLatestOrder: Bool) throws -> [MyGoodsData]?
+    func deleteFavoriteAllObjects(pet: String) throws -> Bool
     func deleteLatestAllObjects(pet: String, isLatest: Bool) throws -> Bool
 }
 
+// MARK: - PetKeywordCoreDataManagerType
 protocol PetKeywordCoreDataManagerType: CoreDataManagerType {
+    // MARK: - Methodes
     func fetchOnlyKeyword(pet: String) throws -> [String]?
     func fetchOnlyPet(pet: String) throws -> String?
     func deleteAllObjects(pet: String) throws -> Bool
 }
 
+// MARK: - SearchWordCoreDataManagerType
 protocol SearchWordCoreDataManagerType: CoreDataManagerType {
+    // MARK: - Methodes// MARK: - Methodes
     func fetchOnlySearchWord(pet: String) throws -> [String]?
     func updateObject(with searchWord: String, pet: String) throws -> Bool
     func deleteAllObjects(pet: String) throws -> Bool

@@ -11,38 +11,43 @@ import UIKit
 import CoreData
 
 class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctionImplementType {
-    // MARK: - Methodes
     // MARK: - Insert Method
+    /**
+     MyGoods Entity에 데이터 삽입.
+     - Author: [강준영](https://github.com/lavaKangJun)
+     - Parameter :
+        - coreDataStructType: coreDataStructType 프로토콜을 채택하는 CoreData Struct.
+     */
     @discardableResult func insert<T: CoreDataStructEntity>(_ coreDataStructType: T) throws -> Bool  {
         switch coreDataStructType {
         case is MyGoodsData:
             guard let context = context else { return false }
-            guard let myGoodsData = coreDataStructType as? MyGoodsData else {
+            guard var myGoodsData = coreDataStructType as? MyGoodsData else {
                 return false
             }
-            // 삽입하려는 데이터와 동일한 데이터가 MyGoods Entity에 존재하는 지 확인하기 위해
-            // 삽입하려는 데이터의 productID를 Entity에 존재하는 지 확인
-            // 삽입하려는 데이터의 productID와 동일한 데이터가 없는 경우 삽입을 진행
-            if fetchProductId(productId: myGoodsData.productId) != nil {
-                let object = MyGoods()
-                object.date =  myGoodsData.date ?? ""
-                object.title = myGoodsData.title
-                object.image = myGoodsData.image
-                object.isFavorite = myGoodsData.isFavorite
-                object.isLatest = myGoodsData.isLatest
-                object.link = myGoodsData.link
-                object.price = myGoodsData.price
-                object.productId = myGoodsData.productId
-                object.searchWord = myGoodsData.searchWord ?? ""
-                object.shoppingmall = myGoodsData.shoppingmall
-                object.pet = myGoodsData.pet
+            // 삽입하려는 데이터와 동일한 productID가 존재하면 기존 데이터 업데이트
+            if let object =  fetchProductId(productId: myGoodsData.productId) {
+                myGoodsData.objectID = object.objectID
+                print("Product: \(myGoodsData.productId) Already Inserted , So Update")
+                try updateObject(myGoodsData)
+                return true
+                // 삽입하려는 데이터와 동일한 데이터가 MyGoods Entity에 존재하는 지 확인하기 위해 삽입하려는 데이터의 productID를 Entity에 존재하는 지 확인.
+                // 삽입하려는 데이터의 productID와 동일한 데이터가 없는 경우 삽입을 진행
+            } else {
+                let myGoods = MyGoods(context: context)
+                myGoods.date =  myGoodsData.date ?? ""
+                myGoods.title = myGoodsData.title
+                myGoods.image = myGoodsData.image
+                myGoods.isFavorite = myGoodsData.isFavorite
+                myGoods.isLatest = myGoodsData.isLatest
+                myGoods.link = myGoodsData.link
+                myGoods.price = myGoodsData.price
+                myGoods.productId = myGoodsData.productId
+                myGoods.searchWord = myGoodsData.searchWord ?? ""
+                myGoods.shoppingmall = myGoodsData.shoppingmall
+                myGoods.pet = myGoodsData.pet
                 afterOperation(context: context)
                 print("succesive insert \(myGoodsData.productId)")
-                return true
-                // 삽입하려는 데이터와 동일한 productID가 존재하면 기존 데이터 업데이트
-            } else {
-                try updateObject(myGoodsData)
-                print("Already Inserted , So Update")
                 return true
                 }
         default:
@@ -51,7 +56,13 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
     }
 
     // MARK: - Fetch Methodes
-    // Fetch All MyGoods Data - MyGoods의 모든 데이터를 가져옴
+    /**
+     MyGoods의 모든 데이터를 오름차순으로 가져온다.
+     - Author: [강준영](https://github.com/lavaKangJun)
+     - Parameter :
+        - pet: 해당하는 펫(고양이 또는 강아지)과 관련된 데이터를 가져오기 위한 파마리터.
+            기본값은 nil로, 값을 넣어주지 않으면 고양이와 강아지의 모든 데이터를 가져온다.
+     */
     func fetchObjects(pet: String? = nil) throws -> [CoreDataStructEntity]? {
         guard let context = context else { return nil }
         let sort = NSSortDescriptor(key: #keyPath(MyGoods.date), ascending: true)
@@ -70,11 +81,11 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
             let predicate = NSPredicate(format: "pet = %@", pet)
             request.predicate = predicate
         }
-        request.returnsObjectsAsFaults = false
+        
         request.sortDescriptors = [sort]
         
         let objects = try context.fetch(request)
-        
+        print("All fetch count: \(objects.count)")
         if !objects.isEmpty {
             for object in objects {
                 var myGoodsData = MyGoodsData()
@@ -98,10 +109,14 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
         }
     }
     
-    // Fetch Favorite Datas - 즐겨찾기 한 모든 데이터를 가져옴
+    /**
+     해당펫의 즐겨찾기 한 데이터를 오름차순으로 가져온다
+     - Author: [강준영](https://github.com/lavaKangJun)
+     - Parameter :
+        - pet: 해당하는 펫(고양이 또는 강아지)과 관련된 데이터를 가져오기 위한 파마리터.
+     */
     func fetchFavoriteGoods(pet: String) throws -> [MyGoodsData]? {
         guard let context = context else { return nil }
-        // 즐겨찾기 한 상품 오름차순으로 정렬
         let sort = NSSortDescriptor(key: #keyPath(MyGoods.date), ascending: true)
         let predicate = NSPredicate(format: "pet = %@ AND isFavorite = true", pet)
         var myGoodsDatas: [MyGoodsData] = []
@@ -143,12 +158,17 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
         }
     }
 
-    // Fetch Latest Datas - 최근본 상품을 모두 가져옴
-    func fetchLatestGoods(pet: String) throws -> [MyGoodsData]? {
+    /**
+     해당펫의 최근본 상품을 오름차순으로 가져온다
+     - Author: [강준영](https://github.com/lavaKangJun)
+     - Parameter :
+     - pet: 해당하는 펫(고양이 또는 강아지)과 관련된 데이터를 가져오기 위한 파마리터.
+     - isLatest: 데이터를 오름차순, 또는 내림차순으로 가져오기 위한 파라미터
+     */
+    func fetchLatestGoods(pet: String, isLatest: Bool, isLatestOrder: Bool) throws -> [MyGoodsData]? {
         guard let context = context else { return nil }
-        // 오름차순으로 정렬
-        let sort = NSSortDescriptor(key: #keyPath(MyGoods.date), ascending: true)
-        let predicate = NSPredicate(format: "pet = %@ AND isLatest = true", pet)
+        let sort = NSSortDescriptor(key: #keyPath(MyGoods.date), ascending: isLatestOrder)
+        let predicate = NSPredicate(format: "pet = %@ AND isLatest = %@", pet, NSNumber(booleanLiteral: isLatest))
         var myGoodsDatas: [MyGoodsData] = []
         let request: NSFetchRequest<MyGoods>
         
@@ -180,6 +200,7 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
                 myGoodsData.searchWord = object.searchWord
                 myGoodsData.title = object.title
                 myGoodsData.shoppingmall = object.shoppingmall
+                myGoodsData.pet = object.pet
                 myGoodsDatas.append(myGoodsData)
             }
             return myGoodsDatas
@@ -188,7 +209,12 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
         }
     }
 
-    // Fetch MyGoods Data using productID - 동일한 상품이 Entity에 존재하는 지 확인
+    /**
+     productId를 통해 동일한 상품이 Entity에 존재하는 지 확인.
+     - Author: [강준영](https://github.com/lavaKangJun)
+     - Parameter :
+        - productId: 상품들마다 가지고 있는 고유 productId.
+     */
     private func fetchProductId(productId: String) -> MyGoods? {
         guard let context = context else { return nil }
         let request: NSFetchRequest<MyGoods>
@@ -217,7 +243,12 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
     }
 
     // MARK: - Update Method
-    // Update MyGoods All - 모든 내용을 업데이트한다.
+    /**
+     파라미터로 넣은 구조체와 동일한 개체의 모든 내용을 업데이트한다.
+     - Author: [강준영](https://github.com/lavaKangJun)
+     - Parameter :
+        - coreDataStructType: coreDataStructType 프로토콜을 채택하는 CoreData Struct
+     */
    @discardableResult func updateObject<T>(_ coreDataStructType: T) throws -> Bool  {
         switch coreDataStructType {
         case is MyGoodsData:
@@ -241,6 +272,7 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
             object.searchWord = myGoodsData.searchWord
             object.shoppingmall = myGoodsData.shoppingmall
             object.pet = myGoodsData.pet
+            print("Product: \(myGoodsData.productId) update Complete")
             afterOperation(context: context)
             return true
             
@@ -250,7 +282,12 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
     }
     
     // MARK: - Delete Method
-    // delete My Goods Data
+    /**
+     파라미터로 넣은 구조체와 동일한 데이터를 삭제한다.
+     - Author: [강준영](https://github.com/lavaKangJun)
+     - Parameter :
+     - coreDataStructType: coreDataStructType 프로토콜을 채택하는 CoreData Struct
+     */
     @discardableResult func deleteObject<T: CoreDataStructEntity>(_ coreDataStructType: T) throws -> Bool {
         switch coreDataStructType {
         case is MyGoodsData:
@@ -268,10 +305,38 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
         return false
     }
     
-    @discardableResult func deleteFavoriteAllObjects(pet: String, isFavorite: Bool) throws -> Bool {
+    /**
+     특정펫의 즐겨찾기한 상품들을 모두 삭제한다.
+     - Author: [강준영](https://github.com/lavaKangJun)
+     - Parameters:
+        - pet: 특정 펫의 데이터를 지우기위한 파라미터.
+     */
+    @discardableResult func deleteFavoriteAllObjects(pet: String) throws -> Bool {
         guard let context = context else { return false }
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "MyGoods")
-        let predicate = NSPredicate(format: "pet = %@ AND isFavorite = true", pet)
+        let predicate = NSPredicate(format: "pet = %@ AND isFavorite = true AND isLatest = false", pet)
+        
+        fetchRequest.predicate = predicate
+        let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+        do {
+            try context.execute(batchDeleteRequest)
+            return true
+            
+        } catch {
+            throw CoreDataError.delete(message: "Can't delete data")
+        }
+    }
+    
+    /**
+     특정펫의 최근본 상품들을 모두 삭제한다.
+     - Author: [강준영](https://github.com/lavaKangJun)
+     - Parameters:
+     - pet: 특정 펫의 데이터를 지우기위한 파라미터.
+     */
+    @discardableResult func deleteLatestAllObjects(pet: String, isLatest: Bool) throws -> Bool {
+        guard let context = context else { return false }
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "MyGoods")
+        let predicate = NSPredicate(format: "pet = %@ AND isLatest = %@ AND isFavorite = false", pet, NSNumber(booleanLiteral: isLatest))
         
         fetchRequest.predicate = predicate
         let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
@@ -285,20 +350,26 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
         }
     }
     
-    @discardableResult func deleteLatestAllObjects(pet: String, isLatest: Bool) throws -> Bool {
-        guard let context = context else { return false }
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "MyGoods")
-        let predicate = NSPredicate(format: "pet = %@ AND isLatest = true", pet)
-        
-        fetchRequest.predicate = predicate
-        let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
-        
+    /**
+     최근본 상품들을 날짜순으로 정렬 후 10개를 제외한 데이터들은 최근본 정보를 false로 변환
+     - Author: [강준영](https://github.com/lavaKangJun)
+     - Parameters:
+        - pet: 특정 펫의 데이터를 지우기위한 파라미터.
+     */
+    func latestGoodsToFalse(pet: String) throws {
         do {
-            try context.execute(batchDeleteRequest)
-            return true
-            
-        } catch {
-            throw CoreDataError.delete(message: "Can't delete data")
+            guard var objects = try fetchLatestGoods(pet: pet, isLatest: true, isLatestOrder: false) else {
+                throw CoreDataError.fetch(message: "Can not fetch data")
+            }
+            if objects.count > 10 {
+                for index in 10..<objects.count {
+                    objects[index].isLatest = false
+                    print(index)
+                    try updateObject(objects[index])
+                }
+            }
+        } catch let error as NSError {
+            throw CoreDataError.fetch(message: "Can not fetch data: \(error)")
         }
     }
 }

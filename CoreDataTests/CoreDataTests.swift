@@ -175,11 +175,18 @@ class MockPetKeywordCoreDataManager: PetKeywordCoreDataManagerType {
 }
 
 class MockMyGoodsCoreDataManager: MyGoodsCoreDataManagerType {
+    func deleteFavoriteAllObjects(pet: String) throws -> Bool {
+        return false
+    }
+    func deleteLatestAllObjects(pet: String, isLatest: Bool) throws -> Bool {
+        return false
+    }
+    
     func fetchFavoriteGoods(pet: String) throws -> [MyGoodsData]? {
          return nil
     }
     
-    func fetchLatestGoods(pet: String) throws -> [MyGoodsData]? {
+    func fetchLatestGoods(pet: String, isLatest: Bool, isLatestOrder: Bool) throws -> [MyGoodsData]? {
          return nil
     }
     
@@ -202,11 +209,6 @@ class MockMyGoodsCoreDataManager: MyGoodsCoreDataManagerType {
     @discardableResult func deleteFavoriteAllObjects(pet: String, isFavorite: Bool) throws -> Bool {
         return false
     }
-    
-    @discardableResult func deleteLatestAllObjects(pet: String, isLatest: Bool) throws -> Bool {
-        return false
-    }
-    
 }
 
 
