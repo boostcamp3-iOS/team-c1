@@ -52,7 +52,9 @@ extension Algorithm {
             results += makeSearchWords(word)
         }
         results = results.shuffled()
-        if results.count < count { return results }
+        if results.count < count {
+            return results
+        }
         let index = count - 1
         return Array(results[...index])
     }
@@ -64,14 +66,20 @@ extension Algorithm {
      */
     func makeSearchWords(_ word: String) -> [String] {
         // 분할할 단어가 있는지 확인한다
-        guard word.contains("/") else { return [word] }
+        guard word.contains("/") else {
+            return [word]
+        }
         var searchWords = [String]()
         // " "을 기준으로 문자열을 나누어 배열을 생성
         var components = word.components(separatedBy: " ")
         // 생성한 배열에서 "/"가 포함된 원소를 다시 "/"을 기준으로 나누어 배열을 생성한다
-        let dividedWords = components.filter { $0.contains("/") }.flatMap { $0.components(separatedBy: "/") }
+        let dividedWords = components.filter {
+            $0.contains("/") }.flatMap { $0.components(separatedBy: "/")
+        }
         // 대체할 원소("/"가 포함된 문자열)의 인덱스를 찾는다
-        let firstIndex = components.firstIndex { $0.contains("/") }
+        let firstIndex = components.firstIndex {
+            $0.contains("/")
+        }
         if let index = firstIndex {
             // 나눠진 단어들을 대체할 인덱스에 할당하여 검색어를 생성한다
             for word in dividedWords {
@@ -81,7 +89,6 @@ extension Algorithm {
         }
         return (searchWords.isEmpty) ? [word] : searchWords
     }
-
 }
 
 // MARK: - WordType
@@ -146,7 +153,9 @@ extension Algorithm {
         - word: 검사할 단어
      */
     func removePet(from word: String) -> String {
-        guard petIncluded(in: word) else { return word }
+        guard petIncluded(in: word) else {
+            return word
+        }
         var result = word.replacingOccurrences(of: " ", with: "")
         for pet in Pet.allCases {
             result = result.replacingOccurrences(of: pet.rawValue, with: "")
