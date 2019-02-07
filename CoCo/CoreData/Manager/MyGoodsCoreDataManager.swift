@@ -26,7 +26,7 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
                 return false
             }
             // 삽입하려는 데이터와 동일한 productID가 존재하면 기존 데이터 업데이트
-            if let object =  fetchProductId(productId: myGoodsData.productId) {
+            if let object = fetchProductId(productId: myGoodsData.productId) {
                 myGoodsData.objectID = object.objectID
                 print("Product: \(myGoodsData.productId) Already Inserted , So Update")
                 try updateObject(myGoodsData)
@@ -337,10 +337,8 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
         guard let context = context else { return false }
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "MyGoods")
         let predicate = NSPredicate(format: "pet = %@ AND isLatest = %@ AND isFavorite = false", pet, NSNumber(booleanLiteral: isLatest))
-        
         fetchRequest.predicate = predicate
         let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
-        
         do {
             try context.execute(batchDeleteRequest)
             return true

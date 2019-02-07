@@ -27,6 +27,7 @@ struct MyGoodsData: CoreDataStructEntity {
     
     //MARK: Initializer
     init() {
+        self.date = createDate()
     }
     
     init(pet: String, title: String, link: String, image: String, isFavorite: Bool, isLatest: Bool, price: String, productId: String, searchWord: String, shoppingmall: String) {
