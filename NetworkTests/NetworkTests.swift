@@ -31,4 +31,13 @@ class NetworkTests: XCTestCase {
         }
     }
 
+    func testGetAPIData() {
+        let params = MockShoppingNetworkManagerDummy.params
+        MockShoppingNetworkManager.shared.getAPIData(params, completion: { data in
+            let a = data.items
+            XCTAssert(a.count == 3)
+        }) { err in
+            print(err)
+        }
+    }
 }

@@ -2,10 +2,11 @@
 //  MockShoppingNetworkManager.swift
 //  NetworkTests
 //
-//  Created by 이호찬 on 01/02/2019.
+//  Created by Leonard on 30/01/2019.
 //  Copyright © 2019 Team CoCo. All rights reserved.
 //
 
+@testable import CoCo
 import Foundation
 
 // MockData

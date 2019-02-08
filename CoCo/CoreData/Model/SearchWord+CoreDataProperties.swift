@@ -10,7 +10,6 @@
 import Foundation
 import CoreData
 
-
 extension SearchWord {
     @nonobjc public class func fetchRequest() -> NSFetchRequest<SearchWord> {
         return NSFetchRequest<SearchWord>(entityName: "SearchWord")

@@ -18,7 +18,7 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
      - Parameter :
         - coreDataStructType: coreDataStructType 프로토콜을 채택하는 CoreData Struct.
      */
-    @discardableResult func insert<T: CoreDataStructEntity>(_ coreDataStructType: T) throws -> Bool  {
+    @discardableResult func insert<T: CoreDataStructEntity>(_ coreDataStructType: T) throws -> Bool {
         switch coreDataStructType {
         case is MyGoodsData:
             guard let context = context else {
@@ -70,7 +70,7 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
         let sort = NSSortDescriptor(key: #keyPath(MyGoods.date), ascending: true)
         var myGoodsDatas: [MyGoodsData] = []
         let request: NSFetchRequest<MyGoods>
-        
+
         if #available(iOS 10.0, *) {
             let tmpRequest: NSFetchRequest<MyGoods> = MyGoods.fetchRequest()
             request = tmpRequest
@@ -78,14 +78,14 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
             let entityName = String(describing: MyGoods.self)
             request = NSFetchRequest(entityName: entityName)
         }
-        
+
         if let pet = pet {
             let predicate = NSPredicate(format: "pet = %@", pet)
             request.predicate = predicate
         }
-        
+
         request.sortDescriptors = [sort]
-        
+
         let objects = try context.fetch(request)
         print("All fetch count: \(objects.count)")
         if !objects.isEmpty {
@@ -110,7 +110,7 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
             throw CoreDataError.fetch(message: "MyGoods Entity has not data, So can not fetch data")
         }
     }
-    
+
     /**
      해당펫의 즐겨찾기 한 데이터를 오름차순으로 가져온다
      - Author: [강준영](https://github.com/lavaKangJun)
@@ -125,7 +125,7 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
         let predicate = NSPredicate(format: "pet = %@ AND isFavorite = true", pet)
         var myGoodsDatas: [MyGoodsData] = []
         let request: NSFetchRequest<MyGoods>
-        
+
         if #available(iOS 10.0, *) {
             let tmpRequest: NSFetchRequest<MyGoods> = MyGoods.fetchRequest()
             request = tmpRequest
@@ -133,13 +133,13 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
             let entityName = String(describing: MyGoods.self)
             request = NSFetchRequest(entityName: entityName)
         }
-        
+
         request.returnsObjectsAsFaults = false
         request.predicate = predicate
         request.sortDescriptors = [sort]
-        
+
         let objects = try context.fetch(request)
-        
+
         if !objects.isEmpty {
             for object in objects {
                 var myGoodsData = MyGoodsData()
@@ -177,7 +177,7 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
         let predicate = NSPredicate(format: "pet = %@ AND isLatest = %@", pet, NSNumber(booleanLiteral: isLatest))
         var myGoodsDatas: [MyGoodsData] = []
         let request: NSFetchRequest<MyGoods>
-        
+
         if #available(iOS 10.0, *) {
             let tmpRequest: NSFetchRequest<MyGoods> = MyGoods.fetchRequest()
             request = tmpRequest
@@ -185,13 +185,13 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
             let entityName = String(describing: MyGoods.self)
             request = NSFetchRequest(entityName: entityName)
         }
-        
+
         request.returnsObjectsAsFaults = false
         request.predicate = predicate
         request.sortDescriptors = [sort]
-        
+
         let objects = try context.fetch(request)
-        
+
         if !objects.isEmpty {
             for object in objects {
                 var myGoodsData = MyGoodsData()
@@ -224,7 +224,7 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
     private func fetchProductId(productId: String) -> MyGoods? {
         guard let context = context else { return nil }
         let request: NSFetchRequest<MyGoods>
-    
+
         if #available(iOS 10.0, *) {
             let tmpRequest: NSFetchRequest<MyGoods> = MyGoods.fetchRequest()
             request = tmpRequest
@@ -255,7 +255,7 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
      - Parameter :
         - coreDataStructType: coreDataStructType 프로토콜을 채택하는 CoreData Struct
      */
-   @discardableResult func updateObject<T>(_ coreDataStructType: T) throws -> Bool  {
+   @discardableResult func updateObject<T>(_ coreDataStructType: T) throws -> Bool {
         switch coreDataStructType {
         case is MyGoodsData:
             guard let context = context else {
@@ -290,7 +290,7 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
             return false
         }
     }
-    
+
     // MARK: - Delete Method
     /**
      파라미터로 넣은 구조체와 동일한 데이터를 삭제한다.
@@ -316,7 +316,7 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
         }
         return false
     }
-    
+
     /**
      특정펫의 즐겨찾기한 상품들을 모두 삭제한다.
      - Author: [강준영](https://github.com/lavaKangJun)
@@ -329,7 +329,7 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
         }
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "MyGoods")
         let predicate = NSPredicate(format: "pet = %@ AND isFavorite = true AND isLatest = false", pet)
-        
+
         fetchRequest.predicate = predicate
         let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
         do {
@@ -339,7 +339,7 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
             throw CoreDataError.delete(message: "Can't delete data")
         }
     }
-    
+
     /**
      특정펫의 최근본 상품들을 모두 삭제한다.
      - Author: [강준영](https://github.com/lavaKangJun)
@@ -361,7 +361,7 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
             throw CoreDataError.delete(message: "Can't delete data")
         }
     }
-    
+
     /**
      최근본 상품들을 날짜순으로 정렬 후 10개를 제외한 데이터들은 최근본 정보를 false로 변환
      - Author: [강준영](https://github.com/lavaKangJun)

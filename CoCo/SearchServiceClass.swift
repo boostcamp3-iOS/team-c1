@@ -16,13 +16,12 @@ import CoreData
 5. pagination(Index: Int) -> Int
  */
 
-
 class SearchService {
     let searchCoreDataManager: SearchWordCoreDataManagerType
     let petKeywordCoreDataManager: PetKeywordCoreDataManagerType
     let networkManager: NetworkManagerType
     let algorithmManager: Algorithm?
-    
+
     init(serachCoreData: SearchWordCoreDataManagerType,
          petCoreData: PetKeywordCoreDataManagerType,
          network: NetworkManagerType, algorithm: Algorithm? = nil) {
@@ -31,17 +30,17 @@ class SearchService {
         self.networkManager = network
         self.algorithmManager = algorithm
     }
-    
+
     func fetchRecentSearchWord() -> [String]? {
         var fetchSearchWord: [String]?
         do {
-            fetchSearchWord =  try searchCoreDataManager.fetchOnlySearchWord()
+            fetchSearchWord =  try searchCoreDataManager.fetchOnlySearchWord(pet: "")
         } catch let error {
             print(error)
         }
         return fetchSearchWord
     }
-    
+
     @discardableResult func insert(recenteSearchWord: String) -> Bool {
         var result = false
         var searchWordData = SearchWordData()
@@ -54,5 +53,5 @@ class SearchService {
         }
         return result
     }
-    
+
 }

@@ -14,8 +14,8 @@ class MockSearchWordCoreDataManager: SearchWordCoreDataManagerType {
     var mockSearchWordCoreData = [SearchWordData]()
     var mockSearchWord: [String]?
     var mockSearchInfo = MockSearchWordInfo()
-    
-    @discardableResult func insert<T: CoreDataStructEntity>(_ coreDataStructType: T) throws -> Bool{
+
+    @discardableResult func insert<T: CoreDataStructEntity>(_ coreDataStructType: T) throws -> Bool {
         let beforeCount = mockSearchInfo.mockSearchWord.count
         guard let coreDataStruct = coreDataStructType as? SearchWordData else {
             return false
@@ -25,9 +25,9 @@ class MockSearchWordCoreDataManager: SearchWordCoreDataManagerType {
         let afterCount = mockSearchInfo.mockSearchWord.count
         return beforeCount + 1 == afterCount ? true : false
     }
-    
+
     func fetchOnlySearchWord(pet: String) throws -> [String]? {
-        let result = mockSearchInfo.mockSearchWord.filter{ $0.searchWord.contains(pet)
+        let result = mockSearchInfo.mockSearchWord.filter { $0.searchWord.contains(pet)
         }
         var stringResult = [String]()
         for value in result {
@@ -35,17 +35,16 @@ class MockSearchWordCoreDataManager: SearchWordCoreDataManagerType {
         }
         return stringResult
     }
-    
+
     func fetchObjects(pet: String? = nil) throws -> [CoreDataStructEntity]? {
         if pet != nil {
-            let result = mockSearchInfo.mockSearchWord.filter{ $0.searchWord.contains(pet!)
+            let result = mockSearchInfo.mockSearchWord.filter { $0.searchWord.contains(pet!)
             }
             return result
         }
         return mockSearchInfo.mockSearchWord
     }
-    
-    
+
     func updateObject<T>(_ coreDataStructType: T) throws -> Bool {
         guard let searchWordData = coreDataStructType as? SearchWordData else {
             return false
@@ -61,7 +60,7 @@ class MockSearchWordCoreDataManager: SearchWordCoreDataManagerType {
         result.date = searchWordData.date
         return false
     }
-    
+
     @discardableResult func updateObject(with searchWord: String, pet: String) throws -> Bool {
         var result = false
         do {
@@ -77,7 +76,7 @@ class MockSearchWordCoreDataManager: SearchWordCoreDataManagerType {
         }
         return result
     }
-    
+
     func deleteObject<T>(_ coreDataStructType: T) throws -> Bool {
         guard let searchWordData = coreDataStructType as? SearchWordData else {
             return false
@@ -87,12 +86,12 @@ class MockSearchWordCoreDataManager: SearchWordCoreDataManagerType {
             if object.objectID == searchWordData.objectID {
                 break
             }
-            index = index + 1
+            index += 1
         }
         mockSearchInfo.mockSearchWord.remove(at: index)
         return false
     }
-    
+
     @discardableResult func deleteAllObjects(pet: String) throws ->  Bool {
         let nonDeleteObjects = mockSearchInfo.mockSearchWord.filter { $0.pet
             != pet }
@@ -105,7 +104,7 @@ class MockSearchWordCoreDataManager: SearchWordCoreDataManagerType {
                 return true
             }
         }
-    
+
         return false
     }
 }
@@ -128,13 +127,13 @@ class MockSearchWordInfo {
         searchWordData3.searchWord = "강아지 장난감"
         searchWordData3.pet = "강아지"
        // searchWordData3.objectID = NSManagedObjectID()
-        
+
         searchWordDatas.append(searchWordData1)
         searchWordDatas.append(searchWordData2)
         searchWordDatas.append(searchWordData3)
         return searchWordDatas
     }()
-    
+
     func createDate() -> String {
         let date = Date()
         let dateFormatter = DateFormatter()
@@ -148,27 +147,27 @@ class MockPetKeywordCoreDataManager: PetKeywordCoreDataManagerType {
     func fetchOnlyKeyword(pet: String) throws -> [String]? {
         return nil
     }
-    
+
     func fetchOnlyPet(pet: String) throws -> String? {
         return nil
     }
-    
+
     func insert<T>(_ coreDataStructType: T) throws -> Bool {
         return false
     }
-    
+
     func fetchObjects(pet: String? = nil) throws -> [CoreDataStructEntity]? {
          return nil
     }
-    
+
     func updateObject<T>(_ coreDataStructType: T) throws -> Bool {
         return false
     }
-    
+
     func deleteObject<T>(_ coreDataStructType: T) throws -> Bool {
         return false
     }
-    
+
     @discardableResult func deleteAllObjects(pet: String) throws -> Bool {
         return false
     }
@@ -181,36 +180,35 @@ class MockMyGoodsCoreDataManager: MyGoodsCoreDataManagerType {
     func deleteLatestAllObjects(pet: String, isLatest: Bool) throws -> Bool {
         return false
     }
-    
+
     func fetchFavoriteGoods(pet: String) throws -> [MyGoodsData]? {
          return nil
     }
-    
+
     func fetchLatestGoods(pet: String, isLatest: Bool, isLatestOrder: Bool) throws -> [MyGoodsData]? {
          return nil
     }
-    
+
     func insert<T>(_ coreDataStructType: T) throws -> Bool {
         return false
     }
-    
+
     func fetchObjects(pet: String? = nil) throws -> [CoreDataStructEntity]? {
         return nil
     }
-    
+
     func updateObject<T>(_ coreDataStructType: T) throws -> Bool {
         return false
     }
-    
+
     func deleteObject<T>(_ coreDataStructType: T) throws -> Bool {
         return false
     }
-    
+
     @discardableResult func deleteFavoriteAllObjects(pet: String, isFavorite: Bool) throws -> Bool {
         return false
     }
 }
-
 
 class CoreDataTests: XCTestCase {
 
@@ -218,35 +216,35 @@ class CoreDataTests: XCTestCase {
     let mockPetKeywordCoreDataManager = MockPetKeywordCoreDataManager()
     let mockNWManager = MockShoppingNetworkManager()
     var mockSearchInfo = MockSearchWordInfo()
-    
+
     lazy var service = SearchService(serachCoreData: mockSearchWordCoreDataManager,
                                      petCoreData: mockPetKeywordCoreDataManager,
                                      network: mockNWManager)
     override func setUp() {
         // Put setup code here. This method is called before the invocation of each test method in the class.
     }
-    
+
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
-    
+
     func testFetchCoreData() {
         // given
         let pet = "강아지"
-        
+
         // when
         let result = service.fetchRecentSearchWord(pet: pet)
-        
-        let count = mockSearchInfo.mockSearchWord.filter{ $0.searchWord.contains(pet)
+
+        let count = mockSearchInfo.mockSearchWord.filter { $0.searchWord.contains(pet)
         }.count
         // then
-        XCTAssert(result!.count == count , "Fetch Fail")
+        XCTAssert(result!.count == count, "Fetch Fail")
     }
-    
+
     func testInsert() {
         let pet = "강아지"
         let searchWord = "강아지 한복"
-    
+
         // given
         service.insert(recenteSearchWord: searchWord, pet: pet)
         do {
@@ -260,7 +258,7 @@ class CoreDataTests: XCTestCase {
             print(error)
         }
     }
-    
+
     func testUpdateCoreData() {
         let pet = "강아지"
         let searchWord = "강아지 장난감"
@@ -276,7 +274,7 @@ class CoreDataTests: XCTestCase {
             print(error)
         }
     }
-    
+
     func testDeleteCoreData() {
         let pet = "강아지"
         //given

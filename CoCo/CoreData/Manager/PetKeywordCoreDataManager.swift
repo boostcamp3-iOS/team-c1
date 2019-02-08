@@ -75,7 +75,7 @@ class PetKeywordCoreDataManager: PetKeywordCoreDataManagerType, CoreDataManagerF
         guard let context = context else { return nil }
         var petKeywordDatas = [PetKeywordData]()
         let request: NSFetchRequest<PetKeyword>
-        
+
         if #available(iOS 10.0, *) {
             let tmpRequest: NSFetchRequest<PetKeyword> = PetKeyword.fetchRequest()
             request = tmpRequest
@@ -83,14 +83,14 @@ class PetKeywordCoreDataManager: PetKeywordCoreDataManagerType, CoreDataManagerF
             let entityName = String(describing: PetKeyword.self)
             request = NSFetchRequest(entityName: entityName)
         }
-        
+
         if let pet = pet {
             let predicate = NSPredicate(format: "pet = %@", pet)
             request.predicate = predicate
         }
         request.returnsObjectsAsFaults = false
         let objects = try context.fetch(request)
-        
+
         if !objects.isEmpty {
             for object in objects {
                 var petKeyword = PetKeywordData()
@@ -208,7 +208,7 @@ class PetKeywordCoreDataManager: PetKeywordCoreDataManagerType, CoreDataManagerF
         }
         return false
     }
-    
+
     /**
      특정펫의 데이터를 삭제한다.
      - Author: [강준영](https://github.com/lavaKangJun)
@@ -221,14 +221,14 @@ class PetKeywordCoreDataManager: PetKeywordCoreDataManagerType, CoreDataManagerF
         }
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "PetKeyword")
         let predicate = NSPredicate(format: "pet = %@", pet)
-        
+
         fetchRequest.predicate = predicate
         let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
-        
+
         do {
             try context.execute(batchDeleteRequest)
             return true
-            
+
         } catch {
             throw CoreDataError.delete(message: "Can't delete data")
         }

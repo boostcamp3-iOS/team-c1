@@ -14,10 +14,10 @@ struct PetKeywordData: CoreDataStructEntity {
     var objectID: NSManagedObjectID?
     var keywords: [String] = []
     var pet = ""
-    
+
     // MARK: - Initializer
     init() { }
-    
+
     init(pet: String, keywords: [String]) {
         self.pet = pet
         self.keywords = keywords

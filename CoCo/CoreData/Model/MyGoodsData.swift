@@ -10,7 +10,7 @@ import Foundation
 import CoreData
 
 struct MyGoodsData: CoreDataStructEntity {
-  
+
     // MARK: - Propertise
     var date: String?
     var title: String = ""
@@ -24,12 +24,12 @@ struct MyGoodsData: CoreDataStructEntity {
     var searchWord: String?
     var pet = ""
     var shoppingmall: String = ""
-    
-    //MARK: Initializer
+
+    // MARK: Initializer
     init() {
         self.date = createDate()
     }
-    
+
     init(pet: String, title: String, link: String, image: String, isFavorite: Bool, isLatest: Bool, price: String, productId: String, searchWord: String, shoppingmall: String) {
         self.pet = pet
         self.title = title
@@ -42,7 +42,7 @@ struct MyGoodsData: CoreDataStructEntity {
         self.searchWord = searchWord
         self.shoppingmall = shoppingmall
     }
-    
+
     // MARK: - Method
     func createDate() -> String {
         let date = Date()

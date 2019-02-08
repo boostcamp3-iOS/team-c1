@@ -15,18 +15,18 @@ struct SearchWordData: CoreDataStructEntity {
     var searchWord = ""
     var pet = ""
     var objectID: NSManagedObjectID?
-    
+
     // MARK: Initializer
     init() {
         self.date = createDate()
     }
-    
+
     init(pet: String, searchWord: String) {
         self.pet = pet
         self.date = createDate()
         self.searchWord = searchWord
     }
-    
+
     // MARK: Method
     func createDate() -> String {
         let date = Date()
@@ -36,4 +36,3 @@ struct SearchWordData: CoreDataStructEntity {
         return dateFormatter.string(from: date)
     }
 }
-
