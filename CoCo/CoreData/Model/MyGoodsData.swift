@@ -9,40 +9,52 @@
 import Foundation
 import CoreData
 
-struct MyGoodsData {
-    var date = Date() //시간 자동저장?
+struct MyGoodsData: CoreDataStructEntity {
+
+    // MARK: - Propertise
+    var date: String?
     var title: String = ""
     var link: String = ""
     var image: String = ""
     var isFavorite: Bool = false
     var isLatest: Bool = false
     var price: String = ""
-    var productId: String = ""
-    var objectId: NSManagedObjectID?
-    var searchWord = ""
+    var productID: String = ""
+    var objectID: NSManagedObjectID?
+    var searchWord: String?
+    var pet = ""
+    var shoppingmall: String = ""
+
+    // MARK: Initializer
+    init() {
+        self.date = createDate()
+    }
+
+    init(pet: String, title: String, link: String, image: String, isFavorite: Bool, isLatest: Bool, price: String, productId: String, searchWord: String, shoppingmall: String) {
+        self.pet = pet
+        self.title = title
+        self.link = link
+        self.image = image
+        self.isFavorite = isFavorite
+        self.isLatest = isLatest
+        self.price = price
+        self.productID = productId
+        self.searchWord = searchWord
+        self.shoppingmall = shoppingmall
+    }
+
+    // MARK: - Method
+    func createDate() -> String {
+        let date = Date()
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale(identifier: "ko_KR")
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        return dateFormatter.string(from: date)
+    }
 }
 
 extension MyGoodsData: Comparable {
     static func < (lhs: MyGoodsData, rhs: MyGoodsData) -> Bool {
-        return lhs.searchWord < rhs.searchWord
+        return lhs.productID < rhs.productID
     }
-}
-
-extension MyGoodsData: CoreDataEntity {
-    func toCoreData(context: NSManagedObjectContext?) -> NSManagedObject? {
-        guard let context = context else { return nil }
-        let myGoods = MyGoods(context: context)
-
-        myGoods.date = self.date as NSDate
-        myGoods.title = self.title
-        myGoods.link = self.link
-        myGoods.image = self.image
-        myGoods.isFavorite = self.isFavorite
-        myGoods.price = self.price
-        myGoods.productId = self.productId
-        myGoods.searchWord = self.searchWord
-        return myGoods
-
-    }
-
 }

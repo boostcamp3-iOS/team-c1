@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum Keyword: String, CaseIterable {
+enum KeywordType: String, CaseIterable {
     case play = "놀이"
     case beauty = "뷰티"
     case health = "헬스"

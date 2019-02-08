@@ -9,10 +9,8 @@
 import Foundation
 import CoreData
 
-protocol CoreDataEntity {
-    func toCoreData(context: NSManagedObjectContext?) -> NSManagedObject?
-}
-
-extension CoreDataEntity {
-
+// MARK: - CoreDataStructEntity
+// CoreData Stuct가 공통으로 채택하는 프로토콜
+protocol CoreDataStructEntity {
+    var objectID: NSManagedObjectID? { get set }
 }

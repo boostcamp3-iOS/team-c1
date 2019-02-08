@@ -55,7 +55,7 @@ extension NetworkDispatcher: DispatcherType {
     // MARK: - Methods
     func execute(request: RequestType, completion: @escaping (Data) -> Void) throws {
         let request = try self.prepare(request: request)
-        
+
         URLSession.shared.dataTask(with: request) {  (data, _, error) in
             if let error = error {
                 print(error.localizedDescription)
@@ -73,7 +73,7 @@ extension NetworkDispatcher: DispatcherType {
             throw NetworkErrors.badInput
         }
         var apiRequest = URLRequest(url: url)
-        
+
         // 파라미터 설정
         switch request.parameters {
         case .body(let params):

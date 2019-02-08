@@ -19,8 +19,8 @@ protocol MakeSearchWordsType: WordType {
 
 protocol WordType {
     func petIncluded(in word: String) -> Bool
-    func combinePet(_ pet: Pet, and words: [String]) -> [String]
-    func combinePet(_ pet: Pet, and word: String) -> String
+    func combinePet(_ pet: PetType, and words: [String]) -> [String]
+    func combinePet(_ pet: PetType, and word: String) -> String
     func removePet(from words: [String]) -> [String]
     func removePet(from word: String) -> String
 }

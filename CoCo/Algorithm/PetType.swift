@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum Pet: String, CaseIterable {
+enum PetType: String, CaseIterable {
     case dog = "강아지"
     case cat = "고양이"
 }

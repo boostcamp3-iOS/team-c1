@@ -9,19 +9,17 @@
 import Foundation
 import CoreData
 
-struct PetKeywordData {
+struct PetKeywordData: CoreDataStructEntity {
+    // MARK: - Propertise
+    var objectID: NSManagedObjectID?
     var keywords: [String] = []
     var pet = ""
-    var objectID: NSManagedObjectID?
-}
 
-extension PetKeywordData: CoreDataEntity {
-    func toCoreData(context: NSManagedObjectContext?) -> NSManagedObject? {
-        guard let context = context else { return nil }
-        let petKeyword = PetKeyword(context: context)
-        petKeyword.keywords = self.keywords as NSObject
-        petKeyword.pet = self.pet
-        return petKeyword
+    // MARK: - Initializer
+    init() { }
+
+    init(pet: String, keywords: [String]) {
+        self.pet = pet
+        self.keywords = keywords
     }
-
 }

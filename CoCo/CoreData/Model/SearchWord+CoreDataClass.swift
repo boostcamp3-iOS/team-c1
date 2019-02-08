@@ -1,5 +1,5 @@
 //
-//  MyGoods+CoreDataClass.swift
+//  SearchWord+CoreDataClass.swift
 //  CoCo
 //
 //  Created by 강준영 on 04/02/2019.
@@ -10,4 +10,4 @@
 import Foundation
 import CoreData
 
-public class MyGoods: NSManagedObject { }
+public class SearchWord: NSManagedObject { }

@@ -27,7 +27,7 @@ enum Category: String, CaseIterable {
      - Parameters:
         - pet: Pet 타입(강아지/고양이)
      */
-    func getData(pet: Pet) -> [String] {
+    func getData(pet: PetType) -> [String] {
         switch (self) {
         case .feed:
             return (pet == .dog) ?
