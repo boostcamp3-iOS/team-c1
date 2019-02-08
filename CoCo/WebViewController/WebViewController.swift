@@ -38,6 +38,37 @@ class WebViewController: UIViewController {
         let request = URLRequest(url: url)
         webView.load(request)
     }
+
+    // MARK: - Action methods
+    @IBAction private func actionGoForward(_ sender: Any) {
+        if webView.canGoForward {
+            webView.goForward()
+        }
+    }
+
+    @IBAction private func actionGoBack(_ sender: Any) {
+        if webView.canGoBack {
+            webView.goBack()
+        }
+    }
+
+    @IBAction private func actionReload(_ sender: Any) {
+        webView.reload()
+    }
+
+    @IBAction private func actionShare(_ sender: Any) {
+        guard let url = webView.url else {
+            let message = getErrorMessage(WebViewControllerError.invalidLink)
+            alert(message)
+            return
+        }
+        let activityVC = UIActivityViewController(activityItems: [url], applicationActivities: nil)
+        present(activityVC, animated: true)
+    }
+
+    @IBAction private func actionFavorite(_ sender: Any) {
+        // TODO: 즐겨찾기 반영 로직 구현
+    }
 }
 
 // MARK: - ErrorHandlerType
