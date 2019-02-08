@@ -13,8 +13,14 @@ class WebViewController: UIViewController {
     // MARK: - Properties
     var myGoodsData: MyGoodsData?
 
+    // MARK: - Private properties
+    private let webViewKeyPaths = [
+        #keyPath(WKWebView.estimatedProgress)
+    ]
+
     // MARK: - IBOutlets
     @IBOutlet private weak var webView: WKWebView!
+    @IBOutlet private weak var progressView: UIView!
 
     // MARK: - View lifecycle
     override func viewDidLoad() {
@@ -31,12 +37,32 @@ class WebViewController: UIViewController {
         }
         webView.navigationDelegate = self
         loadWebView(url)
+        addObserversToWebView()
+    }
+
+    // MARK: - Observer related methods
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
+        super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
+        if keyPath == "estimatedProgress" {
+            updateProgressView(CGFloat(webView.estimatedProgress))
+        }
+    }
+
+    private func addObserversToWebView() {
+        for keyPath in webViewKeyPaths {
+            webView.addObserver(self, forKeyPath: keyPath, options: .new, context: nil)
+        }
     }
 
     // MARK: - WebView related methods
     private func loadWebView(_ url: URL) {
         let request = URLRequest(url: url)
         webView.load(request)
+    }
+
+    // MARK: - ProgressView related methods
+    private func updateProgressView(_ value: CGFloat) {
+        progressView.frame.size.width = value * view.frame.width
     }
 
     // MARK: - Action methods
@@ -84,8 +110,13 @@ extension WebViewController: ErrorHandlerType {
 // MARK: - WKNavigationDelegate
 extension WebViewController: WKNavigationDelegate {
     func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
+        // 웹뷰 로딩이 시작되면 progressView를 보여준다.
+        progressView.isHidden = false
+        view.bringSubviewToFront(progressView)
     }
 
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        // 웹뷰 로딩이 안료되면 progressView를 숨긴다.
+        progressView.isHidden = true
     }
 }
