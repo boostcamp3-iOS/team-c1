@@ -15,6 +15,8 @@
 		10B0B7CE220DCD1C00CA125F /* Keyword.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B0B7C8220DCD1C00CA125F /* Keyword.swift */; };
 		10B0B7CF220DCD1C00CA125F /* AlgorithmType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B0B7C9220DCD1C00CA125F /* AlgorithmType.swift */; };
 		10B0B7D0220DCD1C00CA125F /* Algorithm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B0B7CA220DCD1C00CA125F /* Algorithm.swift */; };
+		10B0B7D5220DCEE200CA125F /* ErrorHandlerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B0B7D3220DCEE200CA125F /* ErrorHandlerType.swift */; };
+		10B0B7D6220DCEE200CA125F /* ErrorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B0B7D4220DCEE200CA125F /* ErrorType.swift */; };
 		1124445ED50488C69062410A25013364 /* SearchServiceClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74E2D39398448EE8F8ADE0FC708ACE97 /* SearchServiceClass.swift */; };
 		14DA58802DB1798DF415389EEDF198E5 /* PetKeywordData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F25375C0BE923827FC55024C3D91CD /* PetKeywordData.swift */; };
 		23C20835A211EF6A360EA679E43822E9 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = C67A6DAC929D57D0F5A24AA2A81988D1 /* Model.swift */; };
@@ -87,6 +89,8 @@
 		10B0B7C8220DCD1C00CA125F /* Keyword.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Keyword.swift; sourceTree = "<group>"; };
 		10B0B7C9220DCD1C00CA125F /* AlgorithmType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlgorithmType.swift; sourceTree = "<group>"; };
 		10B0B7CA220DCD1C00CA125F /* Algorithm.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Algorithm.swift; sourceTree = "<group>"; };
+		10B0B7D3220DCEE200CA125F /* ErrorHandlerType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorHandlerType.swift; sourceTree = "<group>"; };
+		10B0B7D4220DCEE200CA125F /* ErrorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorType.swift; sourceTree = "<group>"; };
 		12BB21246FD94557A4C993EC2D495697 /* NetworkTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkTests.swift; sourceTree = "<group>"; };
 		15110287A591BECB1C7F224B7B7C6604 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		15CA77A5436CC1E189E54451CA6A3174 /* Dispatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dispatcher.swift; sourceTree = "<group>"; };
@@ -167,6 +171,8 @@
 		3CEC2A63B9084C70A1FBE70D244FC6A5 /* Algorithm */ = {
 			isa = PBXGroup;
 			children = (
+				10B0B7D3220DCEE200CA125F /* ErrorHandlerType.swift */,
+				10B0B7D4220DCEE200CA125F /* ErrorType.swift */,
 				10B0B7CA220DCD1C00CA125F /* Algorithm.swift */,
 				10B0B7C9220DCD1C00CA125F /* AlgorithmType.swift */,
 				10B0B7C7220DCD1C00CA125F /* Category.swift */,
@@ -554,6 +560,7 @@
 				8E7C9D1E3DCDB5A0C2E5AD8FC3BB4C85 /* MyGoods+CoreDataProperties.swift in Sources */,
 				7FDCF38750C170C648BD6C51670E6053 /* MyGoodsCoreDataManager.swift in Sources */,
 				10B0B7CC220DCD1C00CA125F /* Pet.swift in Sources */,
+				10B0B7D5220DCEE200CA125F /* ErrorHandlerType.swift in Sources */,
 				061FEDB246E93E55A7C4780D9F9AEBF5 /* MyGoodsData.swift in Sources */,
 				7C201E61C594707837EDAA99798C5049 /* MyGoodsDummy.swift in Sources */,
 				76DC29C8BC5F47F339FFE2E7E4077DE6 /* NetworkManagerType.swift in Sources */,
@@ -569,6 +576,7 @@
 				DE6DAB1CD4E47ED494DC358FF269B628 /* SearchWord+CoreDataClass.swift in Sources */,
 				C0D7B17DBCEA5CC9612ED2C94BC8046C /* SearchWord+CoreDataProperties.swift in Sources */,
 				5DD8E8DAD58C7335B8CFEAD845C66056 /* SearchWordCoreDataManager.swift in Sources */,
+				10B0B7D6220DCEE200CA125F /* ErrorType.swift in Sources */,
 				3C583829E9A62F555B3892192714290D /* SearchWordData.swift in Sources */,
 				674988E4FC52C9FAA7F90EAD53B4F44A /* ShoppingNetworkManager.swift in Sources */,
 				E00BA2A03C9702BEEE130897C1ABFC19 /* UIViewController+Alert.swift in Sources */,
