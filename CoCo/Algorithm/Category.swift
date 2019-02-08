@@ -19,7 +19,7 @@ enum Category: String, CaseIterable {
     case fashionProducts = "패션용품"
     case outdoorProducts = "야외용품"
     case tablewareWaterDispenser = "식기/급수기"
-
+    
     // MARK: - Methods
     /**
      해당 Category에 포함되는 상세 카테고리 String 리스트를 반환한다.
@@ -27,7 +27,7 @@ enum Category: String, CaseIterable {
      - Parameters:
         - pet: Pet 타입(강아지/고양이)
      */
-    func getData(pet: PetType) -> [String] {
+    func getData(pet: Pet) -> [String] {
         switch (self) {
         case .feed:
             return (pet == .dog) ?

@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum KeywordType: String, CaseIterable {
+enum Keyword: String, CaseIterable {
     case play = "놀이"
     case beauty = "뷰티"
     case health = "헬스"
@@ -17,7 +17,7 @@ enum KeywordType: String, CaseIterable {
     case living = "리빙"
     case goingOut = "외출"
     case bowelMovement = "배변"
-
+    
     // MARK: - Methods
     /**
      해당 Keyword에 포함되는 Category 타입의 리스트를 반환한다.
