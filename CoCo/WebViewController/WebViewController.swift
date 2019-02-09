@@ -63,13 +63,14 @@ class WebViewController: UIViewController {
 
     // MARK: - Navigation related methods
     private func setNavigationBar() {
+        navigationController?.navigationBar.isTranslucent = false
+        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationItem.largeTitleDisplayMode = .always
         if let title = myGoodsData?.shoppingmall {
             navigationItem.title = title
         }
-        navigationController?.navigationBar.prefersLargeTitles = true
-        navigationItem.largeTitleDisplayMode = .always
         // TODO: 이미지 추가
-        let backButton = UIBarButtonItem(image: nil, style: .plain, target: self, action: #selector(popViewController))
+        let backButton = UIBarButtonItem(title: "<", style: .plain, target: self, action: #selector(popViewController))
         navigationItem.leftBarButtonItem = backButton
         navigationItem.hidesBackButton = true
     }
