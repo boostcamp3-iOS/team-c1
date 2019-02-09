@@ -71,6 +71,7 @@ class WebViewController: UIViewController {
         }
         // TODO: 이미지 추가
         let backButton = UIBarButtonItem(title: "<", style: .plain, target: self, action: #selector(popViewController))
+        backButton.tintColor = UIColor(red: 161/255, green: 125/255, blue: 255/255, alpha: 1)
         navigationItem.leftBarButtonItem = backButton
         navigationItem.hidesBackButton = true
     }
