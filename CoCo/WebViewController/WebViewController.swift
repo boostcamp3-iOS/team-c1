@@ -38,6 +38,7 @@ class WebViewController: UIViewController {
         webView.navigationDelegate = self
         loadWebView(url)
         addObserversToWebView()
+        setNavigationBar()
     }
 
     // MARK: - Observer related methods
@@ -58,6 +59,23 @@ class WebViewController: UIViewController {
     private func loadWebView(_ url: URL) {
         let request = URLRequest(url: url)
         webView.load(request)
+    }
+
+    // MARK: - Navigation related methods
+    private func setNavigationBar() {
+        if let title = myGoodsData?.shoppingmall {
+            navigationItem.title = title
+        }
+        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationItem.largeTitleDisplayMode = .always
+        // TODO: 이미지 추가
+        let backButton = UIBarButtonItem(image: nil, style: .plain, target: self, action: #selector(popViewController))
+        navigationItem.leftBarButtonItem = backButton
+        navigationItem.hidesBackButton = true
+    }
+
+    @objc func popViewController() {
+        navigationController?.popViewController(animated: true)
     }
 
     // MARK: - ProgressView related methods
