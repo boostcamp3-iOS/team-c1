@@ -36,3 +36,20 @@ struct SearchWordData: CoreDataStructEntity {
         return dateFormatter.string(from: date)
     }
 }
+
+extension SearchWordData: Mapping {
+    mutating func mappinng(from: NSManagedObject) {
+        self.date = from.value(forKeyPath: "date")
+        self.pet = from.value(forKeyPath: "pet")
+        self.searchWord = from.value(forKeyPath: "searchWord")
+        self.objectID = from.objectID
+    }
+    
+    func mappinng(to: NSManagedObject) {
+        to.setValue(self.date, forKey: "date")
+        to.setValue(self.pet, forKey: "pet")
+        to.setValue(self.searchWord, forKey: "searchWord")
+    }
+    
+    
+}

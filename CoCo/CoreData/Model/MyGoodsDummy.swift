@@ -24,7 +24,7 @@ struct MyGoodsDummy {
         myGoods1.shoppingmall = "마루"
         myGoods1.date = "2018-01-11"
 
-       /* var myGoods2 = MyGoodsData()
+        var myGoods2 = MyGoodsData()
         myGoods2.title = "고양이 의자"
         myGoods2.image = ""
         myGoods2.isFavorite = false
@@ -167,6 +167,7 @@ struct MyGoodsDummy {
         dummyArray.append(myGoods9)
         dummyArray.append(myGoods10)
         dummyArray.append(myGoods11)
-        dummyArray.append(myGoods12)*/
+        dummyArray.append(myGoods12)
+ 
     }
 }

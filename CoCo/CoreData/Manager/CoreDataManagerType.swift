@@ -38,6 +38,6 @@ protocol PetKeywordCoreDataManagerType: CoreDataManagerType {
 protocol SearchWordCoreDataManagerType: CoreDataManagerType {
     // MARK: - Methodes// MARK: - Methodes
     func fetchOnlySearchWord(pet: String) throws -> [String]?
-    func updateObject(with searchWord: String, pet: String) throws -> Bool
+    func updateObject(searchWord: String, pet: String) throws -> Bool
     func deleteAllObjects(pet: String) throws -> Bool
 }
