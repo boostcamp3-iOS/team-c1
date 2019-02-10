@@ -78,13 +78,13 @@ extension NetworkDispatcher: DispatcherType {
         switch request.parameters {
         case .body(let params):
             guard let params = params else {
-                throw NetworkErrors.invalidParams
+                break
             }
             let body = try JSONEncoder().encode(params)
             apiRequest.httpBody = body
         case .url(let params):
             guard let params = params else {
-                throw NetworkErrors.invalidParams
+                break
             }
             let queryParams = params.map { URLQueryItem(name: $0.key, value: $0.value) }
             guard var components = URLComponents(string: fullUrl) else {

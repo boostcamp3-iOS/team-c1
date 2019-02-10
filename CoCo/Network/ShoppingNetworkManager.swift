@@ -70,4 +70,17 @@ class ShoppingNetworkManager: NetworkManagerType {
             errorHandler(err)
         }
     }
+
+    func getImageData(url: String, completion: @escaping (Data?, Error?) -> Void) {
+        let environment = Environment(host: url)
+        let dispatcher = NetworkDispatcher(environment: environment).makeNetworkProvider()
+        let request = APIRequest.requestAPI()
+        do {
+            try dispatchAPI(in: dispatcher, request: request) { data in
+                completion(data, nil)
+            }
+        } catch let err {
+            completion(nil, err)
+        }
+    }
 }
