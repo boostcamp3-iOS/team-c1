@@ -21,6 +21,7 @@ class WebViewController: UIViewController {
     // MARK: - IBOutlets
     @IBOutlet private weak var webView: WKWebView!
     @IBOutlet private weak var progressView: UIView!
+    @IBOutlet private weak var favoriteButton: UIBarButtonItem!
 
     // MARK: - View lifecycle
     override func viewDidLoad() {
@@ -35,15 +36,20 @@ class WebViewController: UIViewController {
             }
             return
         }
-        webView.navigationDelegate = self
+        setWebView()
+        setNavigationBar()
+        setProgressView()
         loadWebView(url)
         addObserversToWebView()
-        setNavigationBar()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setFavoriteButton()
     }
 
     // MARK: - Observer related methods
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
-        super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
         if keyPath == "estimatedProgress" {
             updateProgressView(CGFloat(webView.estimatedProgress))
         }
@@ -55,23 +61,13 @@ class WebViewController: UIViewController {
         }
     }
 
-    // MARK: - WebView related methods
-    private func loadWebView(_ url: URL) {
-        let request = URLRequest(url: url)
-        webView.load(request)
-    }
-
     // MARK: - Navigation related methods
     private func setNavigationBar() {
-        navigationController?.navigationBar.isTranslucent = false
-        navigationController?.navigationBar.prefersLargeTitles = true
-        navigationItem.largeTitleDisplayMode = .always
         if let title = myGoodsData?.shoppingmall {
             navigationItem.title = title
         }
-        // TODO: 이미지 추가
-        let backButton = UIBarButtonItem(title: "<", style: .plain, target: self, action: #selector(popViewController))
-        backButton.tintColor = UIColor(red: 161/255, green: 125/255, blue: 255/255, alpha: 1)
+        let backButton = UIBarButtonItem(image: UIImage(named: "left-arrow"), style: .plain, target: self, action: #selector(popViewController))
+        backButton.tintColor = AppColor.purple
         navigationItem.leftBarButtonItem = backButton
         navigationItem.hidesBackButton = true
     }
@@ -80,9 +76,32 @@ class WebViewController: UIViewController {
         navigationController?.popViewController(animated: true)
     }
 
+    // MARK: - WebView related methods
+    private func setWebView() {
+        webView.navigationDelegate = self
+        webView.scrollView.delegate = self
+    }
+    private func loadWebView(_ url: URL) {
+        let request = URLRequest(url: url)
+        webView.load(request)
+    }
+
     // MARK: - ProgressView related methods
+    private func setProgressView() {
+        progressView.backgroundColor = AppColor.purple
+    }
+
     private func updateProgressView(_ value: CGFloat) {
         progressView.frame.size.width = value * view.frame.width
+    }
+
+    // MARK: - Button related methods
+    func setFavoriteButton() {
+        guard let isFavorite = myGoodsData?.isFavorite else {
+            return
+        }
+        favoriteButton.image =
+            (isFavorite) ? UIImage(named: "like_fill") : UIImage(named: "like")
     }
 
     // MARK: - Action methods
@@ -114,6 +133,10 @@ class WebViewController: UIViewController {
 
     @IBAction private func actionFavorite(_ sender: Any) {
         // TODO: 즐겨찾기 반영 로직 구현
+        if let isFavorite = myGoodsData?.isFavorite {
+            myGoodsData?.isFavorite = !isFavorite
+        }
+        setFavoriteButton()
     }
 }
 
@@ -138,5 +161,17 @@ extension WebViewController: WKNavigationDelegate {
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         // 웹뷰 로딩이 안료되면 progressView를 숨긴다.
         progressView.isHidden = true
+        navigationController?.setNavigationBarHidden(false, animated: false)
+    }
+}
+
+// MARK: - UIScrollViewDelegate
+extension WebViewController: UIScrollViewDelegate {
+    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        if velocity.y > 0 {
+            navigationController?.setNavigationBarHidden(true, animated: false)
+        } else {
+            navigationController?.setNavigationBarHidden(false, animated: true)
+        }
     }
 }
