@@ -6,7 +6,7 @@
 //  Copyright © 2019 Team CoCo. All rights reserved.
 //
 
-import Foundation
+import UIKit
 import CoreData
 
 extension NSManagedObject {
@@ -22,6 +22,13 @@ extension NSManagedObject {
     func value(forKeyPath keyPath: String) -> Bool {
         guard let value = super.value(forKeyPath: keyPath) as? Bool else {
             return false
+        }
+        return value
+    }
+
+    func value(forKeyPath keyPath: String) -> UIImage {
+        guard let value = super.value(forKeyPath: keyPath) as? UIImage else {
+            return UIImage()
         }
         return value
     }
