@@ -12,7 +12,9 @@ extension UIViewController {
     /// UIAlertController 간편 메서드, Main thread에서 동작한다
     func alert(_ message: String, completaionHandler: (() -> Void)? = nil) {
         DispatchQueue.main.async { [weak self] in
-            guard let self = self else { return }
+            guard let self = self else {
+                return
+            }
             let alert = UIAlertController(title: nil, message: message, preferredStyle: .alert)
             let okAction = UIAlertAction(title: "확인", style: .cancel) { _ in
                 completaionHandler?()

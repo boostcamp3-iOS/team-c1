@@ -122,7 +122,7 @@ class SearchWordCoreDataManager: SearchWordCoreDataManagerType, CoreDataManagerF
         }
         do {
             let object = try fetchWord(searchWord, pet: pet)
-            if var searchWordObject = object, let objectID = searchWordObject.objectID{
+            if var searchWordObject = object, let objectID = searchWordObject.objectID {
                 let object = context.object(with: objectID)
                 searchWordObject.date = searchWordObject.createDate()
                 searchWordObject.mappinng(to: object)

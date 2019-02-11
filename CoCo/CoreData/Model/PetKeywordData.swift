@@ -30,7 +30,7 @@ extension PetKeywordData: Mapping {
         self.pet = from.value(forKeyPath: "pet")
         self.objectID = from.objectID
     }
-    
+
     func mappinng(to: NSManagedObject) {
         to.setValue(self.keywords, forKey: "keywords")
         to.setValue(self.pet, forKey: "pet")

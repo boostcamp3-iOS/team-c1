@@ -168,6 +168,6 @@ struct MyGoodsDummy {
         dummyArray.append(myGoods10)
         dummyArray.append(myGoods11)
         dummyArray.append(myGoods12)
- 
+
     }
 }

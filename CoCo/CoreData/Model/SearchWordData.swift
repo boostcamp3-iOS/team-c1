@@ -44,12 +44,11 @@ extension SearchWordData: Mapping {
         self.searchWord = from.value(forKeyPath: "searchWord")
         self.objectID = from.objectID
     }
-    
+
     func mappinng(to: NSManagedObject) {
         to.setValue(self.date, forKey: "date")
         to.setValue(self.pet, forKey: "pet")
         to.setValue(self.searchWord, forKey: "searchWord")
     }
-    
-    
+
 }
