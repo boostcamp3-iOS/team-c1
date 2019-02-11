@@ -10,7 +10,7 @@ import UIKit
 
 enum MemoryStorage {
     class MemoryCache {
-      
+
         let storage = NSCache<NSString, UIImage>()
 
         func store(value: UIImage, forKey key: String) {

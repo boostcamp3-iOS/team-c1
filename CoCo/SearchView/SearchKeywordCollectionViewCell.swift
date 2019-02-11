@@ -9,8 +9,8 @@
 import UIKit
 
 class SearchKeywordCollectionViewCell: UICollectionViewCell {
-    
+
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var colorBackgroundView: UIView!
-    
+
 }

@@ -25,11 +25,11 @@ struct Queue<T: Comparable>: QueueOperationType {
     var isEmpty: Bool {
         return data.isEmpty
     }
-    
+
     // MARK: - Private properties
     private var data = [T]()
     private let capacity: Int
-    
+
     // MARK: - Initializer
     init(_ capacity: Int = defaultCapacity, elements: [T] = []) {
         self.capacity = capacity
@@ -37,7 +37,7 @@ struct Queue<T: Comparable>: QueueOperationType {
             enqueue(elements)
         }
     }
-    
+
     // MARK: - Enqueue & Dequeue
     mutating func enqueue(_ element: T) {
         // 중복된 원소인 경우 제외시킨다
@@ -50,22 +50,22 @@ struct Queue<T: Comparable>: QueueOperationType {
         }
         data.append(element)
     }
-    
+
     mutating func enqueue(_ elements: [T]) {
         for element in elements {
             enqueue(element)
         }
     }
-    
+
     @discardableResult mutating func dequeue() -> T? {
         return data.removeFirst()
     }
-    
+
     // MARK: - Convenience methods
     func shuffled() -> [T] {
         return data.shuffled()
     }
-    
+
     mutating func clear() {
         data.removeAll()
     }
