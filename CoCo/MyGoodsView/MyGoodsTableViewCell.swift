@@ -57,7 +57,7 @@ extension MyGoodsTableViewCell: UICollectionViewDelegate, UICollectionViewDataSo
                     return
                 }
                 cell.myGoods = goods
-                cell.deleteButton.isHidden = !self.isEditing
+           //     cell.deleteButton.isHidden = !self.isEditing
             }
         }
         return cell
@@ -70,10 +70,4 @@ extension MyGoodsTableViewCell {
     private struct CollectionViewCellIdentifier {
         static let goodsCell = "GoodsCell"
     }
-}
-
-// TODO: collection view cell 구현 시 변경
-class GoodsCell: UICollectionViewCell {
-    var deleteButton = UIButton()
-    var myGoods: MyGoodsData?
 }
