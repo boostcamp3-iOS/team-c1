@@ -2,13 +2,13 @@
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14460.32" systemVersion="18A391" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="MyGoods" representedClassName=".MyGoods" syncable="YES">
         <attribute name="date" attributeType="String" syncable="YES"/>
-        <attribute name="image" attributeType="String" syncable="YES"/>
+        <attribute name="image" attributeType="Transformable" syncable="YES"/>
         <attribute name="isFavorite" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="isLatest" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="link" attributeType="String" syncable="YES"/>
         <attribute name="pet" attributeType="String" syncable="YES"/>
         <attribute name="price" attributeType="String" syncable="YES"/>
-        <attribute name="productId" attributeType="String" syncable="YES"/>
+        <attribute name="productID" attributeType="String" syncable="YES"/>
         <attribute name="searchWord" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="shoppingmall" attributeType="String" syncable="YES"/>
         <attribute name="title" attributeType="String" syncable="YES"/>

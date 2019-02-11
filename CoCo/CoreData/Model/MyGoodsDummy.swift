@@ -6,7 +6,7 @@
 //  Copyright © 2019 Team CoCo. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 struct MyGoodsDummy {
     var dummyArray = [MyGoodsData]()
@@ -14,7 +14,7 @@ struct MyGoodsDummy {
     init() {
         var myGoods1 = MyGoodsData()
         myGoods1.title = "고양이 방석"
-        myGoods1.image = ""
+        myGoods1.image = UIImage()
         myGoods1.isFavorite = false
         myGoods1.isLatest = true
         myGoods1.link = ""
@@ -168,5 +168,6 @@ struct MyGoodsDummy {
         dummyArray.append(myGoods10)
         dummyArray.append(myGoods11)
         dummyArray.append(myGoods12)*/
+
     }
 }

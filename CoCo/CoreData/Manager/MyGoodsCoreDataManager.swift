@@ -11,51 +11,6 @@ import UIKit
 import CoreData
 
 class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctionImplementType {
-    // MARK: - Insert Method
-    /**
-     MyGoods Entity에 데이터 삽입.
-     - Author: [강준영](https://github.com/lavaKangJun)
-     - Parameter :
-        - coreDataStructType: coreDataStructType 프로토콜을 채택하는 CoreData Struct.
-     */
-    @discardableResult func insert<T: CoreDataStructEntity>(_ coreDataStructType: T) throws -> Bool {
-        switch coreDataStructType {
-        case is MyGoodsData:
-            guard let context = context else {
-                return false
-            }
-            guard var myGoodsData = coreDataStructType as? MyGoodsData else {
-                return false
-            }
-            // 삽입하려는 데이터와 동일한 productID가 존재하면 기존 데이터 업데이트
-            if let object = fetchProductId(productId: myGoodsData.productID) {
-                myGoodsData.objectID = object.objectID
-                print("Product: \(myGoodsData.productID) Already Inserted , So Update")
-                try updateObject(myGoodsData)
-                return true
-                // 삽입하려는 데이터와 동일한 데이터가 MyGoods Entity에 존재하는 지 확인하기 위해 삽입하려는 데이터의 productID를 Entity에 존재하는 지 확인.
-                // 삽입하려는 데이터의 productID와 동일한 데이터가 없는 경우 삽입을 진행
-            } else {
-                let myGoods = MyGoods(context: context)
-                myGoods.date =  myGoodsData.date ?? ""
-                myGoods.title = myGoodsData.title
-                myGoods.image = myGoodsData.image
-                myGoods.isFavorite = myGoodsData.isFavorite
-                myGoods.isLatest = myGoodsData.isLatest
-                myGoods.link = myGoodsData.link
-                myGoods.price = myGoodsData.price
-                myGoods.productId = myGoodsData.productID
-                myGoods.searchWord = myGoodsData.searchWord ?? ""
-                myGoods.shoppingmall = myGoodsData.shoppingmall
-                myGoods.pet = myGoodsData.pet
-                afterOperation(context: context)
-                print("succesive insert \(myGoodsData.productID)")
-                return true
-                }
-        default:
-            return false
-        }
-    }
 
     // MARK: - Fetch Methodes
     /**
@@ -91,18 +46,7 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
         if !objects.isEmpty {
             for object in objects {
                 var myGoodsData = MyGoodsData()
-                myGoodsData.date = object.date
-                myGoodsData.image = object.image
-                myGoodsData.isFavorite = object.isFavorite
-                myGoodsData.isLatest = object.isLatest
-                myGoodsData.link = object.link
-                myGoodsData.objectID = object.objectID
-                myGoodsData.price = object.price
-                myGoodsData.productID = object.productId
-                myGoodsData.searchWord = object.searchWord
-                myGoodsData.title = object.title
-                myGoodsData.shoppingmall = object.shoppingmall
-                myGoodsData.pet = object.pet
+                myGoodsData.mappinng(from: object)
                 myGoodsDatas.append(myGoodsData)
             }
             return myGoodsDatas
@@ -143,17 +87,7 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
         if !objects.isEmpty {
             for object in objects {
                 var myGoodsData = MyGoodsData()
-                myGoodsData.date = object.date
-                myGoodsData.image = object.image
-                myGoodsData.isFavorite = object.isFavorite
-                myGoodsData.isLatest = object.isLatest
-                myGoodsData.link = object.link
-                myGoodsData.objectID = object.objectID
-                myGoodsData.price = object.price
-                myGoodsData.productID = object.productId
-                myGoodsData.searchWord = object.searchWord
-                myGoodsData.title = object.title
-                myGoodsData.shoppingmall = object.shoppingmall
+                myGoodsData.mappinng(from: object)
                 myGoodsDatas.append(myGoodsData)
             }
             return myGoodsDatas
@@ -163,7 +97,7 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
     }
 
     /**
-     해당펫의 최근본 상품을 오름차순으로 가져온다
+     해당펫의 최근본 상품을 오름차순, 내림차순으로 가져온다
      - Author: [강준영](https://github.com/lavaKangJun)
      - Parameter :
      - pet: 해당하는 펫(고양이 또는 강아지)과 관련된 데이터를 가져오기 위한 파마리터.
@@ -195,18 +129,7 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
         if !objects.isEmpty {
             for object in objects {
                 var myGoodsData = MyGoodsData()
-                myGoodsData.date = object.date
-                myGoodsData.image = object.image
-                myGoodsData.isFavorite = object.isFavorite
-                myGoodsData.isLatest = object.isLatest
-                myGoodsData.link = object.link
-                myGoodsData.objectID = object.objectID
-                myGoodsData.price = object.price
-                myGoodsData.productID = object.productId
-                myGoodsData.searchWord = object.searchWord
-                myGoodsData.title = object.title
-                myGoodsData.shoppingmall = object.shoppingmall
-                myGoodsData.pet = object.pet
+                myGoodsData.mappinng(from: object)
                 myGoodsDatas.append(myGoodsData)
             }
             return myGoodsDatas
@@ -221,7 +144,7 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
      - Parameter :
         - productId: 상품들마다 가지고 있는 고유 productId.
      */
-    private func fetchProductId(productId: String) -> MyGoods? {
+    func fetchProductID(productID: String) -> MyGoods? {
         guard let context = context else { return nil }
         let request: NSFetchRequest<MyGoods>
 
@@ -234,89 +157,20 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
         }
 
         request.returnsObjectsAsFaults = false
-        request.predicate = NSPredicate(format: "productId = %@", productId)
+        request.predicate = NSPredicate(format: "productID = %@", productID)
 
         do {
             let object = try context.fetch(request)
             guard let firstObject = object.first else {
-                throw CoreDataError.fetch(message: "MyGoods Entity has not \(productId) data, So can not fetch data")
+                throw CoreDataError.fetch(message: "MyGoods Entity has not \(productID) data, So can not fetch data")
             }
             return firstObject
         } catch let error as NSError {
-            print("fetch error \(error)")
             return nil
         }
     }
 
-    // MARK: - Update Method
-    /**
-     파라미터로 넣은 구조체와 동일한 개체의 모든 내용을 업데이트한다.
-     - Author: [강준영](https://github.com/lavaKangJun)
-     - Parameter :
-        - coreDataStructType: coreDataStructType 프로토콜을 채택하는 CoreData Struct
-     */
-   @discardableResult func updateObject<T>(_ coreDataStructType: T) throws -> Bool {
-        switch coreDataStructType {
-        case is MyGoodsData:
-            guard let context = context else {
-                return  false
-            }
-            guard let myGoodsData = coreDataStructType as? MyGoodsData else {
-                return false
-            }
-            guard let objectID = myGoodsData.objectID else {
-                throw CoreDataError.update(message: "Can not find data, So can not update")
-            }
-            guard let object = context.object(with: objectID) as? MyGoods
-                else { throw CoreDataError.update(message: "Can not find data, So can not update")
-            }
-            guard let date = myGoodsData.date else {
-                return false
-            }
-            object.date = date
-            object.isLatest = myGoodsData.isLatest
-            object.isFavorite = myGoodsData.isFavorite
-            object.title = myGoodsData.title
-            object.image = myGoodsData.image
-            object.link = myGoodsData.link
-            object.price = myGoodsData.price
-            object.searchWord = myGoodsData.searchWord
-            object.shoppingmall = myGoodsData.shoppingmall
-            object.pet = myGoodsData.pet
-            print("Product: \(myGoodsData.productID) update Complete")
-            afterOperation(context: context)
-            return true
-        default:
-            return false
-        }
-    }
-
     // MARK: - Delete Method
-    /**
-     파라미터로 넣은 구조체와 동일한 데이터를 삭제한다.
-     - Author: [강준영](https://github.com/lavaKangJun)
-     - Parameter :
-     - coreDataStructType: coreDataStructType 프로토콜을 채택하는 CoreData Struct
-     */
-    @discardableResult func deleteObject<T: CoreDataStructEntity>(_ coreDataStructType: T) throws -> Bool {
-        switch coreDataStructType {
-        case is MyGoodsData:
-            guard let context = context else {
-                return false
-            }
-            guard let object = coreDataStructType as? MyGoodsData else { return false }
-            if let objectID = object.objectID {
-                let deleteObjet = context.object(with: objectID)
-                context.delete(deleteObjet)
-                afterOperation(context: context)
-                return true
-            }
-        default:
-            return false
-        }
-        return false
-    }
-
     /**
      특정펫의 즐겨찾기한 상품들을 모두 삭제한다.
      - Author: [강준영](https://github.com/lavaKangJun)
@@ -356,6 +210,7 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
         let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
         do {
             try context.execute(batchDeleteRequest)
+            print("Delete!")
             return true
         } catch {
             throw CoreDataError.delete(message: "Can't delete data")

@@ -10,46 +10,6 @@ import Foundation
 import CoreData
 
 class SearchWordCoreDataManager: SearchWordCoreDataManagerType, CoreDataManagerFunctionImplementType {
-    // Insert Method
-    /**
-     SearchWord Entity에 데이터 삽입.
-     - Author: [강준영](https://github.com/lavaKangJun)
-     - Parameter :
-     - coreDataStructType: coreDataStructType 프로토콜을 채택하는 CoreData Struct.
-     */
-    @discardableResult func insert<T>(_ coreDataStructType: T) throws -> Bool {
-        switch coreDataStructType {
-        case is SearchWordData:
-            guard let context = context else {
-                return false
-            }
-            guard let searchKeywordData = coreDataStructType as? SearchWordData else {
-                return false
-            }
-            do {
-                // SearchKeyword Entity에 검색에가 존재하는 지 확인
-                // 검색어가 존재하면 업데이트
-                if try fetchWord(searchKeywordData.searchWord, pet: searchKeywordData.pet) != nil {
-                    print("Alreay stored, So Update")
-                    try updateObject(searchKeywordData)
-                    // 존재하지 않으면 검색어 데이터 추가
-                } else {
-                    let searchKeyword = SearchWord(context: context)
-                    searchKeyword.date = searchKeywordData.date
-                    searchKeyword.searchWord = searchKeywordData.searchWord
-                    searchKeyword.pet = searchKeywordData.pet
-                    afterOperation(context: context)
-                    print("Insert Successive, word: \(searchKeyword.searchWord)")
-                }
-                return true
-            } catch let error as NSError {
-                throw CoreDataError.update(message: "Can't not update \(error)")
-            }
-        default:
-            return false
-        }
-    }
-
     // MARK: - Fetch Method
     /**
      SearchWord의 모든 데이터를 오름차순으로 가져옴
@@ -87,15 +47,12 @@ class SearchWordCoreDataManager: SearchWordCoreDataManagerType, CoreDataManagerF
         if !objects.isEmpty {
             for object in objects {
                 var searchWordData = SearchWordData()
-                searchWordData.objectID = object.objectID
-                searchWordData.date = object.date
-                searchWordData.searchWord = object.searchWord
-                searchWordData.pet = object.pet
+                searchWordData.mappinng(from: object)
                 searchWordDatas.append(searchWordData)
             }
             return searchWordDatas
         } else {
-            throw CoreDataError.fetch(message: "PetKeyword Entity has not data, So can not fetch data")
+            return nil
         }
     }
 
@@ -152,36 +109,6 @@ class SearchWordCoreDataManager: SearchWordCoreDataManagerType, CoreDataManagerF
         return searchWordData
     }
 
-    // MARK: - Update Method
-    /**
-     파라미터로 넣은 구조체와 동일한 데이터 모든 내용을 업데이트한다.
-     - Author: [강준영](https://github.com/lavaKangJun)
-     - Parameter :
-     - coreDataStructType: coreDataStructType 프로토콜을 채택하는 CoreData Struct
-     */
-    @discardableResult func updateObject<T>(_ coreDataStructType: T) throws -> Bool {
-        switch coreDataStructType {
-        case is SearchWordData:
-            guard let context = context else {
-                return false
-            }
-            guard let searchWordData = coreDataStructType as? SearchWordData else {
-                return false
-            }
-            guard let objectID = searchWordData.objectID else { throw CoreDataError.update(message: "Can not find this data(\(searchWordData)), So can not update")}
-            guard let object = context.object(with: objectID) as? SearchWord else {
-                return false
-            }
-            object.date = searchWordData.date
-            object.searchWord = searchWordData.searchWord
-            afterOperation(context: context)
-            return true
-            print("Update Successive => \(object)")
-        default:
-            return false
-        }
-    }
-
     /**
      코어데이타에 저장된 특정 검색어의 날짜만 업데이트 한다.
      - Author: [강준영](https://github.com/lavaKangJun)
@@ -189,11 +116,17 @@ class SearchWordCoreDataManager: SearchWordCoreDataManagerType, CoreDataManagerF
      - searchWord : 날짜를 업데이트 할 특정 검색어
      - pet : 특정 펫의 데이터를 가져오기 위한 파라미터
      */
-    @discardableResult func updateObject(with searchWord: String, pet: String) throws -> Bool {
+    @discardableResult func updateObject(searchWord: String, pet: String) throws -> Bool {
+        guard let context = context else {
+            return false
+        }
         do {
             let object = try fetchWord(searchWord, pet: pet)
-            if var searchWordObject = object {
+            if var searchWordObject = object, let objectID = searchWordObject.objectID {
+                let object = context.object(with: objectID)
                 searchWordObject.date = searchWordObject.createDate()
+                searchWordObject.mappinng(to: object)
+                afterOperation(context: context)
                 return true
             }
         } catch let error as NSError {
@@ -203,34 +136,6 @@ class SearchWordCoreDataManager: SearchWordCoreDataManagerType, CoreDataManagerF
     }
 
     // MARK: - Delete Method
-    /**
-     코어데이타에 저장된 SearchWord 데이터를 삭제한다.
-     - Author: [강준영](https://github.com/lavaKangJun)
-     - Parameter :
-     - coreDataStructType: coreDataStructType 프로토콜을 채택하는 CoreData Struct.
-     */
-    @discardableResult func deleteObject<T>(_ coreDataStructType: T) throws -> Bool {
-        switch coreDataStructType {
-        case is SearchWordData:
-            guard let context = context else {
-                return false
-            }
-            guard let searchKeywordData = coreDataStructType as? SearchWordData else {
-                return false
-            }
-            if let objectID = searchKeywordData.objectID {
-                let object = context.object(with: objectID)
-                context.delete(object)
-                afterOperation(context: context)
-                print("Delete Successive")
-                return true
-            }
-        default:
-            return false
-        }
-        return false
-    }
-
     /**
      코어데이타에 저장된 SearchWord의 모든 데이터를 삭제한다.
      - Author: [강준영](https://github.com/lavaKangJun)
