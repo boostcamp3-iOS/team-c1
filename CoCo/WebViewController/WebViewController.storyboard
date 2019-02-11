@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="WOQ-QX-CHF">
+    <device id="retina5_9" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Title-->
+        <scene sceneID="Anh-pc-LzI">
+            <objects>
+                <viewController id="WOQ-QX-CHF" customClass="WebViewController" customModule="CoCo" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="oC1-uu-iZY">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <wkWebView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="R4B-Vh-hBF">
+                                <rect key="frame" x="0.0" y="44" width="375" height="734"/>
+                                <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <wkWebViewConfiguration key="configuration">
+                                    <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
+                                    <wkPreferences key="preferences"/>
+                                </wkWebViewConfiguration>
+                            </wkWebView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hcT-wU-ec2">
+                                <rect key="frame" x="0.0" y="44" width="0.0" height="3"/>
+                                <color key="backgroundColor" red="1" green="0.57637232540000005" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="3" id="HJ3-oB-ogu"/>
+                                    <constraint firstAttribute="width" id="PQl-OG-nbb"/>
+                                </constraints>
+                            </view>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZUe-6o-Lpb">
+                                <rect key="frame" x="0.0" y="721" width="375" height="57"/>
+                                <items>
+                                    <barButtonItem image="left-arrow-1" style="plain" id="Bct-fE-d7m">
+                                        <color key="tintColor" red="0.63137254899999995" green="0.49019607840000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <connections>
+                                            <action selector="actionGoBack:" destination="WOQ-QX-CHF" id="csI-NW-jOT"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="TAq-LQ-e5Z"/>
+                                    <barButtonItem image="right-arrow-1" style="plain" id="TH0-OZ-kyM">
+                                        <color key="tintColor" red="0.63137254899999995" green="0.49019607840000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <connections>
+                                            <action selector="actionGoForward:" destination="WOQ-QX-CHF" id="kpc-iH-SIn"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="QUo-M8-qCH"/>
+                                    <barButtonItem image="reload" style="plain" id="Fdb-jP-IB9">
+                                        <color key="tintColor" red="0.63137254899999995" green="0.49019607840000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <connections>
+                                            <action selector="actionReload:" destination="WOQ-QX-CHF" id="6cj-u6-x87"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="qRz-F2-wtS"/>
+                                    <barButtonItem style="plain" systemItem="action" id="nWo-uM-lNP">
+                                        <color key="tintColor" red="0.63137254899999995" green="0.49019607840000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <connections>
+                                            <action selector="actionShare:" destination="WOQ-QX-CHF" id="3YY-O2-2tr"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="3QD-MV-eYo"/>
+                                    <barButtonItem image="like" style="plain" id="WHr-gF-akI">
+                                        <color key="tintColor" red="0.63137254899999995" green="0.49019607840000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <connections>
+                                            <action selector="actionFavorite:" destination="WOQ-QX-CHF" id="OPh-M4-rI7"/>
+                                        </connections>
+                                    </barButtonItem>
+                                </items>
+                            </toolbar>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="hcT-wU-ec2" firstAttribute="leading" secondItem="Rif-xA-ULu" secondAttribute="leading" id="8wG-gS-f3U"/>
+                            <constraint firstItem="Rif-xA-ULu" firstAttribute="trailing" secondItem="R4B-Vh-hBF" secondAttribute="trailing" id="Dnq-Y2-XH2"/>
+                            <constraint firstItem="ZUe-6o-Lpb" firstAttribute="bottom" secondItem="Rif-xA-ULu" secondAttribute="bottom" id="ELw-34-JgE"/>
+                            <constraint firstItem="hcT-wU-ec2" firstAttribute="top" secondItem="Rif-xA-ULu" secondAttribute="top" id="JBh-2G-Ogz"/>
+                            <constraint firstItem="R4B-Vh-hBF" firstAttribute="top" secondItem="Rif-xA-ULu" secondAttribute="top" id="Ntr-3o-0RU"/>
+                            <constraint firstItem="Rif-xA-ULu" firstAttribute="trailing" secondItem="ZUe-6o-Lpb" secondAttribute="trailing" id="TbV-Uq-C8J"/>
+                            <constraint firstItem="R4B-Vh-hBF" firstAttribute="leading" secondItem="Rif-xA-ULu" secondAttribute="leading" id="fqq-JH-JQu"/>
+                            <constraint firstItem="Rif-xA-ULu" firstAttribute="bottom" secondItem="R4B-Vh-hBF" secondAttribute="bottom" id="uc2-ad-nNv"/>
+                            <constraint firstItem="ZUe-6o-Lpb" firstAttribute="leading" secondItem="oC1-uu-iZY" secondAttribute="leading" id="x3O-m5-EGu"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="Rif-xA-ULu"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Title" id="xDr-Pq-8KV"/>
+                    <connections>
+                        <outlet property="favoriteButton" destination="WHr-gF-akI" id="nsb-HO-YFy"/>
+                        <outlet property="progressView" destination="hcT-wU-ec2" id="ybl-bY-607"/>
+                        <outlet property="webView" destination="R4B-Vh-hBF" id="PWe-ew-ylT"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="vYa-Yn-t9Y" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1932" y="-280.04926108374383"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="left-arrow-1" width="55.148937225341797" height="55.148937225341797"/>
+        <image name="like" width="54" height="54"/>
+        <image name="reload" width="57.599998474121094" height="57.599998474121094"/>
+        <image name="right-arrow-1" width="55.148937225341797" height="55.148937225341797"/>
+    </resources>
+</document>
