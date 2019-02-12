@@ -11,3 +11,12 @@ import Foundation
 protocol ErrorHandlerType {
     func getErrorMessage(_ error: ErrorType) -> String
 }
+
+extension ErrorHandlerType {
+    func getErrorMessage(_ error: ErrorType) -> String {
+        guard let myGoodsDataError = error as? MyGoodsDataError else {
+            return error.unknownError
+        }
+        return myGoodsDataError.rawValue
+    }
+}
