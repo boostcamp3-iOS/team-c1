@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="CQ4-Ij-Ksy">
-    <device id="retina4_7" orientation="portrait">
+    <device id="retina5_9" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
@@ -9,36 +9,6 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Discover Collection View Controller-->
-        <scene sceneID="7Tf-a6-dxf">
-            <objects>
-                <collectionViewController id="CPV-7C-dpv" customClass="DiscoverCollectionViewController" customModule="CoCo" customModuleProvider="target" sceneMemberID="viewController">
-                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="A45-gU-QDA">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <collectionViewLayout key="collectionViewLayout" id="8kU-Jr-zgc" customClass="PinterestLayout" customModule="CoCo" customModuleProvider="target"/>
-                        <cells>
-                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="GoodsCell" id="rsc-m2-o7R" customClass="GoodsCell" customModule="CoCo" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
-                                    <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                </view>
-                            </collectionViewCell>
-                        </cells>
-                        <connections>
-                            <outlet property="dataSource" destination="CPV-7C-dpv" id="mIM-nn-m9p"/>
-                            <outlet property="delegate" destination="CPV-7C-dpv" id="uX1-yC-EbC"/>
-                        </connections>
-                    </collectionView>
-                    <navigationItem key="navigationItem" id="YyH-KL-p9s"/>
-                </collectionViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="gfP-rW-UGE" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="3351.1999999999998" y="-206.44677661169416"/>
-        </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="EAP-Sx-nZy">
             <objects>
@@ -94,21 +64,41 @@
         <!--Item-->
         <scene sceneID="oEN-lQ-9ro">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="eJP-K3-u8s" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="eJP-K3-u8s" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Item" id="eS2-tc-dRG"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="fsi-pu-hcO">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="CPV-7C-dpv" kind="relationship" relationship="rootViewController" id="PR1-DS-SuR"/>
+                        <segue destination="orD-4L-aZc" kind="relationship" relationship="rootViewController" id="0Mo-u6-TA7"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pCG-KA-fRm" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2412" y="-206.44677661169416"/>
+        </scene>
+        <!--Discover Collection View Controller-->
+        <scene sceneID="UFC-lI-MRb">
+            <objects>
+                <collectionViewController id="orD-4L-aZc" customClass="DiscoverCollectionViewController" customModule="CoCo" customModuleProvider="target" sceneMemberID="viewController">
+                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="gH4-lW-7Oj">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <collectionViewLayout key="collectionViewLayout" id="NBu-Tp-Xhe" customClass="PinterestLayout" customModule="CoCo" customModuleProvider="target"/>
+                        <cells/>
+                        <connections>
+                            <outlet property="dataSource" destination="orD-4L-aZc" id="axi-H9-L8W"/>
+                            <outlet property="delegate" destination="orD-4L-aZc" id="BvX-Cf-e7Z"/>
+                        </connections>
+                    </collectionView>
+                    <navigationItem key="navigationItem" id="KKa-fe-UWe"/>
+                </collectionViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ssj-KS-2dk" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3244" y="-207"/>
         </scene>
     </scenes>
 </document>
