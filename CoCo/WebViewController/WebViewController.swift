@@ -9,6 +9,7 @@
 import UIKit
 import WebKit
 
+// TODO: WKWebView 로드시 메모리 누수 발생: JavaScriptCore 원인 찾아보기
 class WebViewController: UIViewController {
     // MARK: - Properties
     var myGoodsData: MyGoodsData?
@@ -27,7 +28,7 @@ class WebViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         guard let urlString = myGoodsData?.link, let url = URL(string: urlString) else {
-            let message = getErrorMessage(WebViewControllerError.invalidLink)
+            let message = getErrorMessage(MyGoodsDataError.invalidLink)
             alert(message) { [weak self] in
                 guard let self = self else {
                     return
@@ -63,6 +64,8 @@ class WebViewController: UIViewController {
 
     // MARK: - Navigation related methods
     private func setNavigationBar() {
+        navigationController?.navigationBar.isTranslucent = false
+        navigationController?.navigationBar.prefersLargeTitles = true
         if let title = myGoodsData?.shoppingmall {
             navigationItem.title = title
         }
@@ -72,8 +75,8 @@ class WebViewController: UIViewController {
         navigationItem.hidesBackButton = true
     }
 
-    @objc func popViewController() {
-        navigationController?.popViewController(animated: true)
+    @objc private func popViewController() {
+        navigationController?.popViewController(animated: false)
     }
 
     // MARK: - WebView related methods
@@ -96,7 +99,7 @@ class WebViewController: UIViewController {
     }
 
     // MARK: - Button related methods
-    func setFavoriteButton() {
+    private func setFavoriteButton() {
         guard let isFavorite = myGoodsData?.isFavorite else {
             return
         }
@@ -123,7 +126,7 @@ class WebViewController: UIViewController {
 
     @IBAction private func actionShare(_ sender: Any) {
         guard let url = webView.url else {
-            let message = getErrorMessage(WebViewControllerError.invalidLink)
+            let message = getErrorMessage(MyGoodsDataError.invalidLink)
             alert(message)
             return
         }
@@ -132,7 +135,7 @@ class WebViewController: UIViewController {
     }
 
     @IBAction private func actionFavorite(_ sender: Any) {
-        // TODO: 즐겨찾기 반영 로직 구현
+        // TODO: 서비스에서 즐겨찾기 반영 로직 구현
         if let isFavorite = myGoodsData?.isFavorite {
             myGoodsData?.isFavorite = !isFavorite
         }
@@ -141,14 +144,7 @@ class WebViewController: UIViewController {
 }
 
 // MARK: - ErrorHandlerType
-extension WebViewController: ErrorHandlerType {
-    func getErrorMessage(_ error: ErrorType) -> String {
-        guard let webVCError = error as? WebViewControllerError else {
-            return error.unknownError
-        }
-        return webVCError.rawValue
-    }
-}
+extension WebViewController: ErrorHandlerType { }
 
 // MARK: - WKNavigationDelegate
 extension WebViewController: WKNavigationDelegate {
