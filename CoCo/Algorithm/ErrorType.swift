@@ -16,6 +16,7 @@ extension ErrorType {
     var unknownError: String { return  "알 수 없는 오류가 발생하였습니다." }
 }
 
-enum WebViewControllerError: String, ErrorType {
+enum MyGoodsDataError: String, ErrorType {
     case invalidLink = "유효하지 않은 링크입니다."
+    case lostData = "데이터가 유실되었습니다."
 }
