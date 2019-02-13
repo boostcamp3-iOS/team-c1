@@ -16,7 +16,7 @@
 		10BFD145221307E900887D80 /* MyGoodsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10BFD142221307E800887D80 /* MyGoodsViewController.swift */; };
 		10BFD146221307E900887D80 /* MyGoodsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10BFD143221307E900887D80 /* MyGoodsTableViewCell.swift */; };
 		10BFD147221307F700887D80 /* WebView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F5CFEF244A9FC6D3FCD0B4282C22E97B /* WebView.storyboard */; };
-		1124445ED50488C69062410A25013364 /* SearchServiceClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74E2D39398448EE8F8ADE0FC708ACE97 /* SearchServiceClass.swift */; };
+		1124445ED50488C69062410A25013364 /* SearchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74E2D39398448EE8F8ADE0FC708ACE97 /* SearchService.swift */; };
 		13D152390A8FE0CB01D06627AF8C9636 /* GoodsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB32DE4DF762EEC99134F72251B03C54 /* GoodsCell.swift */; };
 		14DA58802DB1798DF415389EEDF198E5 /* PetKeywordData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F25375C0BE923827FC55024C3D91CD /* PetKeywordData.swift */; };
 		1842FD034B053296D1CC8DC85456A14F /* SearchCollectionReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1587A7E4265554E33A5CDF10CB2342B /* SearchCollectionReusableView.swift */; };
@@ -148,7 +148,7 @@
 		68F5333B872393696576B309196EC1D6 /* MyGoods+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MyGoods+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		7019D0478397BE42057F513DA5CDA33F /* SearchKeywordCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchKeywordCollectionViewCell.swift; sourceTree = "<group>"; };
 		7208794E2C7AF063FD9077CF9FED0053 /* APIRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIRequest.swift; sourceTree = "<group>"; };
-		74E2D39398448EE8F8ADE0FC708ACE97 /* SearchServiceClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchServiceClass.swift; sourceTree = "<group>"; };
+		74E2D39398448EE8F8ADE0FC708ACE97 /* SearchService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchService.swift; sourceTree = "<group>"; };
 		76B0A14684E10F68005D6E7752E55EFE /* MyGoodsData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyGoodsData.swift; sourceTree = "<group>"; };
 		76BCF13934ED49039ABC1877827AE05D /* Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Environment.swift; sourceTree = "<group>"; };
 		77C9AE7BBCB63921CD689E8DCDC90F20 /* DiskStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiskStorage.swift; sourceTree = "<group>"; };
@@ -165,7 +165,6 @@
 		967D396ADFE98C3A91695C9B450E6133 /* UIViewController+Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Alert.swift"; sourceTree = "<group>"; };
 		9D5C2DC176D02B36C011044EA9572889 /* CoreDataError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataError.swift; sourceTree = "<group>"; };
 		A1587A7E4265554E33A5CDF10CB2342B /* SearchCollectionReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCollectionReusableView.swift; sourceTree = "<group>"; };
-		B690E537A29C58A4FBAD8158A41EBF84 /* MyGoodsViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MyGoodsViewController.storyboard; sourceTree = "<group>"; };
 		B9040C42214A7994FC9493A771AB81B2 /* MemoryStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryStorage.swift; sourceTree = "<group>"; };
 		BB32DE4DF762EEC99134F72251B03C54 /* GoodsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoodsCell.swift; sourceTree = "<group>"; };
 		BBD58C48E4B575DFAF5913B8E888E667 /* CoCo.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CoCo.xcdatamodel; sourceTree = "<group>"; };
@@ -186,8 +185,8 @@
 		E250E830C9E470C5955DB5795E5B0F78 /* CategoryCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CategoryCell.xib; sourceTree = "<group>"; };
 		EF772360C9B54BCCA70F8F2F6111A24F /* Array+SafeIndex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+SafeIndex.swift"; sourceTree = "<group>"; };
 		EFB4268ADFAC57117216BC20B2F92CEA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		F960F48E8CB2BA50F4EDF57CAFAFE628 /* CategoryController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryController.swift; sourceTree = "<group>"; };
 		F5CFEF244A9FC6D3FCD0B4282C22E97B /* WebView.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = WebView.storyboard; sourceTree = "<group>"; };
+		F960F48E8CB2BA50F4EDF57CAFAFE628 /* CategoryController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryController.swift; sourceTree = "<group>"; };
 		FBE68AE1FDFD4E6949B8A5E67EE942EF /* ImageCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCache.swift; sourceTree = "<group>"; };
 		FBFFEFA7FDBFA76F0C67726E79DE20A8 /* Discover.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Discover.storyboard; sourceTree = "<group>"; };
 		FCC4C4C583E6E483745F24AC8871A8A7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -358,6 +357,7 @@
 				7019D0478397BE42057F513DA5CDA33F /* SearchKeywordCollectionViewCell.swift */,
 				56C1EA226C9B006EE95C2B328D62F357 /* SearchView.storyboard */,
 				D2BE8FB4812D9CF8C4AD8CADF9C33D01 /* SearchViewController.swift */,
+				74E2D39398448EE8F8ADE0FC708ACE97 /* SearchService.swift */,
 			);
 			path = SearchView;
 			sourceTree = "<group>";
@@ -453,7 +453,6 @@
 				FBFFEFA7FDBFA76F0C67726E79DE20A8 /* Discover.storyboard */,
 				82A65B7DC6C05A15A969DF05838B93DD /* Info.plist */,
 				A194F673A5CA636B28FBAF0486497347 /* LaunchScreen.storyboard */,
-				74E2D39398448EE8F8ADE0FC708ACE97 /* SearchServiceClass.swift */,
 				5E1980D7A7C2A383B4F540EB394C2A61 /* Setting.storyboard */,
 				D47056047C9A1693E1A056B47870436D /* ViewController.swift */,
 			);
@@ -628,24 +627,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		6A15698058012E01DD70952D452AD652 /* swiftlint */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = swiftlint;
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "if which swiftlint >/dev/null; then\nswiftlint\nelse\necho \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n\n";
-		};
 		1B2B80EE89E6F2AB5166C4937859539D /* swiftlint autocorrect */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -663,6 +644,24 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "if which swiftlint >/dev/null; then\nswiftlint autocorrect\nelse\necho \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
+		6A15698058012E01DD70952D452AD652 /* swiftlint */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = swiftlint;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then\nswiftlint\nelse\necho \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -734,7 +733,7 @@
 				DDBE41B070FE1773E01E5095A743578B /* Response.swift in Sources */,
 				1842FD034B053296D1CC8DC85456A14F /* SearchCollectionReusableView.swift in Sources */,
 				8352C6354C520944A6852C289C8D317A /* SearchKeywordCollectionViewCell.swift in Sources */,
-				1124445ED50488C69062410A25013364 /* SearchServiceClass.swift in Sources */,
+				1124445ED50488C69062410A25013364 /* SearchService.swift in Sources */,
 				B1DEC42C118991F5AD51F6D5B828A223 /* SearchViewController.swift in Sources */,
 				DE6DAB1CD4E47ED494DC358FF269B628 /* SearchWord+CoreDataClass.swift in Sources */,
 				C0D7B17DBCEA5CC9612ED2C94BC8046C /* SearchWord+CoreDataProperties.swift in Sources */,

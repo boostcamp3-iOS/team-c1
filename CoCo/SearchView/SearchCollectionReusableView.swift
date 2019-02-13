@@ -16,21 +16,25 @@ protocol SearchCollectionReusableViewDelegate {
 }
 
 class SearchCollectionReusableView: UICollectionReusableView {
-
+    // MARK: - IBOutlets
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var sortButton: UIButton!
 
+    // MARK: - Properties
     var delegate: SearchCollectionReusableViewDelegate?
 
+    // MARK: - LifeCycles
     override func awakeFromNib() {
         super.awakeFromNib()
         searchBar.delegate = self
 
-        let textFieldInsideUISearchBar = searchBar.value(forKey: "searchField") as? UITextField
+        // 서치바 폰트 조절하기
+//        let textFieldInsideUISearchBar = searchBar.value(forKey: "searchField") as? UITextField
 //        textFieldInsideUISearchBar?.font = textFieldInsideUISearchBar?.font?.
 
     }
 
+    // MARK: - IBActions
     @IBAction func actionChangeSortRule(_ sender: UIButton) {
         delegate?.sortButtonTapped()
     }
@@ -53,13 +57,10 @@ extension SearchCollectionReusableView: UISearchBarDelegate {
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
         searchBar.setShowsCancelButton(false, animated: true)
     }
-
 }
 
 extension SearchCollectionReusableView: SearchViewControllerDelegate {
-
     func tapKeywordCell(keyword: String) {
         searchBar.text = keyword
     }
-
 }
