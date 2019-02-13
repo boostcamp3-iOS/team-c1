@@ -9,15 +9,14 @@
 import UIKit
 
 extension UIView {
-    func addConstraintFormat( _ format: String, views: UIView...) {
-        var viewDictionary = [String: UIView]()
+    func addConstraintsWithFormat(_ format: String, views: UIView...) {
+        var viewsDictionary = [String: UIView]()
         for (index, view) in views.enumerated() {
             let key = "v\(index)"
             view.translatesAutoresizingMaskIntoConstraints = false
-            viewDictionary[key] = view
+            viewsDictionary[key] = view
         }
 
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: format, options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: viewDictionary))
-
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: format, options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: viewsDictionary))
     }
 }

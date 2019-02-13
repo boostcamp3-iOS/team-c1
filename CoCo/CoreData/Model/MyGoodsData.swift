@@ -14,7 +14,7 @@ struct MyGoodsData: CoreDataStructEntity {
     var date: String?
     var title: String = ""
     var link: String = ""
-    var image: UIImage?
+    var image: String = ""
     var isFavorite: Bool = false
     var isLatest: Bool = false
     var price: String = ""
@@ -29,7 +29,7 @@ struct MyGoodsData: CoreDataStructEntity {
         self.date = createDate()
     }
 
-    init(pet: String, title: String, link: String, image: UIImage, isFavorite: Bool, isLatest: Bool, price: String, productId: String, searchWord: String, shoppingmall: String) {
+    init(pet: String, title: String, link: String, image: String, isFavorite: Bool, isLatest: Bool, price: String, productId: String, searchWord: String, shoppingmall: String) {
         self.pet = pet
         self.title = title
         self.link = link
@@ -61,7 +61,7 @@ extension MyGoodsData: Comparable {
 extension MyGoodsData: Mapping {
     mutating func mappinng(from: NSManagedObject) {
         self.date = from.value(forKeyPath: "date")
-        self.image = from.value(forKeyPath: "image") as UIImage
+        self.image = from.value(forKeyPath: "image")
         self.isFavorite = from.value(forKeyPath: "isFavorite")
         self.isLatest = from.value(forKeyPath: "isLatest")
         self.link = from.value(forKeyPath: "link")

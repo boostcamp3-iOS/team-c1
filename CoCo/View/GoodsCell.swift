@@ -19,7 +19,6 @@ class GoodsCell: UICollectionViewCell {
     var myGoods: MyGoodsData? {
         didSet {
             if let myGoods = myGoods {
-                goodsImageView.image = myGoods.image
                 goodsPriceLabel.text = myGoods.price
                 goodsTitleLabel.text = myGoods.title
                 goodsShoppingMallLabel.text = myGoods.shoppingmall

@@ -13,8 +13,8 @@ struct MyGoodsDummy {
 
     init() {
         var myGoods1 = MyGoodsData()
-        myGoods1.title = "고양이 방석"
-        myGoods1.image = UIImage()
+        myGoods1.title = "고양이 방석 국내산 제작, 폭신폭신 아기들이 좋아해요"
+        myGoods1.image = ""
         myGoods1.isFavorite = false
         myGoods1.isLatest = true
         myGoods1.link = ""
@@ -24,7 +24,7 @@ struct MyGoodsDummy {
         myGoods1.shoppingmall = "마루"
         myGoods1.date = "2018-01-11"
 
-       /* var myGoods2 = MyGoodsData()
+        var myGoods2 = MyGoodsData()
         myGoods2.title = "고양이 의자"
         myGoods2.image = ""
         myGoods2.isFavorite = false
@@ -71,103 +71,96 @@ struct MyGoodsDummy {
         myGoods5.productID = "55555"
         myGoods5.shoppingmall = "마루"
         myGoods5.date = "2018-05-11"
-
-        var myGoods6 = MyGoodsData()
-        myGoods6.title = "고양이 집"
-        myGoods6.image = ""
-        myGoods6.isFavorite = false
-        myGoods6.isLatest = true
-        myGoods6.link = ""
-        myGoods6.pet = "고양이"
-        myGoods6.price = "1500"
-        myGoods6.productID = "66666"
-        myGoods6.shoppingmall = "마루"
-        myGoods6.date = "2018-06-11"
-
-        var myGoods7 = MyGoodsData()
-        myGoods7.title = "고양이 방석"
-        myGoods7.image = ""
-        myGoods7.isFavorite = false
-        myGoods7.isLatest = true
-        myGoods7.link = ""
-        myGoods7.pet = "고양이"
-        myGoods7.price = "1500"
-        myGoods7.productID = "77777"
-        myGoods7.shoppingmall = "마루"
-        myGoods7.date = "2018-07-11"
-
-        var myGoods8 = MyGoodsData()
-        myGoods8.title = "고양이 과자"
-        myGoods8.image = ""
-        myGoods8.isFavorite = false
-        myGoods8.isLatest = true
-        myGoods8.link = ""
-        myGoods8.pet = "고양이"
-        myGoods8.price = "1500"
-        myGoods8.productID = "88888"
-        myGoods8.shoppingmall = "마루"
-        myGoods8.date = "2018-08-11"
-
-        var myGoods9 = MyGoodsData()
-        myGoods9.title = "고양이 장난감"
-        myGoods9.image = ""
-        myGoods9.isFavorite = false
-        myGoods9.isLatest = true
-        myGoods9.link = ""
-        myGoods9.pet = "고양이"
-        myGoods9.price = "1500"
-        myGoods9.productID = "99999"
-        myGoods9.shoppingmall = "마루"
-        myGoods9.date = "2018-09-11"
-
-        var myGoods10 = MyGoodsData()
-        myGoods10.title = "고양이 캣타워"
-        myGoods10.image = ""
-        myGoods10.isFavorite = false
-        myGoods10.isLatest = true
-        myGoods10.link = ""
-        myGoods10.pet = "고양이"
-        myGoods10.price = "1500"
-        myGoods10.productID = "1010101010"
-        myGoods10.shoppingmall = "마루"
-        myGoods10.date = "2018-10-11"
-
-        var myGoods11 = MyGoodsData()
-        myGoods11.title = "고양이 식기"
-        myGoods11.image = ""
-        myGoods11.isFavorite = true
-        myGoods11.isLatest = true
-        myGoods11.link = ""
-        myGoods11.pet = "고양이"
-        myGoods11.price = "1500"
-        myGoods11.productID = "11111111"
-        myGoods11.shoppingmall = "마루"
-        myGoods11.date = "2018-11-11"
-
-        var myGoods12 = MyGoodsData()
-        myGoods12.title = "고양이 물통"
-        myGoods12.image = ""
-        myGoods12.isFavorite = false
-        myGoods12.isLatest = true
-        myGoods12.link = ""
-        myGoods12.pet = "고양이"
-        myGoods12.price = "1500"
-        myGoods12.productID = "1212121212"
-        myGoods12.shoppingmall = "마루"
-        myGoods12.date = "2018-12-11"
+        /*
+         var myGoods6 = MyGoodsData()
+         myGoods6.title = "고양이 집"
+         myGoods6.image = ""
+         myGoods6.isFavorite = false
+         myGoods6.isLatest = true
+         myGoods6.link = ""
+         myGoods6.pet = "고양이"
+         myGoods6.price = "1500"
+         myGoods6.productID = "66666"
+         myGoods6.shoppingmall = "마루"
+         myGoods6.date = "2018-06-11"
+         
+         var myGoods7 = MyGoodsData()
+         myGoods7.title = "고양이 방석"
+         myGoods7.image = ""
+         myGoods7.isFavorite = false
+         myGoods7.isLatest = true
+         myGoods7.link = ""
+         myGoods7.pet = "고양이"
+         myGoods7.price = "1500"
+         myGoods7.productID = "77777"
+         myGoods7.shoppingmall = "마루"
+         myGoods7.date = "2018-07-11"
+         
+         var myGoods8 = MyGoodsData()
+         myGoods8.title = "고양이 과자"
+         myGoods8.image = ""
+         myGoods8.isFavorite = false
+         myGoods8.isLatest = true
+         myGoods8.link = ""
+         myGoods8.pet = "고양이"
+         myGoods8.price = "1500"
+         myGoods8.productID = "88888"
+         myGoods8.shoppingmall = "마루"
+         myGoods8.date = "2018-08-11"
+         
+         var myGoods9 = MyGoodsData()
+         myGoods9.title = "고양이 장난감"
+         myGoods9.image = ""
+         myGoods9.isFavorite = false
+         myGoods9.isLatest = true
+         myGoods9.link = ""
+         myGoods9.pet = "고양이"
+         myGoods9.price = "1500"
+         myGoods9.productID = "99999"
+         myGoods9.shoppingmall = "마루"
+         myGoods9.date = "2018-09-11"
+         
+         var myGoods10 = MyGoodsData()
+         myGoods10.title = "고양이 캣타워"
+         myGoods10.image = ""
+         myGoods10.isFavorite = false
+         myGoods10.isLatest = true
+         myGoods10.link = ""
+         myGoods10.pet = "고양이"
+         myGoods10.price = "1500"
+         myGoods10.productID = "1010101010"
+         myGoods10.shoppingmall = "마루"
+         myGoods10.date = "2018-10-11"
+         
+         var myGoods11 = MyGoodsData()
+         myGoods11.title = "고양이 식기"
+         myGoods11.image = ""
+         myGoods11.isFavorite = true
+         myGoods11.isLatest = true
+         myGoods11.link = ""
+         myGoods11.pet = "고양이"
+         myGoods11.price = "1500"
+         myGoods11.productID = "11111111"
+         myGoods11.shoppingmall = "마루"
+         myGoods11.date = "2018-11-11"
+         
+         var myGoods12 = MyGoodsData()
+         myGoods12.title = "고양이 물통"
+         myGoods12.image = ""
+         myGoods12.isFavorite = false
+         myGoods12.isLatest = true
+         myGoods12.link = ""
+         myGoods12.pet = "고양이"
+         myGoods12.price = "1500"
+         myGoods12.productID = "1212121212"
+         myGoods12.shoppingmall = "마루"
+         myGoods12.date = "2018-12-11"*/
 
         dummyArray.append(myGoods1)
         dummyArray.append(myGoods2)
         dummyArray.append(myGoods3)
         dummyArray.append(myGoods4)
         dummyArray.append(myGoods5)
-        dummyArray.append(myGoods6)
-        dummyArray.append(myGoods7)
-        dummyArray.append(myGoods8)
-        dummyArray.append(myGoods9)
-        dummyArray.append(myGoods10)
-        dummyArray.append(myGoods11)
-        dummyArray.append(myGoods12)*/
 
     }
 }

@@ -25,7 +25,7 @@
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="EN6-86-GZV">
                                 <rect key="frame" x="0.0" y="0.0" width="341" height="320"/>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="characterWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="x85-0X-wBR">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="clip" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="x85-0X-wBR">
                                 <rect key="frame" x="10" y="325" width="321" height="23"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="23" id="qDg-GD-ABm"/>
@@ -109,10 +109,10 @@
                 <outlet property="goodsTitleLabel" destination="x85-0X-wBR" id="kaH-hJ-xsk"/>
                 <outlet property="likeButton" destination="Ufh-QO-V4q" id="uCM-EZ-DgK"/>
             </connections>
-            <point key="canvasLocation" x="68" y="206.44677661169416"/>
+            <point key="canvasLocation" x="-252" y="61"/>
         </collectionViewCell>
     </objects>
     <resources>
-        <image name="like" width="48" height="48"/>
+        <image name="like" width="36" height="36"/>
     </resources>
 </document>
