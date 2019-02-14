@@ -8,36 +8,71 @@
 
 import Foundation
 
-private let defaultCount = 10
-
-class Algorithm: AlgorithmType { }
+class Algorithm: AlgorithmType {
+    /**
+     PetKeywordData에 포함된 상세 카테고리를 추출한다.
+     - Author: [최영준](https://github.com/0jun0815)
+     - Parameters:
+        - petKeyword: 사용자 관심 펫, 키워드 PetKeywordData
+     */
+    func extractDetailCategories(_ petKeyword: PetKeywordData) -> [String] {
+        var result = [String]()
+        for keyword in petKeyword.keywords {
+            for category in keyword.getData() {
+                result += category.getData(pet: petKeyword.pet)
+            }
+        }
+        return result
+    }
+}
 
 // MARK: - MakeSearchWordsType
 extension Algorithm {
     /**
-     네이버 쇼핑 검색 서비스 API에 전달할 쿼리를 생성한다.
+     둘러보기 페이지에서 네이버 쇼핑 검색 서비스 API에 전달할 쿼리를 생성한다.
      - Author: [최영준](https://github.com/0jun0815)
      - Parameters:
-        - favorite: 찜한 상품 리스트
-        - recent: 최근 본 상품 리스트
-        - words: 최근 검색한 검색어 리스트
-        - count: 받아올 개수, 기본값은 10
+        - myGoods: 찜한 상품 + 최근 본 상품 리스트 [MyGoodsData]
+        - words: 최근 검색한 검색어 리스트: [SearchWord]
+        - petKeyword: 관심 펫, 키워드 데이터: PetKeywordData
+        - count: 받아올 개수, 입력하지 않으면 전체 데이터를 반환한다.
      */
-    func makeRequestSearchWords(favorite: [MyGoodsData], recent: [MyGoodsData], words: [String], count: Int = defaultCount) -> [String] {
+    func makeRequestSearchWords(with myGoods: [MyGoodsData], words: [SearchWordData], petKeyword: PetKeywordData, count: UInt? = nil) -> [String] {
         var products = Set<String>()
-        let ratio = Int(Double(count) * 0.6)
-        // 찜한 상품 + 검색어를 합친 후 섞는다
-        var goodsData = (favorite + recent).shuffled()
-        if !goodsData.isEmpty, let searchWord = goodsData.popLast()?.searchWord {
-            while products.count >= ratio {
-                products.insert(searchWord)
+        var searchWords = myGoods.compactMap { $0.searchWord }
+        searchWords += words.compactMap { $0.searchWord }
+        searchWords += extractDetailCategories(petKeyword)
+        searchWords.shuffle()
+        searchWords = makeSearchWords(in: searchWords)
+        for searchWord in searchWords {
+            if let count = count, products.count >= count {
+                break
             }
+            products.insert(searchWord)
         }
-        var searchWords = makeSearchWords(in: words, count: count)
-        while products.count >= count {
-            products.insert(searchWords.removeLast())
+        return Array(products)
+    }
+    /**
+     검색 페이지에서 사용자에게 보여줄 추천 검색어를 생성한다.
+     - Author: [최영준](https://github.com/0jun0815)
+     - Parameters:
+        - words: 최근 검색한 검색어 리스트: [SearchWord]
+        - petKeyword: 관심 펫, 키워드 데이터: PetKeywordData
+        - count: 받아올 개수, 입력하지 않으면 전체 데이터를 반환한다.
+     */
+    func makeRecommendedSearchWords(with words: [SearchWordData], petKeyword: PetKeywordData, count: UInt? = nil) -> [String] {
+        var products = Set<String>()
+        var searchWords = words.compactMap { $0.searchWord }
+        searchWords += extractDetailCategories(petKeyword)
+        searchWords.shuffle()
+        searchWords = makeSearchWords(in: searchWords)
+        for searchWord in searchWords {
+            if let count = count, products.count >= count {
+                break
+            }
+            products.insert(searchWord)
         }
-        return Array(products).shuffled()
+        return Array(products)
     }
     /**
      문자열 리스트에서 지정된 개수의 검색어를 생성한다.
@@ -46,16 +81,19 @@ extension Algorithm {
         - words: 단어 리스트
         - count: 받아올 개수, 기본값은 10
      */
-    func makeSearchWords(in words: [String], count: Int = defaultCount) -> [String] {
+    func makeSearchWords(in words: [String], count: UInt? = nil) -> [String] {
         var results = [String]()
         for word in words {
             results += makeSearchWords(word)
         }
         results = results.shuffled()
-        if results.count < count {
+        if let count = count, results.count < count {
             return results
         }
-        let index = count - 1
+        var index = results.count - 1
+        if let count = count {
+            index = Int(count) - 1
+        }
         return Array(results[...index])
     }
     /**
@@ -88,6 +126,18 @@ extension Algorithm {
             }
         }
         return (searchWords.isEmpty) ? [word] : searchWords
+    }
+
+    /**
+     MyGoodsData의 title에서 HTML을 제거한다.
+     - Author: [최영준](https://github.com/0jun0815)
+     - Parameters:
+        - title: HTML을 제거할 문자열
+        - isReplacing: 개행을 반영할지 여부
+     */
+    func makeCleanTitle(_ title: String, isReplacing: Bool) -> String {
+        return (isReplacing) ?
+            removeHTML(from: replaceNewLine(from: title)) : removeHTML(from: title)
     }
 }
 
@@ -161,5 +211,23 @@ extension Algorithm {
             result = result.replacingOccurrences(of: pet.rawValue, with: "")
         }
         return result
+    }
+    /**
+     문자열에서 HTML 태그를 제거한다.
+     - Author: [최영준](https://github.com/0jun0815)
+     - Parameters:
+        - string: HTML을 제거할 문자열
+    */
+    func removeHTML(from string: String) -> String {
+        return string.replacingOccurrences(of: "<[^>]+>", with: "", options: .regularExpression)
+    }
+    /**
+     문자열에서 HTML 개행 태그를 반영한다.
+     - Author: [최영준](https://github.com/0jun0815)
+     - Parameters:
+        - string: 개행을 반영할 문자열
+     */
+    func replaceNewLine(from string: String) -> String {
+        return string.replacingOccurrences(of: "<br>", with: "\n")
     }
 }

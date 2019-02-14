@@ -12,9 +12,11 @@ import Foundation
 protocol AlgorithmType: MakeSearchWordsType, PaginationType { }
 
 protocol MakeSearchWordsType: WordType {
-    func makeRequestSearchWords(favorite: [MyGoodsData], recent: [MyGoodsData], words: [String], count: Int) -> [String]
-    func makeSearchWords(in words: [String], count: Int) -> [String]
+    func makeRequestSearchWords(with myGoods: [MyGoodsData], words: [SearchWordData], petKeyword: PetKeywordData, count: UInt?) -> [String]
+    func makeRecommendedSearchWords(with words: [SearchWordData], petKeyword: PetKeywordData, count: UInt?) -> [String]
+    func makeSearchWords(in words: [String], count: UInt?) -> [String]
     func makeSearchWords(_ word: String) -> [String]
+    func makeCleanTitle(_ title: String, isReplacing: Bool) -> String
 }
 
 protocol WordType {
@@ -23,6 +25,8 @@ protocol WordType {
     func combinePet(_ pet: Pet, and word: String) -> String
     func removePet(from words: [String]) -> [String]
     func removePet(from word: String) -> String
+    func removeHTML(from string: String) -> String
+    func replaceNewLine(from string: String) -> String
 }
 
 protocol PaginationType { }
