@@ -73,9 +73,6 @@ class MyGoodsViewController: UIViewController {
     }
 }
 
-// MARK: - ErrorHandlerType
-extension MyGoodsViewController: ErrorHandlerType { }
-
 // MARK: - UITableViewDelegate, UITableViewDataSource
 extension MyGoodsViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -94,17 +91,32 @@ extension MyGoodsViewController: UITableViewDelegate, UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: Identifier.myGoodTableViewCell) as? MyGoodsTableViewCell else {
             return UITableViewCell()
         }
-        DispatchQueue.main.async { [weak self] in
-            guard let self = self else {
-                return
-            }
-            let (text, data) = (indexPath.section == Section.recent) ?
-                ("최근 본 상품", self.recentGoods) : ("찜한 목록", self.favoriteGoods)
+        cell.delegate = self
+        DispatchQueue.main.async {
+            let (text, data, tag) = (indexPath.section == Section.recent) ?
+                ("최근 본 상품", service.recentGoods, indexPath.row) : ("찜한 목록", service.favoriteGoods, 10 + indexPath.row)
+            cell.tag = tag
             cell.titleLabel.text = text
-            cell.startEditing(self.enableEditing, target: self, delete: #selector(self.deleteData))
-            cell.updateContents(data, viewController: self)
+            cell.updateContents(data)
         }
         return cell
+    }
+}
+
+// MARK: - ErrorHandlerType
+extension MyGoodsViewController: ErrorHandlerType { }
+
+// MARK: - MyGoodsDataDelegate
+extension MyGoodsViewController: MyGoodsDataDelegate {
+    func receiveData(_ data: MyGoodsData) {
+        performSegue(withData: data)
+    }
+    
+    func receiveSender(_ sender: Any) {
+        if let button = sender as? UIButton {
+            button.isHidden = !enableEditing
+            button.addTarget(self, action: #selector(deleteAction(_:)), for: .touchUpInside)
+        }
     }
 }
 
@@ -115,7 +127,7 @@ extension MyGoodsViewController {
         static let webViewController = "WebViewController"
         static let goToWebViewSegue = "GoToWebViewController"
     }
-
+    
     private struct Section {
         static let recent = 0
         static let favorite = 1
