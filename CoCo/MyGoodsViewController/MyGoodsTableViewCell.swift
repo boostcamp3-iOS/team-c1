@@ -11,10 +11,8 @@ import UIKit
 class MyGoodsTableViewCell: UITableViewCell {
     // MARK: - Private properties
     private var data = [MyGoodsData]()
-    private var action: Selector?
     private var enableEditing = false
-    private var actionTarget: Any?
-    private weak var viewController: UIViewController?
+    weak var delegate: MyGoodsDataDelegate?
 
     // MARK: - IBOutlets
     @IBOutlet weak var titleLabel: UILabel!
@@ -38,22 +36,15 @@ class MyGoodsTableViewCell: UITableViewCell {
     }
 
     // MARK: - Setting methods
-    func updateContents(_ data: [MyGoodsData], viewController: UIViewController?, direction: UICollectionView.ScrollDirection = .horizontal) {
+    func updateContents(_ data: [MyGoodsData], direction: UICollectionView.ScrollDirection = .horizontal) {
         if data.isEmpty {
             empmtyLabel.isHidden = false
             collectionView.isHidden = true
             return
         }
         self.data = data
-        self.viewController = viewController
         setScrollDirection(direction)
         collectionView.reloadData()
-    }
-
-    func startEditing(_ isStart: Bool, target: Any?, delete: Selector?) {
-        enableEditing = isStart
-        action = delete
-        actionTarget = target
     }
 
     private func setScrollDirection(_ direction: UICollectionView.ScrollDirection) {
@@ -74,16 +65,14 @@ extension MyGoodsTableViewCell: UICollectionViewDelegate, UICollectionViewDataSo
             return UICollectionViewCell()
         }
         cell.myGoods = data[safeIndex: indexPath.row]
-        cell.deleteButton.isHidden = !enableEditing
-        if enableEditing, let action = action {
-            cell.deleteButton.addTarget(actionTarget, action: action, for: .touchUpInside)
-        }
+        cell.deleteButton.tag = tag + indexPath.row
+        delegate?.receiveSender(cell.deleteButton)
         return cell
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if let vc = viewController as? MyGoodsViewController, let goods = data[safeIndex: indexPath.row] {
-            vc.performSegue(withData: goods)
+        if let goods = data[safeIndex: indexPath.row] {
+            delegate?.receiveData(goods)
         }
     }
 }
