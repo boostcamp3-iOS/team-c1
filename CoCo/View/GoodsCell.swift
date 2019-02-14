@@ -22,6 +22,7 @@ class GoodsCell: UICollectionViewCell {
     @IBOutlet weak var likeImageView: UIImageView!
     @IBOutlet weak var goodsShoppingMallLabel: UILabel!
     @IBOutlet weak var deleteButtonBackgroundView: UIVisualEffectView!
+    @IBOutlet weak var deleteButton: UIButton!
 
     var isEditing: Bool = true {
         didSet {
@@ -43,6 +44,11 @@ class GoodsCell: UICollectionViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
+        settupGoodsCell()
+        setupDelete()
+    }
+
+    func settupGoodsCell() {
         layer.cornerRadius = 6
         layer.masksToBounds = false
         layer.shadowColor = UIColor.lightGray.cgColor
@@ -53,18 +59,12 @@ class GoodsCell: UICollectionViewCell {
 
         container.layer.cornerRadius = 6
         container.layer.masksToBounds = true
-        goodsTitleLabel.lineBreakMode = .byCharWrapping
+       // goodsTitleLabel.lineBreakMode = .byCharWrapping
+    }
 
+    func setupDelete() {
         deleteButtonBackgroundView.layer.cornerRadius = deleteButtonBackgroundView.bounds.width / 2.0
         deleteButtonBackgroundView.layer.masksToBounds = true
         deleteButtonBackgroundView.isHidden = !isEditing
-
-    }
-
-    @IBAction func deleteCell(_ sender: UIButton) {
-        guard let delegate = delegate else {
-            return
-        }
-        delegate.delete(cell: self)
     }
 }

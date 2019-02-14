@@ -11,6 +11,7 @@ import UIKit
 struct MyGoodsDummy {
     var dummyArray = [MyGoodsData]()
 
+    let pet = Pet.cat
     init() {
         var myGoods1 = MyGoodsData()
         myGoods1.title = "고양이 방석 국내산 제작, 폭신폭신 아기들이 좋아해요"
@@ -18,7 +19,7 @@ struct MyGoodsDummy {
         myGoods1.isFavorite = false
         myGoods1.isLatest = true
         myGoods1.link = ""
-        myGoods1.pet = "고양이"
+        myGoods1.pet = pet
         myGoods1.price = "9,000,000"
         myGoods1.productID = "11111"
         myGoods1.shoppingmall = "마루"
@@ -31,7 +32,7 @@ struct MyGoodsDummy {
         myGoods2.isFavorite = false
         myGoods2.isLatest = true
         myGoods2.link = ""
-        myGoods2.pet = "고양이"
+        myGoods2.pet = pet
         myGoods2.price = "1500"
         myGoods2.productID = "22222"
         myGoods2.shoppingmall = "마루"
@@ -44,7 +45,7 @@ struct MyGoodsDummy {
         myGoods3.isFavorite = false
         myGoods3.isLatest = true
         myGoods3.link = ""
-        myGoods3.pet = "고양이"
+        myGoods3.pet = pet
         myGoods3.price = "1500"
         myGoods3.productID = "33333"
         myGoods3.shoppingmall = "마루"
@@ -57,7 +58,7 @@ struct MyGoodsDummy {
         myGoods4.isFavorite = false
         myGoods4.isLatest = true
         myGoods4.link = ""
-        myGoods4.pet = "고양이"
+        myGoods4.pet = pet
         myGoods4.price = "1500"
         myGoods4.productID = "44444"
         myGoods4.shoppingmall = "마루"
@@ -70,7 +71,7 @@ struct MyGoodsDummy {
         myGoods5.isFavorite = false
         myGoods5.isLatest = true
         myGoods5.link = ""
-        myGoods5.pet = "고양이"
+        myGoods5.pet = pet
         myGoods5.price = "1500"
         myGoods5.productID = "55555"
         myGoods5.shoppingmall = "마루"
@@ -83,7 +84,7 @@ struct MyGoodsDummy {
          myGoods6.isFavorite = false
          myGoods6.isLatest = true
          myGoods6.link = ""
-         myGoods6.pet = "고양이"
+         myGoods6.pet = pet
          myGoods6.price = "1500"
          myGoods6.productID = "66666"
          myGoods6.shoppingmall = "마루"
@@ -96,7 +97,7 @@ struct MyGoodsDummy {
          myGoods7.isFavorite = false
          myGoods7.isLatest = true
          myGoods7.link = ""
-         myGoods7.pet = "고양이"
+         myGoods7.pet = pet
          myGoods7.price = "1500"
          myGoods7.productID = "77777"
          myGoods7.searchWord = "그릇"

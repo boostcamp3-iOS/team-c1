@@ -6,7 +6,7 @@
         <attribute name="isFavorite" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="isLatest" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="link" attributeType="String" syncable="YES"/>
-        <attribute name="pet" attributeType="String" syncable="YES"/>
+        <attribute name="pet" attributeType="Transformable" syncable="YES"/>
         <attribute name="price" attributeType="String" syncable="YES"/>
         <attribute name="productID" attributeType="String" syncable="YES"/>
         <attribute name="searchWord" optional="YES" attributeType="String" syncable="YES"/>
@@ -15,11 +15,11 @@
     </entity>
     <entity name="PetKeyword" representedClassName=".PetKeyword" syncable="YES">
         <attribute name="keywords" attributeType="Transformable" syncable="YES"/>
-        <attribute name="pet" attributeType="String" syncable="YES"/>
+        <attribute name="pet" attributeType="Transformable" syncable="YES"/>
     </entity>
     <entity name="SearchWord" representedClassName=".SearchWord" syncable="YES">
         <attribute name="date" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="pet" attributeType="String" syncable="YES"/>
+        <attribute name="pet" attributeType="Transformable" syncable="YES"/>
         <attribute name="searchWord" attributeType="String" syncable="YES"/>
     </entity>
     <elements>

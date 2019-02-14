@@ -75,9 +75,6 @@
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mg5-p9-Hnt">
                                             <rect key="frame" x="4" y="4" width="12" height="12"/>
                                             <state key="normal" image="cross"/>
-                                            <connections>
-                                                <action selector="deleteCell:" destination="UAH-ob-PAg" eventType="touchUpInside" id="lnL-Gu-KCU"/>
-                                            </connections>
                                         </button>
                                     </subviews>
                                     <constraints>

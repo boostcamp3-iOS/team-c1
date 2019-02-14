@@ -19,7 +19,7 @@ import Foundation
     (7) 알고리즘에서 가져온 쇼핑목록들 섞고 배열에 넣기
  */
 class DiscoverServiceClass {
-    let pet = "고양이"
+    let pet = Pet.cat
     let networkManagerType: NetworkManagerType?
     let algorithmManagerType: AlgorithmType?
     let searchWordDoreDataManagerType: SearchWordCoreDataManagerType?

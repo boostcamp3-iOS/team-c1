@@ -2,7 +2,7 @@
 //  MyGoods+CoreDataProperties.swift
 //  CoCo
 //
-//  Created by 강준영 on 13/02/2019.
+//  Created by 강준영 on 14/02/2019.
 //  Copyright © 2019 Team CoCo. All rights reserved.
 //
 //
@@ -21,10 +21,10 @@ extension MyGoods {
     @NSManaged public var isFavorite: Bool
     @NSManaged public var isLatest: Bool
     @NSManaged public var link: String
-    @NSManaged public var pet: String
+    @NSManaged public var pet: NSObject
     @NSManaged public var price: String
     @NSManaged public var productID: String
-    @NSManaged public var searchWord: String?
+    @NSManaged public var searchWord: String
     @NSManaged public var shoppingmall: String
     @NSManaged public var title: String
 

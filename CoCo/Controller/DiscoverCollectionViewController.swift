@@ -45,8 +45,8 @@ class DiscoverCollectionViewController: UIViewController {
         collectionView.dataSource = self
         collectionView.collectionViewLayout = PinterestLayout()
 
-        searchWordCoreDataManager = SearchWordCoreDataManager(appDelegate: appDelegate, context: context)
-        myGoodsCoreDataManager = MyGoodsCoreDataManager(appDelegate: appDelegate, context: context)
+        searchWordCoreDataManager = SearchWordCoreDataManager()
+        myGoodsCoreDataManager = MyGoodsCoreDataManager()
 
         let discoverService = DiscoverServiceClass(networkManagerType: networkManager, algorithmManagerType: algorithmManager, searchWordDoreDataManagerType: searchWordCoreDataManager, myGoodsCoreDataType: myGoodsCoreDataManager)
 
@@ -64,15 +64,16 @@ class DiscoverCollectionViewController: UIViewController {
     }
 
     func coreDataPrint() {
-        let coredataManager = MyGoodsCoreDataManager(appDelegate: appDelegate!, context: context!)
+        let coredataManager = MyGoodsCoreDataManager()
 
+        let pet = Pet.cat
         var myGoods1 = MyGoodsData()
         myGoods1.title = "고양이 방석 국내산 제작, 폭신폭신 아기들이 좋아해요"
         myGoods1.image = ""
         myGoods1.isFavorite = false
         myGoods1.isLatest = true
         myGoods1.link = ""
-        myGoods1.pet = "cat"
+        myGoods1.pet = pet
         myGoods1.price = "1500"
         myGoods1.productID = "113333444778"
         myGoods1.shoppingmall = "마루"
@@ -88,12 +89,12 @@ class DiscoverCollectionViewController: UIViewController {
         core?.isFavorite = true
         try? coredataManager.updateObject(core)
 
-        let data = try? coredataManager.fetchFavoriteGoods(pet: "고양이")
+        let data = try? coredataManager.fetchFavoriteGoods(pet: pet)
         print("favorite: \(data)")
 
-        print(try? coredataManager.fetchObjects(pet: "고양이"))
+        print(try? coredataManager.fetchObjects(pet: pet))
 
-        let data1 = try? coredataManager.fetchLatestGoods(pet: "고양이", isLatest: false, ascending: true)
+        let data1 = try? coredataManager.fetchLatestGoods(pet: pet, isLatest: false, ascending: true)
         print("Latest: \(data1)")
     }
 }

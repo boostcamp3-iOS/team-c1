@@ -12,13 +12,13 @@ import CoreData
 struct PetKeywordData: CoreDataStructEntity {
     // MARK: - Propertise
     var objectID: NSManagedObjectID?
-    var keywords: [String] = []
-    var pet = ""
+    var keywords: Keyword?
+    var pet: Pet?
 
     // MARK: - Initializer
     init() { }
 
-    init(pet: String, keywords: [String]) {
+    init(pet: Pet, keywords: Keyword) {
         self.pet = pet
         self.keywords = keywords
     }
@@ -26,8 +26,12 @@ struct PetKeywordData: CoreDataStructEntity {
 
 extension PetKeywordData: Mapping {
     mutating func mappinng(from: NSManagedObject) {
-        self.keywords = from.value(forKeyPath: "keywords")
-        self.pet = from.value(forKeyPath: "pet")
+        if  let pet = from.petValue(forKeyPath: "pet") {
+            self.pet = pet
+        }
+        if let keywords = from.keywordValue(forKeyPath: "keywords") {
+            self.keywords = keywords
+        }
         self.objectID = from.objectID
     }
 
