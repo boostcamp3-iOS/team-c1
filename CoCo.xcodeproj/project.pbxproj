@@ -45,6 +45,7 @@
 		6C72B4B63F4B853CFFA4D5C38E00620A /* DiscoverDetail.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9EC2C318AB1E6A91D9F2964399E65952 /* DiscoverDetail.storyboard */; };
 		6E47729DD5BD45E9D4ED1AD24C05F9B4 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13DC44F8CA827C82329C9CFB303E1FD2 /* WebViewController.swift */; };
 		75110AAACF9E23205EE85EE77A3E40DB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFB4268ADFAC57117216BC20B2F92CEA /* AppDelegate.swift */; };
+		75956AA93A6DC86FB6D686AC0C1619A1 /* MyGoodsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E1C13BC3C7CE0A7B7DF8DA650E006D4 /* MyGoodsService.swift */; };
 		76DC29C8BC5F47F339FFE2E7E4077DE6 /* NetworkManagerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26B93E00EE053E1E82653EF106AD8F6C /* NetworkManagerType.swift */; };
 		785902C2065B0642441EF319DC045DDB /* DetailCategoryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F6A6FAD054E8E3232961286E69B5D876 /* DetailCategoryCell.xib */; };
 		7A7281B3969C0BA73507710F3DAF9EBF /* AppColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D37A8CA3BE26DCB2E6FC7D5E27218EF9 /* AppColor.swift */; };
@@ -146,6 +147,7 @@
 		45F25375C0BE923827FC55024C3D91CD /* PetKeywordData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetKeywordData.swift; sourceTree = "<group>"; };
 		49B9026BEE127519C7790672BAAB6B37 /* Keyword.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Keyword.swift; sourceTree = "<group>"; };
 		4CD04F96E795DBBB783F875D081ADDF8 /* CoreDataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataTests.swift; sourceTree = "<group>"; };
+		4E1C13BC3C7CE0A7B7DF8DA650E006D4 /* MyGoodsService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyGoodsService.swift; sourceTree = "<group>"; };
 		50353EB28D97F7BD69B765FDDDEDDAD7 /* CoreDataStructEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStructEntity.swift; sourceTree = "<group>"; };
 		536DE4E76897E3C817A830527AEAED42 /* Category.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
 		56C1EA226C9B006EE95C2B328D62F357 /* SearchView.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SearchView.storyboard; sourceTree = "<group>"; };
@@ -308,6 +310,7 @@
 			children = (
 				3B45E482D9EF65AF136BB7DB0C584433 /* MyGoods.storyboard */,
 				9A589162F84E8DE652E3ACF1FF88C9C3 /* MyGoodsDataDelegate.swift */,
+				4E1C13BC3C7CE0A7B7DF8DA650E006D4 /* MyGoodsService.swift */,
 				D37D463ADDA06AD5F7AB460D8DC75640 /* MyGoodsTableViewCell.swift */,
 				A6C53FEEDC5939CCDDFB4E28FD661460 /* MyGoodsViewController.swift */,
 			);
@@ -751,6 +754,7 @@
 				061FEDB246E93E55A7C4780D9F9AEBF5 /* MyGoodsData.swift in Sources */,
 				1D1FBBE55CBF4DF475438C8AEFF57D77 /* MyGoodsDataDelegate.swift in Sources */,
 				7C201E61C594707837EDAA99798C5049 /* MyGoodsDummy.swift in Sources */,
+				75956AA93A6DC86FB6D686AC0C1619A1 /* MyGoodsService.swift in Sources */,
 				3E8F755E02424FA48C6E63408C89215E /* MyGoodsTableViewCell.swift in Sources */,
 				5C1A0720198436F64C72F211A77DDCCA /* MyGoodsViewController.swift in Sources */,
 				F2F563F8541FA47FD4B032AC156BC9F7 /* NSManagedObject+.swift in Sources */,
