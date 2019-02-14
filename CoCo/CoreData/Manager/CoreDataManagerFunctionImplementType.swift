@@ -27,9 +27,6 @@ extension CoreDataManagerFunctionImplementType {
     var context: NSManagedObjectContext? {
         return appDelegate?.persistentContainer.viewContext
     }
-}
-
-extension CoreDataManagerFunctionImplementType {
     // MARK: - Insert Method
     /**
      MyGoods Entity에 데이터 삽입.
@@ -38,6 +35,9 @@ extension CoreDataManagerFunctionImplementType {
      - coreDataStructType: coreDataStructType 프로토콜을 채택하는 CoreData Struct.
      */
     @discardableResult func insert<T: CoreDataStructEntity>(_ coreDataStructType: T) throws -> Bool {
+        guard let appDelegate = appDelegate else {
+            return false
+        }
         guard let context = context else {
             return false
         }
@@ -47,9 +47,10 @@ extension CoreDataManagerFunctionImplementType {
                 return false
             }
             // 삽입하려는 데이터와 동일한 productID가 존재하면 기존 데이터 업데이트
-            if let object = MyGoodsCoreDataManager().fetchProductID(productID: myGoodsData.productID) {
+            if let object = MyGoodsCoreDataManager(appDelegate: appDelegate, context: context).fetchProductID(productID: myGoodsData.productID) {
                 myGoodsData.objectID = object.objectID
                 print("Product: \(myGoodsData.productID) Already Inserted , So Update")
+                print(context.object(with: myGoodsData.objectID!))
                 try updateObject(myGoodsData)
                 return true
                 // 삽입하려는 데이터와 동일한 데이터가 MyGoods Entity에 존재하는 지 확인하기 위해 삽입하려는 데이터의 productID를 Entity에 존재하는 지 확인.
@@ -57,6 +58,7 @@ extension CoreDataManagerFunctionImplementType {
             } else {
                 let myGoods = MyGoods(context: context)
                 myGoodsData.mappinng(to: myGoods)
+                print(myGoods)
                 afterOperation(context: context)
                 print("succesive insert \(myGoodsData.productID)")
                 return true
@@ -68,7 +70,7 @@ extension CoreDataManagerFunctionImplementType {
 
             do {
                 // PetKeyword Entity는 동물별로 데이터가 하나만 존재해야하기 때문에 데이터가 존재하는 지 확인
-                if let objects = try PetKeywordCoreDataManager().fetchObjects(pet: petKeywordData.pet) {
+                if let objects = try PetKeywordCoreDataManager(appDelegate: appDelegate, context: context).fetchObjects(pet: petKeywordData.pet) {
                     // 데이터가 존재하는 경우 데이터 업데이트
                     print("Already Pet and Keyword inserted, So Update")
                     if var object = objects.first {
@@ -93,7 +95,7 @@ extension CoreDataManagerFunctionImplementType {
             do {
                 // SearchKeyword Entity에 검색에가 존재하는 지 확인
                 // 검색어가 존재하면 업데이트
-                if let object = try SearchWordCoreDataManager().fetchWord(searchKeywordData.searchWord, pet: searchKeywordData.pet) {
+                if let object = try SearchWordCoreDataManager(appDelegate: appDelegate, context: context).fetchWord(searchKeywordData.searchWord, pet: searchKeywordData.pet) {
                     print("Alreay stored, So Update")
                     searchKeywordData.objectID = object.objectID
                     try updateObject(searchKeywordData)
@@ -138,6 +140,7 @@ extension CoreDataManagerFunctionImplementType {
                 else { throw CoreDataError.update(message: "Can not find data, So can not update")
             }
             myGoodsData.mappinng(to: object)
+            print(object)
             print("Product: \(myGoodsData.productID) update Complete")
             afterOperation(context: context)
             return true
@@ -236,6 +239,7 @@ extension CoreDataManagerFunctionImplementType {
         guard let context = context else { return }
         do {
             try context.save()
+            print("Success")
         } catch {
             context.rollback()
         }

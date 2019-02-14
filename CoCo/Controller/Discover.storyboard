@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="CQ4-Ij-Ksy">
+    <device id="retina5_9" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Tab Bar Controller-->
+        <scene sceneID="EAP-Sx-nZy">
+            <objects>
+                <tabBarController automaticallyAdjustsScrollViewInsets="NO" id="CQ4-Ij-Ksy" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationItem key="navigationItem" id="esD-uH-EEf"/>
+                    <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="DRH-He-ftv">
+                        <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </tabBar>
+                    <connections>
+                        <segue destination="eJP-K3-u8s" kind="relationship" relationship="viewControllers" id="rwH-b2-Qjp"/>
+                        <segue destination="oow-OL-KP9" kind="relationship" relationship="viewControllers" id="smp-kj-l2P"/>
+                        <segue destination="I3T-UZ-cex" kind="relationship" relationship="viewControllers" id="hkw-Rx-u2T"/>
+                        <segue destination="ypp-bq-hTt" kind="relationship" relationship="viewControllers" id="WMI-sC-QLQ"/>
+                    </connections>
+                </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="C6t-gS-8wT" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1472.8" y="-206.44677661169416"/>
+        </scene>
+        <!--SearchView-->
+        <scene sceneID="jDJ-29-LHV">
+            <objects>
+                <viewControllerPlaceholder storyboardName="SearchView" id="oow-OL-KP9" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Item" id="mUa-ns-GYH"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Pbh-vk-bOy" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1793" y="461"/>
+        </scene>
+        <!--MyGoods-->
+        <scene sceneID="ejE-oJ-T1g">
+            <objects>
+                <viewControllerPlaceholder storyboardName="MyGoods" id="I3T-UZ-cex" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Item" id="whW-2G-S6h"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Mxe-V6-bnD" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2390" y="474"/>
+        </scene>
+        <!--Setting-->
+        <scene sceneID="aLZ-8H-xja">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Setting" id="ypp-bq-hTt" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Item" id="zvl-9n-MTz"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ckD-Qb-UN8" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2958" y="471"/>
+        </scene>
+        <!--Item-->
+        <scene sceneID="oEN-lQ-9ro">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="eJP-K3-u8s" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Item" id="eS2-tc-dRG"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="fsi-pu-hcO">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="KBo-Uj-0mE" kind="relationship" relationship="rootViewController" id="dsc-pw-mm2"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="pCG-KA-fRm" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2412" y="-206.44677661169416"/>
+        </scene>
+        <!--Discover Collection View Controller-->
+        <scene sceneID="kOr-h1-Rzf">
+            <objects>
+                <viewController id="KBo-Uj-0mE" customClass="DiscoverCollectionViewController" customModule="CoCo" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="DtV-Hg-Fqo">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="k2l-at-nU2">
+                                <rect key="frame" x="0.0" y="44" width="375" height="685"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <collectionViewLayout key="collectionViewLayout" id="y6G-Na-ANR" customClass="PinterestLayout" customModule="CoCo" customModuleProvider="target"/>
+                                <cells>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="w5K-Ay-nfM" customClass="GoodsCell" customModule="CoCo" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
+                                            <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </view>
+                                        <connections>
+                                            <segue destination="hvK-7s-v87" kind="show" identifier="GoDiscoverDetailView" id="clW-og-T2H"/>
+                                        </connections>
+                                    </collectionViewCell>
+                                </cells>
+                            </collectionView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="k2l-at-nU2" firstAttribute="top" secondItem="hI0-br-Yy6" secondAttribute="top" id="CkL-8h-5Il"/>
+                            <constraint firstItem="hI0-br-Yy6" firstAttribute="trailing" secondItem="k2l-at-nU2" secondAttribute="trailing" id="MXr-zO-Ek9"/>
+                            <constraint firstItem="k2l-at-nU2" firstAttribute="leading" secondItem="hI0-br-Yy6" secondAttribute="leading" id="N4B-BU-f0q"/>
+                            <constraint firstItem="hI0-br-Yy6" firstAttribute="bottom" secondItem="k2l-at-nU2" secondAttribute="bottom" id="v2J-lU-3wj"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="hI0-br-Yy6"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="Bxr-1O-44D"/>
+                    <connections>
+                        <outlet property="collectionView" destination="k2l-at-nU2" id="tg7-B5-JWG"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="lyK-Tb-RtI" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3516" y="-207"/>
+        </scene>
+        <!--DiscoverDetail-->
+        <scene sceneID="YWr-L1-j5y">
+            <objects>
+                <viewControllerPlaceholder storyboardName="DiscoverDetail" id="hvK-7s-v87" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="1Sf-M4-8Eg" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4314" y="-207"/>
+        </scene>
+    </scenes>
+</document>

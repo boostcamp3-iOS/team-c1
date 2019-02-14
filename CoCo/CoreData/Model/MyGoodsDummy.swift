@@ -19,9 +19,10 @@ struct MyGoodsDummy {
         myGoods1.isLatest = true
         myGoods1.link = ""
         myGoods1.pet = "고양이"
-        myGoods1.price = "1500"
+        myGoods1.price = "9,000,000"
         myGoods1.productID = "11111"
         myGoods1.shoppingmall = "마루"
+        myGoods1.searchWord = "옷"
         myGoods1.date = "2018-01-11"
 
         var myGoods2 = MyGoodsData()
@@ -34,6 +35,7 @@ struct MyGoodsDummy {
         myGoods2.price = "1500"
         myGoods2.productID = "22222"
         myGoods2.shoppingmall = "마루"
+        myGoods2.searchWord = "신발"
         myGoods2.date = "2018-02-11"
 
         var myGoods3 = MyGoodsData()
@@ -46,10 +48,11 @@ struct MyGoodsDummy {
         myGoods3.price = "1500"
         myGoods3.productID = "33333"
         myGoods3.shoppingmall = "마루"
+        myGoods3.searchWord = "가방"
         myGoods3.date = "2018-03-11"
 
         var myGoods4 = MyGoodsData()
-        myGoods4.title = "고양이 사료"
+        myGoods4.title = "고양이 사료, 영약식, 국내산 100% 닭고기 함유, 환불가능."
         myGoods4.image = ""
         myGoods4.isFavorite = false
         myGoods4.isLatest = true
@@ -58,6 +61,7 @@ struct MyGoodsDummy {
         myGoods4.price = "1500"
         myGoods4.productID = "44444"
         myGoods4.shoppingmall = "마루"
+        myGoods4.searchWord = "목줄"
         myGoods4.date = "2018-04-11"
 
         var myGoods5 = MyGoodsData()
@@ -70,8 +74,9 @@ struct MyGoodsDummy {
         myGoods5.price = "1500"
         myGoods5.productID = "55555"
         myGoods5.shoppingmall = "마루"
+        myGoods5.searchWord = "화장실"
         myGoods5.date = "2018-05-11"
-        /*
+
          var myGoods6 = MyGoodsData()
          myGoods6.title = "고양이 집"
          myGoods6.image = ""
@@ -82,8 +87,9 @@ struct MyGoodsDummy {
          myGoods6.price = "1500"
          myGoods6.productID = "66666"
          myGoods6.shoppingmall = "마루"
+         myGoods6.searchWord = "간식"
          myGoods6.date = "2018-06-11"
-         
+
          var myGoods7 = MyGoodsData()
          myGoods7.title = "고양이 방석"
          myGoods7.image = ""
@@ -93,9 +99,10 @@ struct MyGoodsDummy {
          myGoods7.pet = "고양이"
          myGoods7.price = "1500"
          myGoods7.productID = "77777"
+         myGoods7.searchWord = "그릇"
          myGoods7.shoppingmall = "마루"
          myGoods7.date = "2018-07-11"
-         
+         /*
          var myGoods8 = MyGoodsData()
          myGoods8.title = "고양이 과자"
          myGoods8.image = ""
@@ -161,6 +168,8 @@ struct MyGoodsDummy {
         dummyArray.append(myGoods3)
         dummyArray.append(myGoods4)
         dummyArray.append(myGoods5)
+        dummyArray.append(myGoods6)
+        dummyArray.append(myGoods7)
 
     }
 }

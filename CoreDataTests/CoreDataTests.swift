@@ -185,7 +185,7 @@ class MockMyGoodsCoreDataManager: MyGoodsCoreDataManagerType {
          return nil
     }
 
-    func fetchLatestGoods(pet: String, isLatest: Bool, isLatestOrder: Bool) throws -> [MyGoodsData]? {
+    func fetchLatestGoods(pet: String, isLatest: Bool, ascending: Bool) throws -> [MyGoodsData]? {
          return nil
     }
 
