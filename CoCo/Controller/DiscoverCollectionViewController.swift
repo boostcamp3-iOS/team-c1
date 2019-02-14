@@ -34,13 +34,6 @@ class DiscoverCollectionViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        guard let context = context else {
-            return
-        }
-        guard let appDelegate = appDelegate else {
-            return
-        }
-
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.collectionViewLayout = PinterestLayout()

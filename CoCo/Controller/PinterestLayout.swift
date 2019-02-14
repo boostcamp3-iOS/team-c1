@@ -13,8 +13,8 @@ protocol PinterestLayoutDelegate: class {
     func headerFlexibleHeight(inCollectionView collectionView: UICollectionView, withLayout layout: UICollectionViewLayout, fixedDimension: CGFloat) -> CGFloat
 }
 
-class PinterestLayout: UICollectionViewLayout {
-    weak var delegate: PinterestLayoutDelegate!
+class PinterestLayout: UICollectionViewFlowLayout {
+    weak var delegate: PinterestLayoutDelegate?
 
     fileprivate var numberOfColums =  2
     fileprivate var cellPadding: CGFloat = 3
@@ -39,6 +39,9 @@ class PinterestLayout: UICollectionViewLayout {
         guard cellCache.isEmpty == true, headerCache.isEmpty == true, let collectionView = collectionView else {
             return
         }
+        guard let delegate = delegate else {
+            return
+        }
         let headerFlexibleDimension = delegate.headerFlexibleHeight(inCollectionView: collectionView, withLayout: self, fixedDimension: itemFixedDimension)
         let columWith = contentWidth / CGFloat(numberOfColums)
         var xOffset = [CGFloat]()
@@ -54,6 +57,7 @@ class PinterestLayout: UICollectionViewLayout {
                 headerLayoutAttributes.frame = CGRect(x: 0, y: 0, width: contentWidth, height: headerFlexibleDimension)
                 headerCache.append(headerLayoutAttributes)
             }
+            
             let flexibleHeight = delegate.collectionView(collectionView, heightForPhotoAtIndexPath: indexPath)
             let height = cellPadding * 2 + flexibleHeight
             let frame = CGRect(x: xOffset[colum], y: yOffset[colum], width: columWith, height: height)

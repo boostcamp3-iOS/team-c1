@@ -82,13 +82,7 @@ class DiscoverServiceClass {
         favorites = favoriteGoods()
         latests = latestGoods()
         searches = searchWord()
-        guard let favorite = favorites, let latest = latests, let search = searches else {
-            return []
-        }
-        guard let algorithmManagerType = algorithmManagerType else {
-            return []
-        }
-        return result
+        return []
     }
 
     // 5) 네트워트에서 섞은 검색어 Request

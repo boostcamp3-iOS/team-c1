@@ -12,8 +12,8 @@ import Foundation
 protocol AlgorithmType: MakeSearchWordsType, PaginationType { }
 
 protocol MakeSearchWordsType: WordType {
-    func makeRequestSearchWords(with myGoods: [MyGoodsData], words: [SearchWordData], petKeyword: PetKeywordData, count: UInt?) -> [String]
-    func makeRecommendedSearchWords(with words: [SearchWordData], petKeyword: PetKeywordData, count: UInt?) -> [String]
+    func makeRequestSearchWords(with myGoods: [MyGoodsData], words: [String], petKeyword: PetKeywordData, count: UInt?) -> [String]
+    func makeRecommendedSearchWords(with words: [String], petKeyword: PetKeywordData, count: UInt?) -> [String]
     func makeSearchWords(in words: [String], count: UInt?) -> [String]
     func makeSearchWords(_ word: String) -> [String]
     func makeCleanTitle(_ title: String, isReplacing: Bool) -> String

@@ -92,12 +92,6 @@ class SearchService {
     private func fetchRecommandword(_ queue: DispatchQueue, group: DispatchGroup) -> Keyword? {
         var result: Keyword?
         queue.async(group: group) {
-            do {
-                result = try self.petKeywordCoreDataManager.fetchOnlyKeyword(pet: self.pet)
-                group.leave()
-            } catch let err {
-                print(err)
-            }
         }
         return result!
     }

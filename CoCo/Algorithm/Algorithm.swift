@@ -36,14 +36,14 @@ extension Algorithm {
      - Author: [최영준](https://github.com/0jun0815)
      - Parameters:
         - myGoods: 찜한 상품 + 최근 본 상품 리스트 [MyGoodsData]
-        - words: 최근 검색한 검색어 리스트: [SearchWord]
+        - words: 최근 검색한 검색어 리스트
         - petKeyword: 관심 펫, 키워드 데이터: PetKeywordData
         - count: 받아올 개수, 입력하지 않으면 전체 데이터를 반환한다.
      */
-    func makeRequestSearchWords(with myGoods: [MyGoodsData], words: [SearchWordData], petKeyword: PetKeywordData, count: UInt? = nil) -> [String] {
+    func makeRequestSearchWords(with myGoods: [MyGoodsData], words: [String], petKeyword: PetKeywordData, count: UInt? = nil) -> [String] {
         var products = Set<String>()
         var searchWords = myGoods.compactMap { $0.searchWord }
-        searchWords += words.compactMap { $0.searchWord }
+        searchWords += words
         searchWords += extractDetailCategories(petKeyword)
         searchWords.shuffle()
         searchWords = makeSearchWords(in: searchWords)
@@ -59,13 +59,13 @@ extension Algorithm {
      검색 페이지에서 사용자에게 보여줄 추천 검색어를 생성한다.
      - Author: [최영준](https://github.com/0jun0815)
      - Parameters:
-        - words: 최근 검색한 검색어 리스트: [SearchWord]
+        - words: 최근 검색한 검색어 리스트
         - petKeyword: 관심 펫, 키워드 데이터: PetKeywordData
         - count: 받아올 개수, 입력하지 않으면 전체 데이터를 반환한다.
      */
-    func makeRecommendedSearchWords(with words: [SearchWordData], petKeyword: PetKeywordData, count: UInt? = nil) -> [String] {
+    func makeRecommendedSearchWords(with words: [String], petKeyword: PetKeywordData, count: UInt? = nil) -> [String] {
         var products = Set<String>()
-        var searchWords = words.compactMap { $0.searchWord }
+        var searchWords = words
         searchWords += extractDetailCategories(petKeyword)
         searchWords.shuffle()
         searchWords = makeSearchWords(in: searchWords)
