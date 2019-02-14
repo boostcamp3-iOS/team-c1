@@ -21,7 +21,7 @@ struct MyGoodsData: CoreDataStructEntity {
     var productID: String = ""
     var objectID: NSManagedObjectID?
     var searchWord: String?
-    var pet = ""
+    var pet: Pet?
     var shoppingmall: String = ""
 
     // MARK: Initializer
@@ -29,7 +29,7 @@ struct MyGoodsData: CoreDataStructEntity {
         self.date = createDate()
     }
 
-    init(pet: String, title: String, link: String, image: String, isFavorite: Bool, isLatest: Bool, price: String, productID: String, searchWord: String, shoppingmall: String) {
+    init(pet: Pet, title: String, link: String, image: String, isFavorite: Bool, isLatest: Bool, price: String, productID: String, searchWord: String, shoppingmall: String) {
         self.init()
         self.pet = pet
         self.title = title
@@ -61,13 +61,15 @@ extension MyGoodsData: Comparable {
 
 extension MyGoodsData: Mapping {
     mutating func mappinng(from: NSManagedObject) {
+        if let pet = from.petValue(forKeyPath: "pet") {
+            self.pet = pet
+        }
         self.date = from.value(forKeyPath: "date")
         self.image = from.value(forKeyPath: "image")
         self.isFavorite = from.value(forKeyPath: "isFavorite")
         self.isLatest = from.value(forKeyPath: "isLatest")
         self.link = from.value(forKeyPath: "link")
         self.objectID = from.objectID
-        self.pet = from.value(forKeyPath: "pet")
         self.price = from.value(forKeyPath: "price")
         self.productID = from.value(forKeyPath: "productID")
         self.searchWord = from.value(forKeyPath: "searchWord")

@@ -97,9 +97,6 @@ class CategoryController: UICollectionReusableView {
         let selectedIndexPath = IndexPath(item: 0, section: 0)
         collectionView.selectItem(at: selectedIndexPath, animated: false, scrollPosition: .bottom)
     }
-    
-    
-
 }
 
 extension CategoryController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
