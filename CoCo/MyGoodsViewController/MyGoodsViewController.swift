@@ -10,37 +10,38 @@ import UIKit
 
 class MyGoodsViewController: UIViewController {
     // MARK: - Private properties
+    private var service: MyGoodsService?
     private var enableEditing = false
-    // TODO: 데이터를 서비스 클래스에 포함 시킨다.
-    private var recentGoods = [MyGoodsData]()
-    private var favoriteGoods = [MyGoodsData]()
-
+    
     // MARK: - IBOutlets
     @IBOutlet weak var tableView: UITableView!
-
+    
     // MARK: - View lifecycles & override methods
     override func viewDidLoad() {
+        service = MyGoodsService()
         setNavigationBar()
         setTableView()
     }
-
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        // TODO: 서비스에서 데이터를 불러오는 작업을 작성한다.
+        service?.fetchGoods()
+        tableView.reloadData()
     }
-
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
         if segue.identifier == Identifier.goToWebViewSegue {
-            guard let webVC = segue.destination as? WebViewController, let myGoodsData = sender as? MyGoodsData else {
-                let message = getErrorMessage(MyGoodsDataError.lostData)
-                alert(message)
-                return
+            guard let webVC = segue.destination as? WebViewController,
+                let myGoodsData = sender as? MyGoodsData else {
+                    let message = getErrorMessage(MyGoodsDataError.lostData)
+                    alert(message)
+                    return
             }
-            webVC.myGoodsData = myGoodsData
+            webVC.sendData(myGoodsData)
         }
     }
-
+    
     // MARK: - Navigation related methods
     private func setNavigationBar() {
         navigationController?.navigationBar.isTranslucent = false
@@ -51,23 +52,32 @@ class MyGoodsViewController: UIViewController {
         editButton.tintColor = AppColor.purple
         navigationItem.rightBarButtonItem = editButton
     }
-
+    
     // MARK: - TalbeView related methods
     private func setTableView() {
         tableView.delegate = self
         tableView.dataSource = self
     }
-
+    
     @objc private func startEditing() {
         enableEditing = !enableEditing
         tableView.reloadData()
     }
-
+    
     // MARK: - CollectionView related methods
-    @objc func deleteData() {
-        // TODO: 서비스 클래스에서 삭제 처리 로직 구현
+    @objc func deleteAction(_ sender: UIButton) {
+        let index = sender.tag
+        // 최근 본 상품
+        if index < 10, let data = service?.recentGoods[safeIndex: index] {
+            service?.deleteRecentGoods(data)
+        // 찜한 목록
+        } else if let data = service?.favoriteGoods[safeIndex: index - 10] {
+            service?.deleteFavoriteGoods(data)
+        }
+        service?.fetchGoods()
+        tableView.reloadData()
     }
-
+    
     func performSegue(withData data: MyGoodsData) {
         performSegue(withIdentifier: Identifier.goToWebViewSegue, sender: data)
     }
@@ -78,17 +88,17 @@ extension MyGoodsViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 1
     }
-
+    
     func numberOfSections(in tableView: UITableView) -> Int {
         return 2
     }
-
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return tableView.estimatedRowHeight
     }
-
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: Identifier.myGoodTableViewCell) as? MyGoodsTableViewCell else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: Identifier.myGoodTableViewCell) as? MyGoodsTableViewCell, let service = service else {
             return UITableViewCell()
         }
         cell.delegate = self
