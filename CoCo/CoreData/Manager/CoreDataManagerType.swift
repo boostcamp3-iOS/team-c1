@@ -21,7 +21,7 @@ protocol CoreDataManagerType {
 protocol MyGoodsCoreDataManagerType: CoreDataManagerType {
     // MARK: - Methodes
     func fetchFavoriteGoods(pet: String) throws -> [MyGoodsData]?
-    func fetchLatestGoods(pet: String, isLatest: Bool, isLatestOrder: Bool) throws -> [MyGoodsData]?
+    func fetchLatestGoods(pet: String, isLatest: Bool, ascending: Bool) throws -> [MyGoodsData]?
     func deleteFavoriteAllObjects(pet: String) throws -> Bool
     func deleteLatestAllObjects(pet: String, isLatest: Bool) throws -> Bool
 }

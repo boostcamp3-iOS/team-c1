@@ -11,6 +11,15 @@ import UIKit
 import CoreData
 
 class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctionImplementType {
+    // MARK: - Properties
+    weak var appDelegate: AppDelegate?
+    var context: NSManagedObjectContext?
+
+    // MARK: - Initializer
+    init(appDelegate: AppDelegate, context: NSManagedObjectContext) {
+        self.appDelegate = appDelegate
+        self.context = context
+    }
 
     // MARK: - Fetch Methodes
     /**
@@ -78,11 +87,11 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
             request = NSFetchRequest(entityName: entityName)
         }
 
-        request.returnsObjectsAsFaults = false
         request.predicate = predicate
         request.sortDescriptors = [sort]
 
         let objects = try context.fetch(request)
+        print(objects)
 
         if !objects.isEmpty {
             for object in objects {
@@ -92,7 +101,7 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
             }
             return myGoodsDatas
         } else {
-            throw CoreDataError.fetch(message: "MyGoods Entity has not Favorite data, So can not fetch data")
+            throw CoreDataError.fetch(message: "MyGoods Entity has not Favorite data, So can not fetch data)")
         }
     }
 
@@ -103,11 +112,11 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
      - pet: 해당하는 펫(고양이 또는 강아지)과 관련된 데이터를 가져오기 위한 파마리터.
      - isLatest: 데이터를 오름차순, 또는 내림차순으로 가져오기 위한 파라미터
      */
-    func fetchLatestGoods(pet: String, isLatest: Bool, isLatestOrder: Bool) throws -> [MyGoodsData]? {
+    func fetchLatestGoods(pet: String, isLatest: Bool, ascending: Bool) throws -> [MyGoodsData]? {
         guard let context = context else {
             return nil
         }
-        let sort = NSSortDescriptor(key: #keyPath(MyGoods.date), ascending: isLatestOrder)
+        let sort = NSSortDescriptor(key: #keyPath(MyGoods.date), ascending: ascending)
         let predicate = NSPredicate(format: "pet = %@ AND isLatest = %@", pet, NSNumber(booleanLiteral: isLatest))
         var myGoodsDatas: [MyGoodsData] = []
         let request: NSFetchRequest<MyGoods>
@@ -225,7 +234,7 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
      */
     func latestGoodsToFalse(pet: String) throws {
         do {
-            guard var objects = try fetchLatestGoods(pet: pet, isLatest: true, isLatestOrder: false) else {
+            guard var objects = try fetchLatestGoods(pet: pet, isLatest: true, ascending: false) else {
                 throw CoreDataError.fetch(message: "Can not fetch data")
             }
             if objects.count > 10 {

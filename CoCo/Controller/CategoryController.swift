@@ -8,9 +8,10 @@
 
 import UIKit
 
-class CategoryController: UICollectionReusableView, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+class CategoryController: UICollectionReusableView {
 
-    let cellId = "CategoryCell"
+    private let cellId = "CategoryCell"
+    var pet = Pet.dog
 
     lazy var largeTitle: LargeTitle = {
         guard let largeTitle = Bundle.main.loadNibNamed("LargeTitle", owner: self, options: nil)?.first as? LargeTitle else {
@@ -31,9 +32,38 @@ class CategoryController: UICollectionReusableView, UICollectionViewDataSource, 
         return cv
     }()
 
-    let pet = Pet.dog
-
     lazy var categoryImage: [UIImage?] = {
+       return setupCategotyImage()
+    }()
+
+    lazy var categoryTitle: [String] = {
+        return setupCategoryTitle()
+    }()
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setupLargeTitle()
+        setUpCollectionView()
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    func setupCategoryTitle() -> [String] {
+        var categorys = [String]()
+        if pet.rawValue == "강아지" {
+            categorys.append(Pet.dog.rawValue)
+        } else {
+            categorys.append(Pet.cat.rawValue)
+        }
+        for category in Category.allCases {
+            categorys.append(category.rawValue)
+        }
+        return categorys
+    }
+
+    func setupCategotyImage() -> [UIImage?] {
         var categoryImages = [UIImage?]()
         if pet.rawValue == "강아지" {
             categoryImages.append(UIImage(named: "dog"))
@@ -51,42 +81,28 @@ class CategoryController: UICollectionReusableView, UICollectionViewDataSource, 
         categoryImages.append(UIImage(named: "transporter"))
         categoryImages.append(UIImage(named: "bowl"))
         return categoryImages
-    }()
-
-    lazy var categoryTitle: [String] = {
-        var categorys = [String]()
-        if pet.rawValue == "강아지" {
-            categorys.append(Pet.dog.rawValue)
-        } else {
-            categorys.append(Pet.cat.rawValue)
-        }
-        for category in Category.allCases {
-            categorys.append(category.rawValue)
-        }
-        return categorys
-    }()
-
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        setupLargeTitle()
-        addSubview(collectionView)
-        collectionView.register(UINib(nibName: "CategoryCell", bundle: nil), forCellWithReuseIdentifier: cellId)
-        addConstraintsWithFormat("H:|[v0]|", views: collectionView)
-        addConstraintsWithFormat("V:|-170-[v0]|", views: collectionView)
-        let selectedIndexPath = IndexPath(item: 0, section: 0)
-        collectionView.selectItem(at: selectedIndexPath, animated: false, scrollPosition: .bottom)
-
-    }
-
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
 
     func setupLargeTitle() {
         self.addSubview(largeTitle)
         self.addConstraintsWithFormat("H:|[v0]|", views: largeTitle)
-        self.addConstraintsWithFormat("V:|[v0(170)]", views: largeTitle)
+        self.addConstraintsWithFormat("V:|[v0(130)]", views: largeTitle)
     }
+
+    func setUpCollectionView() {
+        addSubview(collectionView)
+        collectionView.register(UINib(nibName: "CategoryCell", bundle: nil), forCellWithReuseIdentifier: cellId)
+        addConstraintsWithFormat("H:|[v0]|", views: collectionView)
+        addConstraintsWithFormat("V:|-130-[v0]|", views: collectionView)
+        let selectedIndexPath = IndexPath(item: 0, section: 0)
+        collectionView.selectItem(at: selectedIndexPath, animated: false, scrollPosition: .bottom)
+    }
+    
+    
+
+}
+
+extension CategoryController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return categoryImage.count
@@ -112,12 +128,17 @@ class CategoryController: UICollectionReusableView, UICollectionViewDataSource, 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print("click \(indexPath)")
         if indexPath.item == 0 {
-            if categoryImage[0] == UIImage(named: "dog") {
+            if categoryImage[0] == UIImage(named: "dog") && categoryTitle[0] == Pet.dog.rawValue {
                 categoryImage[0] = UIImage(named: "cat")
+                categoryTitle[0] = Pet.cat.rawValue
             } else {
                 categoryImage[0] = UIImage(named: "dog")
+                 categoryTitle[0] = Pet.dog.rawValue
             }
             collectionView.reloadData()
+        } else {
+            let discoverDetailViewController = DiscoverDetailViewController()
+            discoverDetailViewController.category = Category(rawValue: categoryTitle[indexPath.item])
         }
     }
 }
