@@ -17,9 +17,12 @@ class Algorithm: AlgorithmType {
      */
     func extractDetailCategories(_ petKeyword: PetKeywordData) -> [String] {
         var result = [String]()
-        for keyword in petKeyword.keywords {
+        guard let pet = petKeyword.pet, let keywords = petKeyword.keywords else {
+            return []
+        }
+        for keyword in keywords {
             for category in keyword.getData() {
-                result += category.getData(pet: petKeyword.pet)
+                result += category.getData(pet: pet)
             }
         }
         return result
