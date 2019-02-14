@@ -29,8 +29,8 @@ protocol MyGoodsCoreDataManagerType: CoreDataManagerType {
 // MARK: - PetKeywordCoreDataManagerType
 protocol PetKeywordCoreDataManagerType: CoreDataManagerType {
     // MARK: - Methodes
-    func fetchOnlyKeyword(pet: Pet) throws -> Keyword?
-    func fetchOnlyPet(pet: Pet) throws -> Pet?
+    func fetchOnlyKeyword(pet: Pet) throws -> [Keyword]?
+    func fetchOnlyPet() throws -> Pet?
     func deleteAllObjects(pet: Pet) throws -> Bool
 }
 

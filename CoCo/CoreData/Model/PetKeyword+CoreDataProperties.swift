@@ -18,5 +18,6 @@ extension PetKeyword {
 
     @NSManaged public var keywords: NSObject
     @NSManaged public var pet: NSObject
+    @NSManaged public var date: String
 
 }

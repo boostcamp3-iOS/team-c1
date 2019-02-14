@@ -12,15 +12,28 @@ import CoreData
 struct PetKeywordData: CoreDataStructEntity {
     // MARK: - Propertise
     var objectID: NSManagedObjectID?
-    var keywords: Keyword?
+    var keywords: [Keyword]?
     var pet: Pet?
+    var date: String?
 
     // MARK: - Initializer
-    init() { }
+    init() {
+        self.date = createDate()
+    }
 
-    init(pet: Pet, keywords: Keyword) {
+    init(pet: Pet, keywords: [Keyword]) {
+        self.init()
         self.pet = pet
         self.keywords = keywords
+    }
+
+    // MARK: Method
+    func createDate() -> String {
+        let date = Date()
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale(identifier: "ko_KR")
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        return dateFormatter.string(from: date)
     }
 }
 
@@ -33,9 +46,11 @@ extension PetKeywordData: Mapping {
             self.keywords = keywords
         }
         self.objectID = from.objectID
+        self.date = from.value(forKeyPath: "date")
     }
 
     func mappinng(to: NSManagedObject) {
+        to.setValue(self.date, forKey: "date")
         to.setValue(self.keywords, forKey: "keywords")
         to.setValue(self.pet, forKey: "pet")
     }
