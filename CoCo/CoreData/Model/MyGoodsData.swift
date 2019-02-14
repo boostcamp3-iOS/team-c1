@@ -29,7 +29,8 @@ struct MyGoodsData: CoreDataStructEntity {
         self.date = createDate()
     }
 
-    init(pet: String, title: String, link: String, image: String, isFavorite: Bool, isLatest: Bool, price: String, productId: String, searchWord: String, shoppingmall: String) {
+    init(pet: String, title: String, link: String, image: String, isFavorite: Bool, isLatest: Bool, price: String, productID: String, searchWord: String, shoppingmall: String) {
+        self.init()
         self.pet = pet
         self.title = title
         self.link = link
@@ -37,7 +38,7 @@ struct MyGoodsData: CoreDataStructEntity {
         self.isFavorite = isFavorite
         self.isLatest = isLatest
         self.price = price
-        self.productID = productId
+        self.productID = productID
         self.searchWord = searchWord
         self.shoppingmall = shoppingmall
     }

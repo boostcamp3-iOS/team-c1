@@ -8,13 +8,26 @@
 
 import UIKit
 
+protocol GoodsCellDelegate: class {
+    func delete(cell: GoodsCell)
+}
+
 class GoodsCell: UICollectionViewCell {
+    weak var delegate: GoodsCellDelegate?
+
     @IBOutlet weak var container: UIView!
     @IBOutlet weak var goodsImageView: UIImageView!
     @IBOutlet weak var goodsTitleLabel: UILabel!
     @IBOutlet weak var goodsPriceLabel: UILabel!
-    @IBOutlet weak var likeButton: UIButton!
+    @IBOutlet weak var likeImageView: UIImageView!
     @IBOutlet weak var goodsShoppingMallLabel: UILabel!
+    @IBOutlet weak var deleteButtonBackgroundView: UIVisualEffectView!
+
+    var isEditing: Bool = true {
+        didSet {
+            deleteButtonBackgroundView.isHidden = !isEditing
+        }
+    }
 
     var myGoods: MyGoodsData? {
         didSet {
@@ -22,6 +35,7 @@ class GoodsCell: UICollectionViewCell {
                 goodsImageView.setImage(url: myGoods.image)
                 goodsPriceLabel.text = myGoods.price
                 goodsTitleLabel.text = myGoods.title
+                print(myGoods.title.count)
                 goodsShoppingMallLabel.text = myGoods.shoppingmall
             }
         }
@@ -29,10 +43,28 @@ class GoodsCell: UICollectionViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        self.layer.cornerRadius = 6
-        self.layer.masksToBounds = true
+        layer.cornerRadius = 6
+        layer.masksToBounds = false
+        layer.shadowColor = UIColor.lightGray.cgColor
+        layer.shadowOffset = CGSize(width: 0, height: 2.0)
+        layer.shadowRadius = 2.0
+        layer.shadowOpacity = 1.0
+        layer.backgroundColor = UIColor.clear.cgColor
+
         container.layer.cornerRadius = 6
         container.layer.masksToBounds = true
         goodsTitleLabel.lineBreakMode = .byCharWrapping
+
+        deleteButtonBackgroundView.layer.cornerRadius = deleteButtonBackgroundView.bounds.width / 2.0
+        deleteButtonBackgroundView.layer.masksToBounds = true
+        deleteButtonBackgroundView.isHidden = !isEditing
+
+    }
+
+    @IBAction func deleteCell(_ sender: UIButton) {
+        guard let delegate = delegate else {
+            return
+        }
+        delegate.delete(cell: self)
     }
 }

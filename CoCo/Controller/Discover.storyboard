@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -72,7 +73,7 @@
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="orD-4L-aZc" kind="relationship" relationship="rootViewController" id="0Mo-u6-TA7"/>
+                        <segue destination="KBo-Uj-0mE" kind="relationship" relationship="rootViewController" id="dsc-pw-mm2"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pCG-KA-fRm" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -80,25 +81,57 @@
             <point key="canvasLocation" x="2412" y="-206.44677661169416"/>
         </scene>
         <!--Discover Collection View Controller-->
-        <scene sceneID="UFC-lI-MRb">
+        <scene sceneID="kOr-h1-Rzf">
             <objects>
-                <collectionViewController id="orD-4L-aZc" customClass="DiscoverCollectionViewController" customModule="CoCo" customModuleProvider="target" sceneMemberID="viewController">
-                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="gH4-lW-7Oj">
+                <viewController id="KBo-Uj-0mE" customClass="DiscoverCollectionViewController" customModule="CoCo" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="DtV-Hg-Fqo">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="k2l-at-nU2">
+                                <rect key="frame" x="0.0" y="44" width="375" height="685"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <collectionViewLayout key="collectionViewLayout" id="y6G-Na-ANR" customClass="PinterestLayout" customModule="CoCo" customModuleProvider="target"/>
+                                <cells>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="w5K-Ay-nfM" customClass="GoodsCell" customModule="CoCo" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
+                                            <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </view>
+                                        <connections>
+                                            <segue destination="hvK-7s-v87" kind="show" identifier="GoDiscoverDetailView" id="clW-og-T2H"/>
+                                        </connections>
+                                    </collectionViewCell>
+                                </cells>
+                            </collectionView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <collectionViewLayout key="collectionViewLayout" id="NBu-Tp-Xhe" customClass="PinterestLayout" customModule="CoCo" customModuleProvider="target"/>
-                        <cells/>
-                        <connections>
-                            <outlet property="dataSource" destination="orD-4L-aZc" id="axi-H9-L8W"/>
-                            <outlet property="delegate" destination="orD-4L-aZc" id="BvX-Cf-e7Z"/>
-                        </connections>
-                    </collectionView>
-                    <navigationItem key="navigationItem" id="KKa-fe-UWe"/>
-                </collectionViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="ssj-KS-2dk" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                        <constraints>
+                            <constraint firstItem="k2l-at-nU2" firstAttribute="top" secondItem="hI0-br-Yy6" secondAttribute="top" id="CkL-8h-5Il"/>
+                            <constraint firstItem="hI0-br-Yy6" firstAttribute="trailing" secondItem="k2l-at-nU2" secondAttribute="trailing" id="MXr-zO-Ek9"/>
+                            <constraint firstItem="k2l-at-nU2" firstAttribute="leading" secondItem="hI0-br-Yy6" secondAttribute="leading" id="N4B-BU-f0q"/>
+                            <constraint firstItem="hI0-br-Yy6" firstAttribute="bottom" secondItem="k2l-at-nU2" secondAttribute="bottom" id="v2J-lU-3wj"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="hI0-br-Yy6"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="Bxr-1O-44D"/>
+                    <connections>
+                        <outlet property="collectionView" destination="k2l-at-nU2" id="tg7-B5-JWG"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="lyK-Tb-RtI" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3244" y="-207"/>
+            <point key="canvasLocation" x="3516" y="-207"/>
+        </scene>
+        <!--DiscoverDetail-->
+        <scene sceneID="YWr-L1-j5y">
+            <objects>
+                <viewControllerPlaceholder storyboardName="DiscoverDetail" id="hvK-7s-v87" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="1Sf-M4-8Eg" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4314" y="-207"/>
         </scene>
     </scenes>
 </document>
