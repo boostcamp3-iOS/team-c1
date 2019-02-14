@@ -41,8 +41,8 @@ extension NSManagedObject {
         return value
     }
 
-    func keywordValue(forKeyPath keyPath: String) -> Keyword? {
-        guard let value = super.value(forKeyPath: keyPath) as? Keyword else {
+    func keywordValue(forKeyPath keyPath: String) -> [Keyword]? {
+        guard let value = super.value(forKeyPath: keyPath) as? [Keyword] else {
             return nil
         }
         return value

@@ -59,8 +59,8 @@ class PetKeywordCoreDataManager: PetKeywordCoreDataManagerType, CoreDataManagerF
      - Parameter :
      - pet: 해당하는 펫(고양이 또는 강아지)과 관련된 키워드를 가져오기 위한 파마리터.
      */
-    func fetchOnlyKeyword(pet: Pet) throws -> Keyword? {
-        var keywords: Keyword?
+    func fetchOnlyKeyword(pet: Pet) throws -> [Keyword]? {
+        var keywords: [Keyword]?
         do {
             guard let objects = try fetchObjects(pet: pet) else {
                 throw CoreDataError.fetch(message: "PetKeyword Entity has not  data, So can not fetch data")
@@ -81,17 +81,32 @@ class PetKeywordCoreDataManager: PetKeywordCoreDataManagerType, CoreDataManagerF
      - Parameter :
         - pet: 해당하는 펫(고양이 또는 강아지)과 관련된 펫정보를 가져오기 위한 파마리터.
      */
-    func fetchOnlyPet(pet: Pet) throws -> Pet? {
-        do {
-            guard let objects = try fetchObjects(pet: pet) else {
-                throw CoreDataError.fetch(message: "PetKeyword Entity has not  data, So can not fetch data")
-            }
-            guard let petKeywordDatas = objects as? [PetKeywordData] else { return nil }
-            guard let petKeywordData = petKeywordDatas.first else { return nil }
-            return petKeywordData.pet
-        } catch let error as NSError {
-            throw CoreDataError.fetch(message: "Can not fetch data \(error)")
+    func fetchOnlyPet() throws -> Pet? {
+        guard let context = context else { return nil }
+        var petKeywordData = PetKeywordData()
+        let sort = NSSortDescriptor(key: #keyPath(PetKeyword.date), ascending: false)
+        let request: NSFetchRequest<PetKeyword>
+
+        if #available(iOS 10.0, *) {
+            let tmpRequest: NSFetchRequest<PetKeyword> = PetKeyword.fetchRequest()
+            request = tmpRequest
+        } else {
+            let entityName = String(describing: PetKeyword.self)
+            request = NSFetchRequest(entityName: entityName)
         }
+        request.sortDescriptors = [sort]
+        let objects = try context.fetch(request)
+
+        if !objects.isEmpty {
+            guard let firstObject = objects.first else {
+                return nil
+            }
+            petKeywordData.mappinng(from: firstObject)
+            return petKeywordData.pet
+        } else {
+            return nil
+        }
+
     }
 
     // MARK: - Delete Method

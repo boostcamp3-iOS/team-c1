@@ -136,6 +136,7 @@ extension CategoryController: UICollectionViewDataSource, UICollectionViewDelega
         } else {
             let discoverDetailViewController = DiscoverDetailViewController()
             discoverDetailViewController.category = Category(rawValue: categoryTitle[indexPath.item])
+            discoverDetailViewController.pet = self.pet
         }
     }
 }

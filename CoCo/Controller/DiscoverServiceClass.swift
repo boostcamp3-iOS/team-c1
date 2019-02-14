@@ -88,7 +88,6 @@ class DiscoverServiceClass {
         guard let algorithmManagerType = algorithmManagerType else {
             return []
         }
-        let result = algorithmManagerType.makeRequestSearchWords(favorite: favorite, recent: latest, words: search, count: 10)
         return result
     }
 
