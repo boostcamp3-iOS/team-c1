@@ -13,7 +13,7 @@ protocol SearchViewControllerDelegate {
 }
 
 class SearchViewController: UIViewController {
-
+    // MARK: - IBOutlets
     @IBOutlet weak var collectionView: UICollectionView!
 
     enum CellIdentifier: String {
@@ -30,24 +30,32 @@ class SearchViewController: UIViewController {
         }
     }
 
-    var cellIdentifier = CellIdentifier.searchKeyword
+    // MARK: - Private Properties
+    private var cellIdentifier = CellIdentifier.searchKeyword
+
+    // MARK: - Properties
     var delegate: SearchViewControllerDelegate?
 
-    let searchService = SearchService(network: ShoppingNetworkManager.shared)
+    let searchService = SearchService(serachCoreData: SearchWordCoreDataManager(),
+                                      petCoreData: PetKeywordCoreDataManager(),
+                                      network: ShoppingNetworkManager.shared,
+                                      algorithm: Algorithm())
 
+    // MARK: - LifeCycles
     override func viewDidLoad() {
         super.viewDidLoad()
 
         collectionView.delegate = self
         collectionView.dataSource = self
-
         collectionView.collectionViewLayout = cellIdentifier.layout
 
         collectionView.register(UINib(nibName: "GoodsCell", bundle: nil), forCellWithReuseIdentifier: CellIdentifier.goods.rawValue)
         // Do any additional setup after loading the view.
     }
 
+    // MARK: - IBActions
     @IBAction func actionTappedScreen(_ sender: UITapGestureRecognizer) {
+        // delegate 가 탭 제스쳐와 겹쳐서 DidSelectItemAt 대신 사용
         if let indexPath = self.collectionView?.indexPathForItem(at: sender.location(in: self.collectionView)) {
             guard let cell = self.collectionView?.cellForItem(at: indexPath) as? SearchKeywordCollectionViewCell else {
                 return
@@ -55,15 +63,13 @@ class SearchViewController: UIViewController {
             switch cellIdentifier {
             case .searchKeyword:
                 let search = cell.titleLabel.text ?? ""
-                print(search)
                 delegate?.tapKeywordCell(keyword: search)
+                searchService.dataLists.removeAll()
+                searchService.sortOption = .similar
+                searchService.insert(recentSearchWord: search)
                 searchService.getShoppingData(search: search) { isSuccess, _ in
                     if isSuccess {
-                        DispatchQueue.main.async {
-                            self.cellIdentifier = CellIdentifier.goods
-                            self.collectionView.reloadData()
-                            self.collectionView.collectionViewLayout = self.cellIdentifier.layout
-                        }
+                        self.reload(.goods)
                     }
                 }
             case .goods:
@@ -73,43 +79,26 @@ class SearchViewController: UIViewController {
             view.endEditing(true)
         }
     }
-    /*
-     // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
-    func getShoppingApi(search: String, sort: SortOption) {
-        searchService.getShoppingData(search: search) { isSuccess, err in
-            if isSuccess {
-                DispatchQueue.main.async {
-                    self.cellIdentifier = CellIdentifier.goods
-                    self.collectionView.reloadData()
-                    self.collectionView.collectionViewLayout = self.cellIdentifier.layout
-                }
-            } else {
-                print(err)
-            }
+    // MARK: - Methods
+    func reload(_ cell: CellIdentifier) {
+        DispatchQueue.main.async {
+            self.cellIdentifier = cell
+            self.collectionView.reloadData()
+            self.collectionView.collectionViewLayout = self.cellIdentifier.layout
         }
     }
-
 }
 
 extension SearchViewController: UICollectionViewDataSource {
-
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         switch cellIdentifier {
         case .searchKeyword:
             return searchService.keyword.count
         case .goods:
-            return searchService.dataList.count
+            return searchService.dataLists.count
         }
     }
-
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let collectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: cellIdentifier.rawValue, for: indexPath)
         switch cellIdentifier {
@@ -120,7 +109,7 @@ extension SearchViewController: UICollectionViewDataSource {
             cell.titleLabel.text = searchService.keyword[indexPath.row]
 
             var iii = indexPath.row
-            if iii > searchService.colorChips.count - 1 {
+            while iii > searchService.colorChips.count - 1 {
                 iii -= searchService.colorChips.count
             }
 
@@ -130,20 +119,20 @@ extension SearchViewController: UICollectionViewDataSource {
             guard let cell = collectionViewCell as? GoodsCell else {
                 return UICollectionViewCell()
             }
-            cell.myGoods = searchService.dataList[indexPath.row]
+            cell.myGoods = searchService.dataLists[indexPath.row]
 
             return cell
         }
     }
-
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
 
         guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "SearchCollectionReusableView", for: indexPath) as? SearchCollectionReusableView else {
             return UICollectionReusableView()
         }
-        if cellIdentifier == .searchKeyword {
+        switch cellIdentifier {
+        case .searchKeyword:
             header.sortButton.isHidden = true
-        } else {
+        case .goods:
             header.sortButton.isHidden = false
         }
 
@@ -155,29 +144,7 @@ extension SearchViewController: UICollectionViewDataSource {
 }
 
 extension SearchViewController: UICollectionViewDelegate {
-
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        switch cellIdentifier {
-        case .searchKeyword:
-            let search = searchService.keyword[indexPath.row]
-            print(search)
-            delegate?.tapKeywordCell(keyword: search)
-            searchService.getShoppingData(search: search) { isSuccess, _ in
-                if isSuccess {
-                    DispatchQueue.main.async {
-                        self.cellIdentifier = CellIdentifier.goods
-                        self.collectionView.reloadData()
-                        self.collectionView.collectionViewLayout = self.cellIdentifier.layout
-                    }
-                }
-            }
-        case .goods:
-            print("asdasd")
-        }
-    }
-
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-
         return CGSize(width: view.frame.width, height: 230)
     }
 
@@ -188,7 +155,6 @@ extension SearchViewController: UICollectionViewDelegate {
 }
 
 extension SearchViewController: UICollectionViewDelegateFlowLayout {
-
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         switch cellIdentifier {
         case .searchKeyword:
@@ -197,34 +163,19 @@ extension SearchViewController: UICollectionViewDelegateFlowLayout {
 
             return CGSize(width: length, height: 32)
         case .goods:
-//            let itemSize = (collectionView.frame.width - (collectionView.contentInset.left + collectionView.contentInset.right + 10)) / 2
-            collectionView.autoresizingMask = .flexibleHeight
-//            return CGSize(width: itemSize, height: itemSize + 50)
-            return size(for: indexPath)
+            let itemSize = (collectionView.frame.width - (collectionView.contentInset.left + collectionView.contentInset.right + 10)) / 2
+            return CGSize(width: itemSize, height: itemSize)
         }
     }
-    private func size(for indexPath: IndexPath) -> CGSize {
-        // load cell from Xib
-        guard let cell = Bundle.main.loadNibNamed("GoodsCell", owner: self, options: nil)?.first as? GoodsCell else { return .zero}
 
-        // configure cell with data in it
-        cell.myGoods = searchService.dataList[indexPath.row]
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        switch cellIdentifier {
+        case .searchKeyword:
+            return UIEdgeInsets(top: 0, left: 50, bottom: 0, right: 50)
+        case .goods:
+            return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        }
 
-        cell.setNeedsLayout()
-        cell.layoutIfNeeded()
-
-        // width that you want
-        let width = collectionView.frame.width / 2 - 15
-        let height: CGFloat = width + 30
-
-        let targetSize = CGSize(width: width, height: height)
-
-        // get size with width that you want and automatic height
-        let size = cell.contentView.systemLayoutSizeFitting(targetSize, withHorizontalFittingPriority: .defaultHigh, verticalFittingPriority: .fittingSizeLevel)
-        // if you want height and width both to be dynamic use below
-        // let size = cell.contentView.systemLayoutSizeFitting(UILayoutFittingCompressedSize)
-
-        return size
     }
 }
 
@@ -235,49 +186,41 @@ extension SearchViewController: UIGestureRecognizerDelegate {
 }
 
 extension SearchViewController: SearchCollectionReusableViewDelegate {
-
     func searchButtonClicked(_ search: String) {
         view.endEditing(true)
-        searchService.dataList.removeAll()
+        searchService.dataLists.removeAll()
+        searchService.sortOption = .similar
+        searchService.insert(recentSearchWord: search)
         searchService.getShoppingData(search: search) { isSuccess, _ in
             if isSuccess {
-                DispatchQueue.main.async {
-                    self.cellIdentifier = CellIdentifier.goods
-                    self.collectionView.reloadData()
-                    self.collectionView.collectionViewLayout = self.cellIdentifier.layout
-                }
+                self.reload(.goods)
             }
         }
     }
-
     func cancelButtonClicked() {
         view.endEditing(true)
-        searchService.dataList.removeAll()
+        searchService.dataLists.removeAll()
         if cellIdentifier == .goods {
-            self.cellIdentifier = CellIdentifier.searchKeyword
-            self.collectionView.reloadData()
-            self.collectionView.collectionViewLayout = cellIdentifier.layout
+            reload(.searchKeyword)
         }
     }
-
     func searchBarBeginEditing() {
 //        collectionView.setContentOffset(.zero, animated: true)
     }
-
     func sortButtonTapped() {
         let actionSheet = UIAlertController(title: nil, message: "정렬 방식을 선택해주세요", preferredStyle: .actionSheet)
 
         let sortSim = UIAlertAction(title: "유사도순", style: .default) { _ in
-            self.searchService.sortOption = .similar
+            self.sortChanged(sort: .similar)
         }
         let sortAscending = UIAlertAction(title: "가격 오름차순", style: .default) { _ in
-            self.searchService.sortOption = .ascending
+            self.sortChanged(sort: .ascending)
         }
         let sortDescending = UIAlertAction(title: "가격 내림차순", style: .default) { _ in
-            self.searchService.sortOption = .descending
+            self.sortChanged(sort: .descending)
         }
         let sortDate = UIAlertAction(title: "날짜순", style: .default) { _ in
-            self.searchService.sortOption = .date
+            self.sortChanged(sort: .date)
         }
         let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
 
@@ -288,6 +231,19 @@ extension SearchViewController: SearchCollectionReusableViewDelegate {
         actionSheet.addAction(cancel)
 
         present(actionSheet, animated: true, completion: nil)
+    }
+
+    func sortChanged(sort: SortOption) {
+        self.searchService.dataLists.removeAll()
+        self.searchService.sortOption = sort
+        self.searchService.itemStart = 1
+        self.searchService.getShoppingData(search: self.searchService.recentSearched ?? "") { isSuccess, _ in
+            if isSuccess {
+                DispatchQueue.main.async {
+                    self.collectionView.reloadData()
+                }
+            }
+        }
     }
 }
 

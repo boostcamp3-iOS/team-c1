@@ -16,7 +16,7 @@ class CenterAlignedCollectionViewFlowLayout: UICollectionViewFlowLayout {
         guard let attributes = NSArray(array: superAttributes, copyItems: true) as? [UICollectionViewLayoutAttributes] else { return nil }
 
         let leftPadding: CGFloat = 8
-        let interItemSpacing = minimumInteritemSpacing
+        let interItemSpacing: CGFloat = 20
 
         var currentX: CGFloat = 0
         var currentY: CGFloat = 0
@@ -27,8 +27,6 @@ class CenterAlignedCollectionViewFlowLayout: UICollectionViewFlowLayout {
 
         // 한줄에 각각 셀 별로 x 값을 가져와서 첫 x 값과 마지막 x 값을 rowSize 에 저장
         attributes.enumerated().forEach { index, layoutAttribute in
-
-            print(layoutAttribute.frame)
 
             if index != attributes.count - 1 { // 헤더 값 제거
                 if layoutAttribute.frame.origin.y >= currentY {
@@ -45,7 +43,6 @@ class CenterAlignedCollectionViewFlowLayout: UICollectionViewFlowLayout {
                 rowSizes[currentRow][1] = currentX - interItemSpacing
             }
         }
-        print(rowSizes)
 
         // 가져온 위치값들로 centerAlign 계산
         currentX = leftPadding
@@ -64,8 +61,6 @@ class CenterAlignedCollectionViewFlowLayout: UICollectionViewFlowLayout {
                 layoutAttribute.frame.origin.x = currentX
                 currentX += layoutAttribute.frame.width + interItemSpacing
                 currentY = max(layoutAttribute.frame.maxY, currentY)
-
-                print(layoutAttribute.frame)
             }
         }
 

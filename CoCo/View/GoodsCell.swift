@@ -32,6 +32,7 @@ class GoodsCell: UICollectionViewCell {
     var myGoods: MyGoodsData? {
         didSet {
             if let myGoods = myGoods {
+                goodsImageView.setImage(url: myGoods.image)
                 goodsPriceLabel.text = myGoods.price
                 goodsTitleLabel.text = myGoods.title
                 print(myGoods.title.count)
