@@ -59,7 +59,7 @@ class DiscoverCollectionViewController: UIViewController {
     func coreDataPrint() {
         let coredataManager = MyGoodsCoreDataManager()
 
-        let pet = Pet.cat
+        let pet = "고양이"
         var myGoods1 = MyGoodsData()
         myGoods1.title = "고양이 방석 국내산 제작, 폭신폭신 아기들이 좋아해요"
         myGoods1.image = ""
