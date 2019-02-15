@@ -10,56 +10,34 @@ import UIKit
 
 extension UIImageView {
 
-    static let imageCache = ImageCache()
-
-    func setImage(url: String) {
-
-        if let image = UIImageView.imageCache.retrieve(forKey: url) {
+    func setImage(url: String, isDisk: Bool = false) {
+        ImageManager.shared.cacheImage(url: url, isDisk: isDisk) { image in
             DispatchQueue.main.async {
                 self.image = image
             }
         }
-
-        DispatchQueue.global().async {
-            ShoppingNetworkManager.shared.getImageData(url: url) { data, _ in
-                guard let data = data else {
-                    return
-                }
-                if let image = UIImage(data: data) {
-                    UIImageView.imageCache.store(value: image, forKey: url)
-                    DispatchQueue.main.async {
-                        self.image = image
-                    }
-                }
-            }
-        }
-
     }
 }
 
-//class ImageManager {
-//
-//    let imageCache = ImageCache()
-//
-//    func cacheImage(url: String, completion: @escaping (UIImage) -> Void) {
-//
-//        if let image = imageCache.retrieve(forKey: url) {
-//            print(url)
-//            completion(image)
-//            return
-//        }
-//
-//        DispatchQueue.global().async {
-//            ShoppingNetworkManager.shared.getImageData(url: url) { data, _ in
-//                guard let data = data else {
-//                    return
-//                }
-//                if let image = UIImage(data: data) {
-//                    self.imageCache.store(value: image, forKey: url)
-//                    completion(image)
-//                }
-//            }
-//        }
-//    }
-//
-//}
+class ImageManager {
+
+    static let shared = ImageManager()
+    let imageCache = ImageCache()
+
+    func cacheImage(url: String, isDisk: Bool, completion: @escaping (UIImage) -> Void) {
+
+        if let image = imageCache.retrieve(forKey: url) {
+            completion(image)
+            return
+        }
+        ShoppingNetworkManager.shared.getImageData(url: url) { data, _ in
+            guard let data = data else {
+                return
+            }
+            if let image = UIImage(data: data) {
+                self.imageCache.store(value: image, forKey: url, isDisk: isDisk)
+                completion(image)
+            }
+        }
+    }
+}

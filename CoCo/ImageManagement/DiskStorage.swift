@@ -10,7 +10,7 @@ import UIKit
 
 enum DiskStorage {
     class DiskCache: CacheStorage {
- 
+
         let fileManager = FileManager()
 
         var directoryURL: URL?
@@ -22,12 +22,9 @@ enum DiskStorage {
             }
             diskCacheQueue = DispatchQueue(label: "coco.ImageCahce.diskCacheQueue.\(name)", qos: .background)
         }
-        
+
         func store(value: UIImage, forKey key: String) {
-            diskCacheQueue.async { [weak self] in
-                guard let self = self else {
-                    return
-                }
+            diskCacheQueue.async {
                 guard let directoryURL = self.directoryURL else {
                     return
                 }
@@ -38,26 +35,48 @@ enum DiskStorage {
                         print(error)
                     }
                 }
-             
+                let filePath = directoryURL.appendingPathComponent(key)
+                self.fileManager.createFile(atPath: filePath.path, contents: value.pngData(), attributes: nil)
             }
         }
-        
-        func cacheFileURL(forKey key: String) -> URL {
-            let fileName = cacheFileName(forKey: key)
-            return directoryURL.appendingPathComponent(fileName)
-        }
-        
+
         func remove(forKey key: String) {
-            <#code#>
+            diskCacheQueue.async {
+                guard let directoryURL = self.directoryURL else {
+                    return
+                }
+                let filePath = directoryURL.appendingPathComponent(key)
+                do {
+                    try self.fileManager.removeItem(atPath: filePath.path)
+                } catch let err {
+                    print(err)
+                }
+            }
         }
-        
+
         func removeAll() {
-            <#code#>
+            diskCacheQueue.async {
+                guard let directoryURL = self.directoryURL else {
+                    return
+                }
+                do {
+                    try self.fileManager.removeItem(at: directoryURL)
+                } catch let err {
+                    print(err)
+                }
+            }
         }
-        
+
         func retrieve(forKey key: String) -> UIImage? {
-            <#code#>
+            guard let directoryURL = self.directoryURL else {
+                return nil
+            }
+            let filePath = directoryURL.appendingPathComponent(key)
+            if let image = UIImage(contentsOfFile: filePath.path) {
+                return image
+            }
+            return nil
         }
-        
+
     }
 }
