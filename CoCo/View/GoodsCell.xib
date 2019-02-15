@@ -129,6 +129,7 @@
             <size key="customSize" width="223" height="320"/>
             <connections>
                 <outlet property="container" destination="uq8-g1-OWV" id="GgE-3G-Vtm"/>
+                <outlet property="deleteButton" destination="mg5-p9-Hnt" id="afZ-yT-0Rx"/>
                 <outlet property="deleteButtonBackgroundView" destination="mue-VZ-rAj" id="CCG-ii-mdu"/>
                 <outlet property="goodsImageView" destination="EN6-86-GZV" id="jEu-uq-CXY"/>
                 <outlet property="goodsPriceLabel" destination="9fX-9s-Aft" id="tqP-TY-crk"/>
