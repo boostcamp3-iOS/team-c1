@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol SearchViewControllerDelegate {
+protocol SearchViewControllerDelegate: class {
     func tapKeywordCell(keyword: String)
 }
 
@@ -25,7 +25,7 @@ class SearchViewController: UIViewController {
             case .searchKeyword:
                 return CenterAlignedCollectionViewFlowLayout()
             case .goods:
-                return UICollectionViewFlowLayout()
+                return PinterestLayout()
             }
         }
     }
@@ -34,7 +34,7 @@ class SearchViewController: UIViewController {
     private var cellIdentifier = CellIdentifier.searchKeyword
 
     // MARK: - Properties
-    var delegate: SearchViewControllerDelegate?
+    weak var delegate: SearchViewControllerDelegate?
 
     let searchService = SearchService(serachCoreData: SearchWordCoreDataManager(),
                                       petCoreData: PetKeywordCoreDataManager(),
@@ -47,33 +47,76 @@ class SearchViewController: UIViewController {
 
         collectionView.delegate = self
         collectionView.dataSource = self
+        searchService.fetchRecommandSearchWord {
+            self.collectionView.reloadData()
+        }
+//        petkeyWordCoreDataPrint()
         collectionView.collectionViewLayout = cellIdentifier.layout
 
         collectionView.register(UINib(nibName: "GoodsCell", bundle: nil), forCellWithReuseIdentifier: CellIdentifier.goods.rawValue)
+
         // Do any additional setup after loading the view.
+    }
+    func petkeyWordCoreDataPrint() {
+        let petKeywordDataManager = PetKeywordCoreDataManager()
+        let dummy = PetKeywordDummy().petkeys
+
+        do {
+            for data in dummy {
+                let insert = try petKeywordDataManager.insert(data)
+            }
+            let fetch = try petKeywordDataManager.fetchObjects()
+            print(fetch)
+        } catch let error {
+            print(error)
+        }
+    }
+
+    struct PetKeywordDummy {
+        let cat = "고양이"
+        let dog = "강아지"
+        var petkeys = [PetKeywordData]()
+
+        init() {
+            let catKeyword = PetKeywordData(pet: self.cat, keywords: ["놀이", "배변", "스타일", "리빙"])
+            let dogKeyword = PetKeywordData(pet: self.dog, keywords: ["헬스", "외출", "배변", "리빙"])
+
+            petkeys.append(catKeyword)
+            petkeys.append(dogKeyword)
+        }
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.navigationBar.isHidden = true
     }
 
     // MARK: - IBActions
     @IBAction func actionTappedScreen(_ sender: UITapGestureRecognizer) {
         // delegate 가 탭 제스쳐와 겹쳐서 DidSelectItemAt 대신 사용
         if let indexPath = self.collectionView?.indexPathForItem(at: sender.location(in: self.collectionView)) {
-            guard let cell = self.collectionView?.cellForItem(at: indexPath) as? SearchKeywordCollectionViewCell else {
-                return
-            }
             switch cellIdentifier {
             case .searchKeyword:
+                guard let cell = self.collectionView?.cellForItem(at: indexPath) as? SearchKeywordCollectionViewCell else {
+                    return
+                }
                 let search = cell.titleLabel.text ?? ""
                 delegate?.tapKeywordCell(keyword: search)
-                searchService.dataLists.removeAll()
                 searchService.sortOption = .similar
                 searchService.insert(recentSearchWord: search)
-                searchService.getShoppingData(search: search) { isSuccess, _ in
+                searchService.getShoppingData(search: search) { isSuccess, err in
                     if isSuccess {
                         self.reload(.goods)
+                    } else {
+                        if err == NetworkErrors.noData {
+                            self.alert("데이터가 없습니다. 다른 검색어를 입력해보세요")
+                        } else {
+                            self.alert("네트워크 연결이 끊어졌습니다.")
+                        }
                     }
                 }
             case .goods:
-                print("asdasd")
+                performSegue(withIdentifier: "searchToWeb", sender: indexPath)
             }
         } else {
             view.endEditing(true)
@@ -85,8 +128,29 @@ class SearchViewController: UIViewController {
         DispatchQueue.main.async {
             self.cellIdentifier = cell
             self.collectionView.reloadData()
-            self.collectionView.collectionViewLayout = self.cellIdentifier.layout
+            if cell == .goods {
+                let layout = PinterestLayout()
+                layout.delegate = self
+                self.collectionView.setCollectionViewLayout(layout, animated: false)
+                self.collectionView.collectionViewLayout.invalidateLayout()
+            } else {
+                let layout = CenterAlignedCollectionViewFlowLayout()
+                self.collectionView.setCollectionViewLayout(layout, animated: false)
+                self.collectionView.collectionViewLayout.invalidateLayout()
+            }
         }
+    }
+
+    // MARK: - Navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+
+        guard let webViewController: WebViewController = segue.destination as? WebViewController else {
+            return
+        }
+        guard let indexPath: IndexPath = sender as? IndexPath else {
+            return
+        }
+        webViewController.sendData(searchService.dataLists[indexPath.row])
     }
 }
 
@@ -120,7 +184,7 @@ extension SearchViewController: UICollectionViewDataSource {
                 return UICollectionViewCell()
             }
             cell.myGoods = searchService.dataLists[indexPath.row]
-
+            cell.isEditing = false
             return cell
         }
     }
@@ -171,7 +235,7 @@ extension SearchViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         switch cellIdentifier {
         case .searchKeyword:
-            return UIEdgeInsets(top: 0, left: 50, bottom: 0, right: 50)
+            return UIEdgeInsets(top: 0, left: 30, bottom: 0, right: 30)
         case .goods:
             return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         }
@@ -188,24 +252,31 @@ extension SearchViewController: UIGestureRecognizerDelegate {
 extension SearchViewController: SearchCollectionReusableViewDelegate {
     func searchButtonClicked(_ search: String) {
         view.endEditing(true)
-        searchService.dataLists.removeAll()
         searchService.sortOption = .similar
         searchService.insert(recentSearchWord: search)
-        searchService.getShoppingData(search: search) { isSuccess, _ in
+        searchService.itemStart = 1
+        searchService.getShoppingData(search: search) { isSuccess, err in
             if isSuccess {
                 self.reload(.goods)
+            } else {
+                if err == NetworkErrors.noData {
+                    self.alert("데이터가 없습니다. 다른 검색어를 입력해보세요")
+                } else {
+                    self.alert("네트워크 연결이 끊어졌습니다.")
+                }
             }
         }
     }
     func cancelButtonClicked() {
         view.endEditing(true)
         searchService.dataLists.removeAll()
+        searchService.itemStart = 1
         if cellIdentifier == .goods {
             reload(.searchKeyword)
         }
     }
     func searchBarBeginEditing() {
-//        collectionView.setContentOffset(.zero, animated: true)
+        //        collectionView.setContentOffset(.zero, animated: true)
     }
     func sortButtonTapped() {
         let actionSheet = UIAlertController(title: nil, message: "정렬 방식을 선택해주세요", preferredStyle: .actionSheet)
@@ -234,26 +305,33 @@ extension SearchViewController: SearchCollectionReusableViewDelegate {
     }
 
     func sortChanged(sort: SortOption) {
-        self.searchService.dataLists.removeAll()
         self.searchService.sortOption = sort
         self.searchService.itemStart = 1
-        self.searchService.getShoppingData(search: self.searchService.recentSearched ?? "") { isSuccess, _ in
+        self.searchService.getShoppingData(search: self.searchService.recentSearched ?? "") { isSuccess, err in
             if isSuccess {
                 DispatchQueue.main.async {
                     self.collectionView.reloadData()
+                }
+            } else {
+                if err == NetworkErrors.noData {
+                    self.alert("데이터가 없습니다. 다른 검색어를 입력해보세요")
+                } else {
+                    self.alert("네트워크 연결이 끊어졌습니다.")
                 }
             }
         }
     }
 }
 
-//extension SearchViewController: PinterestLayoutDelegate {
-//    func collectionView(_ collectionView: UICollectionView, heightForPhotoAtIndexPath indexPath: IndexPath) -> CGFloat {
-//        if cellIdentifier == .goods {
-//            guard let image =  else {
-//                return 0
-//            }
-//            return image.size.height
-//        }
-//    }
-//}
+extension SearchViewController: PinterestLayoutDelegate {
+    func headerFlexibleHeight(inCollectionView collectionView: UICollectionView, withLayout layout: UICollectionViewLayout, fixedDimension: CGFloat) -> CGFloat {
+        return 230
+    }
+    func collectionView(_ collectionView: UICollectionView, heightForPhotoAtIndexPath indexPath: IndexPath) -> CGFloat {
+        let itemSize = (collectionView.frame.width - (collectionView.contentInset.left + collectionView.contentInset.right + 10)) / 2
+        let title = searchService.dataLists[indexPath.item].title
+        let attribute = [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13)]
+        let estimateFrame = NSString(string: title).boundingRect(with: CGSize(width: itemSize, height: 1000), options: .usesLineFragmentOrigin, attributes: attribute, context: nil)
+        return estimateFrame.height + 250
+    }
+}

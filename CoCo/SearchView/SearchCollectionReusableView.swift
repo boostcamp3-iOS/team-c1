@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol SearchCollectionReusableViewDelegate {
+protocol SearchCollectionReusableViewDelegate: class {
     func searchButtonClicked(_ search: String)
     func cancelButtonClicked()
     func searchBarBeginEditing()
@@ -21,7 +21,7 @@ class SearchCollectionReusableView: UICollectionReusableView {
     @IBOutlet weak var sortButton: UIButton!
 
     // MARK: - Properties
-    var delegate: SearchCollectionReusableViewDelegate?
+    weak var delegate: SearchCollectionReusableViewDelegate?
 
     // MARK: - LifeCycles
     override func awakeFromNib() {
