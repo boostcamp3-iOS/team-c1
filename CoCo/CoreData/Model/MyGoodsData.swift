@@ -16,7 +16,7 @@ struct MyGoodsData: CoreDataStructEntity {
     var link: String = ""
     var image: String = ""
     var isFavorite: Bool = false
-    var isLatest: Bool = false
+    var isLatest: Bool = true
     var price: String = ""
     var productID: String = ""
     var objectID: NSManagedObjectID?

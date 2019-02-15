@@ -33,11 +33,9 @@ class Algorithm: AlgorithmType {
             }
         }
         for keyword in keywords {
-            for category in keyword.getData() {
-                result += category.getData(pet: pet)
-            }
+
         }
-        return result
+        return []
     }
 }
 
@@ -170,7 +168,7 @@ extension Algorithm {
      - Parameter pet: 강아지/고양이
      - Parameter words: 결합시킬 단어 리스트
      */
-    func combinePet(_ pet: Pet, and words: [String]) -> [String] {
+    func combinePet(_ pet: String, and words: [String]) -> [String] {
         var result = [String]()
         for word in words {
             result.append(combinePet(pet, and: word))
@@ -185,8 +183,8 @@ extension Algorithm {
      - Parameter pet: 강아지/고양이
      - Parameter word: 결합시킬 단어
      */
-    func combinePet(_ pet: Pet, and word: String) -> String {
-        return "\(pet.rawValue) " + word
+    func combinePet(_ pet: String, and word: String) -> String {
+        return "\(pet) " + word
     }
     /**
      문자열 리스트에서 동물(강아지, 고양이) 단어를 제거한다.

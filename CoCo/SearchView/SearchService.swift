@@ -21,6 +21,7 @@ import CoreData
 // 검색할때는 검사해서 붙여줌
 
 class SearchService {
+    let pet = "고양이"
     private let searchCoreDataManager: SearchWordCoreDataManagerType
     private let petKeywordCoreDataManager: PetKeywordCoreDataManagerType
     private let networkManager: NetworkManagerType
@@ -32,7 +33,6 @@ class SearchService {
     var itemStart = 1
     var recentSearchWords = [String]()
     var recommandSearchWords = [String]()
-    var pet: Pet = .dog
     var keyword = ["옷", "침대", "샤시미", "방석", "수제 간식", "사료", "간식", "후드", "통조림"]
     var colorChips = [UIColor(red: 1.0, green: 189.0 / 255.0, blue: 239.0 / 255.0, alpha: 1.0), UIColor(red: 186.0 / 255.0, green: 166.0 / 255.0, blue: 238.0 / 255.0, alpha: 1.0), UIColor(red: 250.0 / 255.0, green: 165.0 / 255.0, blue: 165.0 / 255.0, alpha: 1.0), UIColor(red: 166.0 / 255.0, green: 183.0 / 255.0, blue: 238.0 / 255.0, alpha: 1.0)]
 
@@ -45,14 +45,14 @@ class SearchService {
 
     func getShoppingData(search: String, completion: @escaping (Bool, Error?) -> Void) {
         let word = algorithmManager.removePet(from: search)
-        let searchWord = algorithmManager.combinePet(.dog, and: word)
+        let searchWord = algorithmManager.combinePet(pet, and: word)
         print(searchWord)
         let params = ShoppingParams(search: searchWord, count: 20, start: itemStart, sort: sortOption)
 
         DispatchQueue.global().async {
             self.networkManager.getAPIData(params, completion: { data in
                 for goods in data.items {
-                    self.dataLists.append(MyGoodsData(pet: Pet.dog, title: goods.title, link: goods.link, image: goods.image, isFavorite: false, isLatest: true, price: goods.lprice, productID: goods.productId, searchWord: search, shoppingmall: goods.mallName))
+                    self.dataLists.append(MyGoodsData(pet: self.pet, title: goods.title, link: goods.link, image: goods.image, isFavorite: false, isLatest: true, price: goods.lprice, productID: goods.productId, searchWord: search, shoppingmall: goods.mallName))
                 }
                 completion(true, nil)
             }) {err in completion(false, err)}
@@ -111,7 +111,7 @@ class SearchService {
     func fetchRecentSearchWord() -> [String]? {
         var fetchSearchWord: [String]?
         do {
-            fetchSearchWord =  try searchCoreDataManager.fetchOnlySearchWord(pet: Pet.cat)
+            fetchSearchWord =  try searchCoreDataManager.fetchOnlySearchWord(pet: pet)
         } catch let error {
             print(error)
         }

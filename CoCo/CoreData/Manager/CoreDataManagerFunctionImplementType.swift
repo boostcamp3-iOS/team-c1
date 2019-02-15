@@ -67,8 +67,6 @@ extension CoreDataManagerFunctionImplementType {
             do {
                 // PetKeyword Entity는 동물별로 데이터가 하나만 존재해야하기 때문에 데이터가 존재하는 지 확인
                 if let objects = try PetKeywordCoreDataManager().fetchObjects() {
-                    // 데이터가 존재하는 경우 데이터 업데이트
-                    print("Already Pet and Keyword inserted, So Update")
                     if var object = objects.first {
                         petKeywordData.objectID = object.objectID
                         try updateObject(petKeywordData)

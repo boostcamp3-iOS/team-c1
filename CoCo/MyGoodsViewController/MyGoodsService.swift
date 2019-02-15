@@ -15,7 +15,7 @@ class MyGoodsService {
 
     // MARK: - Manager
     private lazy var manager = MyGoodsCoreDataManager()
-    private var pet: Pet?
+    private var pet: String?
 
     // MARK: - Initializer
     init() {

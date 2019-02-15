@@ -47,7 +47,8 @@ class PetKeywordCoreDataManager: PetKeywordCoreDataManagerType, CoreDataManagerF
             }
             return petKeywordDatas
         } else {
-            throw CoreDataError.fetch(message: "PetKeyword Entity has not data, So can not fetch data")
+            return nil
+           // throw CoreDataError.fetch(message: "PetKeyword Entity has not data, So can not fetch data")
         }
     }
 
