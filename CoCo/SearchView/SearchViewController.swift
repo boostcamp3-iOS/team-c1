@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol SearchViewControllerDelegate {
+protocol SearchViewControllerDelegate: class {
     func tapKeywordCell(keyword: String)
 }
 
@@ -34,7 +34,7 @@ class SearchViewController: UIViewController {
     private var cellIdentifier = CellIdentifier.searchKeyword
 
     // MARK: - Properties
-    var delegate: SearchViewControllerDelegate?
+    weak var delegate: SearchViewControllerDelegate?
 
     let searchService = SearchService(serachCoreData: SearchWordCoreDataManager(),
                                       petCoreData: PetKeywordCoreDataManager(),
@@ -116,7 +116,7 @@ class SearchViewController: UIViewController {
                     }
                 }
             case .goods:
-                performSegue(withIdentifier: "goToWebView", sender: indexPath)
+                performSegue(withIdentifier: "searchToWeb", sender: indexPath)
             }
         } else {
             view.endEditing(true)

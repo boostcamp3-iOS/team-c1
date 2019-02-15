@@ -26,13 +26,14 @@ class SearchService {
     private let networkManager: NetworkManagerType
     private let algorithmManager: Algorithm
 
+    private(set) var recentSearched: String?
+    private(set) var keyword = ["옷", "침대", "샤시미", "방석", "수제 간식", "사료", "간식", "후드", "통조림"]
+    private(set) var colorChips = [UIColor(red: 1.0, green: 189.0 / 255.0, blue: 239.0 / 255.0, alpha: 1.0), UIColor(red: 186.0 / 255.0, green: 166.0 / 255.0, blue: 238.0 / 255.0, alpha: 1.0), UIColor(red: 250.0 / 255.0, green: 165.0 / 255.0, blue: 165.0 / 255.0, alpha: 1.0), UIColor(red: 166.0 / 255.0, green: 183.0 / 255.0, blue: 238.0 / 255.0, alpha: 1.0)]
+
     var dataLists = [MyGoodsData]()
-    var recentSearched: String?
     var sortOption: SortOption = .similar
     var itemStart = 1
     var pet: Pet = .dog
-    var keyword = ["옷", "침대", "샤시미", "방석", "수제 간식", "사료", "간식", "후드", "통조림"]
-    var colorChips = [UIColor(red: 1.0, green: 189.0 / 255.0, blue: 239.0 / 255.0, alpha: 1.0), UIColor(red: 186.0 / 255.0, green: 166.0 / 255.0, blue: 238.0 / 255.0, alpha: 1.0), UIColor(red: 250.0 / 255.0, green: 165.0 / 255.0, blue: 165.0 / 255.0, alpha: 1.0), UIColor(red: 166.0 / 255.0, green: 183.0 / 255.0, blue: 238.0 / 255.0, alpha: 1.0)]
 
     init(serachCoreData: SearchWordCoreDataManagerType, petCoreData: PetKeywordCoreDataManagerType, network: NetworkManagerType, algorithm: Algorithm) {
         searchCoreDataManager = serachCoreData

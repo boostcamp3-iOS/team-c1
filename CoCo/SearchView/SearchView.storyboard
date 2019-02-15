@@ -146,7 +146,7 @@
                     <navigationItem key="navigationItem" id="Atu-y4-Qwu"/>
                     <connections>
                         <outlet property="collectionView" destination="1GP-jN-mBX" id="q1h-kY-S3d"/>
-                        <segue destination="XCU-J6-gso" kind="show" identifier="goToWebView" id="BTd-bw-3nL"/>
+                        <segue destination="XCU-J6-gso" kind="show" identifier="searchToWeb" id="BTd-bw-3nL"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vrf-Zz-PSs" userLabel="First Responder" sceneMemberID="firstResponder"/>
