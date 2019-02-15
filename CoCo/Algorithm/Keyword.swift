@@ -24,23 +24,25 @@ enum Keyword: String, CaseIterable {
      - Author: [최영준](https://github.com/0jun0815)
      */
     func getData() -> [Category] {
-        switch self {
-        case .play:
+        switch self.rawValue {
+        case "놀이" :
             return [.toyTraining]
-        case .beauty:
+        case "뷰티":
             return [.beautyBath]
-        case .health:
+        case "헬스":
             return [.healthCare]
-        case .food:
+        case "푸드":
             return [.feed, .snack]
-        case .style:
+        case "스타일":
             return [.fashionProducts]
-        case .living:
+        case "리빙":
             return [.cushionHouse, .tablewareWaterDispenser]
-        case .goingOut:
+        case "외출":
             return [.outdoorProducts]
-        case .bowelMovement:
+        case "배변":
             return [.bowelProducts]
+        default:
+            return [.toyTraining]
         }
     }
 }

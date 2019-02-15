@@ -59,7 +59,6 @@ class GoodsCell: UICollectionViewCell {
 
         container.layer.cornerRadius = 6
         container.layer.masksToBounds = true
-       // goodsTitleLabel.lineBreakMode = .byCharWrapping
     }
 
     func setupDelete() {

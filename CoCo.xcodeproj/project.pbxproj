@@ -44,6 +44,7 @@
 		674988E4FC52C9FAA7F90EAD53B4F44A /* ShoppingNetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 456C557BF718F6C54C3F6426517554B5 /* ShoppingNetworkManager.swift */; };
 		6C72B4B63F4B853CFFA4D5C38E00620A /* DiscoverDetail.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9EC2C318AB1E6A91D9F2964399E65952 /* DiscoverDetail.storyboard */; };
 		6E47729DD5BD45E9D4ED1AD24C05F9B4 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13DC44F8CA827C82329C9CFB303E1FD2 /* WebViewController.swift */; };
+		713C7E9FCAAF8953E9328DF5B793A7D7 /* PetKeywordDummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE505552F9327332827398E9BBBDDFE7 /* PetKeywordDummy.swift */; };
 		75110AAACF9E23205EE85EE77A3E40DB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFB4268ADFAC57117216BC20B2F92CEA /* AppDelegate.swift */; };
 		75956AA93A6DC86FB6D686AC0C1619A1 /* MyGoodsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E1C13BC3C7CE0A7B7DF8DA650E006D4 /* MyGoodsService.swift */; };
 		76DC29C8BC5F47F339FFE2E7E4077DE6 /* NetworkManagerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26B93E00EE053E1E82653EF106AD8F6C /* NetworkManagerType.swift */; };
@@ -201,6 +202,7 @@
 		D7950CFF79D91DD9718FCAFE5BE60E2D /* LargeTitle.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LargeTitle.xib; sourceTree = "<group>"; };
 		DA85AE6E9A10CDACF00DFC68E12F6576 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DB21DEE943B6CD64CEF0398AEA581C15 /* CenterAlignedCollectionFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CenterAlignedCollectionFlowLayout.swift; sourceTree = "<group>"; };
+		DE505552F9327332827398E9BBBDDFE7 /* PetKeywordDummy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetKeywordDummy.swift; sourceTree = "<group>"; };
 		E250E830C9E470C5955DB5795E5B0F78 /* CategoryCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CategoryCell.xib; sourceTree = "<group>"; };
 		EF772360C9B54BCCA70F8F2F6111A24F /* Array+SafeIndex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+SafeIndex.swift"; sourceTree = "<group>"; };
 		EFB4268ADFAC57117216BC20B2F92CEA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -426,6 +428,7 @@
 				FFAB7DF2E1427AA5CD85B6F5E24C43AF /* PetKeyword+CoreDataClass.swift */,
 				0A7BDEFB7FE622416C8A20C8C171C08E /* PetKeyword+CoreDataProperties.swift */,
 				45F25375C0BE923827FC55024C3D91CD /* PetKeywordData.swift */,
+				DE505552F9327332827398E9BBBDDFE7 /* PetKeywordDummy.swift */,
 				78B8F081E9C573FD921E7855336B7E49 /* SearchWord+CoreDataClass.swift */,
 				29E42B3BDCA3676D1A7E1A4FC399271A /* SearchWord+CoreDataProperties.swift */,
 				3D5704F38509E3EA38428B6A152F9209 /* SearchWordData.swift */,
@@ -767,6 +770,7 @@
 				9898240B1233E01D25D43B12DCFC6119 /* PetKeyword+CoreDataProperties.swift in Sources */,
 				DA0E458A2EE1CB2AC103A8841FDF6AE3 /* PetKeywordCoreDataManager.swift in Sources */,
 				14DA58802DB1798DF415389EEDF198E5 /* PetKeywordData.swift in Sources */,
+				713C7E9FCAAF8953E9328DF5B793A7D7 /* PetKeywordDummy.swift in Sources */,
 				ABEC43037739B24F1C73C25ABD97C5E1 /* PinterestLayout.swift in Sources */,
 				F8DFD3B6ED48C82F905068C9341580CF /* Queue.swift in Sources */,
 				E3284ACABA232AB6F9DAC6678E4DDC4C /* Request.swift in Sources */,

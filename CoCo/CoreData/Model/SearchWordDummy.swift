@@ -8,7 +8,25 @@
 
 import Foundation
 
-class SearchWordDummy {
+func searchCoreDataPrint() {
+    let searchCoreDataManager = SearchWordCoreDataManager()
+    let dummy = SearchWordDummy().searchDatas
+
+    do {
+        for data in  dummy {
+            let insert = try searchCoreDataManager.insert(data)
+            print(insert)
+        }
+        let fetch = try searchCoreDataManager.fetchObjects()
+        print(fetch)
+
+    } catch let error {
+        print(error)
+    }
+
+}
+
+struct SearchWordDummy {
     private let cat = "고양이"
     private let dog = "강아지"
     var searchDatas: [SearchWordData] = []
