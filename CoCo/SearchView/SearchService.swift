@@ -30,8 +30,6 @@ class SearchService {
     var recentSearched: String?
     var sortOption: SortOption = .similar
     var itemStart = 1
-    var recentSearchWords = [String]()
-    var recommandSearchWords = [String]()
     var pet: Pet = .dog
     var keyword = ["옷", "침대", "샤시미", "방석", "수제 간식", "사료", "간식", "후드", "통조림"]
     var colorChips = [UIColor(red: 1.0, green: 189.0 / 255.0, blue: 239.0 / 255.0, alpha: 1.0), UIColor(red: 186.0 / 255.0, green: 166.0 / 255.0, blue: 238.0 / 255.0, alpha: 1.0), UIColor(red: 250.0 / 255.0, green: 165.0 / 255.0, blue: 165.0 / 255.0, alpha: 1.0), UIColor(red: 166.0 / 255.0, green: 183.0 / 255.0, blue: 238.0 / 255.0, alpha: 1.0)]
@@ -52,50 +50,52 @@ class SearchService {
         DispatchQueue.global().async {
             self.networkManager.getAPIData(params, completion: { data in
                 for goods in data.items {
-                    self.dataLists.append(MyGoodsData(pet: Pet.dog, title: goods.title, link: goods.link, image: goods.image, isFavorite: false, isLatest: true, price: goods.lprice, productID: goods.productId, searchWord: search, shoppingmall: goods.mallName))
+                    let title = self.algorithmManager.removeHTML(from: goods.title)
+                    self.dataLists.append(MyGoodsData(pet: Pet.dog, title: title, link: goods.link, image: goods.image, isFavorite: false, isLatest: true, price: goods.lprice, productID: goods.productId, searchWord: search, shoppingmall: goods.mallName))
                 }
                 completion(true, nil)
             }) {err in completion(false, err)}
         }
     }
-
-    func checkSearchWord(search: String) {
-
-    }
-
     func fetchRecommandSearchWord(completion: @escaping () -> Void) {
         let group = DispatchGroup()
         let queue = DispatchQueue.global()
-        var keyword: Keyword?
-        // 최근검색어 가져옴
+        let recommandKeyword = PetKeywordData(pet: pet, keywords: fetchRecommandword(queue, group: group))
+        let recentKeyword = fetchRecentSearchword(queue, group: group)
+
+        group.notify(queue: DispatchQueue.main) {
+            self.keyword = self.algorithmManager.makeRecommendedSearchWords(with: recentKeyword, petKeyword: recommandKeyword, count: 20)
+            completion()
+        }
+    }
+    // 추천검색 키워드
+    private func fetchRecommandword(_ queue: DispatchQueue, group: DispatchGroup) -> [Keyword] {
+        var result = [Keyword]()
         queue.async(group: group) {
             do {
-                let searchWord = try self.searchCoreDataManager.fetchOnlySearchWord(pet: self.pet) ?? []
-                self.recentSearchWords = self.algorithmManager.removePet(from: searchWord)
+                if let keyword = try self.petKeywordCoreDataManager.fetchOnlyKeyword(pet: self.pet) {
+                    result = keyword
+                }
                 group.leave()
             } catch let err {
                 print(err)
             }
         }
-        // 추천검색 키워드 가져옴
-        keyword = fetchRecommandword(queue, group: group)
-
-       // 최근 본 상품, 찜한 데이터 가져오기
-        // 내일 MyGoodsCoreData 수정 후 다시 하기
-//        group.notify(queue: DispatchQueue.main) {
-//            self.recommandSearchWords = self.algorithmManager.makeRequestSearchWords(favorite: <#T##[MyGoodsData]#>, recent: <#T##[MyGoodsData]#>, words: keyword)
-//            completion()
-//        }
+        return result
     }
-
-    // 추천검색 키워드
-    private func fetchRecommandword(_ queue: DispatchQueue, group: DispatchGroup) -> Keyword? {
-        var result: Keyword?
+    // 최근검색 키워드
+    private func fetchRecentSearchword(_ queue: DispatchQueue, group: DispatchGroup) -> [String] {
+        var result = [String]()
         queue.async(group: group) {
+            do {
+                result = try self.searchCoreDataManager.fetchOnlySearchWord(pet: self.pet) ?? []
+                group.leave()
+            } catch let err {
+                print(err)
+            }
         }
-        return result!
+        return result
     }
-
     func insert(recentSearchWord: String) {
         // "강아지", "고양이" 키워드를 제거하고 코어데이터에 저장
         let word = algorithmManager.removePet(from: recentSearchWord)
@@ -107,28 +107,4 @@ class SearchService {
             print(err)
         }
     }
-
-    func fetchRecentSearchWord() -> [String]? {
-        var fetchSearchWord: [String]?
-        do {
-            fetchSearchWord =  try searchCoreDataManager.fetchOnlySearchWord(pet: Pet.cat)
-        } catch let error {
-            print(error)
-        }
-        return fetchSearchWord
-    }
-
-    @discardableResult func insert(recenteSearchWord: String) -> Bool {
-        var result = false
-        var searchWordData = SearchWordData()
-        searchWordData.date = searchWordData.createDate()
-        searchWordData.searchWord = recenteSearchWord
-        do {
-            result = try searchCoreDataManager.insert(searchWordData)
-        } catch let error {
-            print(error)
-        }
-        return result
-    }
-
 }

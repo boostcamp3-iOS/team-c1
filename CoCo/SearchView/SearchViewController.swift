@@ -25,7 +25,7 @@ class SearchViewController: UIViewController {
             case .searchKeyword:
                 return CenterAlignedCollectionViewFlowLayout()
             case .goods:
-                return UICollectionViewFlowLayout()
+                return PinterestLayout()
             }
         }
     }
@@ -47,9 +47,13 @@ class SearchViewController: UIViewController {
 
         collectionView.delegate = self
         collectionView.dataSource = self
+        searchService.fetchRecommandSearchWord {
+            self.collectionView.reloadData()
+        }
         collectionView.collectionViewLayout = cellIdentifier.layout
 
         collectionView.register(UINib(nibName: "GoodsCell", bundle: nil), forCellWithReuseIdentifier: CellIdentifier.goods.rawValue)
+
         // Do any additional setup after loading the view.
     }
 
@@ -57,23 +61,23 @@ class SearchViewController: UIViewController {
     @IBAction func actionTappedScreen(_ sender: UITapGestureRecognizer) {
         // delegate 가 탭 제스쳐와 겹쳐서 DidSelectItemAt 대신 사용
         if let indexPath = self.collectionView?.indexPathForItem(at: sender.location(in: self.collectionView)) {
-            guard let cell = self.collectionView?.cellForItem(at: indexPath) as? SearchKeywordCollectionViewCell else {
-                return
-            }
             switch cellIdentifier {
             case .searchKeyword:
+                guard let cell = self.collectionView?.cellForItem(at: indexPath) as? SearchKeywordCollectionViewCell else {
+                    return
+                }
                 let search = cell.titleLabel.text ?? ""
                 delegate?.tapKeywordCell(keyword: search)
                 searchService.dataLists.removeAll()
                 searchService.sortOption = .similar
-                searchService.insert(recentSearchWord: search)
+//                searchService.insert(recentSearchWord: search)
                 searchService.getShoppingData(search: search) { isSuccess, _ in
                     if isSuccess {
                         self.reload(.goods)
                     }
                 }
             case .goods:
-                print("asdasd")
+                performSegue(withIdentifier: "goToWebView", sender: indexPath)
             }
         } else {
             view.endEditing(true)
@@ -85,8 +89,29 @@ class SearchViewController: UIViewController {
         DispatchQueue.main.async {
             self.cellIdentifier = cell
             self.collectionView.reloadData()
-            self.collectionView.collectionViewLayout = self.cellIdentifier.layout
+            if cell == .goods {
+                let layout = PinterestLayout()
+                layout.delegate = self
+                self.collectionView.setCollectionViewLayout(layout, animated: false)
+                self.collectionView.collectionViewLayout.invalidateLayout()
+            } else {
+                let layout = CenterAlignedCollectionViewFlowLayout()
+                self.collectionView.setCollectionViewLayout(layout, animated: false)
+                self.collectionView.collectionViewLayout.invalidateLayout()
+            }
         }
+    }
+
+    // MARK: - Navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+
+        guard let webViewController: WebViewController = segue.destination as? WebViewController else {
+            return
+        }
+        guard let indexPath: IndexPath = sender as? IndexPath else {
+            return
+        }
+        webViewController.sendData(searchService.dataLists[indexPath.row])
     }
 }
 
@@ -120,7 +145,7 @@ extension SearchViewController: UICollectionViewDataSource {
                 return UICollectionViewCell()
             }
             cell.myGoods = searchService.dataLists[indexPath.row]
-
+            cell.isEditing = false
             return cell
         }
     }
@@ -190,7 +215,7 @@ extension SearchViewController: SearchCollectionReusableViewDelegate {
         view.endEditing(true)
         searchService.dataLists.removeAll()
         searchService.sortOption = .similar
-        searchService.insert(recentSearchWord: search)
+//        searchService.insert(recentSearchWord: search)
         searchService.getShoppingData(search: search) { isSuccess, _ in
             if isSuccess {
                 self.reload(.goods)
@@ -205,7 +230,7 @@ extension SearchViewController: SearchCollectionReusableViewDelegate {
         }
     }
     func searchBarBeginEditing() {
-//        collectionView.setContentOffset(.zero, animated: true)
+        //        collectionView.setContentOffset(.zero, animated: true)
     }
     func sortButtonTapped() {
         let actionSheet = UIAlertController(title: nil, message: "정렬 방식을 선택해주세요", preferredStyle: .actionSheet)
@@ -247,13 +272,17 @@ extension SearchViewController: SearchCollectionReusableViewDelegate {
     }
 }
 
-//extension SearchViewController: PinterestLayoutDelegate {
-//    func collectionView(_ collectionView: UICollectionView, heightForPhotoAtIndexPath indexPath: IndexPath) -> CGFloat {
-//        if cellIdentifier == .goods {
-//            guard let image =  else {
-//                return 0
-//            }
-//            return image.size.height
-//        }
-//    }
-//}
+extension SearchViewController: PinterestLayoutDelegate {
+    func headerFlexibleHeight(inCollectionView collectionView: UICollectionView, withLayout layout: UICollectionViewLayout, fixedDimension: CGFloat) -> CGFloat {
+        return 230
+    }
+
+    func collectionView(_ collectionView: UICollectionView, heightForPhotoAtIndexPath indexPath: IndexPath) -> CGFloat {
+        let itemSize = (collectionView.frame.width - (collectionView.contentInset.left + collectionView.contentInset.right + 10)) / 2
+        let title = searchService.dataLists[indexPath.item].title
+        let attribute = [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13)]
+        let estimateFrame = NSString(string: title).boundingRect(with: CGSize(width: itemSize, height: 1000), options: .usesLineFragmentOrigin, attributes: attribute, context: nil)
+        return estimateFrame.height + 250
+    }
+
+}

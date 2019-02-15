@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="nQM-QO-aXz">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Dci-dC-09d">
     <device id="retina5_9" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -143,8 +143,10 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Gm6-eA-5ma"/>
                     </view>
+                    <navigationItem key="navigationItem" id="Atu-y4-Qwu"/>
                     <connections>
                         <outlet property="collectionView" destination="1GP-jN-mBX" id="q1h-kY-S3d"/>
+                        <segue destination="XCU-J6-gso" kind="show" identifier="goToWebView" id="BTd-bw-3nL"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vrf-Zz-PSs" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -153,6 +155,31 @@
                         <action selector="actionTappedScreen:" destination="nQM-QO-aXz" id="x51-q4-Xob"/>
                     </connections>
                 </tapGestureRecognizer>
+            </objects>
+            <point key="canvasLocation" x="3612" y="131.52709359605913"/>
+        </scene>
+        <!--WebView-->
+        <scene sceneID="DwR-G4-dz8">
+            <objects>
+                <viewControllerPlaceholder storyboardName="WebView" id="XCU-J6-gso" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Yeu-ew-NHG" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4413" y="112"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="34k-U2-weE">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="Dci-dC-09d" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="qZ2-3k-5b6">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="nQM-QO-aXz" kind="relationship" relationship="rootViewController" id="QNl-1k-sak"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="X4k-Z1-cbz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2669.5999999999999" y="131.52709359605913"/>
         </scene>
