@@ -57,7 +57,7 @@ class PinterestLayout: UICollectionViewFlowLayout {
                 headerLayoutAttributes.frame = CGRect(x: 0, y: 0, width: contentWidth, height: headerFlexibleDimension)
                 headerCache.append(headerLayoutAttributes)
             }
-            
+
             let flexibleHeight = delegate.collectionView(collectionView, heightForPhotoAtIndexPath: indexPath)
             let height = cellPadding * 2 + flexibleHeight
             let frame = CGRect(x: xOffset[colum], y: yOffset[colum], width: columWith, height: height)

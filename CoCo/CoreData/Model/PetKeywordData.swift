@@ -12,8 +12,8 @@ import CoreData
 struct PetKeywordData: CoreDataStructEntity {
     // MARK: - Propertise
     var objectID: NSManagedObjectID?
-    var keywords: [Keyword]?
-    var pet: Pet?
+    var keywords: [String]?
+    var pet: String?
     var date: String?
 
     // MARK: - Initializer
@@ -21,7 +21,7 @@ struct PetKeywordData: CoreDataStructEntity {
         self.date = createDate()
     }
 
-    init(pet: Pet, keywords: [Keyword]) {
+    init(pet: String, keywords: [String]) {
         self.init()
         self.pet = pet
         self.keywords = keywords
@@ -39,12 +39,8 @@ struct PetKeywordData: CoreDataStructEntity {
 
 extension PetKeywordData: Mapping {
     mutating func mappinng(from: NSManagedObject) {
-        if  let pet = from.petValue(forKeyPath: "pet") {
-            self.pet = pet
-        }
-        if let keywords = from.keywordValue(forKeyPath: "keywords") {
-            self.keywords = keywords
-        }
+        self.pet = from.value(forKeyPath: "pet")
+        self.keywords = from.value(forKeyPath: "keywords")
         self.objectID = from.objectID
         self.date = from.value(forKeyPath: "date")
     }

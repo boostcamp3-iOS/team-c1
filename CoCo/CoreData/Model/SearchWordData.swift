@@ -13,7 +13,7 @@ struct SearchWordData: CoreDataStructEntity {
     // MARK: Properties
     var date: String?
     var searchWord = ""
-    var pet: Pet?
+    var pet: String?
     var objectID: NSManagedObjectID?
 
     // MARK: Initializer
@@ -21,7 +21,7 @@ struct SearchWordData: CoreDataStructEntity {
         self.date = createDate()
     }
 
-    init(pet: Pet, searchWord: String) {
+    init(pet: String, searchWord: String) {
         self.pet = pet
         self.date = createDate()
         self.searchWord = searchWord
@@ -39,9 +39,7 @@ struct SearchWordData: CoreDataStructEntity {
 
 extension SearchWordData: Mapping {
     mutating func mappinng(from: NSManagedObject) {
-        if let pet = from.petValue(forKeyPath: "pet") {
-            self.pet = pet
-        }
+        self.pet = from.value(forKeyPath: "pet")
         self.date = from.value(forKeyPath: "date")
         self.searchWord = from.value(forKeyPath: "searchWord")
         self.objectID = from.objectID

@@ -11,7 +11,7 @@ import UIKit
 struct MyGoodsDummy {
     var dummyArray = [MyGoodsData]()
 
-    let pet = Pet.cat
+    let pet = "고양이"
     init() {
         var myGoods1 = MyGoodsData()
         myGoods1.title = "고양이 방석 국내산 제작, 폭신폭신 아기들이 좋아해요"

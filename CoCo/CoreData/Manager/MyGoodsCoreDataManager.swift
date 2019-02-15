@@ -19,7 +19,7 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
         - pet: 해당하는 펫(고양이 또는 강아지)과 관련된 데이터를 가져오기 위한 파마리터.
             기본값은 nil로, 값을 넣어주지 않으면 고양이와 강아지의 모든 데이터를 가져온다.
      */
-    func fetchObjects(pet: Pet? = nil) throws -> [CoreDataStructEntity]? {
+    func fetchObjects(pet: String? = nil) throws -> [CoreDataStructEntity]? {
         guard let context = context else { return nil }
         let sort = NSSortDescriptor(key: #keyPath(MyGoods.date), ascending: true)
         var myGoodsDatas: [MyGoodsData] = []
@@ -34,7 +34,7 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
         }
 
         if let pet = pet {
-            let predicate = NSPredicate(format: "pet = %@", pet.rawValue)
+            let predicate = NSPredicate(format: "pet = %@", pet)
             request.predicate = predicate
         }
 
@@ -60,12 +60,12 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
      - Parameter :
         - pet: 해당하는 펫(고양이 또는 강아지)과 관련된 데이터를 가져오기 위한 파마리터.
      */
-    func fetchFavoriteGoods(pet: Pet) throws -> [MyGoodsData]? {
+    func fetchFavoriteGoods(pet: String) throws -> [MyGoodsData]? {
         guard let context = context else {
             return nil
         }
         let sort = NSSortDescriptor(key: #keyPath(MyGoods.date), ascending: true)
-        let predicate = NSPredicate(format: "pet = %@ AND isFavorite = true", pet.rawValue)
+        let predicate = NSPredicate(format: "pet = %@ AND isFavorite = true", pet)
         var myGoodsDatas: [MyGoodsData] = []
         let request: NSFetchRequest<MyGoods>
 
@@ -102,12 +102,12 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
      - pet: 해당하는 펫(고양이 또는 강아지)과 관련된 데이터를 가져오기 위한 파마리터.
      - isLatest: 데이터를 오름차순, 또는 내림차순으로 가져오기 위한 파라미터
      */
-    func fetchLatestGoods(pet: Pet, isLatest: Bool, ascending: Bool) throws -> [MyGoodsData]? {
+    func fetchLatestGoods(pet: String, isLatest: Bool, ascending: Bool) throws -> [MyGoodsData]? {
         guard let context = context else {
             return nil
         }
         let sort = NSSortDescriptor(key: #keyPath(MyGoods.date), ascending: ascending)
-        let predicate = NSPredicate(format: "pet = %@ AND isLatest = %@", pet.rawValue, NSNumber(booleanLiteral: isLatest))
+        let predicate = NSPredicate(format: "pet = %@ AND isLatest = %@", pet, NSNumber(booleanLiteral: isLatest))
         var myGoodsDatas: [MyGoodsData] = []
         let request: NSFetchRequest<MyGoods>
 
@@ -176,12 +176,12 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
      - Parameters:
         - pet: 특정 펫의 데이터를 지우기위한 파라미터.
      */
-    @discardableResult func deleteFavoriteAllObjects(pet: Pet) throws -> Bool {
+    @discardableResult func deleteFavoriteAllObjects(pet: String) throws -> Bool {
         guard let context = context else {
             return false
         }
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "MyGoods")
-        let predicate = NSPredicate(format: "pet = %@ AND isFavorite = true AND isLatest = false", pet.rawValue)
+        let predicate = NSPredicate(format: "pet = %@ AND isFavorite = true AND isLatest = false", pet)
 
         fetchRequest.predicate = predicate
         let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
@@ -199,12 +199,12 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
      - Parameters:
      - pet: 특정 펫의 데이터를 지우기위한 파라미터.
      */
-    @discardableResult func deleteLatestAllObjects(pet: Pet, isLatest: Bool) throws -> Bool {
+    @discardableResult func deleteLatestAllObjects(pet: String, isLatest: Bool) throws -> Bool {
         guard let context = context else {
             return false
         }
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "MyGoods")
-        let predicate = NSPredicate(format: "pet = %@ AND isLatest = %@ AND isFavorite = false", pet.rawValue, NSNumber(booleanLiteral: isLatest))
+        let predicate = NSPredicate(format: "pet = %@ AND isLatest = %@ AND isFavorite = false", pet, NSNumber(booleanLiteral: isLatest))
         fetchRequest.predicate = predicate
         let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
         do {
@@ -222,7 +222,7 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
      - Parameters:
         - pet: 특정 펫의 데이터를 지우기위한 파라미터.
      */
-    func latestGoodsToFalse(pet: Pet) throws {
+    func latestGoodsToFalse(pet: String) throws {
         do {
             guard var objects = try fetchLatestGoods(pet: pet, isLatest: true, ascending: false) else {
                 throw CoreDataError.fetch(message: "Can not fetch data")
