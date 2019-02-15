@@ -9,7 +9,7 @@
 import UIKit
 
 enum MemoryStorage {
-    class MemoryCache {
+    class MemoryCache: CacheStorage {
 
         let storage = NSCache<NSString, UIImage>()
 

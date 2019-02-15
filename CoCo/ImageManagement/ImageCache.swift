@@ -8,6 +8,13 @@
 
 import UIKit
 
+protocol CacheStorage {
+    func store(value: UIImage, forKey key: String)
+    func remove(forKey key: String)
+    func removeAll()
+    func retrieve(forKey key: String) -> UIImage?
+}
+
 class ImageCache {
 
     let memoryStorage: MemoryStorage.MemoryCache
