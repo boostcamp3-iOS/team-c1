@@ -36,15 +36,15 @@ import Foundation
 class WebViewService {
     // MARK: - Data
     private(set) var myGoodsData: MyGoodsData
-    
+
     // MARK: - Manager
     private lazy var manager = MyGoodsCoreDataManager()
-    
+
     // MARK: - Initializer
     init(data: MyGoodsData) {
         myGoodsData = data
     }
-    
+
     // MARK: - Public methods
     @discardableResult func insert() -> Bool {
         myGoodsData.isLatest = true
@@ -56,7 +56,7 @@ class WebViewService {
         }
         return false
     }
-    
+
     func updateFavorite(_ isFavorite: Bool) {
         myGoodsData.isFavorite = isFavorite
         // 이미 같은 productID의 상품이 존재한다면 manager 내부에서 update를 호출함

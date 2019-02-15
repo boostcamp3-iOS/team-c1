@@ -20,7 +20,7 @@ class PetKeywordCoreDataManager: PetKeywordCoreDataManagerType, CoreDataManagerF
         기본값은 nil로, 값을 넣어주지 않으면 고양이와 강아지의 모든 데이터를 가져온다.
      */
     // 데이터 타입(Keyword, Pet)변경해서 리턴
-    func fetchObjects(pet: Pet? = nil) throws -> [CoreDataStructEntity]? {
+    func fetchObjects(pet: String? = nil) throws -> [CoreDataStructEntity]? {
         guard let context = context else { return nil }
         var petKeywordDatas = [PetKeywordData]()
         let request: NSFetchRequest<PetKeyword>
@@ -34,7 +34,7 @@ class PetKeywordCoreDataManager: PetKeywordCoreDataManagerType, CoreDataManagerF
         }
 
         if let pet = pet {
-            let predicate = NSPredicate(format: "pet = %@", pet.rawValue)
+            let predicate = NSPredicate(format: "pet = %@", pet)
             request.predicate = predicate
         }
         let objects = try context.fetch(request)
@@ -47,8 +47,7 @@ class PetKeywordCoreDataManager: PetKeywordCoreDataManagerType, CoreDataManagerF
             }
             return petKeywordDatas
         } else {
-            return nil
-        //    throw CoreDataError.fetch(message: "PetKeyword Entity has not data, So can not fetch data")
+            throw CoreDataError.fetch(message: "PetKeyword Entity has not data, So can not fetch data")
         }
     }
 
@@ -59,8 +58,8 @@ class PetKeywordCoreDataManager: PetKeywordCoreDataManagerType, CoreDataManagerF
      - Parameter :
      - pet: 해당하는 펫(고양이 또는 강아지)과 관련된 키워드를 가져오기 위한 파마리터.
      */
-    func fetchOnlyKeyword(pet: Pet) throws -> [Keyword]? {
-        var keywords: [Keyword]?
+    func fetchOnlyKeyword(pet: String) throws -> [String]? {
+        var keywords: [String]?
         do {
             guard let objects = try fetchObjects(pet: pet) else {
                 throw CoreDataError.fetch(message: "PetKeyword Entity has not  data, So can not fetch data")
@@ -81,7 +80,7 @@ class PetKeywordCoreDataManager: PetKeywordCoreDataManagerType, CoreDataManagerF
      - Parameter :
         - pet: 해당하는 펫(고양이 또는 강아지)과 관련된 펫정보를 가져오기 위한 파마리터.
      */
-    func fetchOnlyPet() throws -> Pet? {
+    func fetchOnlyPet() throws -> String? {
         guard let context = context else { return nil }
         var petKeywordData = PetKeywordData()
         let sort = NSSortDescriptor(key: #keyPath(PetKeyword.date), ascending: false)
@@ -116,12 +115,12 @@ class PetKeywordCoreDataManager: PetKeywordCoreDataManagerType, CoreDataManagerF
      - Parameters:
         - pet: 특정 펫의 데이터를 지우기위한 파라미터.
      */
-    @discardableResult func deleteAllObjects(pet: Pet) throws -> Bool {
+    @discardableResult func deleteAllObjects(pet: String) throws -> Bool {
         guard let context = context else {
             return false
         }
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "PetKeyword")
-        let predicate = NSPredicate(format: "pet = %@", pet.rawValue)
+        let predicate = NSPredicate(format: "pet = %@", pet)
 
         fetchRequest.predicate = predicate
         let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
