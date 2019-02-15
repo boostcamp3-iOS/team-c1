@@ -41,7 +41,7 @@ class SearchService {
         algorithmManager = algorithm
     }
 
-    func getShoppingData(search: String, completion: @escaping (Bool, Error?) -> Void) {
+    func getShoppingData(search: String, completion: @escaping (_ isSuccess: Bool, NetworkErrors?) -> Void) {
         let word = algorithmManager.removePet(from: search)
         let searchWord = algorithmManager.combinePet(.dog, and: word)
         print(searchWord)
@@ -49,58 +49,70 @@ class SearchService {
 
         DispatchQueue.global().async {
             self.networkManager.getAPIData(params, completion: { data in
+                if data.items.isEmpty {
+                    completion(false, NetworkErrors.noData)
+                    return
+                }
+                if self.itemStart == 1 {
+                    self.dataLists.removeAll()
+                }
                 for goods in data.items {
                     let title = self.algorithmManager.removeHTML(from: goods.title)
-                    self.dataLists.append(MyGoodsData(pet: Pet.dog, title: title, link: goods.link, image: goods.image, isFavorite: false, isLatest: true, price: goods.lprice, productID: goods.productId, searchWord: search, shoppingmall: goods.mallName))
+                    self.dataLists.append(MyGoodsData(pet: Pet.dog.rawValue, title: title, link: goods.link, image: goods.image, isFavorite: false, isLatest: true, price: goods.lprice, productID: goods.productId, searchWord: search, shoppingmall: goods.mallName))
                 }
                 completion(true, nil)
-            }) {err in completion(false, err)}
+            }) {_ in completion(false, NetworkErrors.badInput)}
         }
     }
     func fetchRecommandSearchWord(completion: @escaping () -> Void) {
         let group = DispatchGroup()
-        let queue = DispatchQueue.global()
-        let recommandKeyword = PetKeywordData(pet: pet, keywords: fetchRecommandword(queue, group: group))
-        let recentKeyword = fetchRecentSearchword(queue, group: group)
+        let queue = DispatchQueue.main
+        var recommandWords: PetKeywordData?
+        var recentSearchWords = [String]()
+        fetchRecommandWords(queue, group: group) { words in
+            recommandWords = PetKeywordData(pet: self.pet.rawValue, keywords: words)
+        }
+        fetchRecentSearchWords(queue, group: group) { words in
+            recentSearchWords = words
+        }
 
         group.notify(queue: DispatchQueue.main) {
-            self.keyword = self.algorithmManager.makeRecommendedSearchWords(with: recentKeyword, petKeyword: recommandKeyword, count: 20)
+            guard let recommandWords = recommandWords else {
+                return
+            }
+            self.keyword = self.algorithmManager.makeRecommendedSearchWords(with: recentSearchWords, petKeyword: recommandWords, count: 20)
             completion()
         }
     }
     // 추천검색 키워드
-    private func fetchRecommandword(_ queue: DispatchQueue, group: DispatchGroup) -> [Keyword] {
-        var result = [Keyword]()
+    private func fetchRecommandWords(_ queue: DispatchQueue, group: DispatchGroup, completion: @escaping ([String]) -> Void) {
         queue.async(group: group) {
             do {
-                if let keyword = try self.petKeywordCoreDataManager.fetchOnlyKeyword(pet: self.pet) {
-                    result = keyword
+                if let keyword = try self.petKeywordCoreDataManager.fetchOnlyKeyword(pet: self.pet.rawValue) {
+                    completion(keyword)
                 }
-                group.leave()
             } catch let err {
                 print(err)
             }
         }
-        return result
     }
     // 최근검색 키워드
-    private func fetchRecentSearchword(_ queue: DispatchQueue, group: DispatchGroup) -> [String] {
-        var result = [String]()
+    private func fetchRecentSearchWords(_ queue: DispatchQueue, group: DispatchGroup, completion: @escaping ([String]) -> Void) {
         queue.async(group: group) {
             do {
-                result = try self.searchCoreDataManager.fetchOnlySearchWord(pet: self.pet) ?? []
-                group.leave()
+                if let searchWord = try self.searchCoreDataManager.fetchOnlySearchWord(pet: self.pet.rawValue) {
+                    completion(searchWord)
+                }
             } catch let err {
                 print(err)
             }
         }
-        return result
     }
     func insert(recentSearchWord: String) {
         // "강아지", "고양이" 키워드를 제거하고 코어데이터에 저장
         let word = algorithmManager.removePet(from: recentSearchWord)
         self.recentSearched = word
-        let searchWord = SearchWordData(pet: pet, searchWord: word)
+        let searchWord = SearchWordData(pet: pet.rawValue, searchWord: word)
         do {
             _ = try self.searchCoreDataManager.insert(searchWord)
         } catch let err {
