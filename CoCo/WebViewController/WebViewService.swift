@@ -8,15 +8,6 @@
 
 import Foundation
 
-/*
- 필요한 기능:
- - 데이터 업데이트(찜 여부에 따라 isFavorite 변경한 후 저장)
- 필요한 변수:
- - MyGoodsCoreDataManager
-    -- updateObject(_:)
- - MyGoodsData
- */
-
 /**
  WebViewConroller에서 사용되는 비즈니스 모델을 처리한다.
  

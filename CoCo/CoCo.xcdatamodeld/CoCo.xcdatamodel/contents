@@ -4,7 +4,7 @@
         <attribute name="date" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="image" attributeType="String" syncable="YES"/>
         <attribute name="isFavorite" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="isLatest" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="isLatest" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="link" attributeType="String" syncable="YES"/>
         <attribute name="pet" attributeType="String" syncable="YES"/>
         <attribute name="price" attributeType="String" syncable="YES"/>

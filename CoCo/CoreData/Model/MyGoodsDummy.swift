@@ -8,6 +8,23 @@
 
 import UIKit
 
+func coreDataPrint() {
+    let coredataManager = MyGoodsCoreDataManager()
+
+   let dummy = MyGoodsDummy().dummyArray
+
+    do {
+        for dump in dummy {
+            let insert = try coredataManager.insert(dump)
+            print(insert)
+        }
+        let allFet = try coredataManager.fetchObjects()
+        print(allFet)
+    } catch let error {
+        print(error)
+    }
+}
+
 struct MyGoodsDummy {
     var dummyArray = [MyGoodsData]()
 

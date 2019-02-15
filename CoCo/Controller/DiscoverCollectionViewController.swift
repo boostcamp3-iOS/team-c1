@@ -21,30 +21,35 @@ class DiscoverCollectionViewController: UIViewController {
         }
         return appDelegate
     }
+
     var context: NSManagedObjectContext? {
         return appDelegate?.persistentContainer.viewContext
     }
-
-    var myGoods = MyGoodsDummy().dummyArray
+    let pet = " 고양이"
+    var shopItems = [MyGoodsData]()
+    var discoverService: DiscoverServiceClass?
     let networkManager = ShoppingNetworkManager.shared
     let algorithmManager = Algorithm()
     var myGoodsCoreDataManager: MyGoodsCoreDataManager?
     var searchWordCoreDataManager: SearchWordCoreDataManager?
+    var petKeywordCoreDataManager: PetKeywordCoreDataManager?
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupCollctionView()
+        setupHeader()
+        loadData()
+    }
 
+    func setupHeader() {
+        collectionView.register(CategoryController.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "categoryView")
+    }
+
+    func setupCollctionView() {
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.collectionViewLayout = PinterestLayout()
-
-        searchWordCoreDataManager = SearchWordCoreDataManager()
-        myGoodsCoreDataManager = MyGoodsCoreDataManager()
-
-        let discoverService = DiscoverServiceClass(networkManagerType: networkManager, algorithmManagerType: algorithmManager, searchWordDoreDataManagerType: searchWordCoreDataManager, myGoodsCoreDataType: myGoodsCoreDataManager)
-
         collectionView.register(UINib(nibName: "GoodsCell", bundle: nil), forCellWithReuseIdentifier: goodsIdentifier)
-        collectionView.register(CategoryController.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "categoryView")
         collectionView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 10, right: 0)
         collectionView.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
 
@@ -53,65 +58,56 @@ class DiscoverCollectionViewController: UIViewController {
         } else {
             print("else")
         }
-
     }
 
-    func coreDataPrint() {
-        let coredataManager = MyGoodsCoreDataManager()
+    func loadData() {
+        petKeywordCoreDataManager = PetKeywordCoreDataManager()
+        searchWordCoreDataManager = SearchWordCoreDataManager()
+        myGoodsCoreDataManager = MyGoodsCoreDataManager()
 
-        let pet = "고양이"
-        var myGoods1 = MyGoodsData()
-        myGoods1.title = "고양이 방석 국내산 제작, 폭신폭신 아기들이 좋아해요"
-        myGoods1.image = ""
-        myGoods1.isFavorite = false
-        myGoods1.isLatest = true
-        myGoods1.link = ""
-        myGoods1.pet = pet
-        myGoods1.price = "1500"
-        myGoods1.productID = "113333444778"
-        myGoods1.shoppingmall = "마루"
+        discoverService = DiscoverServiceClass(networkManagerType: networkManager, algorithmManagerType: algorithmManager, searchWordDoreDataManagerType: searchWordCoreDataManager, myGoodsCoreDataType: myGoodsCoreDataManager, petKeywordCoreDataManagerType: petKeywordCoreDataManager)
 
-        try? coredataManager.insert(myGoods1)
-        print(myGoods1)
+        guard let discoverService = discoverService else {
+            return
+        }
 
-        myGoods1.date = myGoods1.createDate()
-        myGoods1.isLatest = false
-        try? coredataManager.updateObject(myGoods1)
-        print(myGoods1)
-        let core = coredataManager.fetchProductID(productID: "1133334444r")
-        core?.isFavorite = true
-        try? coredataManager.updateObject(core)
+        discoverService.fetchPetKeywords()
+        discoverService.fetchSearchWord()
+        discoverService.fetchMyGoods()
+        discoverService.mixedWord()
+        discoverService.request { (isSuccess, _) in
+            if isSuccess {
+                DispatchQueue.main.async { [weak self] in
+                    guard let self = self else {
+                        return
+                    }
+                    self.shopItems = discoverService.fetchedMyGoods
+                    self.collectionView.reloadData()
+                }
+            }
+        }
 
-        let data = try? coredataManager.fetchFavoriteGoods(pet: pet)
-        print("favorite: \(data)")
-
-        print(try? coredataManager.fetchObjects(pet: pet))
-
-        let data1 = try? coredataManager.fetchLatestGoods(pet: pet, isLatest: false, ascending: true)
-        print("Latest: \(data1)")
+    }
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        <#code#>
     }
 }
 
 extension DiscoverCollectionViewController: UICollectionViewDelegate, UICollectionViewDataSource {
-
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return myGoods.count
+        return shopItems.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: goodsIdentifier, for: indexPath) as? GoodsCell else {
             return UICollectionViewCell()
         }
-        cell.myGoods = myGoods[indexPath.item]
+        cell.myGoods = shopItems[indexPath.item]
+        cell.isEditing = false
         return cell
-    }
-
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let itemSize = (collectionView.frame.width - (collectionView.contentInset.left + collectionView.contentInset.right + 10)) / 2
-        return CGSize(width: itemSize, height: itemSize)
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
@@ -124,6 +120,12 @@ extension DiscoverCollectionViewController: UICollectionViewDelegate, UICollecti
         }
         return haeder
     }
+
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let myGoodsData = shopItems[indexPath.item]
+        self.performSegue(withIdentifier: <#T##String#>, sender: <#T##Any?#>)
+        
+    }
 }
 
 extension DiscoverCollectionViewController: PinterestLayoutDelegate {
@@ -132,11 +134,11 @@ extension DiscoverCollectionViewController: PinterestLayoutDelegate {
     }
 
     func collectionView(_ collectionView: UICollectionView, heightForPhotoAtIndexPath indexPath: IndexPath) -> CGFloat {
-         let itemSize = (collectionView.frame.width - (collectionView.contentInset.left + collectionView.contentInset.right + 10)) / 2
-        let title = myGoods[indexPath.item].title
+        let itemSize = (collectionView.frame.width - (collectionView.contentInset.left + collectionView.contentInset.right + 10)) / 2
+        let title = shopItems[indexPath.item].title
+        print(title)
         let attribute = [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13)]
         let estimateFrame = NSString(string: title).boundingRect(with: CGSize(width: itemSize, height: 1000), options: .usesLineFragmentOrigin, attributes: attribute, context: nil)
         return estimateFrame.height + 250
     }
-
 }

@@ -88,12 +88,4 @@ class PinterestLayout: UICollectionViewFlowLayout {
     override func layoutAttributesForItem(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
         return cellCache[indexPath.item]
     }
-
-    override func layoutAttributesForSupplementaryView(ofKind elementKind: String, at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
-        guard elementKind == UICollectionView.elementKindSectionHeader else { return nil }
-
-        return headerCache.first {
-            $0.indexPath == indexPath
-        }
-    }
 }

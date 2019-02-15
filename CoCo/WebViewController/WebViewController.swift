@@ -52,11 +52,15 @@ class WebViewController: UIViewController {
         super.viewWillAppear(animated)
         service?.insert()
         setFavoriteButton()
+        tabBarController?.tabBar.isHidden = true
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        service?.updateFavorite(isFavorite)
+        if isFavorite != service?.myGoodsData.isFavorite {
+            service?.updateFavorite(isFavorite)
+        }
+        tabBarController?.tabBar.isHidden = false
     }
 
     // MARK: - Observer related methods

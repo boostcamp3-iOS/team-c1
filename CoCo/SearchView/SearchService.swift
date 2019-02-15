@@ -21,6 +21,7 @@ import CoreData
 // 검색할때는 검사해서 붙여줌
 
 class SearchService {
+    let pet = "고양이"
     private let searchCoreDataManager: SearchWordCoreDataManagerType
     private let petKeywordCoreDataManager: PetKeywordCoreDataManagerType
     private let networkManager: NetworkManagerType
@@ -35,6 +36,7 @@ class SearchService {
     var itemStart = 1
     var pet: Pet = .dog
 
+
     init(serachCoreData: SearchWordCoreDataManagerType, petCoreData: PetKeywordCoreDataManagerType, network: NetworkManagerType, algorithm: Algorithm) {
         searchCoreDataManager = serachCoreData
         petKeywordCoreDataManager = petCoreData
@@ -44,7 +46,7 @@ class SearchService {
 
     func getShoppingData(search: String, completion: @escaping (_ isSuccess: Bool, NetworkErrors?) -> Void) {
         let word = algorithmManager.removePet(from: search)
-        let searchWord = algorithmManager.combinePet(.dog, and: word)
+        let searchWord = algorithmManager.combinePet(pet, and: word)
         print(searchWord)
         let params = ShoppingParams(search: searchWord, count: 20, start: itemStart, sort: sortOption)
 

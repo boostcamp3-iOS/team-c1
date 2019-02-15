@@ -15,14 +15,16 @@ class MyGoodsService {
 
     // MARK: - Manager
     private lazy var manager = MyGoodsCoreDataManager()
-    private var pet: Pet?
+    private var pet: String?
 
     // MARK: - Initializer
     init() {
-        if let data = try? PetKeywordCoreDataManager().fetchOnlyPet() {
-            pet = data
+        if let data = try? PetKeywordCoreDataManager().fetchOnlyPet(), let string = data {
+            pet = Pet(rawValue: string)
+        } else {
+            // TODO: 현재 저장된 펫키워드 데이터가 없기 때문. 나중에 삭제.
+            pet = Pet.dog
         }
-        fetchGoods()
     }
 
     // MARK: - Fetch methods
@@ -33,14 +35,14 @@ class MyGoodsService {
     }
 
     private func fetchFavoriteGoods() -> [MyGoodsData] {
-        if let pet = pet, let data = try? manager.fetchFavoriteGoods(pet: pet), let goods = data {
+        if let pet = pet, let data = try? manager.fetchFavoriteGoods(pet: pet.rawValue), let goods = data {
             return goods
         }
         return []
     }
 
     private func fetchRecentGoods() -> [MyGoodsData] {
-        if let pet = pet, let data = try? manager.fetchLatestGoods(pet: pet, isLatest: true, ascending: false),
+        if let pet = pet, let data = try? manager.fetchLatestGoods(pet: pet.rawValue, isLatest: true, ascending: false),
             let goods = data {
             return goods
         }

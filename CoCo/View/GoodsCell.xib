@@ -25,10 +25,10 @@
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="01" translatesAutoresizingMaskIntoConstraints="NO" id="EN6-86-GZV">
                                 <rect key="frame" x="0.0" y="0.0" width="223" height="223"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" secondItem="EN6-86-GZV" secondAttribute="height" id="GGi-JX-0h0"/>
+                                    <constraint firstAttribute="width" secondItem="EN6-86-GZV" secondAttribute="height" multiplier="1:1" id="Nwg-2J-2y3"/>
                                 </constraints>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="x85-0X-wBR">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="x85-0X-wBR">
                                 <rect key="frame" x="10" y="226" width="203" height="35"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
@@ -129,6 +129,7 @@
             <size key="customSize" width="223" height="320"/>
             <connections>
                 <outlet property="container" destination="uq8-g1-OWV" id="GgE-3G-Vtm"/>
+                <outlet property="deleteButton" destination="mg5-p9-Hnt" id="afZ-yT-0Rx"/>
                 <outlet property="deleteButtonBackgroundView" destination="mue-VZ-rAj" id="CCG-ii-mdu"/>
                 <outlet property="goodsImageView" destination="EN6-86-GZV" id="jEu-uq-CXY"/>
                 <outlet property="goodsPriceLabel" destination="9fX-9s-Aft" id="tqP-TY-crk"/>

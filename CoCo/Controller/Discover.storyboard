@@ -91,20 +91,13 @@
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="k2l-at-nU2">
                                 <rect key="frame" x="0.0" y="44" width="375" height="685"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <collectionViewLayout key="collectionViewLayout" id="y6G-Na-ANR" customClass="PinterestLayout" customModule="CoCo" customModuleProvider="target"/>
-                                <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="w5K-Ay-nfM" customClass="GoodsCell" customModule="CoCo" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
-                                            <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                        </view>
-                                        <connections>
-                                            <segue destination="hvK-7s-v87" kind="show" identifier="GoDiscoverDetailView" id="clW-og-T2H"/>
-                                        </connections>
-                                    </collectionViewCell>
-                                </cells>
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="qha-7I-Te1">
+                                    <size key="itemSize" width="50" height="50"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells/>
                             </collectionView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -119,19 +112,20 @@
                     <navigationItem key="navigationItem" id="Bxr-1O-44D"/>
                     <connections>
                         <outlet property="collectionView" destination="k2l-at-nU2" id="tg7-B5-JWG"/>
+                        <segue destination="XyW-1L-Fgu" kind="show" identifier="discoverToWeb" id="rQw-11-ouj"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lyK-Tb-RtI" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3516" y="-207"/>
         </scene>
-        <!--DiscoverDetail-->
-        <scene sceneID="YWr-L1-j5y">
+        <!--WebView-->
+        <scene sceneID="uCY-0p-5qK">
             <objects>
-                <viewControllerPlaceholder storyboardName="DiscoverDetail" id="hvK-7s-v87" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="1Sf-M4-8Eg" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <viewControllerPlaceholder storyboardName="WebView" id="XyW-1L-Fgu" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Wm7-Pe-eQh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4314" y="-207"/>
+            <point key="canvasLocation" x="4270" y="-207"/>
         </scene>
     </scenes>
 </document>
