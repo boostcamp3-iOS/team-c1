@@ -9,8 +9,8 @@
 import Foundation
 
 class SearchWordDummy {
-    private let cat: Pet = Pet.cat
-    private let dog: Pet = Pet.dog
+    private let cat = "고양이"
+    private let dog = "강아지"
     var searchDatas: [SearchWordData] = []
 
     init() {

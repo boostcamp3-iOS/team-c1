@@ -33,19 +33,4 @@ extension NSManagedObject {
         }
         return value
     }
-
-    func petValue(forKeyPath keyPath: String) -> Pet? {
-        guard let value = super.value(forKeyPath: keyPath) as? Pet else {
-            return nil
-        }
-        return value
-    }
-
-    func keywordValue(forKeyPath keyPath: String) -> [Keyword]? {
-        guard let value = super.value(forKeyPath: keyPath) as? [Keyword] else {
-            return nil
-        }
-        return value
-    }
-
 }
