@@ -89,7 +89,7 @@ class DiscoverCollectionViewController: UIViewController {
 
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        <#code#>
+
     }
 }
 
@@ -123,8 +123,8 @@ extension DiscoverCollectionViewController: UICollectionViewDelegate, UICollecti
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let myGoodsData = shopItems[indexPath.item]
-        self.performSegue(withIdentifier: <#T##String#>, sender: <#T##Any?#>)
-        
+//        self.performSegue(withIdentifier: <#T##String#>, sender: <#T##Any?#>)
+
     }
 }
 
