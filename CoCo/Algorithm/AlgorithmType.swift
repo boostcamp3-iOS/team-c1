@@ -29,7 +29,12 @@ protocol WordType {
     func replaceNewLine(from string: String) -> String
 }
 
-protocol PaginationType { }
+protocol PaginationType {
+    func setPagination(once: Int, maximum: Int)
+    func setRecommendedPagination(words: [String], once: Int, maximum: Int)
+    func pagination(index: Int, completion: @escaping (Bool, Int?) -> Void)
+    func recommendedPagination(index: Int, completion: @escaping (Bool, Int?, String?) -> Void)
+}
 
 // MARK: - QueueOperationType
 protocol QueueOperationType {
