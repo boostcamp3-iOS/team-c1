@@ -9,23 +9,13 @@
 import UIKit
 import CoreData
 
-private let goodsIdentifier = "GoodsCell"
-
 class DiscoverCollectionViewController: UIViewController {
 
     @IBOutlet weak var collectionView: UICollectionView!
+    private let goodsIdentifier = "GoodsCell"
 
-    weak var appDelegate: AppDelegate? {
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
-            return nil
-        }
-        return appDelegate
-    }
-
-    var context: NSManagedObjectContext? {
-        return appDelegate?.persistentContainer.viewContext
-    }
     let pet = " 고양이"
+    let toWebSegue = "discoverToWeb"
     var shopItems = [MyGoodsData]()
     var discoverService: DiscoverServiceClass?
     let networkManager = ShoppingNetworkManager.shared
@@ -34,10 +24,13 @@ class DiscoverCollectionViewController: UIViewController {
     var searchWordCoreDataManager: SearchWordCoreDataManager?
     var petKeywordCoreDataManager: PetKeywordCoreDataManager?
 
+    // 둘러보기
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationController?.setNavigationBarHidden(true, animated: false)
         setupCollctionView()
         setupHeader()
+        petkeyWordCoreDataPrint()
         loadData()
     }
 
@@ -55,8 +48,6 @@ class DiscoverCollectionViewController: UIViewController {
 
         if let layout = collectionView.collectionViewLayout as? PinterestLayout {
             layout.delegate = self
-        } else {
-            print("else")
         }
     }
 
@@ -89,7 +80,13 @@ class DiscoverCollectionViewController: UIViewController {
 
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-
+        guard let webViewController: WebViewController  = segue.destination as? WebViewController else {
+            return
+        }
+        guard let indexPath = sender as? IndexPath else {
+            return
+        }
+        webViewController.sendData(self.shopItems[indexPath.item])
     }
 }
 
@@ -114,17 +111,17 @@ extension DiscoverCollectionViewController: UICollectionViewDelegate, UICollecti
         return 0
     }
 
-   func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        guard let haeder = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "categoryView", for: indexPath) as? CategoryController else {
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "categoryView", for: indexPath) as? CategoryController else {
             return UICollectionReusableView()
         }
-        return haeder
+        header.categoryDelegate = self
+        return header
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let myGoodsData = shopItems[indexPath.item]
-//        self.performSegue(withIdentifier: <#T##String#>, sender: <#T##Any?#>)
-
+        self.performSegue(withIdentifier: toWebSegue, sender: indexPath)
     }
 }
 
@@ -136,9 +133,20 @@ extension DiscoverCollectionViewController: PinterestLayoutDelegate {
     func collectionView(_ collectionView: UICollectionView, heightForPhotoAtIndexPath indexPath: IndexPath) -> CGFloat {
         let itemSize = (collectionView.frame.width - (collectionView.contentInset.left + collectionView.contentInset.right + 10)) / 2
         let title = shopItems[indexPath.item].title
-        print(title)
         let attribute = [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13)]
         let estimateFrame = NSString(string: title).boundingRect(with: CGSize(width: itemSize, height: 1000), options: .usesLineFragmentOrigin, attributes: attribute, context: nil)
-        return estimateFrame.height + 250
+        return estimateFrame.height + 230
+    }
+}
+
+extension DiscoverCollectionViewController: CategoryControllerDelegate {
+    func goDiscoverDetail(indexPath: IndexPath, pet: Pet, category: Category) {
+        let discoverDetailViewController = DiscoverDetailViewController()
+        discoverDetailViewController.category = category
+        print("cate: \(category)")
+        discoverDetailViewController.pet = pet
+        navigationController?.isNavigationBarHidden = false
+        navigationController?.pushViewController(discoverDetailViewController, animated: true)
+
     }
 }

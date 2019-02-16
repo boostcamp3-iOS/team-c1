@@ -66,12 +66,12 @@ extension CoreDataManagerFunctionImplementType {
             }
             do {
                 // PetKeyword Entity는 동물별로 데이터가 하나만 존재해야하기 때문에 데이터가 존재하는 지 확인
-                if let objects = try PetKeywordCoreDataManager().fetchObjects() {
+                if let objects = try PetKeywordCoreDataManager().fetchObjects(pet: petKeywordData.pet) {
                     if var object = objects.first {
                         petKeywordData.objectID = object.objectID
                         try updateObject(petKeywordData)
                     }
-                // 존재하지 않는 경우 데이터 삽입
+                    // 존재하지 않는 경우 데이터 삽입
                 } else {
                     let petKeyword = PetKeyword(context: context)
                     petKeywordData.mappinng(to: petKeyword)
@@ -230,7 +230,7 @@ extension CoreDataManagerFunctionImplementType {
      코어데이터 연산 후 데이터들이 반영되거나 수정되기전 상태로 돌아가게 하는 메서드
      - Author: [강준영](https://github.com/lavaKangJun)
      - Parameter :
-        - context: managedObject를 create, fetch, save할 때 사용되는 객체
+     - context: managedObject를 create, fetch, save할 때 사용되는 객체
      */
     func afterOperation(context: NSManagedObjectContext?) {
         guard let context = context else { return }
