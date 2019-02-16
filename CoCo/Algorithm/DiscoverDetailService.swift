@@ -39,7 +39,7 @@ class DiscoverDetailService {
     }
 
     func getShoppingData(search: String, completion: @escaping (_ isSuccess: Bool, NetworkErrors?) -> Void) {
-        let searchWord = algorithmManager.combinePet(pet.rawValue, and: search)
+        let searchWord = algorithmManager.combinePet(pet, and: search)
         let params = ShoppingParams(search: searchWord, count: 20, start: itemStart, sort: sortOption)
 
         DispatchQueue.global().async {

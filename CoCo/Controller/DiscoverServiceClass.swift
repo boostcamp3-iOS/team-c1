@@ -108,10 +108,10 @@ class DiscoverServiceClass {
 
     // 5) 네트워트에서 섞은 검색어 Request
     func request(completion: @escaping (Bool, Error?) -> Void) {
-        guard let algorithmManagerType = algorithmManagerType else {
+        guard let algorithmManagerType = algorithmManagerType, let pet = Pet(rawValue: self.pet) else {
             return
         }
-        let searches = algorithmManagerType.combinePet(self.pet, and: recommandGoods)
+        let searches = algorithmManagerType.combinePet(pet, and: recommandGoods)
         let group = DispatchGroup()
         let queue = DispatchQueue.global()
         for search in searches {

@@ -44,7 +44,7 @@ class SearchService {
 
     func getShoppingData(search: String, completion: @escaping (_ isSuccess: Bool, NetworkErrors?) -> Void) {
         let word = algorithmManager.removePet(from: search)
-        let searchWord = algorithmManager.combinePet(pet.rawValue, and: word)
+        let searchWord = algorithmManager.combinePet(pet, and: word)
         print(searchWord)
         let params = ShoppingParams(search: searchWord, count: 20, start: itemStart, sort: sortOption)
 
