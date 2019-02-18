@@ -28,9 +28,9 @@ class DiscoverViewController: UIViewController {
     // 둘러보기
     override func viewDidLoad() {
         super.viewDidLoad()
+        petkeyWordCoreDataPrint()
         setupCollctionView()
         setupHeader()
-        petkeyWordCoreDataPrint()
         layout = collectionView.collectionViewLayout as? PinterestLayout
         layout?.delegate = self
         loadData()

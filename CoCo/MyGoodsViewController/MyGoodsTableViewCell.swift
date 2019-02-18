@@ -70,6 +70,9 @@ extension MyGoodsTableViewCell: UICollectionViewDelegate, UICollectionViewDataSo
         cell.goodsTitleLabel.lineBreakMode = .byTruncatingTail
         delegate?.receiveSender(cell.deleteButton)
         delegate?.receiveSender(cell.deleteButtonBackgroundView)
+        if tag < 10 {
+            cell.isLike = false
+        }
         return cell
     }
 

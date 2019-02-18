@@ -82,8 +82,6 @@ class PinterestLayout: UICollectionViewFlowLayout {
 
         if indexPathRow != 0 {
             extraCount = 20
-        } else {
-
         }
 
         print("cell -- \(collectionView.numberOfItems(inSection: 0) + extraCount) ")

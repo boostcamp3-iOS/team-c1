@@ -65,6 +65,9 @@ class GoodsCell: UICollectionViewCell {
         container.layer.cornerRadius = 6
         container.layer.masksToBounds = true
         goodsTitleLabel.sizeToFit()
+
+        likeImageView.image = likeImageView.image!.withRenderingMode(.alwaysTemplate)
+        likeImageView.tintColor = AppColor.purple
     }
 
     func setupDelete() {
