@@ -12,7 +12,7 @@ class Algorithm: AlgorithmType {
     // MARK: - Pagination related properties
     private var onceIndex = 0
     private var maximumIndex = 0
-    private var startIndex = 0
+    private var startIndex = 1
     private var recommendedSearchWordsQueue = Queue<String>()
 
     /**
@@ -231,7 +231,7 @@ extension Algorithm {
      - Parameter string: 개행을 반영할 문자열
      */
     func replaceNewLine(from string: String) -> String {
-        return string.replacingOccurrences(of: "<br>", with: "\n")
+        return string.replacingOccurrences(of: "</b>", with: " ")
     }
     /**
      문자열에 천 단위로 ','를 삽입한다.

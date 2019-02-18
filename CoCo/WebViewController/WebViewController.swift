@@ -43,6 +43,7 @@ class WebViewController: UIViewController {
             return
         }
         isFavorite = myGoodsData.isFavorite
+
         setWebView()
         setNavigationBar()
         setProgressView()

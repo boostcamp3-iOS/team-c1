@@ -17,20 +17,21 @@ import Foundation
  (6) 네트워크에서 추천 데이터 가져오기
  (7) 알고리즘에서 가져온 쇼핑목록들 섞고 배열에 넣기
  */
-class DiscoverServiceClass {
+class DiscoverService {
     // MARK: - Propertise
-    private let pet = "고양이"
     private let networkManagerType: NetworkManagerType?
     private let algorithmManagerType: AlgorithmType?
     private let petKeywordCoreDataManagerType: PetKeywordCoreDataManagerType?
     private let searchWordDoreDataManagerType: SearchWordCoreDataManagerType?
     private let myGoodsCoreDataType: MyGoodsCoreDataManagerType?
+    private var pet = Pet.cat
 
     private var recommandGoods = [String]()
     private var myGoods = [MyGoodsData]()
     private var searches = [String]()
     private var keyword: PetKeywordData?
     var fetchedMyGoods = [MyGoodsData]()
+    var pageNumber = 1
 
     // MARK: - Initialize
     init(networkManagerType: NetworkManagerType? = nil, algorithmManagerType: AlgorithmType? = nil, searchWordDoreDataManagerType: SearchWordCoreDataManagerType? = nil, myGoodsCoreDataType: MyGoodsCoreDataManagerType? = nil, petKeywordCoreDataManagerType: PetKeywordCoreDataManagerType? = nil) {
@@ -47,7 +48,7 @@ class DiscoverServiceClass {
             return []
         }
         do {
-            guard let result = try myGoodsCoreDataType.fetchObjects(pet: pet) as? [MyGoodsData] else {
+            guard let result = try myGoodsCoreDataType.fetchObjects(pet: pet.rawValue) as? [MyGoodsData] else {
                 return []
             }
             myGoods = result
@@ -64,8 +65,8 @@ class DiscoverServiceClass {
             return []
         }
         do {
-            guard let result = try searchWordDoreDataManagerType.fetchOnlySearchWord(pet: self.pet) else {
-            return []
+            guard let result = try searchWordDoreDataManagerType.fetchOnlySearchWord(pet: self.pet.rawValue) else {
+                return []
             }
             searches = result
             return result
@@ -81,7 +82,8 @@ class DiscoverServiceClass {
             return nil
         }
         do {
-            guard let keywords = try petKeywordCoreDataManagerType.fetchObjects(pet: pet) as? [PetKeywordData] else {
+
+            guard let keywords = try petKeywordCoreDataManagerType.fetchObjects(pet: self.pet.rawValue) as? [PetKeywordData] else {
                 return nil
             }
             let result = keywords.first
@@ -98,7 +100,7 @@ class DiscoverServiceClass {
         guard let keyword = keyword else {
             return []
         }
-        let result = algorithmManagerType?.makeRequestSearchWords(with: myGoods, words: searches, petKeyword: keyword, count: 10)
+        let result = algorithmManagerType?.makeRequestSearchWords(with: [], words: [], petKeyword: keyword, count: 4)
         guard let mixedResult = result else {
             return []
         }
@@ -108,10 +110,10 @@ class DiscoverServiceClass {
 
     // 5) 네트워트에서 섞은 검색어 Request
     func request(completion: @escaping (Bool, Error?) -> Void) {
-        guard let algorithmManagerType = algorithmManagerType, let pet = Pet(rawValue: self.pet) else {
+        guard let algorithmManagerType = algorithmManagerType else {
             return
         }
-        let searches = algorithmManagerType.combinePet(pet, and: recommandGoods)
+        let searches = algorithmManagerType.combinePet(self.pet, and: recommandGoods)
         let group = DispatchGroup()
         let queue = DispatchQueue.global()
         for search in searches {
@@ -126,7 +128,11 @@ class DiscoverServiceClass {
                         completion(false, nil)
                     }
                     for data in datas.items {
-                        self.fetchedMyGoods.append(self.shopItemToMyGoods(item: data, searchWord: search))
+                        print(data)
+                        guard let shopItemToMyGoods = self.shopItemToMyGoods(item: data, searchWord: search) else {
+                            return
+                        }
+                        self.fetchedMyGoods.append(shopItemToMyGoods)
                     }
                     group.leave()
                 }, errorHandler: { (error) in
@@ -141,29 +147,50 @@ class DiscoverServiceClass {
         }
     }
 
-    private func shopItemToMyGoods(item: ShoppingItem, searchWord: String) -> MyGoodsData {
-        return MyGoodsData(pet: pet, title: item.title, link: item.link, image: item.image, isFavorite: false, isLatest: false, price: item.lprice, productID: item.productId, searchWord: searchWord, shoppingmall: item.mallName)
+    func chagePet() {
+        if pet == Pet.dog {
+            pet = Pet.cat
+        } else {
+            pet = Pet.dog
+        }
     }
 
-    /*func request(recommands: [String], completion: @escaping (Bool, Error?) -> Void) {
-        guard let searches = algorithmManagerType?.combinePet(self.pet, and: recommands) else {
+    func setPagenation() {
+        guard let algorithmManagerType = algorithmManagerType else {
             return
         }
-        for search in searches {
-            let param = ShoppingParams(search: search, count: 10, start: 0, sort: .ascending)
-            DispatchQueue.global().async { [weak self] in
-                guard let self = self else {
-                    return
-                }
-                self.networkManagerType?.getAPIData(param, completion: { (datas) in
-                    for data in datas.items {
-                        self.fetchGoodsData.append(MyGoodsData(pet: self.pet, title: data.title, link: data.link, image: data.image, isFavorite: true, isLatest: true, price: data.lprice, productID: data.productId, searchWord: search, shoppingmall: data.mallName))
+        algorithmManagerType.setRecommendedPagination(words: recommandGoods, once: 20, maximum: 200)
+    }
+
+    func recommandPagenation(indexPathRow: Int, completion: @escaping (Bool, Error?) -> Void) {
+        guard let algorithmManagerType = algorithmManagerType else {
+            return
+        }
+      algorithmManagerType.recommendedPagination(index: indexPathRow) {
+            (isSuccess, startIndex, search) in
+            if isSuccess, let startIndex = startIndex, let search = search {
+                self.request(completion: { (isSuccess, error) in
+                    if let error = error {
+                        completion(false, error)
+                    }
+                    if isSuccess {
                         completion(true, nil)
                     }
-                }, errorHandler: { (error) in
-                    completion(false, error)
                 })
             }
         }
-    }*/
+    }
+
+    private func shopItemToMyGoods(item: ShoppingItem, searchWord: String) -> MyGoodsData? {
+        print(item.title)
+        guard let title = algorithmManagerType?.makeCleanTitle(item.title, isReplacing: true) else {
+            return nil
+        }
+        var mallName = item.mallName
+        if item.mallName == "네이버" {
+            mallName = "네이버쇼핑"
+        }
+        print(title)
+        return MyGoodsData(pet: pet.rawValue, title: title, link: item.link, image: item.image, isFavorite: false, isLatest: false, price: item.lprice, productID: item.productId, searchWord: searchWord, shoppingmall: mallName)
+    }
 }

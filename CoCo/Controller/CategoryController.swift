@@ -8,11 +8,15 @@
 
 import UIKit
 
+protocol CategoryControllerDelegate: class {
+    func goDiscoverDetail(indexPath: IndexPath, pet: Pet, category: Category)
+}
+
 class CategoryController: UICollectionReusableView {
 
     private let cellId = "CategoryCell"
-    var pet = Pet.dog
-
+    let discoverService = DiscoverService()
+    weak var categoryDelegate: CategoryControllerDelegate?
     lazy var largeTitle: LargeTitle = {
         guard let largeTitle = Bundle.main.loadNibNamed("LargeTitle", owner: self, options: nil)?.first as? LargeTitle else {
             return LargeTitle()
@@ -21,7 +25,6 @@ class CategoryController: UICollectionReusableView {
         largeTitle.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         return largeTitle
     }()
-
     lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
@@ -31,14 +34,13 @@ class CategoryController: UICollectionReusableView {
         cv.delegate = self
         return cv
     }()
-
     lazy var categoryImage: [UIImage?] = {
-       return setupCategotyImage()
+        return setupCategotyImage()
     }()
-
     lazy var categoryTitle: [String] = {
         return setupCategoryTitle()
     }()
+    var pet = Pet.dog
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -85,17 +87,15 @@ class CategoryController: UICollectionReusableView {
 
     func setupLargeTitle() {
         self.addSubview(largeTitle)
-        self.addConstraintsWithFormat("H:|[v0]|", views: largeTitle)
+        self.addConstraintsWithFormat("H:|-5-[v0]|", views: largeTitle)
         self.addConstraintsWithFormat("V:|[v0(130)]", views: largeTitle)
     }
 
     func setUpCollectionView() {
-        addSubview(collectionView)
-        collectionView.register(UINib(nibName: "CategoryCell", bundle: nil), forCellWithReuseIdentifier: cellId)
-        addConstraintsWithFormat("H:|[v0]|", views: collectionView)
-        addConstraintsWithFormat("V:|-130-[v0]|", views: collectionView)
-        let selectedIndexPath = IndexPath(item: 0, section: 0)
-        collectionView.selectItem(at: selectedIndexPath, animated: false, scrollPosition: .bottom)
+        self.addSubview(collectionView)
+        self.collectionView.register(UINib(nibName: "CategoryCell", bundle: nil), forCellWithReuseIdentifier: cellId)
+        self.addConstraintsWithFormat("H:|-1-[v0]-1-|", views: collectionView)
+        self.addConstraintsWithFormat("V:|-130-[v0]|", views: collectionView)
     }
 }
 
@@ -128,15 +128,22 @@ extension CategoryController: UICollectionViewDataSource, UICollectionViewDelega
             if categoryImage[0] == UIImage(named: "dog") && categoryTitle[0] == Pet.dog.rawValue {
                 categoryImage[0] = UIImage(named: "cat")
                 categoryTitle[0] = Pet.cat.rawValue
+                pet = Pet.cat
             } else {
                 categoryImage[0] = UIImage(named: "dog")
-                 categoryTitle[0] = Pet.dog.rawValue
+                categoryTitle[0] = Pet.dog.rawValue
+                pet = Pet.dog
             }
             collectionView.reloadData()
         } else {
-            let discoverDetailViewController = DiscoverDetailViewController()
-            discoverDetailViewController.category = Category(rawValue: categoryTitle[indexPath.item])
-            discoverDetailViewController.pet = self.pet
+            let pet = self.pet
+            guard let category =  Category(rawValue: categoryTitle[indexPath.item]) else {
+                return
+            }
+            guard let categoryDelegate = categoryDelegate else {
+                return
+            }
+            categoryDelegate.goDiscoverDetail(indexPath: indexPath, pet: pet, category: category)
         }
     }
 }

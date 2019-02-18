@@ -30,13 +30,19 @@ class GoodsCell: UICollectionViewCell {
         }
     }
 
+    var isLike: Bool = true {
+        didSet {
+            likeImageView.isHidden = !isLike
+        }
+    }
+
     var myGoods: MyGoodsData? {
         didSet {
             if let myGoods = myGoods {
                 goodsImageView.setImage(url: myGoods.image)
                 goodsPriceLabel.text = myGoods.price
                 goodsTitleLabel.text = myGoods.title
-                print(myGoods.title.count)
+                print("\(myGoods.title) and \(goodsImageView.image?.size)")
                 goodsShoppingMallLabel.text = myGoods.shoppingmall
             }
         }
@@ -49,16 +55,16 @@ class GoodsCell: UICollectionViewCell {
     }
 
     func settupGoodsCell() {
-        layer.cornerRadius = 6
-        layer.masksToBounds = false
-        layer.shadowColor = UIColor.lightGray.cgColor
-        layer.shadowOffset = CGSize(width: 0, height: 2.0)
-        layer.shadowRadius = 2.0
-        layer.shadowOpacity = 1.0
-        layer.backgroundColor = UIColor.clear.cgColor
-
+        self.layer.cornerRadius = 6
+        self.layer.masksToBounds = false
+        self.layer.shadowColor = UIColor.lightGray.cgColor
+        self.layer.shadowOffset = CGSize(width: 0, height: 2.0)
+        self.layer.shadowRadius = 2.0
+        self.layer.shadowOpacity = 0.5
+        self.layer.backgroundColor = UIColor.clear.cgColor
         container.layer.cornerRadius = 6
         container.layer.masksToBounds = true
+        goodsTitleLabel.sizeToFit()
     }
 
     func setupDelete() {

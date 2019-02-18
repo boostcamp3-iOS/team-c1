@@ -70,7 +70,8 @@ class PetKeywordCoreDataManager: PetKeywordCoreDataManagerType, CoreDataManagerF
             keywords = petKeywordData.keywords
             return keywords
         } catch let error as NSError {
-            throw CoreDataError.fetch(message: "Can not fetch data \(error)")
+            return nil
+          //  throw CoreDataError.fetch(message: "Can not fetch data \(error)")
         }
     }
 

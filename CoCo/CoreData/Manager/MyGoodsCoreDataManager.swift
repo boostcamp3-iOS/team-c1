@@ -16,8 +16,8 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
      MyGoods의 모든 데이터를 오름차순으로 가져온다.
      - Author: [강준영](https://github.com/lavaKangJun)
      - Parameter :
-        - pet: 해당하는 펫(고양이 또는 강아지)과 관련된 데이터를 가져오기 위한 파마리터.
-            기본값은 nil로, 값을 넣어주지 않으면 고양이와 강아지의 모든 데이터를 가져온다.
+     - pet: 해당하는 펫(고양이 또는 강아지)과 관련된 데이터를 가져오기 위한 파마리터.
+     기본값은 nil로, 값을 넣어주지 않으면 고양이와 강아지의 모든 데이터를 가져온다.
      */
     func fetchObjects(pet: String? = nil) throws -> [CoreDataStructEntity]? {
         guard let context = context else { return nil }
@@ -50,7 +50,8 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
             }
             return myGoodsDatas
         } else {
-            throw CoreDataError.fetch(message: "MyGoods Entity has not data, So can not fetch data")
+            return nil
+            //    throw CoreDataError.fetch(message: "MyGoods Entity has not data, So can not fetch data")
         }
     }
 
@@ -58,7 +59,7 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
      해당펫의 즐겨찾기 한 데이터를 오름차순으로 가져온다
      - Author: [강준영](https://github.com/lavaKangJun)
      - Parameter :
-        - pet: 해당하는 펫(고양이 또는 강아지)과 관련된 데이터를 가져오기 위한 파마리터.
+     - pet: 해당하는 펫(고양이 또는 강아지)과 관련된 데이터를 가져오기 위한 파마리터.
      */
     func fetchFavoriteGoods(pet: String) throws -> [MyGoodsData]? {
         guard let context = context else {
@@ -91,7 +92,8 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
             }
             return myGoodsDatas
         } else {
-            throw CoreDataError.fetch(message: "MyGoods Entity has not Favorite data, So can not fetch data)")
+            return nil
+            //throw CoreDataError.fetch(message: "MyGoods Entity has not Favorite data, So can not fetch data)")
         }
     }
 
@@ -133,7 +135,8 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
             }
             return myGoodsDatas
         } else {
-            throw CoreDataError.fetch(message: "MyGoods Entity has not data, So can not fetch data")
+            return nil
+            //throw CoreDataError.fetch(message: "MyGoods Entity has not data, So can not fetch data")
         }
     }
 
@@ -141,7 +144,7 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
      productId를 통해 동일한 상품이 Entity에 존재하는 지 확인.
      - Author: [강준영](https://github.com/lavaKangJun)
      - Parameter :
-        - productId: 상품들마다 가지고 있는 고유 productId.
+     - productId: 상품들마다 가지고 있는 고유 productId.
      */
     func fetchProductID(productID: String) -> MyGoods? {
         guard let context = context else { return nil }
@@ -174,7 +177,7 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
      특정펫의 즐겨찾기한 상품들을 모두 삭제한다.
      - Author: [강준영](https://github.com/lavaKangJun)
      - Parameters:
-        - pet: 특정 펫의 데이터를 지우기위한 파라미터.
+     - pet: 특정 펫의 데이터를 지우기위한 파라미터.
      */
     @discardableResult func deleteFavoriteAllObjects(pet: String) throws -> Bool {
         guard let context = context else {
@@ -189,7 +192,8 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
             try context.execute(batchDeleteRequest)
             return true
         } catch {
-            throw CoreDataError.delete(message: "Can't delete data")
+            return false
+            // throw CoreDataError.delete(message: "Can't delete data")
         }
     }
 
@@ -212,7 +216,8 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
             print("Delete!")
             return true
         } catch {
-            throw CoreDataError.delete(message: "Can't delete data")
+            return false
+            //  throw CoreDataError.delete(message: "Can't delete data")
         }
     }
 
@@ -220,7 +225,7 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
      최근본 상품들을 날짜순으로 정렬 후 10개를 제외한 데이터들은 최근본 정보를 false로 변환
      - Author: [강준영](https://github.com/lavaKangJun)
      - Parameters:
-        - pet: 특정 펫의 데이터를 지우기위한 파라미터.
+     - pet: 특정 펫의 데이터를 지우기위한 파라미터.
      */
     func latestGoodsToFalse(pet: String) throws {
         do {
@@ -235,7 +240,7 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
                 }
             }
         } catch let error as NSError {
-            throw CoreDataError.fetch(message: "Can not fetch data: \(error)")
+            // throw CoreDataError.fetch(message: "Can not fetch data: \(error)")
         }
     }
 }

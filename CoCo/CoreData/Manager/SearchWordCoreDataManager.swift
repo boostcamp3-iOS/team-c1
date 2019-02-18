@@ -10,7 +10,6 @@ import UIKit
 import CoreData
 
 class SearchWordCoreDataManager: SearchWordCoreDataManagerType, CoreDataManagerFunctionImplementType {
-
     // MARK: - Fetch Method
     /**
      SearchWord의 모든 데이터를 오름차순으로 가져옴
@@ -77,7 +76,8 @@ class SearchWordCoreDataManager: SearchWordCoreDataManagerType, CoreDataManagerF
             }
             return searchArrays
         } catch let error as NSError {
-            throw CoreDataError.fetch(message: "Can't fetch data \(error)")
+            return nil
+            //  throw CoreDataError.fetch(message: "Can't fetch data \(error)")
         }
     }
 
@@ -101,11 +101,12 @@ class SearchWordCoreDataManager: SearchWordCoreDataManagerType, CoreDataManagerF
             }
             searchWordDatas.forEach { (data) in
                 if data.searchWord == searchWord {
-                   searchWordData = data
+                    searchWordData = data
                 }
             }
         } catch let error as NSError {
-            throw CoreDataError.fetch(message: "Can't fetch data \(error)")
+            return nil
+            // throw CoreDataError.fetch(message: "Can't fetch data \(error)")
         }
         return searchWordData
     }
@@ -131,7 +132,8 @@ class SearchWordCoreDataManager: SearchWordCoreDataManagerType, CoreDataManagerF
                 return true
             }
         } catch let error as NSError {
-            throw CoreDataError.fetch(message: "Can't fetch data \(error)")
+            return false
+            // throw CoreDataError.fetch(message: "Can't fetch data \(error)")
         }
         return false
     }

@@ -80,10 +80,10 @@
             </objects>
             <point key="canvasLocation" x="2412" y="-206.44677661169416"/>
         </scene>
-        <!--Discover Collection View Controller-->
+        <!--Discover View Controller-->
         <scene sceneID="kOr-h1-Rzf">
             <objects>
-                <viewController id="KBo-Uj-0mE" customClass="DiscoverCollectionViewController" customModule="CoCo" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="KBo-Uj-0mE" customClass="DiscoverViewController" customModule="CoCo" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="DtV-Hg-Fqo">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

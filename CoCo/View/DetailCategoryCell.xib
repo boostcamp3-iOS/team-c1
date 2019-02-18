@@ -19,8 +19,12 @@
                 <rect key="frame" x="0.0" y="0.0" width="132" height="78"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wpu-NQ-Ilc">
-                        <rect key="frame" x="45" y="28.5" width="42" height="21"/>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Yr3-2i-VgT">
+                        <rect key="frame" x="0.0" y="0.0" width="132" height="78"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </view>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wpu-NQ-Ilc">
+                        <rect key="frame" x="8" y="8" width="116" height="62"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
@@ -28,12 +32,21 @@
                 </subviews>
             </view>
             <constraints>
+                <constraint firstItem="Yr3-2i-VgT" firstAttribute="top" secondItem="zN8-fr-BrJ" secondAttribute="top" id="271-mK-z3v"/>
+                <constraint firstItem="Yr3-2i-VgT" firstAttribute="leading" secondItem="zN8-fr-BrJ" secondAttribute="leading" id="8eh-0p-BML"/>
+                <constraint firstAttribute="bottom" secondItem="Wpu-NQ-Ilc" secondAttribute="bottom" constant="8" id="Eea-8B-c8z"/>
+                <constraint firstAttribute="trailing" secondItem="Yr3-2i-VgT" secondAttribute="trailing" id="MQH-so-wXG"/>
+                <constraint firstItem="Wpu-NQ-Ilc" firstAttribute="top" secondItem="zN8-fr-BrJ" secondAttribute="top" constant="8" id="RpG-eh-KGG"/>
+                <constraint firstAttribute="bottom" secondItem="Yr3-2i-VgT" secondAttribute="bottom" id="S0x-gF-Xf5"/>
+                <constraint firstAttribute="trailing" secondItem="Wpu-NQ-Ilc" secondAttribute="trailing" constant="8" id="Yyz-gU-JIS"/>
+                <constraint firstItem="Wpu-NQ-Ilc" firstAttribute="leading" secondItem="zN8-fr-BrJ" secondAttribute="leading" constant="8" id="dt6-hC-cvv"/>
                 <constraint firstItem="Wpu-NQ-Ilc" firstAttribute="centerY" secondItem="zN8-fr-BrJ" secondAttribute="centerY" id="oWH-8V-fUE"/>
                 <constraint firstItem="Wpu-NQ-Ilc" firstAttribute="centerX" secondItem="zN8-fr-BrJ" secondAttribute="centerX" id="zhA-3J-mfy"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="xau-uf-nCE"/>
             <size key="customSize" width="132" height="78"/>
             <connections>
+                <outlet property="categoryBackground" destination="Yr3-2i-VgT" id="fzz-RI-fSX"/>
                 <outlet property="detailCategoryLabel" destination="Wpu-NQ-Ilc" id="eXt-Rq-NqV"/>
             </connections>
             <point key="canvasLocation" x="-75.200000000000003" y="18.890554722638683"/>
