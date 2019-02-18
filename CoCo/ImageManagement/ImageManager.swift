@@ -7,9 +7,22 @@
 //
 
 import UIKit
+import CoreGraphics
+import Darwin
+
+extension UIImage {
+    func resize(scale: CGFloat) -> UIImage {
+        let transform = CGAffineTransform(scaleX: scale, y: scale)
+        let size = self.size.applying(transform)
+        UIGraphicsBeginImageContext(size)
+        self.draw(in: CGRect(origin: .zero, size: size))
+        let resultImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return resultImage!
+    }
+}
 
 extension UIImageView {
-
     func setImage(url: String, isDisk: Bool = false) {
         ImageManager.shared.cacheImage(url: url, isDisk: isDisk) { image in
             DispatchQueue.main.async {

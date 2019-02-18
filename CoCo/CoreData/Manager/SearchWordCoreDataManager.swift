@@ -26,7 +26,7 @@ class SearchWordCoreDataManager: SearchWordCoreDataManagerType, CoreDataManagerF
         var searchWordDatas = [SearchWordData]()
         let sort = NSSortDescriptor(key: #keyPath(SearchWord.date), ascending: true)
         let request: NSFetchRequest<SearchWord>
-        
+
         if #available(iOS 10.0, *) {
             let tmpRequest: NSFetchRequest<SearchWord> = SearchWord.fetchRequest()
             request = tmpRequest
@@ -34,16 +34,16 @@ class SearchWordCoreDataManager: SearchWordCoreDataManagerType, CoreDataManagerF
             let entityName = String(describing: SearchWord.self)
             request = NSFetchRequest(entityName: entityName)
         }
-        
+
         if let pet = pet {
             let predicate = NSPredicate(format: "pet = %@", pet)
             request.predicate = predicate
         }
         request.returnsObjectsAsFaults = false
         request.sortDescriptors = [sort]
-        
+
         let objects = try context.fetch(request)
-        
+
         if !objects.isEmpty {
             for object in objects {
                 var searchWordData = SearchWordData()
@@ -55,7 +55,7 @@ class SearchWordCoreDataManager: SearchWordCoreDataManagerType, CoreDataManagerF
             return nil
         }
     }
-    
+
     /**
      SearchWord의 모든 검색어를 가져옴
      - Author: [강준영](https://github.com/lavaKangJun)
@@ -80,7 +80,7 @@ class SearchWordCoreDataManager: SearchWordCoreDataManagerType, CoreDataManagerF
             //  throw CoreDataError.fetch(message: "Can't fetch data \(error)")
         }
     }
-    
+
     /**
      SearchWord에 특정 갬색어가 있는 지 확인.
      검색 데이터를 추가하기전에, 기존에 동일한 검색어가 존재하는 지 확인하기 위해 구현
@@ -110,7 +110,7 @@ class SearchWordCoreDataManager: SearchWordCoreDataManagerType, CoreDataManagerF
         }
         return searchWordData
     }
-    
+
     /**
      코어데이타에 저장된 특정 검색어의 날짜만 업데이트 한다.
      - Author: [강준영](https://github.com/lavaKangJun)
@@ -137,7 +137,7 @@ class SearchWordCoreDataManager: SearchWordCoreDataManagerType, CoreDataManagerF
         }
         return false
     }
-    
+
     // MARK: - Delete Method
     /**
      코어데이타에 저장된 SearchWord의 모든 데이터를 삭제한다.
@@ -149,14 +149,14 @@ class SearchWordCoreDataManager: SearchWordCoreDataManagerType, CoreDataManagerF
         guard let context = context else { return false }
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "SearchWord")
         let predicate = NSPredicate(format: "pet = %@", pet)
-        
+
         fetchRequest.predicate = predicate
         let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
-        
+
         do {
             try context.execute(batchDeleteRequest)
             return true
-            
+
         } catch {
             throw CoreDataError.delete(message: "Can't delete data")
         }

@@ -11,21 +11,13 @@ import CoreData
 
 // MARK: - CoreDataManagerFunctionImplementType
 protocol CoreDataManagerFunctionImplementType {
-    var appDelegate: AppDelegate? { get }
     var context: NSManagedObjectContext? { get }
     func afterOperation(context: NSManagedObjectContext?)
 }
 
 extension CoreDataManagerFunctionImplementType {
-    //Define default properties
-    weak var appDelegate: AppDelegate? {
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
-            return nil
-        }
-        return appDelegate
-    }
     var context: NSManagedObjectContext? {
-        return appDelegate?.persistentContainer.viewContext
+        return CoreDataStack.shared.persistentContainer.viewContext
     }
     // MARK: - Insert Method
     /**

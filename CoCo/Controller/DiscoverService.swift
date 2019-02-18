@@ -17,7 +17,7 @@ import Foundation
  (6) 네트워크에서 추천 데이터 가져오기
  (7) 알고리즘에서 가져온 쇼핑목록들 섞고 배열에 넣기
  */
-class DiscoverServiceClass {
+class DiscoverService {
     // MARK: - Propertise
     private let networkManagerType: NetworkManagerType?
     private let algorithmManagerType: AlgorithmType?
@@ -31,6 +31,7 @@ class DiscoverServiceClass {
     private var searches = [String]()
     private var keyword: PetKeywordData?
     var fetchedMyGoods = [MyGoodsData]()
+    var pageNumber = 1
 
     // MARK: - Initialize
     init(networkManagerType: NetworkManagerType? = nil, algorithmManagerType: AlgorithmType? = nil, searchWordDoreDataManagerType: SearchWordCoreDataManagerType? = nil, myGoodsCoreDataType: MyGoodsCoreDataManagerType? = nil, petKeywordCoreDataManagerType: PetKeywordCoreDataManagerType? = nil) {
@@ -127,7 +128,11 @@ class DiscoverServiceClass {
                         completion(false, nil)
                     }
                     for data in datas.items {
-                        self.fetchedMyGoods.append(self.shopItemToMyGoods(item: data, searchWord: search))
+                        print(data)
+                        guard let shopItemToMyGoods = self.shopItemToMyGoods(item: data, searchWord: search) else {
+                            return
+                        }
+                        self.fetchedMyGoods.append(shopItemToMyGoods)
                     }
                     group.leave()
                 }, errorHandler: { (error) in
@@ -150,7 +155,42 @@ class DiscoverServiceClass {
         }
     }
 
-    private func shopItemToMyGoods(item: ShoppingItem, searchWord: String) -> MyGoodsData {
-        return MyGoodsData(pet: pet.rawValue, title: item.title, link: item.link, image: item.image, isFavorite: false, isLatest: false, price: item.lprice, productID: item.productId, searchWord: searchWord, shoppingmall: item.mallName)
+    func setPagenation() {
+        guard let algorithmManagerType = algorithmManagerType else {
+            return
+        }
+        algorithmManagerType.setRecommendedPagination(words: recommandGoods, once: 20, maximum: 200)
+    }
+
+    func recommandPagenation(indexPathRow: Int, completion: @escaping (Bool, Error?) -> Void) {
+        guard let algorithmManagerType = algorithmManagerType else {
+            return
+        }
+      algorithmManagerType.recommendedPagination(index: indexPathRow) {
+            (isSuccess, startIndex, search) in
+            if isSuccess, let startIndex = startIndex, let search = search {
+                self.request(completion: { (isSuccess, error) in
+                    if let error = error {
+                        completion(false, error)
+                    }
+                    if isSuccess {
+                        completion(true, nil)
+                    }
+                })
+            }
+        }
+    }
+
+    private func shopItemToMyGoods(item: ShoppingItem, searchWord: String) -> MyGoodsData? {
+        print(item.title)
+        guard let title = algorithmManagerType?.makeCleanTitle(item.title, isReplacing: true) else {
+            return nil
+        }
+        var mallName = item.mallName
+        if item.mallName == "네이버" {
+            mallName = "네이버쇼핑"
+        }
+        print(title)
+        return MyGoodsData(pet: pet.rawValue, title: title, link: item.link, image: item.image, isFavorite: false, isLatest: false, price: item.lprice, productID: item.productId, searchWord: searchWord, shoppingmall: mallName)
     }
 }

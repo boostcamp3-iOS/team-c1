@@ -17,6 +17,8 @@ protocol MakeSearchWordsType: WordType {
     func makeSearchWords(in words: [String], count: UInt?) -> [String]
     func makeSearchWords(_ word: String) -> [String]
     func makeCleanTitle(_ title: String, isReplacing: Bool) -> String
+    func setRecommendedPagination(words: [String], once: Int, maximum: Int)
+    func recommendedPagination(index: Int, completion: @escaping (_ isSuccess: Bool, _ startIndex: Int?, _ words: String?) -> Void)
 }
 
 protocol WordType {

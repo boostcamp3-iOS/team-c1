@@ -15,7 +15,7 @@ protocol CategoryControllerDelegate: class {
 class CategoryController: UICollectionReusableView {
 
     private let cellId = "CategoryCell"
-    let discoverService = DiscoverServiceClass()
+    let discoverService = DiscoverService()
     weak var categoryDelegate: CategoryControllerDelegate?
     lazy var largeTitle: LargeTitle = {
         guard let largeTitle = Bundle.main.loadNibNamed("LargeTitle", owner: self, options: nil)?.first as? LargeTitle else {
@@ -87,15 +87,15 @@ class CategoryController: UICollectionReusableView {
 
     func setupLargeTitle() {
         self.addSubview(largeTitle)
-        self.addConstraintsWithFormat("H:|[v0]|", views: largeTitle)
+        self.addConstraintsWithFormat("H:|-5-[v0]|", views: largeTitle)
         self.addConstraintsWithFormat("V:|[v0(130)]", views: largeTitle)
     }
 
     func setUpCollectionView() {
-        addSubview(collectionView)
-        collectionView.register(UINib(nibName: "CategoryCell", bundle: nil), forCellWithReuseIdentifier: cellId)
-        addConstraintsWithFormat("H:|[v0]|", views: collectionView)
-        addConstraintsWithFormat("V:|-130-[v0]|", views: collectionView)
+        self.addSubview(collectionView)
+        self.collectionView.register(UINib(nibName: "CategoryCell", bundle: nil), forCellWithReuseIdentifier: cellId)
+        self.addConstraintsWithFormat("H:|-1-[v0]-1-|", views: collectionView)
+        self.addConstraintsWithFormat("V:|-130-[v0]|", views: collectionView)
     }
 }
 
@@ -128,9 +128,11 @@ extension CategoryController: UICollectionViewDataSource, UICollectionViewDelega
             if categoryImage[0] == UIImage(named: "dog") && categoryTitle[0] == Pet.dog.rawValue {
                 categoryImage[0] = UIImage(named: "cat")
                 categoryTitle[0] = Pet.cat.rawValue
+                pet = Pet.cat
             } else {
                 categoryImage[0] = UIImage(named: "dog")
                 categoryTitle[0] = Pet.dog.rawValue
+                pet = Pet.dog
             }
             collectionView.reloadData()
         } else {
@@ -143,6 +145,5 @@ extension CategoryController: UICollectionViewDataSource, UICollectionViewDelega
             }
             categoryDelegate.goDiscoverDetail(indexPath: indexPath, pet: pet, category: category)
         }
-
     }
 }

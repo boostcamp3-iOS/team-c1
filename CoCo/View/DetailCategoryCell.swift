@@ -10,9 +10,10 @@ import UIKit
 
 class DetailCategoryCell: UICollectionViewCell {
     @IBOutlet weak var detailCategoryLabel: UILabel!
+    @IBOutlet weak var categoryBackground: UIView!
 
     override func awakeFromNib() {
-        layer.cornerRadius = 10
-        layer.masksToBounds = false
+        detailCategoryLabel.textColor = UIColor.white
+        categoryBackground.layer.cornerRadius = 15
     }
 }
