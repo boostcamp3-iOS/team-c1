@@ -233,6 +233,20 @@ extension Algorithm {
     func replaceNewLine(from string: String) -> String {
         return string.replacingOccurrences(of: "<br>", with: "\n")
     }
+    /**
+     문자열에 천 단위로 ','를 삽입한다.
+     - Author: [최영준](https://github.com/0jun0815)
+     - Parameter string: 콤마를 삽입할 문자열
+     */
+    func addComma(to string: String) -> String {
+        let numberFormatter = NumberFormatter()
+        numberFormatter.numberStyle = NumberFormatter.Style.decimal
+        guard let number = Int(string),
+            let result = numberFormatter.string(from: NSNumber(value: number)) else {
+                return string
+        }
+        return result
+    }
 }
 
 // MARK: - PaginationType
