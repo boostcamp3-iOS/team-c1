@@ -15,6 +15,7 @@ protocol SearchViewControllerDelegate: class {
 class SearchViewController: UIViewController {
     // MARK: - IBOutlets
     @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
 
     enum CellIdentifier: String {
         case searchKeyword = "SearchKeywordCell"
@@ -47,6 +48,7 @@ class SearchViewController: UIViewController {
 
         collectionView.delegate = self
         collectionView.dataSource = self
+        self.activityIndicator.stopAnimating()
         searchService.fetchRecommandSearchWord {
             self.collectionView.reloadData()
         }
@@ -101,6 +103,7 @@ class SearchViewController: UIViewController {
                     return
                 }
                 let search = cell.titleLabel.text ?? ""
+                self.activityIndicator.startAnimating()
                 delegate?.tapKeywordCell(keyword: search)
                 searchService.sortOption = .similar
                 searchService.insert(recentSearchWord: search)
@@ -113,6 +116,9 @@ class SearchViewController: UIViewController {
                         } else {
                             self.alert("네트워크 연결이 끊어졌습니다.")
                         }
+                    }
+                    DispatchQueue.main.async {
+                        self.activityIndicator.stopAnimating()
                     }
                 }
             case .goods:
@@ -128,6 +134,7 @@ class SearchViewController: UIViewController {
         DispatchQueue.main.async {
             self.cellIdentifier = cell
             self.collectionView.reloadData()
+            self.activityIndicator.stopAnimating()
             if cell == .goods {
                 let layout = PinterestLayout()
                 layout.delegate = self
@@ -252,6 +259,7 @@ extension SearchViewController: UIGestureRecognizerDelegate {
 extension SearchViewController: SearchCollectionReusableViewDelegate {
     func searchButtonClicked(_ search: String) {
         view.endEditing(true)
+        self.activityIndicator.startAnimating()
         searchService.sortOption = .similar
         searchService.insert(recentSearchWord: search)
         searchService.itemStart = 1
@@ -264,6 +272,9 @@ extension SearchViewController: SearchCollectionReusableViewDelegate {
                 } else {
                     self.alert("네트워크 연결이 끊어졌습니다.")
                 }
+            }
+            DispatchQueue.main.async {
+                self.activityIndicator.stopAnimating()
             }
         }
     }
@@ -307,6 +318,7 @@ extension SearchViewController: SearchCollectionReusableViewDelegate {
     func sortChanged(sort: SortOption) {
         self.searchService.sortOption = sort
         self.searchService.itemStart = 1
+        self.activityIndicator.startAnimating()
         self.searchService.getShoppingData(search: self.searchService.recentSearched ?? "") { isSuccess, err in
             if isSuccess {
                 DispatchQueue.main.async {
@@ -318,6 +330,9 @@ extension SearchViewController: SearchCollectionReusableViewDelegate {
                 } else {
                     self.alert("네트워크 연결이 끊어졌습니다.")
                 }
+            }
+            DispatchQueue.main.async {
+                self.activityIndicator.stopAnimating()
             }
         }
     }
