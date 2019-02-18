@@ -132,6 +132,9 @@
                                     <outletCollection property="gestureRecognizers" destination="KoA-G6-oEF" appends="YES" id="fTg-pN-Bu8"/>
                                 </connections>
                             </collectionView>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="TBE-jo-36k">
+                                <rect key="frame" x="177.66666666666666" y="401" width="20" height="20"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <gestureRecognizers/>
@@ -140,11 +143,14 @@
                             <constraint firstItem="Gm6-eA-5ma" firstAttribute="trailing" secondItem="1GP-jN-mBX" secondAttribute="trailing" id="9l4-zq-Hic"/>
                             <constraint firstItem="1GP-jN-mBX" firstAttribute="leading" secondItem="nLH-KC-z5V" secondAttribute="leading" id="rgt-ML-peu"/>
                             <constraint firstItem="Gm6-eA-5ma" firstAttribute="bottom" secondItem="1GP-jN-mBX" secondAttribute="bottom" id="tda-18-7Vs"/>
+                            <constraint firstItem="TBE-jo-36k" firstAttribute="centerX" secondItem="Gm6-eA-5ma" secondAttribute="centerX" id="tqU-rr-YCF"/>
+                            <constraint firstItem="TBE-jo-36k" firstAttribute="centerY" secondItem="Gm6-eA-5ma" secondAttribute="centerY" id="yZ9-07-6Zy"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Gm6-eA-5ma"/>
                     </view>
                     <navigationItem key="navigationItem" id="Atu-y4-Qwu"/>
                     <connections>
+                        <outlet property="activityIndicator" destination="TBE-jo-36k" id="1gS-BJ-DW4"/>
                         <outlet property="collectionView" destination="1GP-jN-mBX" id="q1h-kY-S3d"/>
                         <segue destination="XCU-J6-gso" kind="show" identifier="searchToWeb" id="BTd-bw-3nL"/>
                     </connections>
