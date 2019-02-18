@@ -20,15 +20,14 @@
 * [네이버 검색 - 쇼핑 API](https://developers.naver.com/docs/search/shopping)를 사용합니다.
 
 &nbsp;
-### 구현된 기능
-&nbsp;
-> 추후에 추가하겠습니다.
-
-&nbsp;
 ### UI
 &nbsp;
 
-![](https://github.com/boostcamp3-iOS/team-c1/blob/develop/Images/coco-ui.png)
+![page1](https://github.com/boostcamp3-iOS/team-c1/blob/develop/Images/coco-ui-page1.png)
+![page2](https://github.com/boostcamp3-iOS/team-c1/blob/develop/Images/coco-ui-page2.png)
+![page3](https://github.com/boostcamp3-iOS/team-c1/blob/develop/Images/coco-ui-page3.png)
+![page4](https://github.com/boostcamp3-iOS/team-c1/blob/develop/Images/coco-ui-page4.png)
+![page5](https://github.com/boostcamp3-iOS/team-c1/blob/develop/Images/coco-ui-page5.png)
 
 &nbsp;
 ### 와이어 프레임
