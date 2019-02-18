@@ -29,6 +29,7 @@ protocol WordType {
     func removePet(from word: String) -> String
     func removeHTML(from string: String) -> String
     func replaceNewLine(from string: String) -> String
+    func addComma(to string: String) -> String
 }
 
 protocol PaginationType { }

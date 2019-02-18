@@ -35,9 +35,9 @@ class ImageCache {
 
     func remove(forKey key: String, isDisk: Bool) {
         if isDisk {
-            memoryStorage.remove(forKey: key)
-        } else {
             diskStorage.remove(forKey: key)
+        } else {
+            memoryStorage.remove(forKey: key)
         }
     }
 
@@ -51,5 +51,9 @@ class ImageCache {
             return image
         }
         return memoryStorage.retrieve(forKey: key)
+    }
+
+    func getCacheSize() -> Int {
+        return diskStorage.getCacheSize()
     }
 }
