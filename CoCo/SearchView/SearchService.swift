@@ -27,7 +27,7 @@ class SearchService {
     private let algorithmManager: Algorithm
 
     private(set) var recentSearched: String?
-    private(set) var keyword = ["옷", "침대", "샤시미", "방석", "수제 간식", "사료", "간식", "후드", "통조림"]
+    private(set) var keyword = [String]()
     private(set) var colorChips = [UIColor(red: 1.0, green: 189.0 / 255.0, blue: 239.0 / 255.0, alpha: 1.0), UIColor(red: 186.0 / 255.0, green: 166.0 / 255.0, blue: 238.0 / 255.0, alpha: 1.0), UIColor(red: 250.0 / 255.0, green: 165.0 / 255.0, blue: 165.0 / 255.0, alpha: 1.0), UIColor(red: 166.0 / 255.0, green: 183.0 / 255.0, blue: 238.0 / 255.0, alpha: 1.0)]
 
     var dataLists = [MyGoodsData]()
@@ -40,6 +40,7 @@ class SearchService {
         petKeywordCoreDataManager = petCoreData
         networkManager = network
         algorithmManager = algorithm
+        algorithmManager.setPagination(once: 20, maximum: 500)
     }
 
     func getShoppingData(search: String, completion: @escaping (_ isSuccess: Bool, NetworkErrors?) -> Void) {
@@ -118,6 +119,19 @@ class SearchService {
             _ = try self.searchCoreDataManager.insert(searchWord)
         } catch let err {
             print(err)
+        }
+    }
+    func paginations(index: Int, completion: @escaping (_ isSuccess: Bool, NetworkErrors?) -> Void) {
+        algorithmManager.pagination(index: index) { isPaging, itemStart in
+            print(index)
+            if isPaging {
+                self.itemStart = itemStart ?? 0
+                self.getShoppingData(search: self.recentSearched ?? "", completion: { isSuccess, networkError in
+                    completion(isSuccess, networkError)
+                })
+            } else {
+                completion(false, NetworkErrors.noData)
+            }
         }
     }
 }

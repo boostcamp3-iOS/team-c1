@@ -137,7 +137,7 @@ extension DiscoverDetailViewController: UICollectionViewDataSource, UICollection
                     }
                     if isSuccess {
                         DispatchQueue.main.async {
-                            self.layout?.setCellPinterestLayout(indexPathRow: self.pagenationNum - 1)
+                            self.layout?.setCellPinterestLayout(indexPathRow: self.pagenationNum - 1) {}
                             self.collectionView.reloadData()
                             self.pagenationNum += 20
                         }
