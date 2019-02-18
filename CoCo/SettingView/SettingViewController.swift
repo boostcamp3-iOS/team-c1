@@ -19,8 +19,7 @@ class SettingViewController: UIViewController {
     enum segueIdentifier: String {
         case pet = "SettingToPet"
         case keyword = "SettingToKeyword"
-        case cache = "SettingToCache"
-        case privacy = "SettingToPrivacy"
+        case privacy = "SettingToPrivacyPolicy"
         case apiInfo = "SettingToAPI"
     }
 
@@ -42,7 +41,18 @@ class SettingViewController: UIViewController {
      // Pass the selected object to the new view controller.
      }
      */
+    func deleteCache() {
+        let alert = UIAlertController(title: "COCO", message: "정말 캐시 데이터를 지우시겠습니까?", preferredStyle: .alert)
+        let yes = UIAlertAction(title: "Yes", style: .default) { _ in
+            print("캐시 지우기")
+        }
+        let no = UIAlertAction(title: "No", style: .cancel, handler: nil)
 
+        alert.addAction(yes)
+        alert.addAction(no)
+
+        present(alert, animated: true, completion: nil)
+    }
 }
 
 extension SettingViewController: UITableViewDataSource {
@@ -65,6 +75,10 @@ extension SettingViewController: UITableViewDataSource {
         }
         cell.settingTitleLabel.text = settingTitles[indexPath.section][indexPath.row]
 
+        if indexPath.section == 1 {
+            cell.accessoryType = .none
+        }
+        
         return cell
     }
 }
@@ -72,15 +86,26 @@ extension SettingViewController: UITableViewDataSource {
 extension SettingViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-//        switch indexPath.section {
-//        case 0:
+        switch indexPath.section {
+        case 0:
+            //            performSegue(withIdentifier: segueIdentifier.pet.rawValue, sender: <#T##Any?#>)
+            print(indexPath.row)
+        case 1:
+            deleteCache()
+        case 2:
+            //            performSegue(withIdentifier: segueIdentifier.pet.rawValue, sender: <#T##Any?#>)
+            switch indexPath.row {
+            case 0:
+                performSegue(withIdentifier: segueIdentifier.privacy.rawValue, sender: nil)
+            default:
+                print(indexPath.row)
+            }
+            print(indexPath.row)
+
+        default:
 //            performSegue(withIdentifier: segueIdentifier.pet.rawValue, sender: <#T##Any?#>)
-//        case 1:
-//
-//        case 2:
-//
-//        default:
-//
-//    }
+            print(indexPath.row)
+
+        }
     }
 }

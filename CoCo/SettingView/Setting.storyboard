@@ -59,14 +59,23 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="44P-tm-5JZ"/>
                     </view>
-                    <navigationItem key="navigationItem" title="설정" id="Fqb-5x-hp7"/>
+                    <navigationItem key="navigationItem" title="설정" largeTitleDisplayMode="always" id="Fqb-5x-hp7"/>
                     <connections>
                         <outlet property="tableView" destination="t6m-5s-Uze" id="ana-sv-O1v"/>
+                        <segue destination="ehi-Vr-9mF" kind="show" identifier="SettingToPrivacyPolicy" id="R2j-jz-4KZ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uG3-rS-Jhz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="996" y="85.714285714285722"/>
+            <point key="canvasLocation" x="948" y="85.714285714285722"/>
+        </scene>
+        <!--PrivacyPolicy-->
+        <scene sceneID="w6d-BY-xnZ">
+            <objects>
+                <viewControllerPlaceholder storyboardName="PrivacyPolicy" id="ehi-Vr-9mF" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="EPc-rW-3yK" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1864" y="278"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="EK4-8y-kR2">
