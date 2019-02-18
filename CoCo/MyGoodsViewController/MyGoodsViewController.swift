@@ -48,7 +48,7 @@ class MyGoodsViewController: UIViewController {
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.largeTitleDisplayMode = .always
         navigationItem.title = "내 상품"
-        let editButton = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(startEditing))
+        let editButton = UIBarButtonItem(title: "Edit", style: .plain, target: self, action: #selector(startEditing))
         editButton.tintColor = AppColor.purple
         navigationItem.rightBarButtonItem = editButton
     }
@@ -61,6 +61,9 @@ class MyGoodsViewController: UIViewController {
 
     @objc private func startEditing() {
         enableEditing = !enableEditing
+        if let item = navigationItem.rightBarButtonItem {
+            item.title = (enableEditing) ? "Done" : "Edit"
+        }
         tableView.reloadData()
     }
 
@@ -70,7 +73,7 @@ class MyGoodsViewController: UIViewController {
         // 최근 본 상품
         if index < 10, let data = service?.recentGoods[safeIndex: index] {
             service?.deleteRecentGoods(data)
-        // 찜한 목록
+            // 찜한 목록
         } else if let data = service?.favoriteGoods[safeIndex: index - 10] {
             service?.deleteFavoriteGoods(data)
         }
@@ -94,7 +97,10 @@ extension MyGoodsViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return tableView.estimatedRowHeight
+        let cellWidth = Double((view.frame.size.width - 40) / 2)
+        let cellContentHeight: Double = 3 + 35 + 3 + 20 + 5 + 5 + 20 + 5
+        let cellHeight = cellWidth + 10 + 25 + 10 + cellContentHeight + 10 + 5
+        return CGFloat(cellHeight)
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
