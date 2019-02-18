@@ -126,6 +126,8 @@ extension MyGoodsViewController: MyGoodsDataDelegate {
         if let button = sender as? UIButton {
             button.isHidden = !enableEditing
             button.addTarget(self, action: #selector(deleteAction(_:)), for: .touchUpInside)
+        } else if let view = sender as? UIVisualEffectView {
+            view.isHidden = !enableEditing
         }
     }
 }

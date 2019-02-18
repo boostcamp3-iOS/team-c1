@@ -67,6 +67,7 @@ extension MyGoodsTableViewCell: UICollectionViewDelegate, UICollectionViewDataSo
         cell.myGoods = data[safeIndex: indexPath.row]
         cell.deleteButton.tag = tag + indexPath.row
         delegate?.receiveSender(cell.deleteButton)
+        delegate?.receiveSender(cell.deleteButtonBackgroundView)
         return cell
     }
 

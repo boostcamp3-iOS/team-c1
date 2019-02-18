@@ -27,6 +27,7 @@ class GoodsCell: UICollectionViewCell {
     var isEditing: Bool = true {
         didSet {
             deleteButtonBackgroundView.isHidden = !isEditing
+            deleteButtonBackgroundView.isHidden = !isEditing
         }
     }
 
