@@ -35,9 +35,9 @@ class ImageCache {
 
     func remove(forKey key: String, isDisk: Bool) {
         if isDisk {
-            memoryStorage.remove(forKey: key)
-        } else {
             diskStorage.remove(forKey: key)
+        } else {
+            memoryStorage.remove(forKey: key)
         }
     }
 

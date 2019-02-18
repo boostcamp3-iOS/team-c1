@@ -24,6 +24,8 @@ enum DiskStorage {
         }
 
         func store(value: UIImage, forKey key: String) {
+//            var i = 0
+            let newKey = createKey(key)
             diskCacheQueue.async {
                 guard let directoryURL = self.directoryURL else {
                     return
@@ -35,17 +37,22 @@ enum DiskStorage {
                         print(error)
                     }
                 }
-                let filePath = directoryURL.appendingPathComponent(key)
+                let filePath = directoryURL.appendingPathComponent(newKey)
+//                if let imageData = value.pngData() {
+//                    let bytes = imageData.count
+//                    i += bytes
+//                }
                 self.fileManager.createFile(atPath: filePath.path, contents: value.pngData(), attributes: nil)
             }
         }
 
         func remove(forKey key: String) {
+            let newKey = createKey(key)
             diskCacheQueue.async {
                 guard let directoryURL = self.directoryURL else {
                     return
                 }
-                let filePath = directoryURL.appendingPathComponent(key)
+                let filePath = directoryURL.appendingPathComponent(newKey)
                 do {
                     try self.fileManager.removeItem(atPath: filePath.path)
                 } catch let err {
@@ -68,10 +75,11 @@ enum DiskStorage {
         }
 
         func retrieve(forKey key: String) -> UIImage? {
+            let newKey = createKey(key)
             guard let directoryURL = self.directoryURL else {
                 return nil
             }
-            let filePath = directoryURL.appendingPathComponent(key)
+            let filePath = directoryURL.appendingPathComponent(newKey)
             if let image = UIImage(contentsOfFile: filePath.path) {
                 return image
             }
@@ -90,7 +98,16 @@ enum DiskStorage {
             } catch let err {
                 print(err)
             }
+//            let bcf = ByteCountFormatter()
+//            bcf.allowedUnits = [.useMB]
+//            bcf.countStyle = .file
+//            let string = bcf.string(fromByteCount: Int64(fileSize))
+//            print("formatted result: \(string)")
             return fileSize
+        }
+        
+        func createKey(_ key: String) -> String {
+            return key.replacingOccurrences(of: "/", with: "")
         }
     }
 }
