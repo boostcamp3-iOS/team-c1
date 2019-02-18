@@ -22,6 +22,8 @@ class DiscoverViewController: UIViewController {
     var myGoodsCoreDataManager = MyGoodsCoreDataManager()
     var searchWordCoreDataManager = SearchWordCoreDataManager()
     var petKeywordCoreDataManager = PetKeywordCoreDataManager()
+    var isInserting = false
+    var layout: PinterestLayout?
 
     // 둘러보기
     override func viewDidLoad() {
@@ -29,6 +31,8 @@ class DiscoverViewController: UIViewController {
         setupCollctionView()
         setupHeader()
         petkeyWordCoreDataPrint()
+        layout = collectionView.collectionViewLayout as? PinterestLayout
+        layout?.delegate = self
         loadData()
     }
 
@@ -48,9 +52,6 @@ class DiscoverViewController: UIViewController {
         collectionView.register(UINib(nibName: "GoodsCell", bundle: nil), forCellWithReuseIdentifier: goodsIdentifier)
         collectionView.contentInset = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
         collectionView.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-        if let layout = collectionView.collectionViewLayout as? PinterestLayout {
-            layout.delegate = self
-        }
     }
 
     func loadData() {
@@ -64,16 +65,16 @@ class DiscoverViewController: UIViewController {
         discoverService.fetchSearchWord()
         discoverService.fetchMyGoods()
         discoverService.mixedWord()
-        discoverService.request { (isSuccess, _) in
-            if isSuccess {
-                DispatchQueue.main.async { [weak self] in
-                    guard let self = self else {
-                        return
-                    }
-                    self.collectionView.reloadData()
-                }
-            }
-        }
+//        discoverService.request { (isSuccess, _) in
+//            if isSuccess {
+//                DispatchQueue.main.async { [weak self] in
+//                    guard let self = self else {
+//                        return
+//                    }
+//                    self.collectionView.reloadData()
+//                }
+//            }
+//        }
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -98,6 +99,7 @@ extension DiscoverViewController: UICollectionViewDelegate, UICollectionViewData
         guard  let discoverService = discoverService else {
             return 0
         }
+        print("DC: \(discoverService.fetchedMyGoods.count)")
         return discoverService.fetchedMyGoods.count
     }
 
@@ -126,6 +128,28 @@ extension DiscoverViewController: UICollectionViewDelegate, UICollectionViewData
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let myGoodsData = discoverService?.fetchedMyGoods[indexPath.item]
         self.performSegue(withIdentifier: toWebSegue, sender: indexPath)
+    }
+
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        print(scrollView.contentOffset.y >= (scrollView.contentSize.height - scrollView.frame.size.height) - 50)
+        if (scrollView.contentOffset.y >= (scrollView.contentSize.height - scrollView.frame.size.height) - 50) {
+            if !isInserting {
+                isInserting = true
+                discoverService?.request(completion: { [weak self]
+                    (isSuccess, _) in
+                    guard let self = self else {
+                        return
+                    }
+                    if isSuccess {
+                        DispatchQueue.main.async {
+                            self.layout?.setCellPinterestLayout(indexPathRow: 0)
+                            self.collectionView.reloadData()
+                        }
+                        self.isInserting = false
+                    }
+                })
+            }
+        }
     }
 }
 

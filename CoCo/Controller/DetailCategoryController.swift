@@ -82,9 +82,9 @@ class DetailCategoryController: UICollectionReusableView {
         self.addSubview(sortButton)
         NSLayoutConstraint.activate([
             sortButton.topAnchor.constraint(equalTo: collectionView.bottomAnchor, constant: 20),
-            sortButton.widthAnchor.constraint(equalToConstant: 40),
-            sortButton.heightAnchor.constraint(equalToConstant: 20),
-            sortButton.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -10)
+            sortButton.widthAnchor.constraint(equalToConstant: 25),
+            sortButton.heightAnchor.constraint(equalToConstant: 25),
+            sortButton.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -8)
             ])
     }
 

@@ -29,6 +29,7 @@ class DiscoverService {
     private var recommandGoods = [String]()
     private var myGoods = [MyGoodsData]()
     private var searches = [String]()
+    private var mixedletSearches = [String]()
     private var keyword: PetKeywordData?
     var fetchedMyGoods = [MyGoodsData]()
     var pageNumber = 1
@@ -100,30 +101,27 @@ class DiscoverService {
         guard let keyword = keyword else {
             return []
         }
-        let result = algorithmManagerType?.makeRequestSearchWords(with: [], words: [], petKeyword: keyword, count: 4)
-        guard let mixedResult = result else {
+        guard let algorithmManagerType = algorithmManagerType else {
             return []
         }
+        let result = algorithmManagerType.makeRequestSearchWords(with: [], words: [], petKeyword: keyword, count: 4)
+        let mixedResult = result
         recommandGoods = mixedResult
+        mixedletSearches = algorithmManagerType.combinePet(self.pet, and: recommandGoods)
         return mixedResult
     }
 
     // 5) 네트워트에서 섞은 검색어 Request
     func request(completion: @escaping (Bool, Error?) -> Void) {
-        guard let algorithmManagerType = algorithmManagerType else {
+        guard let search = mixedletSearches.popLast() else {
             return
         }
-        let searches = algorithmManagerType.combinePet(self.pet, and: recommandGoods)
-        let group = DispatchGroup()
-        let queue = DispatchQueue.global()
-        for search in searches {
-            group.enter()
-            let param = ShoppingParams(search: search, count: 20, start: 1, sort: .similar)
-            queue.async { [weak self] in
-                guard let self = self else {
-                    return
-                }
-                self.networkManagerType?.getAPIData(param, completion: { (datas) in
+        let param = ShoppingParams(search: search, count: 20, start: 1, sort: .similar)
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else {
+                return
+            }
+            self.networkManagerType?.getAPIData(param, completion: { (datas) in
                     if datas.items.isEmpty {
                         completion(false, nil)
                     }
@@ -133,17 +131,13 @@ class DiscoverService {
                             return
                         }
                         self.fetchedMyGoods.append(shopItemToMyGoods)
+                        print(self.fetchedMyGoods)
                     }
-                    group.leave()
-                }, errorHandler: { (error) in
-                    group.leave()
-                    completion(false, error)
-                    print(error)
-                })
-            }
-        }
-        group.notify(queue: queue) {
-            completion(true, nil)
+                completion(true, nil)
+            }, errorHandler: { (error) in
+                completion(false, error)
+                print(error)
+            })
         }
     }
 
@@ -183,14 +177,15 @@ class DiscoverService {
 
     private func shopItemToMyGoods(item: ShoppingItem, searchWord: String) -> MyGoodsData? {
         print(item.title)
-        guard let title = algorithmManagerType?.makeCleanTitle(item.title, isReplacing: true) else {
+        guard let algorithmManagerType = algorithmManagerType else {
             return nil
         }
+        let title = algorithmManagerType.makeCleanTitle(item.title, isReplacing: true)
         var mallName = item.mallName
         if item.mallName == "네이버" {
             mallName = "네이버쇼핑"
         }
-        print(title)
-        return MyGoodsData(pet: pet.rawValue, title: title, link: item.link, image: item.image, isFavorite: false, isLatest: false, price: item.lprice, productID: item.productId, searchWord: searchWord, shoppingmall: mallName)
+        let price = algorithmManagerType.addComma(to: item.lprice)
+        return MyGoodsData(pet: pet.rawValue, title: title, link: item.link, image: item.image, isFavorite: false, isLatest: false, price: price, productID: item.productId, searchWord: searchWord, shoppingmall: mallName)
     }
 }
