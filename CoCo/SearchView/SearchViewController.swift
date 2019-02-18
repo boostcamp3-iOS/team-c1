@@ -20,15 +20,6 @@ class SearchViewController: UIViewController {
     enum CellIdentifier: String {
         case searchKeyword = "SearchKeywordCell"
         case goods = "GoodsCell"
-
-        var layout: UICollectionViewLayout {
-            switch self {
-            case .searchKeyword:
-                return CenterAlignedCollectionViewFlowLayout()
-            case .goods:
-                return PinterestLayout()
-            }
-        }
     }
 
     // MARK: - Private Properties
@@ -36,6 +27,9 @@ class SearchViewController: UIViewController {
 
     // MARK: - Properties
     weak var delegate: SearchViewControllerDelegate?
+    var pinterestLayout = PinterestLayout()
+    var centerAlignLayout = CenterAlignedCollectionViewFlowLayout()
+    var isInserting = false
 
     let searchService = SearchService(serachCoreData: SearchWordCoreDataManager(),
                                       petCoreData: PetKeywordCoreDataManager(),
@@ -52,8 +46,8 @@ class SearchViewController: UIViewController {
         searchService.fetchRecommandSearchWord {
             self.collectionView.reloadData()
         }
-//        petkeyWordCoreDataPrint()
-        collectionView.collectionViewLayout = cellIdentifier.layout
+        //        petkeyWordCoreDataPrint()
+        collectionView.collectionViewLayout = centerAlignLayout
 
         collectionView.register(UINib(nibName: "GoodsCell", bundle: nil), forCellWithReuseIdentifier: CellIdentifier.goods.rawValue)
 
@@ -136,13 +130,13 @@ class SearchViewController: UIViewController {
             self.collectionView.reloadData()
             self.activityIndicator.stopAnimating()
             if cell == .goods {
-                let layout = PinterestLayout()
-                layout.delegate = self
-                self.collectionView.setCollectionViewLayout(layout, animated: false)
+                self.pinterestLayout = PinterestLayout()
+                self.pinterestLayout.delegate = self
+                self.collectionView.setCollectionViewLayout(self.pinterestLayout, animated: false)
                 self.collectionView.collectionViewLayout.invalidateLayout()
             } else {
-                let layout = CenterAlignedCollectionViewFlowLayout()
-                self.collectionView.setCollectionViewLayout(layout, animated: false)
+                self.centerAlignLayout = CenterAlignedCollectionViewFlowLayout()
+                self.collectionView.setCollectionViewLayout(self.centerAlignLayout, animated: false)
                 self.collectionView.collectionViewLayout.invalidateLayout()
             }
         }
@@ -191,6 +185,7 @@ extension SearchViewController: UICollectionViewDataSource {
                 return UICollectionViewCell()
             }
             cell.myGoods = searchService.dataLists[indexPath.row]
+            cell.isLike = false
             cell.isEditing = false
             return cell
         }
@@ -222,7 +217,51 @@ extension SearchViewController: UICollectionViewDelegate {
     // SrcollDelegate
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         view.endEditing(true)
+//        let scrollPosition = scrollView.contentSize.height - scrollView.frame.size.height - scrollView.contentOffset.y
+//        if scrollPosition > 0 && scrollPosition < scrollView.contentSize.height * 0.2 {
+//            print("askdflksahkfhsakdfhks")
+//
+//            if !isInserting {
+//                isInserting = true
+//                searchService.getShoppingData(search: searchService.recentSearched ?? "") { [weak self] (isSuccess, _) in
+//                    guard let self = self else {
+//                        return
+//                    }
+//                    if isSuccess {
+//                        DispatchQueue.main.async {
+//                            self.pinterestLayout.setCellPinterestLayout(indexPathRow: self.searchService.itemStart - 1) {
+//                                print(">>>>>\(self.searchService.itemStart)")
+//                                self.searchService.itemStart += 20
+//                                self.collectionView.reloadData()
+//                            }
+//                        }
+//                        self.isInserting = false
+//                    } else {
+//                        print("askdflksahkfhsakdfhksahfkhkdshfsdhafhaish")
+//                    }
+//                }
+//            }
+//        }
+
     }
+
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if cellIdentifier == .goods {
+            searchService.paginations(index: indexPath.row) { isSuccess, err in
+                if isSuccess {
+                    DispatchQueue.main.async {
+                        self.pinterestLayout.setCellPinterestLayout(indexPathRow: self.searchService.itemStart) {
+                            self.searchService.itemStart += 20
+                        }
+                        self.collectionView.reloadData()
+                    }
+                } else {
+                    print(err)
+                }
+            }
+        }
+    }
+
 }
 
 extension SearchViewController: UICollectionViewDelegateFlowLayout {
@@ -247,6 +286,16 @@ extension SearchViewController: UICollectionViewDelegateFlowLayout {
             return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         }
 
+    }
+}
+
+extension SearchViewController: UICollectionViewDataSourcePrefetching {
+
+    func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
+        indexPaths.forEach { indexPath in
+            let url = searchService.dataLists[indexPath.row].image
+            ImageManager.shared.cacheImage(url: url, isDisk: false) {_ in}
+        }
     }
 }
 
