@@ -12,9 +12,9 @@ enum DiskStorage {
     class DiskCache: CacheStorage {
 
         let fileManager = FileManager()
+        let diskCacheQueue: DispatchQueue
 
         var directoryURL: URL?
-        let diskCacheQueue: DispatchQueue
 
         init(name: String) {
             if let path = fileManager.urls(for: .cachesDirectory, in: .userDomainMask).first {
@@ -78,5 +78,19 @@ enum DiskStorage {
             return nil
         }
 
+        func getCacheSize() -> Int {
+            guard let directoryURL = self.directoryURL else {
+                return 0
+            }
+            var fileSize = 0
+            let path = directoryURL.path
+            do {
+                let attribute = try fileManager.attributesOfItem(atPath: path)
+                fileSize = attribute[FileAttributeKey.size] as? Int ?? 0
+            } catch let err {
+                print(err)
+            }
+            return fileSize
+        }
     }
 }

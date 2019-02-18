@@ -52,4 +52,8 @@ class ImageCache {
         }
         return memoryStorage.retrieve(forKey: key)
     }
+
+    func getCacheSize() -> Int {
+        return diskStorage.getCacheSize()
+    }
 }
