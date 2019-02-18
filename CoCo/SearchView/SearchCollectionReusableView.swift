@@ -28,6 +28,10 @@ class SearchCollectionReusableView: UICollectionReusableView {
         super.awakeFromNib()
         searchBar.delegate = self
 
+        let buttonImage = UIImage(named: "list")?.withRenderingMode(.alwaysTemplate)
+        sortButton.setImage(buttonImage, for: .normal)
+        sortButton.tintColor = #colorLiteral(red: 0.631372549, green: 0.4901960784, blue: 1, alpha: 1)
+
         // 서치바 폰트 조절하기
 //        let textFieldInsideUISearchBar = searchBar.value(forKey: "searchField") as? UITextField
 //        textFieldInsideUISearchBar?.font = textFieldInsideUISearchBar?.font?.

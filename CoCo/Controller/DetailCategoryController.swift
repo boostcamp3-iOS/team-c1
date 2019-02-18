@@ -20,11 +20,10 @@ class DetailCategoryController: UICollectionReusableView {
     lazy var sortButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("정렬", for: .normal)
-        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
-        button.titleLabel?.textColor = UIColor.black
-        button.backgroundColor = UIColor.red
         button.addTarget(self, action: #selector(handleSort), for: .touchUpInside)
+        let buttonImage = UIImage(named: "list")?.withRenderingMode(.alwaysTemplate)
+        button.setImage(buttonImage, for: .normal)
+        button.tintColor = #colorLiteral(red: 0.631372549, green: 0.4901960784, blue: 1, alpha: 1)
         return button
     }()
     lazy var collectionView: UICollectionView = {

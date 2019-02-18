@@ -19,7 +19,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="1GP-jN-mBX">
-                                <rect key="frame" x="0.0" y="44" width="375" height="734"/>
+                                <rect key="frame" x="0.0" y="44" width="375" height="685"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="MIL-3W-cCH">
                                     <size key="itemSize" width="50" height="32"/>
@@ -108,9 +108,13 @@
                                                 <constraint firstItem="fUH-ht-poe" firstAttribute="top" secondItem="x4q-8K-G73" secondAttribute="top" constant="48" id="yx4-qH-O1J"/>
                                             </constraints>
                                         </view>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cfI-Uh-UBS">
-                                            <rect key="frame" x="321" y="188" width="46" height="30"/>
-                                            <state key="normal" title="Button"/>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cfI-Uh-UBS">
+                                            <rect key="frame" x="342" y="188" width="25" height="25"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="25" id="Mor-70-UFq"/>
+                                                <constraint firstAttribute="width" secondItem="cfI-Uh-UBS" secondAttribute="height" id="qEy-z7-53G"/>
+                                            </constraints>
+                                            <state key="normal" image="list"/>
                                             <connections>
                                                 <action selector="actionChangeSortRule:" destination="9e5-SG-Va7" eventType="touchUpInside" id="KTc-fr-FRk"/>
                                             </connections>
@@ -133,7 +137,7 @@
                                 </connections>
                             </collectionView>
                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="TBE-jo-36k">
-                                <rect key="frame" x="177.66666666666666" y="401" width="20" height="20"/>
+                                <rect key="frame" x="177.66666666666666" y="376.66666666666669" width="20" height="20"/>
                             </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -172,11 +176,13 @@
             </objects>
             <point key="canvasLocation" x="4411" y="132"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--검색-->
         <scene sceneID="34k-U2-weE">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="Dci-dC-09d" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="검색" image="search" id="n0U-6f-Iah"/>
                     <toolbarItems/>
+                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="qZ2-3k-5b6">
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -190,4 +196,8 @@
             <point key="canvasLocation" x="2669.5999999999999" y="131.52709359605913"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="list" width="60" height="60"/>
+        <image name="search" width="60" height="60"/>
+    </resources>
 </document>

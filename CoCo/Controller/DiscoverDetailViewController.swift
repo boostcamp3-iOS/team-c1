@@ -42,6 +42,7 @@ class DiscoverDetailViewController: UIViewController {
         layout?.delegate = self
         loadData()
         print("viewdid")
+
     }
 
     override func viewWillAppear(_ animated: Bool) {

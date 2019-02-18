@@ -105,7 +105,7 @@ enum DiskStorage {
 //            print("formatted result: \(string)")
             return fileSize
         }
-        
+
         func createKey(_ key: String) -> String {
             return key.replacingOccurrences(of: "/", with: "")
         }

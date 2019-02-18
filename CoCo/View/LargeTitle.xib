@@ -16,16 +16,13 @@
             <rect key="frame" x="0.0" y="0.0" width="353" height="136"/>
             <subviews>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="둘러보기" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cDh-WX-lBC">
-                    <rect key="frame" x="16" y="48" width="111" height="43"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="43" id="PRh-vu-LrS"/>
-                    </constraints>
+                    <rect key="frame" x="1" y="47" width="111" height="39"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="32"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="다양한 제품을 탐색해보세요" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Lq-5u-geg">
-                    <rect key="frame" x="16" y="97" width="185" height="21"/>
+                    <rect key="frame" x="1" y="92" width="185" height="21"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="21" id="Tt5-St-xig"/>
                     </constraints>
@@ -35,8 +32,8 @@
                 </label>
             </subviews>
             <constraints>
-                <constraint firstItem="cDh-WX-lBC" firstAttribute="top" secondItem="apc-kL-zkr" secondAttribute="top" constant="48" id="Bd5-b3-Nsy"/>
-                <constraint firstItem="cDh-WX-lBC" firstAttribute="leading" secondItem="apc-kL-zkr" secondAttribute="leading" constant="16" id="Ydi-mH-5oS"/>
+                <constraint firstItem="cDh-WX-lBC" firstAttribute="top" secondItem="apc-kL-zkr" secondAttribute="top" constant="47" id="Bd5-b3-Nsy"/>
+                <constraint firstItem="cDh-WX-lBC" firstAttribute="leading" secondItem="apc-kL-zkr" secondAttribute="leading" constant="1" id="Ydi-mH-5oS"/>
                 <constraint firstItem="4Lq-5u-geg" firstAttribute="top" secondItem="cDh-WX-lBC" secondAttribute="bottom" constant="6" id="n9X-Nx-7l8"/>
                 <constraint firstItem="4Lq-5u-geg" firstAttribute="leading" secondItem="cDh-WX-lBC" secondAttribute="leading" id="nRU-Za-Thq"/>
             </constraints>
