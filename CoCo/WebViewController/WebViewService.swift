@@ -48,6 +48,14 @@ class WebViewService {
         return false
     }
 
+    func fetchData() {
+        if let data = manager.fetchProductID(productID: myGoodsData.productID) {
+            var newData = MyGoodsData()
+            newData.mappinng(from: data)
+            myGoodsData = newData
+        }
+    }
+
     func updateFavorite(_ isFavorite: Bool) {
         myGoodsData.isFavorite = isFavorite
         // 이미 같은 productID의 상품이 존재한다면 manager 내부에서 update를 호출함

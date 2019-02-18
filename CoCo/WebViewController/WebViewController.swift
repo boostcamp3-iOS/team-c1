@@ -32,7 +32,7 @@ class WebViewController: UIViewController {
     // MARK: - View lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        guard let myGoodsData = service?.myGoodsData else {
+        guard let _ = service?.myGoodsData else {
             let message = getErrorMessage(MyGoodsDataError.lostData)
             alert(message) { [weak self] in
                 guard let self = self else {
@@ -42,8 +42,6 @@ class WebViewController: UIViewController {
             }
             return
         }
-        isFavorite = myGoodsData.isFavorite
-
         setWebView()
         setNavigationBar()
         setProgressView()
@@ -51,7 +49,11 @@ class WebViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        service?.fetchData()
         service?.insert()
+        if let favorite = service?.myGoodsData.isFavorite {
+            isFavorite = favorite
+        }
         setFavoriteButton()
         tabBarController?.tabBar.isHidden = true
     }
