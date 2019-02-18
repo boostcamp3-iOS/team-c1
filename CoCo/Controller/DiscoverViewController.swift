@@ -39,6 +39,7 @@ class DiscoverViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: false)
+        tabBarController?.tabBar.isHidden = false
     }
 
     func setupHeader() {
@@ -65,16 +66,6 @@ class DiscoverViewController: UIViewController {
         discoverService.fetchSearchWord()
         discoverService.fetchMyGoods()
         discoverService.mixedWord()
-//        discoverService.request { (isSuccess, _) in
-//            if isSuccess {
-//                DispatchQueue.main.async { [weak self] in
-//                    guard let self = self else {
-//                        return
-//                    }
-//                    self.collectionView.reloadData()
-//                }
-//            }
-//        }
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

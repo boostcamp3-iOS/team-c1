@@ -60,7 +60,8 @@ class SearchService {
                 }
                 for goods in data.items {
                     let title = self.algorithmManager.removeHTML(from: goods.title)
-                    self.dataLists.append(MyGoodsData(pet: Pet.dog.rawValue, title: title, link: goods.link, image: goods.image, isFavorite: false, isLatest: true, price: goods.lprice, productID: goods.productId, searchWord: search, shoppingmall: goods.mallName))
+                    let price = self.algorithmManager.addComma(to: goods.lprice)
+                    self.dataLists.append(MyGoodsData(pet: Pet.dog.rawValue, title: title, link: goods.link, image: goods.image, isFavorite: false, isLatest: true, price: price, productID: goods.productId, searchWord: search, shoppingmall: goods.mallName))
                 }
                 completion(true, nil)
             }) {_ in completion(false, NetworkErrors.badInput)}
