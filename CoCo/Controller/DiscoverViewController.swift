@@ -142,7 +142,7 @@ extension DiscoverViewController: UICollectionViewDelegate, UICollectionViewData
                     }
                     if isSuccess {
                         DispatchQueue.main.async {
-                            self.layout?.setCellPinterestLayout(indexPathRow: 0)
+                            self.layout?.setCellPinterestLayout(indexPathRow: 0) {}
                             self.collectionView.reloadData()
                         }
                         self.isInserting = false
