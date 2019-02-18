@@ -64,7 +64,8 @@ class DiscoverDetailService {
                     if goods.mallName == "네이버" {
                         mallName = "네이버쇼핑"
                     }
-                    self.dataLists.append(MyGoodsData(pet: Pet.dog.rawValue, title: title, link: goods.link, image: goods.image, isFavorite: false, isLatest: true, price: goods.lprice, productID: goods.productId, searchWord: search, shoppingmall: mallName))
+                    let price = self.algorithmManager.addComma(to: goods.lprice)
+                    self.dataLists.append(MyGoodsData(pet: Pet.dog.rawValue, title: title, link: goods.link, image: goods.image, isFavorite: false, isLatest: true, price: price, productID: goods.productId, searchWord: search, shoppingmall: mallName))
                 }
                 completion(true, nil)
             }) {_ in completion(false, NetworkErrors.badInput)}

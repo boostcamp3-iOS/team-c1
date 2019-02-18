@@ -34,6 +34,7 @@ class DiscoverDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationController?.setNavigationBarHidden(false, animated: false)
+        tabBarController?.tabBar.isHidden = true
         navigationItem.title = "CoCo"
         navigationItem.largeTitleDisplayMode = .never
         setupHeader()
@@ -161,7 +162,7 @@ extension DiscoverDetailViewController: PinterestLayoutDelegate {
     }
 
     func headerFlexibleHeight(inCollectionView collectionView: UICollectionView, withLayout layout: UICollectionViewLayout, fixedDimension: CGFloat) -> CGFloat {
-        return 80
+        return 90
     }
 
     func sortChanged(sort: SortOption) {
