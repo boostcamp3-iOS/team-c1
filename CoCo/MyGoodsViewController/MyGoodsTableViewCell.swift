@@ -66,6 +66,8 @@ extension MyGoodsTableViewCell: UICollectionViewDelegate, UICollectionViewDataSo
         }
         cell.myGoods = data[safeIndex: indexPath.row]
         cell.deleteButton.tag = tag + indexPath.row
+        cell.goodsTitleLabel.numberOfLines = 1
+        cell.goodsTitleLabel.lineBreakMode = .byTruncatingTail
         delegate?.receiveSender(cell.deleteButton)
         delegate?.receiveSender(cell.deleteButtonBackgroundView)
         return cell
@@ -83,7 +85,8 @@ extension MyGoodsTableViewCell: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         // tableView leading(15) + trailing(15) + cell 사이 간격(10) = 40 / 보여지는 셀은 두 개(2)
         let cellWidth = Double((frame.size.width - 40) / 2)
-        let cellHeight = cellWidth * 1.22
+        let cellContentHeight: Double = 3 + 35 + 3 + 20 + 5 + 5 + 20 + 5
+        let cellHeight = cellWidth + cellContentHeight
         return CGSize(width: cellWidth, height: cellHeight)
     }
 }
