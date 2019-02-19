@@ -262,7 +262,6 @@ extension Algorithm {
         maximumIndex = maximum
         startIndex = onceIndex - 1
     }
-
     /**
      상품 추천 페이지네이션 설정 메서드, 둘러보기(상품 추천) 페이지에서 사용한다.
      - Author: [최영준](https://github.com/0jun0815)
