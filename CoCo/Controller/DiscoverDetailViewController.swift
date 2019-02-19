@@ -11,45 +11,43 @@ import UIKit
 class DiscoverDetailViewController: UIViewController {
 
     private let goodsIdentifier = "GoodsCell"
-    let searchWorCoreDataManager = SearchWordCoreDataManager()
-    let petKeywordCoreDataManager = PetKeywordCoreDataManager()
-    let networkManager = ShoppingNetworkManager.shared
-    let algorithmManager = Algorithm()
-    let collectionView: UICollectionView = {
+    private let searchWorCoreDataManager = SearchWordCoreDataManager()
+    private let petKeywordCoreDataManager = PetKeywordCoreDataManager()
+    private let networkManager = ShoppingNetworkManager.shared
+    private let algorithmManager = Algorithm()
+    private let collectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: CGRect(), collectionViewLayout: PinterestLayout())
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.backgroundColor = .white
         return collectionView
     }()
-    var discoverDetailService: DiscoverDetailService?
-    var goodsList = [MyGoodsData]()
-    var searchWord = ""
+    fileprivate var discoverDetailService: DiscoverDetailService?
+    fileprivate var searchWord = ""
+    fileprivate var layout: PinterestLayout?
+    fileprivate var isInserting = false
+    fileprivate var pagenationNum = 1
+    fileprivate var headerSize: CGFloat = 90
     var category: Category?
     var pet: Pet?
-    var layout: PinterestLayout?
-    var isInserting = false
-    var pagenationNum = 1
 
     // 카테고리디테일
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationController?.setNavigationBarHidden(false, animated: false)
-        tabBarController?.tabBar.isHidden = true
-        navigationItem.title = "CoCo"
-        navigationItem.largeTitleDisplayMode = .never
+        setupNavigationView()
         setupHeader()
         setupCollctionView()
-        layout = collectionView.collectionViewLayout as? PinterestLayout
-        layout?.delegate = self
         loadData()
-        print("viewdid")
-
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        print("reload")
+    }
 
+    func setupNavigationView() {
+        navigationController?.setNavigationBarHidden(false, animated: false)
+        tabBarController?.tabBar.isHidden = true
+        navigationItem.title = "CoCo"
+        navigationItem.largeTitleDisplayMode = .never
     }
 
     func setupCollctionView() {
@@ -67,6 +65,8 @@ class DiscoverDetailViewController: UIViewController {
             collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
             ])
+        layout = collectionView.collectionViewLayout as? PinterestLayout
+        layout?.delegate = self
     }
 
     func setupHeader() {
@@ -78,11 +78,29 @@ class DiscoverDetailViewController: UIViewController {
         guard let pet = pet else {
             return
         }
-        discoverDetailService?.setPet(pet: pet)
         guard let search = category?.getData(pet: pet).first else {
             return
         }
+        discoverDetailService?.setPet(pet: pet)
         searchWord = search
+
+        if !isInserting {
+            isInserting = true
+            discoverDetailService?.getShoppingData(start: pagenationNum, search: searchWord, completion: { [weak self]
+                (isSuccess, _) in
+                guard let self = self else {
+                    return
+                }
+                if isSuccess {
+                    DispatchQueue.main.async {
+                        self.layout?.setCellPinterestLayout(indexPathRow: self.pagenationNum - 1)
+                        self.collectionView.reloadData()
+                        self.pagenationNum += 20
+                    }
+                    self.isInserting = false
+                }
+            })
+        }
     }
 }
 
@@ -126,8 +144,9 @@ extension DiscoverDetailViewController: UICollectionViewDataSource, UICollection
         navigationController?.pushViewController(webViewController, animated: true)
     }
 
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         print(scrollView.contentOffset.y >= (scrollView.contentSize.height - scrollView.frame.size.height) - 50)
+        print(collectionView.contentOffset.y)
         if (scrollView.contentOffset.y >= (scrollView.contentSize.height - scrollView.frame.size.height) - 50) {
             if !isInserting {
                 isInserting = true
@@ -162,7 +181,7 @@ extension DiscoverDetailViewController: PinterestLayoutDelegate {
     }
 
     func headerFlexibleHeight(inCollectionView collectionView: UICollectionView, withLayout layout: UICollectionViewLayout, fixedDimension: CGFloat) -> CGFloat {
-        return 90
+        return self.headerSize
     }
 
     func sortChanged(sort: SortOption) {
@@ -211,11 +230,9 @@ extension DiscoverDetailViewController: DetailCategoryControllerDelegate {
     }
 
     func showGoods(indexPath: IndexPath, pet: Pet, detailCategory: String) {
-        print(detailCategory)
         searchWord = detailCategory
         pagenationNum = 1
         discoverDetailService?.dataLists.removeAll()
-        print("remove listCount - \(discoverDetailService?.dataLists.count)")
         discoverDetailService?.getShoppingData(start: 1, search: detailCategory) { [weak self] (isSuccess, _) in
             if isSuccess {
                 DispatchQueue.main.async { [weak self] in

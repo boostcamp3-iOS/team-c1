@@ -7,24 +7,13 @@
 //
 import Foundation
 
-/*
- 1. 추천상품 보여주기
- (1) 코어데이터에서 최근본 상품, 찜상품 가져오기
- (2) 코어데이터에서 최근검색 가져오기
- (3) 펫키워드 가져오기
- (4) 알고리즘으로 최근검색 키워드 섞기
- (5) 네트워트에서 섞은 검색어 Request
- (6) 네트워크에서 추천 데이터 가져오기
- (7) 알고리즘에서 가져온 쇼핑목록들 섞고 배열에 넣기
- */
 class DiscoverService {
     // MARK: - Propertise
     private let networkManagerType: NetworkManagerType?
     private let algorithmManagerType: AlgorithmType?
     private let petKeywordCoreDataManagerType: PetKeywordCoreDataManagerType?
     private let searchWordDoreDataManagerType: SearchWordCoreDataManagerType?
-    private let myGoodsCoreDataType: MyGoodsCoreDataManagerType?
-    private var pet = Pet.cat
+    private let myGoodsCoreDataManagerType: MyGoodsCoreDataManagerType?
 
     private var recommandGoods = [String]()
     private var myGoods = [MyGoodsData]()
@@ -33,23 +22,43 @@ class DiscoverService {
     private var keyword: PetKeywordData?
     var fetchedMyGoods = [MyGoodsData]()
     var pageNumber = 1
+    var pet = Pet.dog
 
     // MARK: - Initialize
-    init(networkManagerType: NetworkManagerType? = nil, algorithmManagerType: AlgorithmType? = nil, searchWordDoreDataManagerType: SearchWordCoreDataManagerType? = nil, myGoodsCoreDataType: MyGoodsCoreDataManagerType? = nil, petKeywordCoreDataManagerType: PetKeywordCoreDataManagerType? = nil) {
+    init(networkManagerType: NetworkManagerType? = nil, algorithmManagerType: AlgorithmType? = nil, searchWordDoreDataManagerType: SearchWordCoreDataManagerType? = nil, myGoodsCoreDataManagerType: MyGoodsCoreDataManagerType? = nil, petKeywordCoreDataManagerType: PetKeywordCoreDataManagerType? = nil) {
         self.networkManagerType = networkManagerType
         self.algorithmManagerType = algorithmManagerType
         self.searchWordDoreDataManagerType = searchWordDoreDataManagerType
-        self.myGoodsCoreDataType = myGoodsCoreDataType
+        self.myGoodsCoreDataManagerType = myGoodsCoreDataManagerType
         self.petKeywordCoreDataManagerType = petKeywordCoreDataManagerType
     }
 
-    //(1) 코어데이터에서 최근본 상품, 찜상품 가져오기
+    // (1)코어데이터에서 펫정보 가져오기
+    @discardableResult func fetchPet() {
+        guard  let petKeywordCoreDataManagerType = petKeywordCoreDataManagerType else {
+            return
+        }
+
+        do {
+            let pet = try petKeywordCoreDataManagerType.fetchOnlyPet()
+            if pet == "강아지" {
+                PetDefault.shared.pet = .dog
+            } else {
+                PetDefault.shared.pet = .cat
+            }
+        } catch let error {
+            print("Fail fetch pet: \(error)")
+        }
+    }
+
+    // (2) 코어데이터에서 최근본 상품, 찜상품 가져오기
     @discardableResult func fetchMyGoods() -> [MyGoodsData] {
-        guard let myGoodsCoreDataType = self.myGoodsCoreDataType else {
+        guard let myGoodsCoreDataManagerType = self.myGoodsCoreDataManagerType else {
             return []
         }
+
         do {
-            guard let result = try myGoodsCoreDataType.fetchObjects(pet: pet.rawValue) as? [MyGoodsData] else {
+            guard let result = try myGoodsCoreDataManagerType.fetchObjects(pet: PetDefault.shared.pet.rawValue) as? [MyGoodsData] else {
                 return []
             }
             myGoods = result
@@ -60,13 +69,13 @@ class DiscoverService {
         return []
     }
 
-    // (2) 코어데이터에서 최근검색 가져오기
+    // (3) 코어데이터에서 최근검색 가져오기
     @discardableResult func fetchSearchWord() -> [String] {
         guard let searchWordDoreDataManagerType = self.searchWordDoreDataManagerType else {
             return []
         }
         do {
-            guard let result = try searchWordDoreDataManagerType.fetchOnlySearchWord(pet: self.pet.rawValue) else {
+            guard let result = try searchWordDoreDataManagerType.fetchOnlySearchWord(pet: PetDefault.shared.pet.rawValue) else {
                 return []
             }
             searches = result
@@ -77,14 +86,14 @@ class DiscoverService {
         }
     }
 
-    // (3) 펫키워드 가져오기
+    // (4) 펫키워드 가져오기
     @discardableResult func fetchPetKeywords() -> PetKeywordData? {
         guard let petKeywordCoreDataManagerType =  self.petKeywordCoreDataManagerType else {
             return nil
         }
         do {
 
-            guard let keywords = try petKeywordCoreDataManagerType.fetchObjects(pet: self.pet.rawValue) as? [PetKeywordData] else {
+            guard let keywords = try petKeywordCoreDataManagerType.fetchObjects(pet: PetDefault.shared.pet.rawValue) as? [PetKeywordData] else {
                 return nil
             }
             let result = keywords.first
@@ -96,7 +105,7 @@ class DiscoverService {
         }
     }
 
-    // (4) 알고리즘으로 최근검색 키워드 섞기
+    // (5) 알고리즘으로 최근검색 키워드 섞기
     @discardableResult func mixedWord() -> [String] {
         guard let keyword = keyword else {
             return []
@@ -107,11 +116,11 @@ class DiscoverService {
         let result = algorithmManagerType.makeRequestSearchWords(with: [], words: [], petKeyword: keyword, count: 4)
         let mixedResult = result
         recommandGoods = mixedResult
-        mixedletSearches = algorithmManagerType.combinePet(self.pet, and: recommandGoods)
+        mixedletSearches = algorithmManagerType.combinePet(PetDefault.shared.pet, and: recommandGoods)
         return mixedResult
     }
 
-    // 5) 네트워트에서 섞은 검색어 Request
+    // (6) 네트워트에서 섞은 검색어 Request
     func request(completion: @escaping (Bool, Error?) -> Void) {
         guard let search = mixedletSearches.popLast() else {
             return
@@ -126,12 +135,10 @@ class DiscoverService {
                         completion(false, nil)
                     }
                     for data in datas.items {
-                        print(data)
                         guard let shopItemToMyGoods = self.shopItemToMyGoods(item: data, searchWord: search) else {
                             return
                         }
                         self.fetchedMyGoods.append(shopItemToMyGoods)
-                        print(self.fetchedMyGoods)
                     }
                 completion(true, nil)
             }, errorHandler: { (error) in
@@ -141,11 +148,19 @@ class DiscoverService {
         }
     }
 
+    func setPet() {
+        if PetDefault.shared.pet == .dog {
+            self.pet = .dog
+        } else {
+            self.pet = .cat
+        }
+    }
+
     func chagePet() {
         if pet == Pet.dog {
-            pet = Pet.cat
+            self.pet = Pet.cat
         } else {
-            pet = Pet.dog
+            self.pet = Pet.dog
         }
     }
 
@@ -176,7 +191,6 @@ class DiscoverService {
     }
 
     private func shopItemToMyGoods(item: ShoppingItem, searchWord: String) -> MyGoodsData? {
-        print(item.title)
         guard let algorithmManagerType = algorithmManagerType else {
             return nil
         }
