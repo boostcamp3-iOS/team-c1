@@ -18,7 +18,7 @@ class AnimationNode: SKShapeNode {
         }
     }
     private(set) var textLabel: SKLabelNode?
-    
+
     init(text: String?, fillColor: UIColor, radius: CGFloat = 40, lineWidth: CGFloat = 1.0, strokeColor: UIColor = .clear, fontSize: CGFloat = 20, fontColor: UIColor = .white) {
         super.init()
         let path = CGMutablePath()
@@ -32,24 +32,24 @@ class AnimationNode: SKShapeNode {
         updatePhycisBody(radius: radius)
         updateTextLable(text: text, fontSize: fontSize, fontColor: fontColor)
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
-    
+
     override func removeFromParent() {
         removeAnimation {
             super.removeFromParent()
         }
     }
-    
+
     private func updateChildrenNode() {
         removeAllChildren()
         if let textLabel = textLabel {
             addChild(textLabel)
         }
     }
-    
+
     private func updatePhycisBody(radius: CGFloat) {
         let body = SKPhysicsBody(circleOfRadius: radius)
         // 물리적 충격에 영향을 받는지
@@ -60,7 +60,7 @@ class AnimationNode: SKShapeNode {
         body.linearDamping = 3
         physicsBody = body
     }
-    
+
     func updateTextLable(text: String?, fontSize: CGFloat, fontColor: UIColor?) {
         let label = SKLabelNode(text: text)
         label.fontName = "Avenir-Black"
@@ -71,7 +71,7 @@ class AnimationNode: SKShapeNode {
         textLabel = label
         updateChildrenNode()
     }
-    
+
     private func selectAnimation(_ isSelected: Bool) {
         if isSelected {
             // 0.2 초동안 커진다.
@@ -82,7 +82,7 @@ class AnimationNode: SKShapeNode {
             run(.scale(to: 1, duration: 0.2))
         }
     }
-    
+
     private func removeAnimation(completion: @escaping () -> Void) {
         run(.fadeOut(withDuration: 0.2), completion: completion)
     }
