@@ -41,10 +41,10 @@ class PinterestLayout: UICollectionViewFlowLayout {
 
     // called whenever the collection view's layout is invalidated
     override func prepare() {
-        print("prepare")
-        print("contentHeight \(contentHeight)")
+//        print("prepare")
+//        print("contentHeight \(contentHeight)")
         guard cellCache.isEmpty == true, headerCache.isEmpty == true, let collectionView = collectionView else {
-            print("prepare out")
+//            print("prepare out")
             return
         }
         guard let delegate = delegate else {
@@ -101,7 +101,8 @@ class PinterestLayout: UICollectionViewFlowLayout {
 
             ycolum = ycolum < (numberOfColums - 1) ? (ycolum + 1) : 0
         }
-        print("contentHeight: \(cellCache.count)")
+        completion()
+//        print("contentHeight: \(cellCache.count)")
     }
 
     func setupInit() {
