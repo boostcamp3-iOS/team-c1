@@ -37,6 +37,7 @@ class DiscoverDetailService {
     func setPet(pet: Pet) {
         self.pet = pet
     }
+
     func getShoppingData(start: Int, search: String, completion: @escaping (_ isSuccess: Bool, NetworkErrors?) -> Void) {
         var itemStart = start
         if recentSearched != search {

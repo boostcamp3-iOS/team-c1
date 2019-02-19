@@ -24,6 +24,7 @@ class PetKeywordCoreDataManager: PetKeywordCoreDataManagerType, CoreDataManagerF
         guard let context = context else { return nil }
         var petKeywordDatas = [PetKeywordData]()
         let request: NSFetchRequest<PetKeyword>
+        let sort = NSSortDescriptor(key: #keyPath(PetKeyword.date), ascending: false)
 
         if #available(iOS 10.0, *) {
             let tmpRequest: NSFetchRequest<PetKeyword> = PetKeyword.fetchRequest()
@@ -32,7 +33,7 @@ class PetKeywordCoreDataManager: PetKeywordCoreDataManagerType, CoreDataManagerF
             let entityName = String(describing: PetKeyword.self)
             request = NSFetchRequest(entityName: entityName)
         }
-
+        request.sortDescriptors = [sort]
         if let pet = pet {
             let predicate = NSPredicate(format: "pet = %@", pet)
             request.predicate = predicate

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import CoreData
 
 func petkeyWordCoreDataPrint() {
     let petKeywordDataManager = PetKeywordCoreDataManager()
@@ -30,9 +31,10 @@ struct PetKeywordDummy {
     var petkeys = [PetKeywordData]()
 
     init() {
-        let catKeyword = PetKeywordData(pet: self.cat, keywords: ["놀이", "배변", "스타일", "리빙"])
-        let dogKeyword = PetKeywordData(pet: self.dog, keywords: ["헬스", "외출", "배변", "리빙"])
-
+        var catKeyword = PetKeywordData(pet: self.cat, keywords: ["놀이", "배변", "스타일", "리빙"])
+    //    catKeyword.objectID = NSManagedObjectID()
+        var dogKeyword = PetKeywordData(pet: self.dog, keywords: ["헬스", "외출", "배변", "리빙"])
+    //    dogKeyword.objectID = NSManagedObjectID()
         petkeys.append(catKeyword)
         petkeys.append(dogKeyword)
     }

@@ -15,7 +15,6 @@ class DiscoverViewController: UIViewController {
     private let goodsIdentifier = "GoodsCell"
 
     let toWebSegue = "discoverToWeb"
- //   var shopItems = [MyGoodsData]()
     var discoverService: DiscoverService?
     let networkManager = ShoppingNetworkManager.shared
     let algorithmManager = Algorithm()
@@ -24,10 +23,12 @@ class DiscoverViewController: UIViewController {
     var petKeywordCoreDataManager = PetKeywordCoreDataManager()
     var isInserting = false
     var layout: PinterestLayout?
+    var pagenationNum = 1
 
     // 둘러보기
     override func viewDidLoad() {
         super.viewDidLoad()
+        UIViewController.presentPetKeywordViewController()
         petkeyWordCoreDataPrint()
         setupCollctionView()
         setupHeader()
@@ -56,12 +57,12 @@ class DiscoverViewController: UIViewController {
     }
 
     func loadData() {
-        discoverService = DiscoverService(networkManagerType: networkManager, algorithmManagerType: algorithmManager, searchWordDoreDataManagerType: searchWordCoreDataManager, myGoodsCoreDataType: myGoodsCoreDataManager, petKeywordCoreDataManagerType: petKeywordCoreDataManager)
+        discoverService = DiscoverService(networkManagerType: networkManager, algorithmManagerType: algorithmManager, searchWordDoreDataManagerType: searchWordCoreDataManager, myGoodsCoreDataManagerType: myGoodsCoreDataManager, petKeywordCoreDataManagerType: petKeywordCoreDataManager)
 
         guard let discoverService = discoverService else {
             return
         }
-
+        discoverService.fetchPet()
         discoverService.fetchPetKeywords()
         discoverService.fetchSearchWord()
         discoverService.fetchMyGoods()
@@ -133,8 +134,9 @@ extension DiscoverViewController: UICollectionViewDelegate, UICollectionViewData
                     }
                     if isSuccess {
                         DispatchQueue.main.async {
-                            self.layout?.setCellPinterestLayout(indexPathRow: 0) {}
+                            self.layout?.setCellPinterestLayout(indexPathRow: self.pagenationNum - 1)
                             self.collectionView.reloadData()
+                            self.pagenationNum += 20
                         }
                         self.isInserting = false
                     }
@@ -170,7 +172,6 @@ extension DiscoverViewController: CategoryControllerDelegate {
         discoverDetailCategory.pet = pet
         discoverDetailCategory.category = category
         discoverDetailViewController.category = category
-        print("cate: \(category)")
         discoverDetailViewController.pet = pet
         navigationController?.pushViewController(discoverDetailViewController, animated: true)
     }
