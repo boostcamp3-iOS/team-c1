@@ -44,6 +44,7 @@
                                                 <constraint firstAttribute="bottomMargin" secondItem="CHn-mb-Iha" secondAttribute="bottom" id="fuJ-ce-iXA"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <color key="tintColor" name="lavender"/>
                                         <connections>
                                             <outlet property="settingTitleLabel" destination="CHn-mb-Iha" id="uDl-bp-3mI"/>
                                         </connections>
@@ -64,11 +65,20 @@
                     <connections>
                         <outlet property="tableView" destination="t6m-5s-Uze" id="ana-sv-O1v"/>
                         <segue destination="ehi-Vr-9mF" kind="show" identifier="SettingToPrivacyPolicy" id="R2j-jz-4KZ"/>
+                        <segue destination="FDh-8W-dtx" kind="show" identifier="SettingToPetKeyword" id="vmI-s4-bIe"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uG3-rS-Jhz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="948" y="85.714285714285722"/>
+        </scene>
+        <!--SettingPetAndKeyword-->
+        <scene sceneID="cMU-27-Ppa">
+            <objects>
+                <viewControllerPlaceholder storyboardName="SettingPetAndKeyword" id="FDh-8W-dtx" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="WOG-j0-fu4" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1890" y="1"/>
         </scene>
         <!--PrivacyPolicy-->
         <scene sceneID="w6d-BY-xnZ">
@@ -76,7 +86,7 @@
                 <viewControllerPlaceholder storyboardName="PrivacyPolicy" id="ehi-Vr-9mF" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="EPc-rW-3yK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1864" y="278"/>
+            <point key="canvasLocation" x="2027" y="155"/>
         </scene>
         <!--설정-->
         <scene sceneID="EK4-8y-kR2">
