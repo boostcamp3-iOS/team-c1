@@ -29,7 +29,6 @@ class DiscoverViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         UIViewController.presentPetKeywordViewController()
-        petkeyWordCoreDataPrint()
         setupCollctionView()
         setupHeader()
         layout = collectionView.collectionViewLayout as? PinterestLayout
