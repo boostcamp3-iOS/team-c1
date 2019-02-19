@@ -25,7 +25,6 @@ class SettingPetAndKeywordService {
         do {
             if let petKeyword = try petKeywordCoreDataManager.fetchObjects(pet: nil)?.first as? PetKeywordData {
                 self.petKeyword = petKeyword
-                print(self.petKeyword)
             }
         } catch let err {
             print(err)
@@ -36,7 +35,7 @@ class SettingPetAndKeywordService {
         do {
             let keyword = Array(Set(petKeyword?.keywords ?? [""]))
             _ = try petKeywordCoreDataManager.insert(PetKeywordData(pet: petKeyword?.pet ?? "강아지", keywords: keyword))
-            print(petKeyword)
+            PetDefault.shared.pet = Pet(rawValue: petKeyword?.pet ?? "강아지") ?? .dog
         } catch let err {
             print(err)
         }

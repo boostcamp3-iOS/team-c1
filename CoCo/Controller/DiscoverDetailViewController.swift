@@ -26,7 +26,7 @@ class DiscoverDetailViewController: UIViewController {
     fileprivate var layout: PinterestLayout?
     fileprivate var isInserting = false
     fileprivate var pagenationNum = 1
-    fileprivate var headerSize: CGFloat = 90
+    fileprivate var headerSize: CGFloat = 100
     var category: Category?
     var pet: Pet?
 
@@ -41,23 +41,24 @@ class DiscoverDetailViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(false, animated: false)
     }
 
     func setupNavigationView() {
-        navigationController?.setNavigationBarHidden(false, animated: false)
         tabBarController?.tabBar.isHidden = true
         navigationItem.title = "CoCo"
         navigationItem.largeTitleDisplayMode = .never
     }
 
     func setupCollctionView() {
+        view.backgroundColor = UIColor.white
         view.addSubview(collectionView)
         let goodsCellView = UINib(nibName: "GoodsCell", bundle: nil)
         collectionView.register(goodsCellView, forCellWithReuseIdentifier: goodsIdentifier)
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.collectionViewLayout = PinterestLayout()
-        collectionView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        collectionView.contentInset = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
         collectionView.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
         NSLayoutConstraint.activate([
             collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
