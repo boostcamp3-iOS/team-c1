@@ -38,9 +38,10 @@ class SettingViewController: UIViewController {
     }
 
     func deleteCache() {
-        let alert = UIAlertController(title: "COCO", message: "정말 캐시 데이터를 지우시겠습니까?", preferredStyle: .alert)
+        let cacheSize = ImageManager.shared.getCacheSize()
+        let alert = UIAlertController(title: "정말 캐시 데이터를 지우시겠습니까?", message: "\(Int(cacheSize/100))MB의 메모리가 확보됩니다." , preferredStyle: .alert)
         let yes = UIAlertAction(title: "Yes", style: .default) { _ in
-            print("캐시 지우기")
+            ImageManager.shared.removeAll()
         }
         let no = UIAlertAction(title: "No", style: .cancel, handler: nil)
 

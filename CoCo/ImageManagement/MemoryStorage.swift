@@ -13,6 +13,10 @@ enum MemoryStorage {
 
         let storage = NSCache<NSString, UIImage>()
 
+        init() {
+            storage.countLimit = 100
+        }
+
         func store(value: UIImage, forKey key: String) {
             storage.setObject(value, forKey: key as NSString)
         }
