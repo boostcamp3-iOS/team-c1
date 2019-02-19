@@ -63,7 +63,7 @@ class DiscoverDetailViewController: UIViewController {
             collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
             ])
         layout = collectionView.collectionViewLayout as? PinterestLayout
         layout?.delegate = self
@@ -158,7 +158,7 @@ extension DiscoverDetailViewController: UICollectionViewDataSource, UICollection
                     }
                     if isSuccess {
                         DispatchQueue.main.async {
-                            self.layout?.setCellPinterestLayout(indexPathRow: self.pagenationNum - 1)
+                            self.layout?.setCellPinterestLayout(indexPathRow: self.pagenationNum - 1) {}
                             self.collectionView.reloadData()
                             self.pagenationNum += 20
                         }

@@ -22,7 +22,7 @@ class PinterestLayout: UICollectionViewFlowLayout {
     fileprivate var headerCache = [UICollectionViewLayoutAttributes]()
     private var itemFixedDimension: CGFloat = 0
     private var itemFlexibleDimension: CGFloat = 0
-   // private var var headerFlexibleDimension: CGFloat = 0
+    // private var var headerFlexibleDimension: CGFloat = 0
     var contentHeight: CGFloat = 0
     fileprivate var currentyOffset: CGFloat = 0
     fileprivate var yOffset = [CGFloat]()
@@ -64,10 +64,10 @@ class PinterestLayout: UICollectionViewFlowLayout {
             }
         }
         yOffset = [CGFloat](repeating: headerFlexibleDimension, count: numberOfColums)
-        setCellPinterestLayout(indexPathRow: 0)
+        setCellPinterestLayout(indexPathRow: 0) {}
     }
 
-    func setCellPinterestLayout(indexPathRow: Int) {
+    func setCellPinterestLayout(indexPathRow: Int, completion: @escaping () -> Void) {
         guard let collectionView = collectionView else {
             return
         }
@@ -82,7 +82,6 @@ class PinterestLayout: UICollectionViewFlowLayout {
 
         if indexPathRow != 0 {
             extraCount = 20
-        } else {
         }
 
         print("cell -- \(collectionView.numberOfItems(inSection: 0) + extraCount) ")
