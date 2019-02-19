@@ -106,11 +106,14 @@ extension Animation {
             return
         }
         let location = touch.location(in: self)
-        let animationNodes = nodes(at: location).compactMap { $0 as? AnimationNode }.filter { (node) -> Bool in
+        let animationNodes = nodes(at: location).compactMap { $0 as? AnimationNode }.filter { node -> Bool in
             guard let path = node.path, path.contains(convert(location, to: node)) else {
                 return false
             }
             return true
+        }
+        defer {
+            isMoving = false
         }
         guard !isMoving, let node = animationNodes.first else {
             return
@@ -125,7 +128,6 @@ extension Animation {
             node.isSelected = true
             animationDelegate?.animation(self, didSelect: node)
         }
-        isMoving = false
     }
 
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
