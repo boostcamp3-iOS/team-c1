@@ -11,6 +11,7 @@ import UIKit
 import CoreData
 
 class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctionImplementType {
+
     // MARK: - Fetch Methodes
     /**
      MyGoods의 모든 데이터를 오름차순으로 가져온다.
@@ -61,14 +62,13 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
      - Parameter :
      - pet: 해당하는 펫(고양이 또는 강아지)과 관련된 데이터를 가져오기 위한 파마리터.
      */
-    func fetchFavoriteGoods(pet: String) throws -> [MyGoodsData]? {
+    func fetchFavoriteGoods(pet: String? = nil) throws -> [MyGoodsData]? {
         guard let context = context else {
             return nil
         }
-        let sort = NSSortDescriptor(key: #keyPath(MyGoods.date), ascending: true)
-        let predicate = NSPredicate(format: "pet = %@ AND isFavorite = true", pet)
-        var myGoodsDatas: [MyGoodsData] = []
         let request: NSFetchRequest<MyGoods>
+        let sort = NSSortDescriptor(key: #keyPath(MyGoods.date), ascending: true)
+        var myGoodsDatas: [MyGoodsData] = []
 
         if #available(iOS 10.0, *) {
             let tmpRequest: NSFetchRequest<MyGoods> = MyGoods.fetchRequest()
@@ -78,7 +78,11 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
             request = NSFetchRequest(entityName: entityName)
         }
 
-        request.predicate = predicate
+        if let pet = pet {
+            let predicate = NSPredicate(format: "pet = %@ AND isFavorite = true", pet)
+            request.predicate = predicate
+        }
+
         request.sortDescriptors = [sort]
 
         let objects = try context.fetch(request)
@@ -104,21 +108,25 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
      - pet: 해당하는 펫(고양이 또는 강아지)과 관련된 데이터를 가져오기 위한 파마리터.
      - isLatest: 데이터를 오름차순, 또는 내림차순으로 가져오기 위한 파라미터
      */
-    func fetchLatestGoods(pet: String, isLatest: Bool, ascending: Bool) throws -> [MyGoodsData]? {
+    func fetchLatestGoods(pet: String? = nil, isLatest: Bool, ascending: Bool) throws -> [MyGoodsData]? {
         guard let context = context else {
             return nil
         }
         let sort = NSSortDescriptor(key: #keyPath(MyGoods.date), ascending: ascending)
-        let predicate = NSPredicate(format: "pet = %@ AND isLatest = %@", pet, NSNumber(booleanLiteral: isLatest))
         var myGoodsDatas: [MyGoodsData] = []
         let request: NSFetchRequest<MyGoods>
-
+        let predicate: NSPredicate
         if #available(iOS 10.0, *) {
             let tmpRequest: NSFetchRequest<MyGoods> = MyGoods.fetchRequest()
             request = tmpRequest
         } else {
             let entityName = String(describing: MyGoods.self)
             request = NSFetchRequest(entityName: entityName)
+        }
+        if let pet = pet {
+             predicate = NSPredicate(format: "pet = %@ AND isLatest = %@", pet, NSNumber(booleanLiteral: isLatest))
+        } else {
+            predicate = NSPredicate(format: "isLatest = %@", NSNumber(booleanLiteral: isLatest))
         }
 
         request.returnsObjectsAsFaults = false
