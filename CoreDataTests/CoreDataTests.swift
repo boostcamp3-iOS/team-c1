@@ -144,33 +144,51 @@ class MockSearchWordInfo {
 }
 
 class MockPetKeywordCoreDataManager: PetKeywordCoreDataManagerType {
+    var mockPetKeywordCoreData = PetKeywordDummy.init().petkeys
+
     func fetchOnlyKeyword(pet: String) throws -> [String]? {
-        return nil
+        let petKeyword = mockPetKeywordCoreData.filter {
+            $0.pet == "cat"
+        }
+        return petKeyword.first?.keywords
     }
 
-    func fetchOnlyPet(pet: String) throws -> String? {
-        return nil
+    func fetchOnlyPet() throws -> String? {
+       return nil
     }
 
-    func insert<T>(_ coreDataStructType: T) throws -> Bool {
-        return false
+    func deleteAllObjects(pet: String) throws -> Bool {
+        mockPetKeywordCoreData.removeAll()
+        if mockPetKeywordCoreData.count == 0 {
+            return true
+        } else {
+            return false
+        }
     }
 
-    func fetchObjects(pet: String? = nil) throws -> [CoreDataStructEntity]? {
-         return nil
+    func insert<T>(_ coreDataStructType: T) throws -> Bool where T: CoreDataStructEntity {
+        return true
     }
 
-    func updateObject<T>(_ coreDataStructType: T) throws -> Bool {
-        return false
+    func fetchObjects(pet: String?) throws -> [CoreDataStructEntity]? {
+        let petKeyword = mockPetKeywordCoreData.filter { (petKeyword) -> Bool in
+            petKeyword.pet == "pet"
+        }
+        return petKeyword
     }
 
-    func deleteObject<T>(_ coreDataStructType: T) throws -> Bool {
-        return false
+    func updateObject<T>(_ coreDataStructType: T) throws -> Bool where T: CoreDataStructEntity {
+        return true
     }
 
-    @discardableResult func deleteAllObjects(pet: String) throws -> Bool {
-        return false
+    func deleteObject<T>(_ coreDataStructType: T) throws -> Bool where T: CoreDataStructEntity {
+        guard let petKeywordData = coreDataStructType as? PetKeywordData else {
+            return false
+        }
+        return true
+
     }
+
 }
 
 class MockMyGoodsCoreDataManager: MyGoodsCoreDataManagerType {
@@ -228,6 +246,10 @@ class CoreDataTests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
 
+    func testInsertPetKeyword() {
+
+    }
+
     func testFetchCoreData() {
         // given
         let pet = "강아지"
@@ -246,7 +268,7 @@ class CoreDataTests: XCTestCase {
         let searchWord = "강아지 한복"
 
         // given
-        service.insert(recenteSearchWord: searchWord, pet: pet)
+      //  service.insert(recenteSearchWord: searchWord, pet: pet)
         do {
             // when
             let result = try mockSearchWordCoreDataManager.fetchOnlySearchWord(pet: pet)
@@ -264,7 +286,7 @@ class CoreDataTests: XCTestCase {
         let searchWord = "강아지 장난감"
         let beforeCount = mockSearchInfo.mockSearchWord.filter { $0.pet == pet }.count
         //given
-        service.updateRecentSearchWord(searchWord: searchWord, pet: pet)
+     //   service.updateRecentSearchWord(searchWord: searchWord, pet: pet)
         do {
             // when
             guard let result = try mockSearchWordCoreDataManager.fetchObjects(pet: pet) as? [SearchWordData] else { return }
@@ -278,7 +300,7 @@ class CoreDataTests: XCTestCase {
     func testDeleteCoreData() {
         let pet = "강아지"
         //given
-        let result = service.deleteRecentSearchWord(pet: pet)
+     //   let result = service.deleteRecentSearchWord(pet: pet)
         var count = 0
         //when
         do {
@@ -297,5 +319,4 @@ class CoreDataTests: XCTestCase {
             // Put the code you want to measure the time of here.
         }
     }
-
 }
