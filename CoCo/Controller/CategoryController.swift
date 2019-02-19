@@ -40,7 +40,7 @@ class CategoryController: UICollectionReusableView {
     lazy var categoryTitle: [String] = {
         return setupCategoryTitle()
     }()
-    var pet = Pet.dog
+    var pet = PetDefault.shared.pet
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -87,7 +87,7 @@ class CategoryController: UICollectionReusableView {
 
     func setupLargeTitle() {
         self.addSubview(largeTitle)
-        self.addConstraintsWithFormat("H:|-5-[v0]|", views: largeTitle)
+        self.addConstraintsWithFormat("H:|[v0]|", views: largeTitle)
         self.addConstraintsWithFormat("V:|[v0(130)]", views: largeTitle)
     }
 
@@ -109,7 +109,9 @@ extension CategoryController: UICollectionViewDataSource, UICollectionViewDelega
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as? CategotyCell else {
             return UICollectionViewCell()
         }
+
         cell.categoryImageView.image = categoryImage[indexPath.item]
+
         cell.categoryLabel.text = categoryTitle[indexPath.item]
         return cell
     }
