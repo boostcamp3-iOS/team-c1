@@ -17,8 +17,7 @@ class SettingViewController: UIViewController {
     let cellIdentifier = "SettingTableViewCell"
 
     enum segueIdentifier: String {
-        case pet = "SettingToPet"
-        case keyword = "SettingToKeyword"
+        case petKeyword = "SettingToPetKeyword"
         case privacy = "SettingToPrivacyPolicy"
         case apiInfo = "SettingToAPI"
     }
@@ -38,15 +37,6 @@ class SettingViewController: UIViewController {
         navigationController?.navigationBar.prefersLargeTitles = true
     }
 
-    /*
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destination.
-     // Pass the selected object to the new view controller.
-     }
-     */
     func deleteCache() {
         let alert = UIAlertController(title: "COCO", message: "정말 캐시 데이터를 지우시겠습니까?", preferredStyle: .alert)
         let yes = UIAlertAction(title: "Yes", style: .default) { _ in
@@ -59,6 +49,22 @@ class SettingViewController: UIViewController {
 
         present(alert, animated: true, completion: nil)
     }
+
+    // MARK: - Navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard let settingPetAndKeywordViewController: SettingPetAndKeywordViewController = segue.destination as? SettingPetAndKeywordViewController else {
+            return
+        }
+        guard let sender = sender as? Int else {
+            return
+        }
+        if sender == 0 {
+            settingPetAndKeywordViewController.segue = SettingPetAndKeywordViewController.checkSegue.pet
+        } else {
+            settingPetAndKeywordViewController.segue = SettingPetAndKeywordViewController.checkSegue.keyword
+        }
+        settingPetAndKeywordViewController.headerTitle = settingTitles[0][sender]
+    }
 }
 
 extension SettingViewController: UITableViewDataSource {
@@ -69,6 +75,13 @@ extension SettingViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return settingSectionTitles[section]
+    }
+
+    func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+        if section == 2 {
+            return "네이버 쇼핑 API"
+        }
+        return nil
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -83,6 +96,8 @@ extension SettingViewController: UITableViewDataSource {
 
         if indexPath.section == 1 {
             cell.accessoryType = .none
+        } else if indexPath.section == 2 && indexPath.row == 1 {
+            cell.accessoryType = .none
         }
 
         return cell
@@ -94,24 +109,15 @@ extension SettingViewController: UITableViewDelegate {
         tableView.deselectRow(at: indexPath, animated: true)
         switch indexPath.section {
         case 0:
-            //            performSegue(withIdentifier: segueIdentifier.pet.rawValue, sender: <#T##Any?#>)
-            print(indexPath.row)
+            performSegue(withIdentifier: segueIdentifier.petKeyword.rawValue, sender: indexPath.row)
         case 1:
             deleteCache()
         case 2:
-            //            performSegue(withIdentifier: segueIdentifier.pet.rawValue, sender: <#T##Any?#>)
-            switch indexPath.row {
-            case 0:
+            if indexPath.row == 0 {
                 performSegue(withIdentifier: segueIdentifier.privacy.rawValue, sender: nil)
-            default:
-                print(indexPath.row)
             }
-            print(indexPath.row)
-
         default:
-//            performSegue(withIdentifier: segueIdentifier.pet.rawValue, sender: <#T##Any?#>)
-            print(indexPath.row)
-
+            break
         }
     }
 }
