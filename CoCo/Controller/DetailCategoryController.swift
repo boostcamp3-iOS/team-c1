@@ -40,8 +40,7 @@ class DetailCategoryController: UICollectionReusableView {
         return setupCategoryTitle()
     }()
     weak var detailCategoryDelegate: DetailCategoryControllerDelegate?
-    weak var categoryControllerDelegate: CategoryControllerDelegate?
-    var pet: Pet = Pet.dog
+    var pet: Pet?
     var category: Category?
 
     override init(frame: CGRect) {
@@ -57,7 +56,7 @@ class DetailCategoryController: UICollectionReusableView {
 
     func setupCategoryTitle() -> [String] {
         var categorys = [String]()
-        guard let category =  category else {
+        guard let pet = pet, let category =  category else {
             return []
         }
         if pet.rawValue == "강아지" {
@@ -76,6 +75,8 @@ class DetailCategoryController: UICollectionReusableView {
         collectionView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 5).isActive = true
         collectionView.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: 5).isActive = true
         collectionView.heightAnchor.constraint(equalToConstant: 50).isActive = true
+//        let firstCell = collectionView.cellForItem(at: IndexPath(item: 0, section: 0)) as? DetailCategoryCell
+//        firstCell?.detailCategoryLabel.font = UIFont.boldSystemFont(ofSize: 17)
     }
 
     func setupButton() {
@@ -117,12 +118,15 @@ extension DetailCategoryController: UICollectionViewDataSource, UICollectionView
         let category = detailCategoryTitle[indexPath.item]
         let attribute = [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 17)]
         let estimateFrame = NSString(string: category).boundingRect(with: CGSize(width: itemSize, height: 1000), options: .usesLineFragmentOrigin, attributes: attribute, context: nil)
-        return CGSize(width: estimateFrame.width + 40, height: 30)
+        return CGSize(width: estimateFrame.width + 40, height: 40)
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if let cell = collectionView.cellForItem(at: indexPath) as? DetailCategoryCell {
             cell.detailCategoryLabel.font = UIFont.boldSystemFont(ofSize: 18)
+        }
+        guard let pet = pet else {
+            return
         }
         detailCategoryDelegate?.showGoods(indexPath: indexPath, pet: pet, detailCategory: detailCategoryTitle[indexPath.row])
     }

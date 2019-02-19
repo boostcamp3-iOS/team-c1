@@ -128,6 +128,7 @@ extension DiscoverDetailViewController: UICollectionViewDataSource, UICollection
         }
         header.detailCategoryDelegate = self
         header.category = category
+        header.pet = pet
         return header
     }
 
@@ -145,7 +146,7 @@ extension DiscoverDetailViewController: UICollectionViewDataSource, UICollection
     }
 
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        print(scrollView.contentOffset.y >= (scrollView.contentSize.height - scrollView.frame.size.height) - 50)
+        print(scrollView.contentOffset.y >= (scrollView.contentSize.height - scrollView.frame.size.height) - 200)
         print(collectionView.contentOffset.y)
         if (scrollView.contentOffset.y >= (scrollView.contentSize.height - scrollView.frame.size.height) - 50) {
             if !isInserting {
