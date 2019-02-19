@@ -34,7 +34,8 @@ class SettingPetAndKeywordService {
 
     func insertPetKeywordData() {
         do {
-            _ = try petKeywordCoreDataManager.insert(PetKeywordData(pet: petKeyword?.pet ?? "강아지", keywords: petKeyword?.keywords ?? [""]))
+            let keyword = Array(Set(petKeyword?.keywords ?? [""]))
+            _ = try petKeywordCoreDataManager.insert(PetKeywordData(pet: petKeyword?.pet ?? "강아지", keywords: keyword))
             print(petKeyword)
         } catch let err {
             print(err)

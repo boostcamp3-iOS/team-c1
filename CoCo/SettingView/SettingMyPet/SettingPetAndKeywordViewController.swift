@@ -122,7 +122,9 @@ extension SettingPetAndKeywordViewController: UITableViewDelegate {
                 }
             }
             if isInclude {
-                settingPetAndKeywordService.petKeyword?.keywords?.remove(at: index)
+                if settingPetAndKeywordService.petKeyword?.keywords?.count ?? 0 > 5 {
+                    settingPetAndKeywordService.petKeyword?.keywords?.remove(at: index)
+                }
             } else {
                 settingPetAndKeywordService.petKeyword?.keywords?.append(settingPetAndKeywordService.keywordDic[indexPath.row] ?? "")
             }
