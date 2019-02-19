@@ -21,6 +21,19 @@ class DiscoverDetailViewController: UIViewController {
         collectionView.backgroundColor = .white
         return collectionView
     }()
+    lazy var largeTitle: LargeTitle = {
+        guard let largeTitle = Bundle.main.loadNibNamed("LargeTitle", owner: self, options: nil)?.first as? LargeTitle else {
+            return LargeTitle()
+        }
+        largeTitle.translatesAutoresizingMaskIntoConstraints = false
+        largeTitle.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+        return largeTitle
+    }()
+    private lazy var headerView: DetailCategoryController = {
+        let headerView = DetailCategoryController()
+        headerView.translatesAutoresizingMaskIntoConstraints = false
+        return headerView
+    }()
     fileprivate var discoverDetailService: DiscoverDetailService?
     fileprivate var searchWord = ""
     fileprivate var layout: PinterestLayout?
@@ -42,11 +55,14 @@ class DiscoverDetailViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(false, animated: false)
+        self.navigationController?.navigationBar.tintColor = AppColor.purple
+        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
+        self.navigationController?.navigationBar.shadowImage = UIImage()
     }
 
     func setupNavigationView() {
         tabBarController?.tabBar.isHidden = true
-        navigationItem.title = "CoCo"
+        navigationItem.title = "COCO"
         navigationItem.largeTitleDisplayMode = .never
     }
 
@@ -58,10 +74,10 @@ class DiscoverDetailViewController: UIViewController {
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.collectionViewLayout = PinterestLayout()
-        collectionView.contentInset = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
-        collectionView.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
+        collectionView.contentInset = UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 0)
+        collectionView.scrollIndicatorInsets = UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 0)
         NSLayoutConstraint.activate([
-            collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 100),
             collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
@@ -71,7 +87,18 @@ class DiscoverDetailViewController: UIViewController {
     }
 
     func setupHeader() {
-        collectionView.register(DetailCategoryController.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "detailCategoryView")
+        view.addSubview(headerView)
+        NSLayoutConstraint.activate([
+            headerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            headerView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            headerView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            headerView.heightAnchor.constraint(equalToConstant: 100)
+            ])
+        headerView.detailCategoryDelegate = self
+                headerView.category = category
+               headerView.pet = pet
+
+//        collectionView.register(DetailCategoryController.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "detailCategoryView")
     }
 
     func loadData() {
@@ -122,16 +149,16 @@ extension DiscoverDetailViewController: UICollectionViewDataSource, UICollection
         cell.isLike = false
         return cell
     }
-
-    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "detailCategoryView", for: indexPath) as? DetailCategoryController else {
-            return UICollectionReusableView()
-        }
-        header.detailCategoryDelegate = self
-        header.category = category
-        header.pet = pet
-        return header
-    }
+//
+//    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+//        guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "detailCategoryView", for: indexPath) as? DetailCategoryController else {
+//            return UICollectionReusableView()
+//        }
+//        header.detailCategoryDelegate = self
+//        header.category = category
+//        header.pet = pet
+//        return header
+//    }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let discoverDetailService = discoverDetailService else {
@@ -183,7 +210,7 @@ extension DiscoverDetailViewController: PinterestLayoutDelegate {
     }
 
     func headerFlexibleHeight(inCollectionView collectionView: UICollectionView, withLayout layout: UICollectionViewLayout, fixedDimension: CGFloat) -> CGFloat {
-        return self.headerSize
+        return 0
     }
 
     func sortChanged(sort: SortOption) {

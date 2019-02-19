@@ -51,7 +51,7 @@ class DiscoverViewController: UIViewController {
         collectionView.dataSource = self
         collectionView.collectionViewLayout = PinterestLayout()
         collectionView.register(UINib(nibName: "GoodsCell", bundle: nil), forCellWithReuseIdentifier: goodsIdentifier)
-        collectionView.contentInset = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
+        collectionView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         collectionView.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
     }
 
@@ -66,6 +66,23 @@ class DiscoverViewController: UIViewController {
         discoverService.fetchSearchWord()
         discoverService.fetchMyGoods()
         discoverService.mixedWord()
+        if !isInserting {
+            isInserting = true
+            discoverService.request(completion: { [weak self]
+                (isSuccess, _) in
+                guard let self = self else {
+                    return
+                }
+                if isSuccess {
+                    DispatchQueue.main.async {
+                        self.layout?.setCellPinterestLayout(indexPathRow: self.pagenationNum - 1) {}
+                        self.collectionView.reloadData()
+                        self.pagenationNum += 20
+                    }
+                    self.isInserting = false
+                }
+            })
+        }
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -117,13 +134,11 @@ extension DiscoverViewController: UICollectionViewDelegate, UICollectionViewData
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let myGoodsData = discoverService?.fetchedMyGoods[indexPath.item]
         self.performSegue(withIdentifier: toWebSegue, sender: indexPath)
     }
 
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        print(scrollView.contentOffset.y >= (scrollView.contentSize.height - scrollView.frame.size.height) - 50)
-        if (scrollView.contentOffset.y >= (scrollView.contentSize.height - scrollView.frame.size.height) - 50) {
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        if scrollView.contentOffset.y >= scrollView.contentSize.height - scrollView.frame.size.height - 50 {
             if !isInserting {
                 isInserting = true
                 discoverService?.request(completion: { [weak self]
@@ -160,7 +175,7 @@ extension DiscoverViewController: PinterestLayoutDelegate {
         let attribute = [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13)]
         let estimateFrame = NSString(string: title).boundingRect(with: CGSize(width: itemSize, height: 1000), options: option, attributes: attribute, context: nil)
         print("itemggg \(indexPath) of \(estimateFrame.height)")
-        return estimateFrame.height + 250
+        return estimateFrame.height + view.frame.width*2/3
     }
 }
 
