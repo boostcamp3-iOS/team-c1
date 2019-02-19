@@ -13,7 +13,7 @@ protocol DetailCategoryControllerDelegate: class {
     func sortGoods()
 }
 
-class DetailCategoryController: UICollectionReusableView {
+class DetailCategoryController: UIView {
 
     // MARK: - Properties
     private let detailCellId = "DetailCategoryCell"
