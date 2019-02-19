@@ -62,9 +62,9 @@
 		8A22F82E25F406A39E41562559CCC29A /* MyGoods+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 044EE43CE5D0833E7B72994CEE6D7665 /* MyGoods+CoreDataClass.swift */; };
 		8E7C9D1E3DCDB5A0C2E5AD8FC3BB4C85 /* MyGoods+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F5333B872393696576B309196EC1D6 /* MyGoods+CoreDataProperties.swift */; };
 		8EF9D57F4A72F767D78D86FE81BD8D40 /* UIView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C64D62B5494387CB8A8FBF4DFA53807 /* UIView+.swift */; };
-		972E3F77E7020D92FAAAC899131DA66E /* SettingPetAndKeywordTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57B11C5DC722DDBE2A015651B72D4AB3 /* SettingPetAndKeywordTableViewCell.swift */; };
 		911A278D94635E494424ABCBD3601200 /* PetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A0D0BFE4781840C9FC7C63AE4D133DE /* PetViewController.swift */; };
 		93939EB84F880A672335A2F609E09C22 /* UserDefaults+FirstLaunch.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9ECDA2C12C53EF94E833439179189C3 /* UserDefaults+FirstLaunch.swift */; };
+		972E3F77E7020D92FAAAC899131DA66E /* SettingPetAndKeywordTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57B11C5DC722DDBE2A015651B72D4AB3 /* SettingPetAndKeywordTableViewCell.swift */; };
 		9898240B1233E01D25D43B12DCFC6119 /* PetKeyword+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A7BDEFB7FE622416C8A20C8C171C08E /* PetKeyword+CoreDataProperties.swift */; };
 		99281D04A79A5D9148188931BF098A99 /* SettingPetAndKeywordService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6346EC1C236F71705379D563972D46D4 /* SettingPetAndKeywordService.swift */; };
 		9AC56A538A8A4829DF201B8D13C5AABE /* PrivacyPolicyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28E04C6571508ED2CB3FE77B478C0622 /* PrivacyPolicyViewController.swift */; };

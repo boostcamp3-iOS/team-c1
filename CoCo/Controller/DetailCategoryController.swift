@@ -82,7 +82,7 @@ class DetailCategoryController: UICollectionReusableView {
     func setupButton() {
         self.addSubview(sortButton)
         NSLayoutConstraint.activate([
-            sortButton.topAnchor.constraint(equalTo: collectionView.bottomAnchor, constant: 20),
+            sortButton.topAnchor.constraint(equalTo: collectionView.bottomAnchor, constant: 15),
             sortButton.widthAnchor.constraint(equalToConstant: 25),
             sortButton.heightAnchor.constraint(equalToConstant: 25),
             sortButton.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -8)
@@ -118,7 +118,7 @@ extension DetailCategoryController: UICollectionViewDataSource, UICollectionView
         let category = detailCategoryTitle[indexPath.item]
         let attribute = [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 17)]
         let estimateFrame = NSString(string: category).boundingRect(with: CGSize(width: itemSize, height: 1000), options: .usesLineFragmentOrigin, attributes: attribute, context: nil)
-        return CGSize(width: estimateFrame.width + 40, height: 40)
+        return CGSize(width: estimateFrame.width + 40, height: 30)
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
