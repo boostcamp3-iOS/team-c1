@@ -53,34 +53,34 @@ class SearchViewController: UIViewController {
 
         // Do any additional setup after loading the view.
     }
-    func petkeyWordCoreDataPrint() {
-        let petKeywordDataManager = PetKeywordCoreDataManager()
-        let dummy = PetKeywordDummy().petkeys
-
-        do {
-            for data in dummy {
-                let insert = try petKeywordDataManager.insert(data)
-            }
-            let fetch = try petKeywordDataManager.fetchObjects()
-            print(fetch)
-        } catch let error {
-            print(error)
-        }
-    }
-
-    struct PetKeywordDummy {
-        let cat = "고양이"
-        let dog = "강아지"
-        var petkeys = [PetKeywordData]()
-
-        init() {
-            let catKeyword = PetKeywordData(pet: self.cat, keywords: ["놀이", "배변", "스타일", "리빙"])
-            let dogKeyword = PetKeywordData(pet: self.dog, keywords: ["헬스", "외출", "배변", "리빙"])
-
-            petkeys.append(catKeyword)
-            petkeys.append(dogKeyword)
-        }
-    }
+//    func petkeyWordCoreDataPrint() {
+//        let petKeywordDataManager = PetKeywordCoreDataManager()
+//        let dummy = PetKeywordDummy().petkeys
+//
+//        do {
+//            for data in dummy {
+//                let insert = try petKeywordDataManager.insert(data)
+//            }
+//            let fetch = try petKeywordDataManager.fetchObjects()
+//            print(fetch)
+//        } catch let error {
+//            print(error)
+//        }
+//    }
+//
+//    struct PetKeywordDummy {
+//        let cat = "고양이"
+//        let dog = "강아지"
+//        var petkeys = [PetKeywordData]()
+//
+//        init() {
+//            let catKeyword = PetKeywordData(pet: self.cat, keywords: ["놀이", "배변", "스타일", "리빙"])
+//            let dogKeyword = PetKeywordData(pet: self.dog, keywords: ["헬스", "외출", "배변", "리빙"])
+//
+//            petkeys.append(catKeyword)
+//            petkeys.append(dogKeyword)
+//        }
+//    }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -217,51 +217,32 @@ extension SearchViewController: UICollectionViewDelegate {
     // SrcollDelegate
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         view.endEditing(true)
-//        let scrollPosition = scrollView.contentSize.height - scrollView.frame.size.height - scrollView.contentOffset.y
-//        if scrollPosition > 0 && scrollPosition < scrollView.contentSize.height * 0.2 {
-//            print("askdflksahkfhsakdfhks")
-//
-//            if !isInserting {
-//                isInserting = true
-//                searchService.getShoppingData(search: searchService.recentSearched ?? "") { [weak self] (isSuccess, _) in
-//                    guard let self = self else {
-//                        return
-//                    }
-//                    if isSuccess {
-//                        DispatchQueue.main.async {
-//                            self.pinterestLayout.setCellPinterestLayout(indexPathRow: self.searchService.itemStart - 1) {
-//                                print(">>>>>\(self.searchService.itemStart)")
-//                                self.searchService.itemStart += 20
-//                                self.collectionView.reloadData()
-//                            }
-//                        }
-//                        self.isInserting = false
-//                    } else {
-//                        print("askdflksahkfhsakdfhksahfkhkdshfsdhafhaish")
-//                    }
-//                }
-//            }
-//        }
+        let scrollPosition = scrollView.contentSize.height - scrollView.frame.size.height - scrollView.contentOffset.y
+        if scrollPosition > 0 && scrollPosition < scrollView.contentSize.height * 0.1 {
 
-    }
-
-    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        if cellIdentifier == .goods {
-            searchService.paginations(index: indexPath.row) { isSuccess, err in
-                if isSuccess {
-                    DispatchQueue.main.async {
-                        self.pinterestLayout.setCellPinterestLayout(indexPathRow: self.searchService.itemStart) {
-                            self.searchService.itemStart += 20
-                        }
-                        self.collectionView.reloadData()
+            if !isInserting {
+                isInserting = true
+                self.searchService.itemStart += 20
+                searchService.getShoppingData(search: searchService.recentSearched ?? "") { [weak self] isSuccess, err in
+                    guard let self = self else {
+                        return
                     }
-                } else {
-                    print(err)
+                    if isSuccess {
+                        DispatchQueue.main.async {
+                            self.pinterestLayout.setCellPinterestLayout(indexPathRow: self.searchService.itemStart - 21) {
+                                print(self.searchService.dataLists.count)
+                                self.collectionView.reloadData()
+                                self.isInserting = false
+                                print(self.isInserting)
+                            }
+                        }
+                    } else {
+                        print(err)
+                    }
                 }
             }
         }
     }
-
 }
 
 extension SearchViewController: UICollectionViewDelegateFlowLayout {
@@ -370,9 +351,7 @@ extension SearchViewController: SearchCollectionReusableViewDelegate {
         self.activityIndicator.startAnimating()
         self.searchService.getShoppingData(search: self.searchService.recentSearched ?? "") { isSuccess, err in
             if isSuccess {
-                DispatchQueue.main.async {
-                    self.collectionView.reloadData()
-                }
+                self.reload(.goods)
             } else {
                 if err == NetworkErrors.noData {
                     self.alert("데이터가 없습니다. 다른 검색어를 입력해보세요")
@@ -396,6 +375,7 @@ extension SearchViewController: PinterestLayoutDelegate {
         let title = searchService.dataLists[indexPath.item].title
         let attribute = [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13)]
         let estimateFrame = NSString(string: title).boundingRect(with: CGSize(width: itemSize, height: 1000), options: .usesLineFragmentOrigin, attributes: attribute, context: nil)
-        return estimateFrame.height + 250
+
+        return estimateFrame.height + view.frame.width*2/3
     }
 }

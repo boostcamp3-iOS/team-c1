@@ -46,9 +46,7 @@ class SearchService {
     func getShoppingData(search: String, completion: @escaping (_ isSuccess: Bool, NetworkErrors?) -> Void) {
         let word = algorithmManager.removePet(from: search)
         let searchWord = algorithmManager.combinePet(pet, and: word)
-        print("in service \(searchWord)")
         let params = ShoppingParams(search: searchWord, count: 20, start: itemStart, sort: sortOption)
-
         DispatchQueue.global().async {
             self.networkManager.getAPIData(params, completion: { data in
                 if data.items.isEmpty {
