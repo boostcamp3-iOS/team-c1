@@ -25,9 +25,6 @@ class MyGoodsService {
     init() {
         if let data = try? PetKeywordCoreDataManager().fetchOnlyPet(), let string = data {
             pet = Pet(rawValue: string)
-        } else {
-            // TODO: 현재 저장된 펫키워드 데이터가 없기 때문. 나중에 삭제.
-            pet = Pet.dog
         }
     }
 
@@ -41,16 +38,27 @@ class MyGoodsService {
     private func fetchFavoriteGoods() -> [MyGoodsData] {
         if let pet = pet, let data = try? manager.fetchFavoriteGoods(pet: pet.rawValue), let goods = data {
             return goods
+        } else if let data = try? manager.fetchFavoriteGoods(), let goods = data {
+            return goods
         }
         return []
     }
 
     private func fetchRecentGoods() -> [MyGoodsData] {
-        if let pet = pet, let data = try? manager.fetchLatestGoods(pet: pet.rawValue, isLatest: true, ascending: false),
+        var result = [MyGoodsData]()
+        if let pet = pet,
+            let data = try? manager.fetchFavoriteGoods(pet: pet.rawValue),
             let goods = data {
-            return goods
+            result = goods
+        } else if let data = try? manager.fetchLatestGoods(isLatest: true, ascending: false),
+            let goods = data {
+            result = goods
         }
-        return []
+        if result.count > 10 {
+            print(result.count)
+            result.removeSubrange(10 ..< result.count)
+        }
+        return result
     }
 
     // MARK: - Delete methods

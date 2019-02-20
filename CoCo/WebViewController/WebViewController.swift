@@ -83,7 +83,7 @@ class WebViewController: UIViewController {
     // MARK: - Navigation related methods
     private func setNavigationBar() {
         navigationController?.navigationBar.isTranslucent = false
-        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationController?.navigationBar.prefersLargeTitles = false
         if let title = service?.myGoodsData.shoppingmall {
             navigationItem.title = title
         }
@@ -91,10 +91,12 @@ class WebViewController: UIViewController {
         backButton.tintColor = AppColor.purple
         navigationItem.leftBarButtonItem = backButton
         navigationItem.hidesBackButton = true
+        navigationController?.interactivePopGestureRecognizer?.delegate = self
+        navigationController?.interactivePopGestureRecognizer?.isEnabled = true
     }
 
     @objc private func popViewController() {
-        navigationController?.popViewController(animated: false)
+        navigationController?.popViewController(animated: true)
     }
 
     // MARK: - WebView related methods
@@ -190,6 +192,13 @@ extension WebViewController: UIScrollViewDelegate {
         } else {
             navigationController?.setNavigationBarHidden(false, animated: true)
         }
+    }
+}
+
+// MARK: - UIGestureRecognizerDelegate
+extension WebViewController: UIGestureRecognizerDelegate {
+    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true
     }
 }
 
