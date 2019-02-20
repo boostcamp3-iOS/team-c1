@@ -26,7 +26,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="EYJ-Pk-jAm">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="EYJ-Pk-jAm">
                                 <rect key="frame" x="0.0" y="88" width="375" height="641"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
@@ -46,14 +46,17 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="상품이 존재하지 않습니다." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cwq-ku-2Cb">
-                                                    <rect key="frame" x="15" y="45" width="345" height="289.66666666666663"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="상품이 존재하지 않습니다." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cwq-ku-2Cb">
+                                                    <rect key="frame" x="100.00000000000001" y="177.66666666666666" width="175.33333333333337" height="25"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="25" id="dgr-BQ-LXA"/>
+                                                    </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="KUY-Bp-Vno">
-                                                    <rect key="frame" x="15" y="45" width="345" height="289.66666666666669"/>
+                                                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="KUY-Bp-Vno">
+                                                    <rect key="frame" x="15" y="45" width="360" height="290"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" relation="greaterThanOrEqual" priority="100" constant="200" id="s0n-Vd-2U1"/>
@@ -69,7 +72,7 @@
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
                                                 <constraint firstItem="Cwq-ku-2Cb" firstAttribute="centerX" secondItem="hod-nn-dFI" secondAttribute="centerX" id="2Ub-gv-MJ6"/>
-                                                <constraint firstAttribute="trailing" secondItem="KUY-Bp-Vno" secondAttribute="trailing" constant="15" id="4fG-L3-A0T"/>
+                                                <constraint firstAttribute="trailing" secondItem="KUY-Bp-Vno" secondAttribute="trailing" id="4fG-L3-A0T"/>
                                                 <constraint firstItem="Cwq-ku-2Cb" firstAttribute="centerY" secondItem="KUY-Bp-Vno" secondAttribute="centerY" id="Fyd-Tq-j8R"/>
                                                 <constraint firstItem="KUY-Bp-Vno" firstAttribute="top" secondItem="DHD-Ny-1YW" secondAttribute="bottom" constant="10" id="Ukm-SA-5Jv"/>
                                                 <constraint firstItem="DHD-Ny-1YW" firstAttribute="leading" secondItem="hod-nn-dFI" secondAttribute="leading" constant="16" id="eWK-y0-DEi"/>
