@@ -92,7 +92,6 @@ class DiscoverService {
             return nil
         }
         do {
-
             guard let keywords = try petKeywordCoreDataManagerType.fetchObjects(pet: PetDefault.shared.pet.rawValue) as? [PetKeywordData] else {
                 return nil
             }
@@ -101,7 +100,6 @@ class DiscoverService {
             return result
         } catch let error as NSError {
             return nil
-            print(error)
         }
     }
 

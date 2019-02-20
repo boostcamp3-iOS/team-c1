@@ -12,18 +12,20 @@ import CoreData
 class DiscoverViewController: UIViewController {
 
     @IBOutlet weak var collectionView: UICollectionView!
-    private let goodsIdentifier = "GoodsCell"
 
-    let toWebSegue = "discoverToWeb"
-    var discoverService: DiscoverService?
-    let networkManager = ShoppingNetworkManager.shared
-    let algorithmManager = Algorithm()
-    var myGoodsCoreDataManager = MyGoodsCoreDataManager()
-    var searchWordCoreDataManager = SearchWordCoreDataManager()
-    var petKeywordCoreDataManager = PetKeywordCoreDataManager()
-    var isInserting = false
-    var layout: PinterestLayout?
-    var pagenationNum = 1
+    private let goodsIdentifier = "GoodsCell"
+    private let toWebSegue = "discoverToWeb"
+    private var discoverService: DiscoverService?
+    private let networkManager = ShoppingNetworkManager.shared
+    private let algorithmManager = Algorithm()
+    private let searchWordCoreDataManager = SearchWordCoreDataManager()
+    private var myGoodsCoreDataManager = MyGoodsCoreDataManager()
+    private var petKeywordCoreDataManager = PetKeywordCoreDataManager()
+    private let settingPetKeyword = SettingViewController()
+    private var isInserting = false
+    private var layout: PinterestLayout?
+    fileprivate var pagenationNum = 1
+    fileprivate var headerSize: CGFloat = 230
 
     // 둘러보기
     override func viewDidLoad() {
@@ -56,7 +58,6 @@ class DiscoverViewController: UIViewController {
 
     func loadData() {
         discoverService = DiscoverService(networkManagerType: networkManager, algorithmManagerType: algorithmManager, searchWordDoreDataManagerType: searchWordCoreDataManager, myGoodsCoreDataManagerType: myGoodsCoreDataManager, petKeywordCoreDataManagerType: petKeywordCoreDataManager)
-
         guard let discoverService = discoverService else {
             return
         }
@@ -68,15 +69,19 @@ class DiscoverViewController: UIViewController {
         if !isInserting {
             isInserting = true
             discoverService.request(completion: { [weak self]
-                (isSuccess, _) in
+                (isSuccess, error) in
                 guard let self = self else {
                     return
                 }
+                if error != nil {
+                    self.alert("데이터를 가져오지 못했습니다.")
+                }
                 if isSuccess {
                     DispatchQueue.main.async {
-                        self.layout?.setCellPinterestLayout(indexPathRow: self.pagenationNum - 1) {}
-                        self.collectionView.reloadData()
-                        self.pagenationNum += 20
+                        self.layout?.setCellPinterestLayout(indexPathRow: self.pagenationNum - 1) {
+                            self.collectionView.reloadData()
+                            self.pagenationNum += 20
+                        }
                     }
                     self.isInserting = false
                 }
@@ -102,11 +107,11 @@ extension DiscoverViewController: UICollectionViewDelegate, UICollectionViewData
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
+
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         guard  let discoverService = discoverService else {
             return 0
         }
-        print("DC: \(discoverService.fetchedMyGoods.count)")
         return discoverService.fetchedMyGoods.count
     }
 
@@ -141,15 +146,19 @@ extension DiscoverViewController: UICollectionViewDelegate, UICollectionViewData
             if !isInserting {
                 isInserting = true
                 discoverService?.request(completion: { [weak self]
-                    (isSuccess, _) in
+                    (isSuccess, error) in
                     guard let self = self else {
                         return
                     }
+                    if error != nil {
+                        self.alert("데이터를 가져오지 못했습니다.")
+                    }
                     if isSuccess {
                         DispatchQueue.main.async {
-                            self.layout?.setCellPinterestLayout(indexPathRow: self.pagenationNum - 1) {}
-                            self.collectionView.reloadData()
-                            self.pagenationNum += 20
+                            self.layout?.setCellPinterestLayout(indexPathRow: self.pagenationNum - 1) {
+                                self.collectionView.reloadData()
+                                self.pagenationNum += 20
+                            }
                         }
                         self.isInserting = false
                     }
@@ -161,10 +170,10 @@ extension DiscoverViewController: UICollectionViewDelegate, UICollectionViewData
 
 extension DiscoverViewController: PinterestLayoutDelegate {
     func headerFlexibleHeight(inCollectionView collectionView: UICollectionView, withLayout layout: UICollectionViewLayout, fixedDimension: CGFloat) -> CGFloat {
-        return 230
+        return headerSize
     }
 
-    func collectionView(_ collectionView: UICollectionView, heightForPhotoAtIndexPath indexPath: IndexPath) -> CGFloat {
+    func collectionView(_ collectionView: UICollectionView, heightForTitleIndexPath indexPath: IndexPath) -> CGFloat {
         guard let discoverService = discoverService else {
             return 0
         }
@@ -173,7 +182,6 @@ extension DiscoverViewController: PinterestLayoutDelegate {
         let option = NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin)
         let attribute = [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13)]
         let estimateFrame = NSString(string: title).boundingRect(with: CGSize(width: itemSize, height: 1000), options: option, attributes: attribute, context: nil)
-        print("itemggg \(indexPath) of \(estimateFrame.height)")
         return estimateFrame.height + view.frame.width*2/3
     }
 }

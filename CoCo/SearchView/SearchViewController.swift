@@ -370,7 +370,7 @@ extension SearchViewController: PinterestLayoutDelegate {
     func headerFlexibleHeight(inCollectionView collectionView: UICollectionView, withLayout layout: UICollectionViewLayout, fixedDimension: CGFloat) -> CGFloat {
         return 230
     }
-    func collectionView(_ collectionView: UICollectionView, heightForPhotoAtIndexPath indexPath: IndexPath) -> CGFloat {
+    func collectionView(_ collectionView: UICollectionView, heightForTitleIndexPath indexPath: IndexPath) -> CGFloat {
         let itemSize = (collectionView.frame.width - (collectionView.contentInset.left + collectionView.contentInset.right + 10)) / 2
         let title = searchService.dataLists[indexPath.item].title
         let attribute = [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13)]

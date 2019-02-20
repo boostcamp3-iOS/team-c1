@@ -7,18 +7,23 @@
 //
 
 import UIKit
-import CoreGraphics
-import Darwin
 
 extension UIImage {
-    func resize(scale: CGFloat) -> UIImage {
-        let transform = CGAffineTransform(scaleX: scale, y: scale)
-        let size = self.size.applying(transform)
-        UIGraphicsBeginImageContext(size)
-        self.draw(in: CGRect(origin: .zero, size: size))
-        let resultImage = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        return resultImage!
+    func resize(size: CGSize) -> UIImage {
+        let widthRatio = size.width  / self.size.width
+        let heightRatio = size.height / self.size.height
+        let scale = widthRatio > heightRatio ? heightRatio : widthRatio
+        let size = CGSize(width: self.size.width * scale, height: self.size.height * scale)
+        let format = UIGraphicsImageRendererFormat.default()
+        format.opaque = true
+        format.scale = self.scale
+
+        let render = UIGraphicsImageRenderer(size: size, format: format)
+        let image = render.image { _ in
+            self.draw(in: CGRect(origin: .zero, size: size))
+        }
+
+        return image
     }
 }
 
@@ -26,7 +31,7 @@ extension UIImageView {
     func setImage(url: String, isDisk: Bool = false) {
         ImageManager.shared.cacheImage(url: url, isDisk: isDisk) { image in
             DispatchQueue.main.async {
-                self.image = image
+                UIView.transition(with: self, duration: 0.2, options: .transitionCrossDissolve, animations: { self.image = image }, completion: nil)
             }
         }
     }
@@ -51,7 +56,7 @@ class ImageManager {
             guard let data = data else {
                 return
             }
-            if let image = UIImage(data: data) {
+            if let image = UIImage(data: data)?.resize(size: CGSize(width: 200, height: 200)) {
                 self.imageCache.store(value: image, forKey: url, isDisk: isDisk)
                 completion(image)
             }

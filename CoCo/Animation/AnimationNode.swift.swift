@@ -56,9 +56,8 @@ class AnimationNode: SKShapeNode {
             addChild(textLabel)
         }
         if let imageTexture = imageTexture {
-            //fillTexture = imageTexture
             let spriteNode = SKSpriteNode(texture: imageTexture)
-            spriteNode.size = frame.size
+            spriteNode.size = CGSize(width: frame.width - 10, height: frame.height - 10)
             addChild(spriteNode)
         }
     }

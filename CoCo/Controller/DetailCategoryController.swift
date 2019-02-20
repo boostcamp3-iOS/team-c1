@@ -71,12 +71,12 @@ class DetailCategoryController: UIView {
         self.addSubview(collectionView)
         collectionView.register(UINib(nibName: "DetailCategoryCell", bundle: nil), forCellWithReuseIdentifier: detailCellId)
         collectionView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-        collectionView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 1).isActive = true
-        collectionView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 5).isActive = true
-        collectionView.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: 5).isActive = true
-        collectionView.heightAnchor.constraint(equalToConstant: 50).isActive = true
-//        let firstCell = collectionView.cellForItem(at: IndexPath(item: 0, section: 0)) as? DetailCategoryCell
-//        firstCell?.detailCategoryLabel.font = UIFont.boldSystemFont(ofSize: 17)
+        NSLayoutConstraint.activate([
+            collectionView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 1),
+            collectionView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 5),
+            collectionView.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: 5),
+            collectionView.heightAnchor.constraint(equalToConstant: 50)
+            ])
     }
 
     func setupButton() {
@@ -103,7 +103,6 @@ extension DetailCategoryController: UICollectionViewDataSource, UICollectionView
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: detailCellId, for: indexPath) as? DetailCategoryCell else {
             return UICollectionViewCell()
         }
-        print(detailCategoryTitle[indexPath.item])
         cell.detailCategoryLabel.text = detailCategoryTitle[indexPath.item]
         cell.categoryBackground.backgroundColor = UIColor().randomColor(index: indexPath.row)
         return cell

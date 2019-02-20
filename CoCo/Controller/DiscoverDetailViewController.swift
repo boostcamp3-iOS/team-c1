@@ -46,6 +46,7 @@ class DiscoverDetailViewController: UIViewController {
     // 카테고리디테일
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = UIColor.white
         setupNavigationView()
         setupHeader()
         setupCollctionView()
@@ -67,7 +68,6 @@ class DiscoverDetailViewController: UIViewController {
     }
 
     func setupCollctionView() {
-        view.backgroundColor = UIColor.white
         view.addSubview(collectionView)
         let goodsCellView = UINib(nibName: "GoodsCell", bundle: nil)
         collectionView.register(goodsCellView, forCellWithReuseIdentifier: goodsIdentifier)
@@ -95,10 +95,8 @@ class DiscoverDetailViewController: UIViewController {
             headerView.heightAnchor.constraint(equalToConstant: 100)
             ])
         headerView.detailCategoryDelegate = self
-                headerView.category = category
-               headerView.pet = pet
-
-//        collectionView.register(DetailCategoryController.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "detailCategoryView")
+        headerView.category = category
+        headerView.pet = pet
     }
 
     func loadData() {
@@ -149,16 +147,6 @@ extension DiscoverDetailViewController: UICollectionViewDataSource, UICollection
         cell.isLike = false
         return cell
     }
-//
-//    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-//        guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "detailCategoryView", for: indexPath) as? DetailCategoryController else {
-//            return UICollectionReusableView()
-//        }
-//        header.detailCategoryDelegate = self
-//        header.category = category
-//        header.pet = pet
-//        return header
-//    }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let discoverDetailService = discoverDetailService else {
@@ -174,21 +162,25 @@ extension DiscoverDetailViewController: UICollectionViewDataSource, UICollection
     }
 
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        print(scrollView.contentOffset.y >= (scrollView.contentSize.height - scrollView.frame.size.height) - 200)
-        print(collectionView.contentOffset.y)
-        if (scrollView.contentOffset.y >= (scrollView.contentSize.height - scrollView.frame.size.height) - 50) {
+        if scrollView.contentOffset.y >= scrollView.contentSize.height - scrollView.frame.size.height - 50 {
             if !isInserting {
                 isInserting = true
                 discoverDetailService?.getShoppingData(start: pagenationNum, search: searchWord, completion: { [weak self]
-                    (isSuccess, _) in
+                    (isSuccess, error) in
+                    if let error = error {
+                    }
                     guard let self = self else {
                         return
                     }
                     if isSuccess {
-                        DispatchQueue.main.async {
-                            self.layout?.setCellPinterestLayout(indexPathRow: self.pagenationNum - 1) {}
+                        DispatchQueue.main.async { [weak self] in
+                            guard let self = self else {
+                                return
+                            }
+                            self.layout?.setCellPinterestLayout(indexPathRow: self.pagenationNum - 1) {
                             self.collectionView.reloadData()
                             self.pagenationNum += 20
+                            }
                         }
                         self.isInserting = false
                     }
@@ -200,7 +192,7 @@ extension DiscoverDetailViewController: UICollectionViewDataSource, UICollection
 
 extension DiscoverDetailViewController: PinterestLayoutDelegate {
     // MARK: - Delegate Methodes
-    func collectionView(_ collectionView: UICollectionView, heightForPhotoAtIndexPath indexPath: IndexPath) -> CGFloat {
+    func collectionView(_ collectionView: UICollectionView, heightForTitleIndexPath indexPath: IndexPath) -> CGFloat {
         let itemSize = (collectionView.frame.width - (collectionView.contentInset.left + collectionView.contentInset.right + 10)) / 2
         let title = discoverDetailService?.dataLists[indexPath.item].title ?? ""
         let attribute = [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13)]
