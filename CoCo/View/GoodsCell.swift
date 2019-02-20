@@ -53,6 +53,10 @@ class GoodsCell: UICollectionViewCell {
         setupDelete()
     }
 
+    override func prepareForReuse() {
+        goodsImageView.image = nil
+    }
+
     func settupGoodsCell() {
         self.layer.cornerRadius = 6
         self.layer.masksToBounds = false

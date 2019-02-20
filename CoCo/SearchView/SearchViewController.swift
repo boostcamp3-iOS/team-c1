@@ -54,6 +54,7 @@ class SearchViewController: UIViewController {
         searchService.fetchRecommandSearchWord {
             self.collectionView.reloadData()
         }
+        extendedLayoutIncludesOpaqueBars = true
 
         let buttonImage = UIImage(named: "list")?.withRenderingMode(.alwaysTemplate)
         sortButton.setImage(buttonImage, for: .normal)

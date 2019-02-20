@@ -51,6 +51,7 @@ class DiscoverDetailViewController: UIViewController {
         setupHeader()
         setupCollctionView()
         loadData()
+        extendedLayoutIncludesOpaqueBars = true
     }
 
     override func viewWillAppear(_ animated: Bool) {

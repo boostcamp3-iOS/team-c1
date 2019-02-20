@@ -21,6 +21,7 @@ class MyGoodsViewController: UIViewController {
         service = MyGoodsService()
         setNavigationBar()
         setTableView()
+        extendedLayoutIncludesOpaqueBars = true
     }
 
     override func viewWillAppear(_ animated: Bool) {
