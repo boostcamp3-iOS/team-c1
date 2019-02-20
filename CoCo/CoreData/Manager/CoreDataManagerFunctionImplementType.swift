@@ -38,8 +38,6 @@ extension CoreDataManagerFunctionImplementType {
             // 삽입하려는 데이터와 동일한 productID가 존재하면 기존 데이터 업데이트
             if let object = MyGoodsCoreDataManager().fetchProductID(productID: myGoodsData.productID) {
                 myGoodsData.objectID = object.objectID
-                print("Product: \(myGoodsData.productID) Already Inserted , So Update")
-                print(context.object(with: myGoodsData.objectID!))
                 try updateObject(myGoodsData)
                 return true
                 // 삽입하려는 데이터와 동일한 데이터가 MyGoods Entity에 존재하는 지 확인하기 위해 삽입하려는 데이터의 productID를 Entity에 존재하는 지 확인.
@@ -49,7 +47,6 @@ extension CoreDataManagerFunctionImplementType {
                 myGoodsData.mappinng(to: myGoods)
                 print(myGoods)
                 afterOperation(context: context)
-                print("succesive insert \(myGoodsData.productID)")
                 return true
             }
         case is PetKeywordData:
@@ -68,7 +65,6 @@ extension CoreDataManagerFunctionImplementType {
                     let petKeyword = PetKeyword(context: context)
                     petKeywordData.mappinng(to: petKeyword)
                     afterOperation(context: context)
-                    print("Insert Successive => \(petKeyword)")
                 }
                 return true
             } catch let error as NSError {
@@ -85,7 +81,6 @@ extension CoreDataManagerFunctionImplementType {
                 // SearchKeyword Entity에 검색에가 존재하는 지 확인
                 // 검색어가 존재하면 업데이트
                 if let object = try SearchWordCoreDataManager().fetchWord(searchKeywordData.searchWord, pet: pet) {
-                    print("Alreay stored, So Update")
                     searchKeywordData.objectID = object.objectID
                     try updateObject(searchKeywordData)
                     // 존재하지 않으면 검색어 데이터 추가
@@ -93,7 +88,6 @@ extension CoreDataManagerFunctionImplementType {
                     let searchKeyword = SearchWord(context: context)
                     searchKeywordData.mappinng(to: searchKeyword)
                     afterOperation(context: context)
-                    print("Insert Successive, word: \(searchKeyword.searchWord)")
                 }
                 return true
             } catch let error as NSError {
@@ -129,8 +123,6 @@ extension CoreDataManagerFunctionImplementType {
                 else { throw CoreDataError.update(message: "Can not find data, So can not update")
             }
             myGoodsData.mappinng(to: object)
-            print(object)
-            print("Product: \(myGoodsData.productID) update Complete")
             afterOperation(context: context)
             return true
         case is PetKeywordData:
@@ -138,7 +130,6 @@ extension CoreDataManagerFunctionImplementType {
                 return false
             }
             guard let objectID = petKeywordData.objectID else {
-                print("can not find objectId")
                 throw CoreDataError.update(message: "Can not find this data(\(petKeywordData)), So can not update")
             }
             guard let object = context.object(with: objectID) as? PetKeyword else {
@@ -146,7 +137,6 @@ extension CoreDataManagerFunctionImplementType {
             }
             petKeywordData.mappinng(to: object)
             afterOperation(context: context)
-            print("Update Successive => \(object)")
             return true
         case is SearchWordData:
             guard let searchWordData = coreDataStructType as? SearchWordData else {
@@ -159,7 +149,6 @@ extension CoreDataManagerFunctionImplementType {
             searchWordData.mappinng(to: object)
             afterOperation(context: context)
             return true
-            print("Update Successive => \(object)")
         default:
             return false
         }
@@ -195,7 +184,6 @@ extension CoreDataManagerFunctionImplementType {
                 let object = context.object(with: objectID)
                 context.delete(object)
                 afterOperation(context: context)
-                print("Delete Successive")
                 return true
             }
         case is SearchWordData:
@@ -206,7 +194,6 @@ extension CoreDataManagerFunctionImplementType {
                 let object = context.object(with: objectID)
                 context.delete(object)
                 afterOperation(context: context)
-                print("Delete Successive")
                 return true
             }
         default:
@@ -228,7 +215,6 @@ extension CoreDataManagerFunctionImplementType {
         guard let context = context else { return }
         do {
             try context.save()
-            print("Success")
         } catch {
             context.rollback()
         }

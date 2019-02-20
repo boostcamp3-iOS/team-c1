@@ -8,6 +8,10 @@
 
 import UIKit
 
+protocol SettingPetKeywordDelegate: class {
+    func changePet()
+}
+
 class SettingViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
@@ -21,6 +25,8 @@ class SettingViewController: UIViewController {
         case privacy = "SettingToPrivacyPolicy"
         case apiInfo = "SettingToAPI"
     }
+
+    weak var settingPetKeywordDelegate: SettingPetKeywordDelegate?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,9 +43,14 @@ class SettingViewController: UIViewController {
         navigationController?.navigationBar.prefersLargeTitles = true
     }
 
+    override func viewWillDisappear(_ animated: Bool) {
+        settingPetKeywordDelegate?.changePet()
+        print("didappear")
+    }
+
     func deleteCache() {
         let cacheSize = ImageManager.shared.getCacheSize()
-        let alert = UIAlertController(title: "정말 캐시 데이터를 지우시겠습니까?", message: "\(Int(cacheSize/100))MB의 메모리가 확보됩니다." , preferredStyle: .alert)
+        let alert = UIAlertController(title: "정말 캐시 데이터를 지우시겠습니까?", message: "\(Int(cacheSize/100))MB의 메모리가 확보됩니다.", preferredStyle: .alert)
         let yes = UIAlertAction(title: "Yes", style: .default) { _ in
             ImageManager.shared.removeAll()
         }
