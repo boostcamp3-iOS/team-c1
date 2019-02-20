@@ -15,7 +15,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        if UserDefaults.isFirstLaunch() {
+            let storyboard = UIStoryboard(name: "PetKeyword", bundle: nil)
+            if let petKeywordVC = storyboard.instantiateViewController(withIdentifier: "PetKeywordViewController") as? PetKeywordViewController {
+                self.window?.rootViewController = petKeywordVC
+                self.window?.makeKeyAndVisible()
+            }
+        }
         return true
     }
 
