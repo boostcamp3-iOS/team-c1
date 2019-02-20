@@ -9,13 +9,18 @@
 import UIKit
 
 protocol SearchViewControllerDelegate: class {
-    func tapKeywordCell(keyword: String)
+    func delegateTapKeywordCell(keyword: String)
+    func delegateTextDidChanged(_ search: String)
+    func delegateCancelButtonTapped()
 }
 
 class SearchViewController: UIViewController {
     // MARK: - IBOutlets
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    @IBOutlet weak var navigationView: UIView!
+    @IBOutlet weak var navigationSearchBar: UISearchBar!
+    @IBOutlet weak var sortButton: UIButton!
 
     enum CellIdentifier: String {
         case searchKeyword = "SearchKeywordCell"
@@ -42,12 +47,20 @@ class SearchViewController: UIViewController {
 
         collectionView.delegate = self
         collectionView.dataSource = self
+        navigationSearchBar.delegate = self
+
         self.activityIndicator.stopAnimating()
         searchService.fetchRecommandSearchWord {
             self.collectionView.reloadData()
         }
-        //        petkeyWordCoreDataPrint()
+
+        let buttonImage = UIImage(named: "list")?.withRenderingMode(.alwaysTemplate)
+        sortButton.setImage(buttonImage, for: .normal)
+        sortButton.tintColor = #colorLiteral(red: 0.631372549, green: 0.4901960784, blue: 1, alpha: 1)
+
         collectionView.collectionViewLayout = centerAlignLayout
+        navigationView.isHidden = true
+        navigationView.alpha = 0
 
         collectionView.register(UINib(nibName: "GoodsCell", bundle: nil), forCellWithReuseIdentifier: CellIdentifier.goods.rawValue)
 
@@ -98,7 +111,8 @@ class SearchViewController: UIViewController {
                 }
                 let search = cell.titleLabel.text ?? ""
                 self.activityIndicator.startAnimating()
-                delegate?.tapKeywordCell(keyword: search)
+                delegate?.delegateTapKeywordCell(keyword: search)
+                navigationSearchBar.text = search
                 searchService.sortOption = .similar
                 searchService.insert(recentSearchWord: search)
                 searchService.getShoppingData(search: search) { isSuccess, err in
@@ -121,6 +135,9 @@ class SearchViewController: UIViewController {
         } else {
             view.endEditing(true)
         }
+    }
+    @IBAction func actionChangeSortRule(_ sender: UIButton) {
+        addSortActionSheet()
     }
 
     // MARK: - Methods
@@ -218,6 +235,20 @@ extension SearchViewController: UICollectionViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         view.endEditing(true)
         let scrollPosition = scrollView.contentSize.height - scrollView.frame.size.height - scrollView.contentOffset.y
+        if scrollView.contentOffset.y > 210 {
+            UIView.transition(with: navigationView, duration: 0.2, options: .transitionCrossDissolve, animations: {
+                self.navigationView.isHidden = false
+                self.navigationView.alpha = 1
+            }, completion: nil)
+        } else {
+            UIView.transition(with: navigationView, duration: 0.2, options: .transitionCrossDissolve, animations: {
+                self.navigationView.alpha = 0
+            }, completion: { finished in
+                if finished {
+                    self.navigationView.isHidden = true
+                }
+            })
+        }
         if scrollPosition > 0 && scrollPosition < scrollView.contentSize.height * 0.1 {
 
             if !isInserting {
@@ -286,7 +317,37 @@ extension SearchViewController: UIGestureRecognizerDelegate {
     }
 }
 
+extension SearchViewController: UISearchBarDelegate {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.setShowsCancelButton(false, animated: true)
+        searchButtonClicked(searchBar.text ?? "")
+    }
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.text?.removeAll()
+        searchBar.setShowsCancelButton(false, animated: true)
+        delegate?.delegateCancelButtonTapped()
+        cancelButtonClicked()
+    }
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        searchBar.setShowsCancelButton(true, animated: true)
+    }
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        searchBar.setShowsCancelButton(false, animated: true)
+    }
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        delegate?.delegateTextDidChanged(searchText)
+    }
+}
+
 extension SearchViewController: SearchCollectionReusableViewDelegate {
+    func delegateTextDidChanged(_ search: String) {
+        navigationSearchBar.text = search
+    }
+
+    func delegateSearchButtonClicked(_ search: String) {
+        navigationSearchBar.text = search
+        searchButtonClicked(search)
+    }
     func searchButtonClicked(_ search: String) {
         view.endEditing(true)
         self.activityIndicator.startAnimating()
@@ -308,6 +369,9 @@ extension SearchViewController: SearchCollectionReusableViewDelegate {
             }
         }
     }
+    func delegateCancelButtonClicked() {
+        cancelButtonClicked()
+    }
     func cancelButtonClicked() {
         view.endEditing(true)
         searchService.dataLists.removeAll()
@@ -316,10 +380,10 @@ extension SearchViewController: SearchCollectionReusableViewDelegate {
             reload(.searchKeyword)
         }
     }
-    func searchBarBeginEditing() {
-        //        collectionView.setContentOffset(.zero, animated: true)
+    func delegateSortButtonTapped() {
+        addSortActionSheet()
     }
-    func sortButtonTapped() {
+    func addSortActionSheet() {
         let actionSheet = UIAlertController(title: nil, message: "정렬 방식을 선택해주세요", preferredStyle: .actionSheet)
 
         let sortSim = UIAlertAction(title: "유사도순", style: .default) { _ in
@@ -344,7 +408,6 @@ extension SearchViewController: SearchCollectionReusableViewDelegate {
 
         present(actionSheet, animated: true, completion: nil)
     }
-
     func sortChanged(sort: SortOption) {
         self.searchService.sortOption = sort
         self.searchService.itemStart = 1
