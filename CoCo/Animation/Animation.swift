@@ -20,18 +20,18 @@ class Animation: SKScene {
     }
     var petNode = [AnimationNode]()
     weak var animationDelegate: AnimationType?
-    
+
     private(set) var fieldNode: SKFieldNode?
     private var strength: Float = 0.0
     private lazy var radius: Float = 0.0
     private var isMoving: Bool = false
-    
+
     override var size: CGSize {
         didSet {
             setProperties()
         }
     }
-    
+
     override init(size: CGSize) {
         super.init(size: size)
         scaleMode = .aspectFill
@@ -40,25 +40,25 @@ class Animation: SKScene {
         backgroundColor = .white
         setProperties()
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
-    
+
     private func setProperties() {
         strength = Float(max(size.width, size.height))
         radius = strength.squareRoot() * 100
         updatePhycisBody(rect: self.frame, radius: CGFloat(radius))
         updateFieldNode(strength: strength, radius: radius)
     }
-    
+
     private func updatePhycisBody(rect: CGRect, radius: CGFloat) {
         var rect = rect
         rect.size.width = radius
         rect.origin.x -= rect.size.width / 2
         physicsBody = SKPhysicsBody(edgeLoopFrom: rect)
     }
-    
+
     private func updateFieldNode(strength: Float, radius: Float) {
         fieldNode = SKFieldNode.radialGravityField()
         if let fieldNode = fieldNode {
@@ -69,7 +69,7 @@ class Animation: SKScene {
         fieldNode?.strength = strength
         fieldNode?.position = CGPoint(x: size.width / 2, y: size.height / 2)
     }
-    
+
     override func addChild(_ node: SKNode) {
         // 상하 좌우 랜덤으로 등장
         let x = CGFloat.random(in: -node.frame.width ... frame.width + node.frame.width)
@@ -77,7 +77,7 @@ class Animation: SKScene {
         node.position = CGPoint(x: x, y: y)
         super.addChild(node)
     }
-    
+
     func addChildPetNode(_ node: AnimationNode) {
         petNode.append(node)
         addChild(node)
@@ -106,7 +106,7 @@ extension Animation {
             node.physicsBody?.applyForce(direction)
         }
     }
-    
+
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let touch = touches.first else {
             return
@@ -146,7 +146,7 @@ extension Animation {
             animationDelegate?.animation(self, didSelect: node)
         }
     }
-    
+
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
         isMoving = false
     }
