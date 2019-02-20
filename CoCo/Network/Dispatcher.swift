@@ -28,12 +28,16 @@ protocol DispatcherType {
      */
     func prepare(request: RequestType) throws -> URLRequest
 
+    func cancel()
+
     init(environment: Environment)
 }
 
 class NetworkDispatcher {
     // MARK: - Private Properties
     private var environment: Environment
+
+    var task: URLSessionTask?
 
     // MARK: - Initializer
     required init(environment: Environment) {
@@ -56,7 +60,7 @@ extension NetworkDispatcher: DispatcherType {
     func execute(request: RequestType, completion: @escaping (Data) -> Void) throws {
         let request = try self.prepare(request: request)
 
-        URLSession.shared.dataTask(with: request) {  (data, _, error) in
+        task = URLSession.shared.dataTask(with: request) {  (data, _, error) in
             if let error = error {
                 print(error.localizedDescription)
             }
@@ -64,7 +68,8 @@ extension NetworkDispatcher: DispatcherType {
                 return
             }
             completion(data)
-            }.resume()
+        }
+        task?.resume()
     }
 
     func prepare(request: RequestType) throws -> URLRequest {
@@ -103,5 +108,9 @@ extension NetworkDispatcher: DispatcherType {
         }
         apiRequest.httpMethod = request.method.rawValue
         return apiRequest
+    }
+
+    func cancel() {
+        task?.cancel()
     }
 }

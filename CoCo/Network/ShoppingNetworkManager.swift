@@ -83,4 +83,8 @@ class ShoppingNetworkManager: NetworkManagerType {
             completion(nil, err)
         }
     }
+    
+    func cancelImageData(url: String) {
+        
+    }
 }
