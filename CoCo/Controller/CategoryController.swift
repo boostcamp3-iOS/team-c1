@@ -16,7 +16,6 @@ class CategoryController: UICollectionReusableView {
 
     private let cellId = "CategoryCell"
     let discoverService = DiscoverService()
-    let settingPetKeyword = SettingViewController()
     weak var categoryDelegate: CategoryControllerDelegate?
     lazy var largeTitle: LargeTitle = {
         guard let largeTitle = Bundle.main.loadNibNamed("LargeTitle", owner: self, options: nil)?.first as? LargeTitle else {
@@ -26,10 +25,12 @@ class CategoryController: UICollectionReusableView {
         largeTitle.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         return largeTitle
     }()
+
     lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        cv.showsHorizontalScrollIndicator = false
         cv.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         cv.dataSource = self
         cv.delegate = self
@@ -45,7 +46,6 @@ class CategoryController: UICollectionReusableView {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        settingPetKeyword.settingPetKeywordDelegate = self
         setupLargeTitle()
         setUpCollectionView()
     }
@@ -126,7 +126,6 @@ extension CategoryController: UICollectionViewDataSource, UICollectionViewDelega
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("click \(indexPath)")
         if indexPath.item == 0 {
             if categoryImage[0] == UIImage(named: "dog") && categoryTitle[0] == Pet.dog.rawValue {
                 categoryImage[0] = UIImage(named: "cat")
@@ -149,20 +148,4 @@ extension CategoryController: UICollectionViewDataSource, UICollectionViewDelega
             categoryDelegate.goDiscoverDetail(indexPath: indexPath, pet: pet, category: category)
         }
     }
-}
-
-extension CategoryController: SettingPetKeywordDelegate {
-    func changePet() {
-        print("cell")
-        guard let cell = collectionView.cellForItem(at: IndexPath(row: 0, section: 0)) as? CategotyCell else {
-            return
-        }
-        if PetDefault.shared.pet == .cat {
-            cell.categoryImageView.image = UIImage(named: "cat")
-        } else {
-            cell.categoryImageView.image = UIImage(named: "dog")
-        }
-        collectionView.reloadData()
-    }
-
 }

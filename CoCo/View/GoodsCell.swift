@@ -42,7 +42,6 @@ class GoodsCell: UICollectionViewCell {
                 goodsImageView.setImage(url: myGoods.image)
                 goodsPriceLabel.text = myGoods.price
                 goodsTitleLabel.text = myGoods.title
-                print("\(myGoods.title) and \(goodsImageView.image?.size)")
                 goodsShoppingMallLabel.text = myGoods.shoppingmall
             }
         }

@@ -16,10 +16,8 @@ func petkeyWordCoreDataPrint() {
     do {
         for data in dummy {
             let insert = try petKeywordDataManager.insert(data)
-            print(data)
         }
         let fetch = try petKeywordDataManager.fetchObjects()
-        print(fetch)
     } catch let error {
         print(error)
     }

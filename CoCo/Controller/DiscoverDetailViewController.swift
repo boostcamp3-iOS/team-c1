@@ -39,7 +39,7 @@ class DiscoverDetailViewController: UIViewController {
     fileprivate var layout: PinterestLayout?
     fileprivate var isInserting = false
     fileprivate var pagenationNum = 1
-    fileprivate var headerSize: CGFloat = 100
+    fileprivate var headerSize: CGFloat = 30
     var category: Category?
     var pet: Pet?
 
@@ -59,6 +59,8 @@ class DiscoverDetailViewController: UIViewController {
         self.navigationController?.navigationBar.tintColor = AppColor.purple
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
+        let buttonImage = UIImage(named: "list")?.withRenderingMode(.alwaysTemplate)
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: buttonImage, style: .plain, target: self, action: #selector(sortGoods))
     }
 
     func setupNavigationView() {
@@ -74,10 +76,10 @@ class DiscoverDetailViewController: UIViewController {
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.collectionViewLayout = PinterestLayout()
-        collectionView.contentInset = UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 0)
-        collectionView.scrollIndicatorInsets = UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 0)
+        collectionView.contentInset = UIEdgeInsets(top: 3, left: 0, bottom: 0, right: 0)
+        collectionView.scrollIndicatorInsets = UIEdgeInsets(top: 3, left: 0, bottom: 0, right: 0)
         NSLayoutConstraint.activate([
-            collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 100),
+            collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 50),
             collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
@@ -92,7 +94,7 @@ class DiscoverDetailViewController: UIViewController {
             headerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             headerView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             headerView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            headerView.heightAnchor.constraint(equalToConstant: 100)
+            headerView.heightAnchor.constraint(equalToConstant: 30)
             ])
         headerView.detailCategoryDelegate = self
         headerView.category = category
@@ -128,6 +130,49 @@ class DiscoverDetailViewController: UIViewController {
             })
         }
     }
+
+    @objc func sortGoods() {
+        let actionSheet = UIAlertController(title: nil, message: "정렬 방식을 선택해주세요", preferredStyle: .actionSheet)
+
+        let sortSim = UIAlertAction(title: "유사도순", style: .default) { _ in
+            self.sortChanged(sort: .similar)
+        }
+        let sortAscending = UIAlertAction(title: "가격 오름차순", style: .default) { _ in
+            self.sortChanged(sort: .ascending)
+        }
+        let sortDescending = UIAlertAction(title: "가격 내림차순", style: .default) { _ in
+            self.sortChanged(sort: .descending)
+        }
+        let sortDate = UIAlertAction(title: "날짜순", style: .default) { _ in
+            self.sortChanged(sort: .date)
+        }
+        let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+
+        actionSheet.addAction(sortSim)
+        actionSheet.addAction(sortAscending)
+        actionSheet.addAction(sortDescending)
+        actionSheet.addAction(sortDate)
+        actionSheet.addAction(cancel)
+
+        present(actionSheet, animated: true, completion: nil)
+    }
+
+    func sortChanged(sort: SortOption) {
+        discoverDetailService?.sortOption = sort
+        discoverDetailService?.getShoppingData(start: 1, search: searchWord ?? "") { isSuccess, err in
+            if isSuccess {
+                DispatchQueue.main.async {
+                    self.collectionView.reloadData()
+                }
+            } else {
+                if err == NetworkErrors.noData {
+                    self.alert("데이터가 없습니다. 다른 검색어를 입력해보세요")
+                } else {
+                    self.alert("네트워크 연결이 끊어졌습니다.")
+                }
+            }
+        }
+    }
 }
 
 extension DiscoverDetailViewController: UICollectionViewDataSource, UICollectionViewDelegate {
@@ -157,7 +202,6 @@ extension DiscoverDetailViewController: UICollectionViewDataSource, UICollection
             return
         }
         webViewController.sendData(discoverDetailService.dataLists[indexPath.item])
-        print(indexPath)
         navigationController?.pushViewController(webViewController, animated: true)
     }
 
@@ -204,52 +248,9 @@ extension DiscoverDetailViewController: PinterestLayoutDelegate {
     func headerFlexibleHeight(inCollectionView collectionView: UICollectionView, withLayout layout: UICollectionViewLayout, fixedDimension: CGFloat) -> CGFloat {
         return 0
     }
-
-    func sortChanged(sort: SortOption) {
-        discoverDetailService?.sortOption = sort
-        discoverDetailService?.getShoppingData(start: 1, search: searchWord ?? "") { isSuccess, err in
-            if isSuccess {
-                DispatchQueue.main.async {
-                    self.collectionView.reloadData()
-                }
-            } else {
-                if err == NetworkErrors.noData {
-                    self.alert("데이터가 없습니다. 다른 검색어를 입력해보세요")
-                } else {
-                    self.alert("네트워크 연결이 끊어졌습니다.")
-                }
-            }
-        }
-    }
 }
 
 extension DiscoverDetailViewController: DetailCategoryControllerDelegate {
-    func sortGoods() {
-        let actionSheet = UIAlertController(title: nil, message: "정렬 방식을 선택해주세요", preferredStyle: .actionSheet)
-
-        let sortSim = UIAlertAction(title: "유사도순", style: .default) { _ in
-            self.sortChanged(sort: .similar)
-        }
-        let sortAscending = UIAlertAction(title: "가격 오름차순", style: .default) { _ in
-            self.sortChanged(sort: .ascending)
-        }
-        let sortDescending = UIAlertAction(title: "가격 내림차순", style: .default) { _ in
-            self.sortChanged(sort: .descending)
-        }
-        let sortDate = UIAlertAction(title: "날짜순", style: .default) { _ in
-            self.sortChanged(sort: .date)
-        }
-        let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-
-        actionSheet.addAction(sortSim)
-        actionSheet.addAction(sortAscending)
-        actionSheet.addAction(sortDescending)
-        actionSheet.addAction(sortDate)
-        actionSheet.addAction(cancel)
-
-        present(actionSheet, animated: true, completion: nil)
-    }
-
     func showGoods(indexPath: IndexPath, pet: Pet, detailCategory: String) {
         searchWord = detailCategory
         pagenationNum = 1
@@ -262,7 +263,6 @@ extension DiscoverDetailViewController: DetailCategoryControllerDelegate {
                     self?.collectionView.reloadData()
                 }
             }
-
         }
     }
 }

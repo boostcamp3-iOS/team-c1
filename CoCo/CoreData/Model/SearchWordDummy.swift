@@ -15,11 +15,8 @@ func searchCoreDataPrint() {
     do {
         for data in  dummy {
             let insert = try searchCoreDataManager.insert(data)
-            print(insert)
         }
         let fetch = try searchCoreDataManager.fetchObjects()
-        print(fetch)
-
     } catch let error {
         print(error)
     }
