@@ -16,10 +16,8 @@ func coreDataPrint() {
     do {
         for dump in dummy {
             let insert = try coredataManager.insert(dump)
-            print(insert)
         }
         let allFet = try coredataManager.fetchObjects()
-        print(allFet)
     } catch let error {
         print(error)
     }

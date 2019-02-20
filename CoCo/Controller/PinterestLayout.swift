@@ -17,7 +17,7 @@ class PinterestLayout: UICollectionViewFlowLayout {
     private var itemFixedDimension: CGFloat = 0
     private var itemFlexibleDimension: CGFloat = 0
     fileprivate var numberOfColums =  2
-    fileprivate var cellPadding: CGFloat = 6
+    fileprivate var cellPadding: CGFloat = 4
     fileprivate var cellCache = [UICollectionViewLayoutAttributes]()
     fileprivate var headerCache = [UICollectionViewLayoutAttributes]()
     fileprivate var currentyOffset: CGFloat = 0
@@ -63,6 +63,7 @@ class PinterestLayout: UICollectionViewFlowLayout {
     }
 
     func setCellPinterestLayout(indexPathRow: Int, completion: @escaping () -> Void) {
+        print("contentHeight: \(contentHeight)")
         guard let collectionView = collectionView else {
             return
         }
@@ -79,10 +80,8 @@ class PinterestLayout: UICollectionViewFlowLayout {
             self.extraCount = 20
         }
 
-        print("cell -- \(collectionView.numberOfItems(inSection: 0) + extraCount) ")
         for item in indexPathRow ..< collectionView.numberOfItems(inSection: 0) + extraCount {
             let indexPath = IndexPath(item: item, section: 0)
-            print("cell -- \(indexPath)")
             let flexibleHeight = delegate.collectionView(collectionView, heightForTitleIndexPath: indexPath)
             let height = cellPadding * 2 + flexibleHeight
             let frame = CGRect(x: xOffset[ycolum], y: yOffset[ycolum], width: columWith, height: height)

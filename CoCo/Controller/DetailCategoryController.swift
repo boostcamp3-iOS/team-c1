@@ -10,27 +10,18 @@ import UIKit
 
 protocol DetailCategoryControllerDelegate: class {
     func showGoods(indexPath: IndexPath, pet: Pet, detailCategory: String)
-    func sortGoods()
 }
 
 class DetailCategoryController: UIView {
 
     // MARK: - Properties
     private let detailCellId = "DetailCategoryCell"
-    lazy var sortButton: UIButton = {
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.addTarget(self, action: #selector(handleSort), for: .touchUpInside)
-        let buttonImage = UIImage(named: "list")?.withRenderingMode(.alwaysTemplate)
-        button.setImage(buttonImage, for: .normal)
-        button.tintColor = #colorLiteral(red: 0.631372549, green: 0.4901960784, blue: 1, alpha: 1)
-        return button
-    }()
     lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
         cv.translatesAutoresizingMaskIntoConstraints = false
+        cv.showsHorizontalScrollIndicator = false
         cv.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         cv.dataSource = self
         cv.delegate = self
@@ -46,8 +37,6 @@ class DetailCategoryController: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         setUpCollectionView()
-        setupButton()
-
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -77,20 +66,6 @@ class DetailCategoryController: UIView {
             collectionView.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: 5),
             collectionView.heightAnchor.constraint(equalToConstant: 50)
             ])
-    }
-
-    func setupButton() {
-        self.addSubview(sortButton)
-        NSLayoutConstraint.activate([
-            sortButton.topAnchor.constraint(equalTo: collectionView.bottomAnchor, constant: 15),
-            sortButton.widthAnchor.constraint(equalToConstant: 25),
-            sortButton.heightAnchor.constraint(equalToConstant: 25),
-            sortButton.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -8)
-            ])
-    }
-
-    @objc func handleSort() {
-        detailCategoryDelegate?.sortGoods()
     }
 }
 
