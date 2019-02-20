@@ -353,6 +353,7 @@ extension SearchViewController: SearchCollectionReusableViewDelegate {
         view.endEditing(true)
         searchService.dataLists.removeAll()
         searchService.itemStart = 1
+        isInserting = false
         if cellIdentifier == .goods {
             reload(.searchKeyword)
         }

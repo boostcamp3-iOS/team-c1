@@ -33,14 +33,13 @@ class SearchService {
     var dataLists = [MyGoodsData]()
     var sortOption: SortOption = .similar
     var itemStart = 1
-    var pet: Pet = .dog
+    var pet: Pet = PetDefault.shared.pet
 
     init(serachCoreData: SearchWordCoreDataManagerType, petCoreData: PetKeywordCoreDataManagerType, network: NetworkManagerType, algorithm: Algorithm) {
         searchCoreDataManager = serachCoreData
         petKeywordCoreDataManager = petCoreData
         networkManager = network
         algorithmManager = algorithm
-        algorithmManager.setPagination(once: 20, maximum: 500)
     }
 
     func getShoppingData(search: String, completion: @escaping (_ isSuccess: Bool, NetworkErrors?) -> Void) {
