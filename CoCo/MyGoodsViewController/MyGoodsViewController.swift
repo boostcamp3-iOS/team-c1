@@ -19,14 +19,16 @@ class MyGoodsViewController: UIViewController {
     // MARK: - View lifecycles & override methods
     override func viewDidLoad() {
         service = MyGoodsService()
-        setNavigationBar()
         setTableView()
+        extendedLayoutIncludesOpaqueBars = true
+        setNavigationBar()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         service?.fetchGoods()
         tableView.reloadData()
+        setNavigationBar()
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
