@@ -60,6 +60,9 @@ class MyGoodsViewController: UIViewController {
     }
 
     @objc private func startEditing() {
+        if let isEmpty = service?.dataIsEmpty, isEmpty {
+            return
+        }
         enableEditing = !enableEditing
         if let item = navigationItem.rightBarButtonItem {
             item.title = (enableEditing) ? "Done" : "Edit"
@@ -78,7 +81,10 @@ class MyGoodsViewController: UIViewController {
             service?.deleteFavoriteGoods(data)
         }
         service?.fetchGoods()
-        tableView.reloadData()
+        if let isEmpty = service?.dataIsEmpty, isEmpty, let item = navigationItem.rightBarButtonItem {
+            item.title = "Edit"
+        }
+        tableView.reloadSections(Section.indexSet, with: .automatic)
     }
 
     func performSegue(withData data: MyGoodsData) {
@@ -108,13 +114,11 @@ extension MyGoodsViewController: UITableViewDelegate, UITableViewDataSource {
             return UITableViewCell()
         }
         cell.delegate = self
-        DispatchQueue.main.async {
-            let (text, data, tag) = (indexPath.section == Section.recent) ?
-                ("최근 본 상품", service.recentGoods, indexPath.row) : ("찜한 목록", service.favoriteGoods, 10 + indexPath.row)
-            cell.tag = tag
-            cell.titleLabel.text = text
-            cell.updateContents(data)
-        }
+        let (text, data, tag) = (indexPath.section == Section.recent) ?
+            ("최근 본 상품", service.recentGoods, indexPath.row) : ("찜한 목록", service.favoriteGoods, 10 + indexPath.row)
+        cell.tag = tag
+        cell.titleLabel.text = text
+        cell.updateContents(data)
         return cell
     }
 }
@@ -125,6 +129,9 @@ extension MyGoodsViewController: ErrorHandlerType { }
 // MARK: - MyGoodsDataDelegate
 extension MyGoodsViewController: MyGoodsDataDelegate {
     func receiveData(_ data: MyGoodsData) {
+        guard !enableEditing else {
+            return
+        }
         performSegue(withData: data)
     }
 
@@ -147,6 +154,7 @@ extension MyGoodsViewController {
     }
 
     private struct Section {
+        static let indexSet = IndexSet(integersIn: recent ... favorite)
         static let recent = 0
         static let favorite = 1
     }

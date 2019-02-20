@@ -17,6 +17,10 @@ class MyGoodsService {
     private lazy var manager = MyGoodsCoreDataManager()
     private var pet: Pet?
 
+    var dataIsEmpty: Bool {
+        return recentGoods.isEmpty && favoriteGoods.isEmpty
+    }
+
     // MARK: - Initializer
     init() {
         if let data = try? PetKeywordCoreDataManager().fetchOnlyPet(), let string = data {

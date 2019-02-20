@@ -65,6 +65,7 @@ class KeywordViewController: UIViewController {
             if UserDefaults.isFirstLaunch() {
                 UserDefaults.standard.set(true, forKey: UserDefaults.launchedBefore)
             }
+            service?.insertPetKeyword()
             UIApplication.shared.keyWindow?.rootViewController = tabBarController
         }
     }
