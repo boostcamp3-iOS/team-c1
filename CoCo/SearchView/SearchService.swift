@@ -34,7 +34,7 @@ class SearchService {
 
     private(set) var recentSearched: String?
     private(set) var keyword = [String]()
-    private(set) var colorChips = [UIColor(red: 1.0, green: 189.0 / 255.0, blue: 239.0 / 255.0, alpha: 1.0), UIColor(red: 186.0 / 255.0, green: 166.0 / 255.0, blue: 238.0 / 255.0, alpha: 1.0), UIColor(red: 250.0 / 255.0, green: 165.0 / 255.0, blue: 165.0 / 255.0, alpha: 1.0), UIColor(red: 166.0 / 255.0, green: 183.0 / 255.0, blue: 238.0 / 255.0, alpha: 1.0)]
+    private(set) var colorChips = [UIColor(red: 1.0, green: 189.0 / 255.0, blue: 239.0 / 255.0, alpha: 1.0), UIColor(red: 186.0 / 255.0, green: 166.0 / 255.0, blue: 238.0 / 255.0, alpha: 1.0), UIColor(red: 250.0 / 255.0, green: 165.0 / 255.0, blue: 165.0 / 255.0, alpha: 1.0), UIColor(red: 166.0 / 255.0, green: 183.0 / 255.0, blue: 238.0 / 255.0, alpha: 1.0), UIColor(red: 199.0 / 255.0, green: 227.0 / 255.0, blue: 218.0 / 255.0, alpha: 1.0), UIColor(red: 250.0 / 255.0, green: 232.0 / 255.0, blue: 158.0 / 255.0, alpha: 1.0)]
 
     enum CellIdentifier: String {
         case searchKeyword = "SearchKeywordCell"
