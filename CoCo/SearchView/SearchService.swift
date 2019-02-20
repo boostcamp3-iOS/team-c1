@@ -48,7 +48,8 @@ class SearchService {
     var sortOption: SortOption = .similar
     var itemStart = 1
     var pet: Pet = PetDefault.shared.pet
-    var delegate: SearchServiceDelegate?
+    weak var delegate: SearchServiceDelegate?
+    var isInserting = false
 
     init(serachCoreData: SearchWordCoreDataManagerType, petCoreData: PetKeywordCoreDataManagerType, network: NetworkManagerType, algorithm: Algorithm) {
         searchCoreDataManager = serachCoreData
@@ -167,6 +168,21 @@ class SearchService {
             } else {
                 self.delegate?.delegateFailToLoad(error: err)
             }
+        }
+    }
+    func pagination() {
+        if !isInserting {
+            isInserting = true
+            itemStart += 20
+            getShoppingData(search: recentSearched ?? "")
+        }
+    }
+    func cancelButtonClicked() {
+        dataLists.removeAll()
+        itemStart = 1
+        isInserting = false
+        if cellIdentifier == .goods {
+            self.delegate?.delegateReloads(.searchKeyword)
         }
     }
 }

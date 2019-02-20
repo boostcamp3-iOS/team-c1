@@ -34,7 +34,6 @@ class SearchViewController: UIViewController {
     weak var delegate: SearchViewControllerDelegate?
     var pinterestLayout = PinterestLayout()
     var centerAlignLayout = CenterAlignedCollectionViewFlowLayout()
-    var isInserting = false
 
     let searchService = SearchService(serachCoreData: SearchWordCoreDataManager(),
                                       petCoreData: PetKeywordCoreDataManager(),
@@ -226,28 +225,7 @@ extension SearchViewController: UICollectionViewDelegate {
             })
         }
         if searchService.cellIdentifier == .goods, scrollPosition > 0, scrollPosition < scrollView.contentSize.height * 0.1 {
-
-            if !isInserting {
-                isInserting = true
-                self.searchService.itemStart += 20
-                searchService.getShoppingData(search: searchService.recentSearched ?? "") { [weak self] isSuccess, err in
-                    guard let self = self else {
-                        return
-                    }
-                    if isSuccess {
-                        DispatchQueue.main.async {
-                            self.pinterestLayout.setCellPinterestLayout(indexPathRow: self.searchService.itemStart - 21) {
-                                print(self.searchService.dataLists.count)
-                                self.collectionView.reloadData()
-                                self.isInserting = false
-                                print(self.isInserting)
-                            }
-                        }
-                    } else {
-                        print(err)
-                    }
-                }
-            }
+            searchService.pagination()
         }
     }
 }
@@ -334,12 +312,7 @@ extension SearchViewController: SearchCollectionReusableViewDelegate {
     }
     func cancelButtonClicked() {
         view.endEditing(true)
-        searchService.dataLists.removeAll()
-        searchService.itemStart = 1
-        isInserting = false
-        if searchService.cellIdentifier == .goods {
-            reload(.searchKeyword)
-        }
+        searchService.cancelButtonClicked()
     }
     func delegateSortButtonTapped() {
         addSortActionSheet()
@@ -404,20 +377,36 @@ extension SearchViewController: SearchServiceDelegate {
             self.alert("네트워크 연결이 끊어졌습니다.")
         }
     }
+
     func delegateReloads(_ cellIdentifier: SearchService.CellIdentifier) {
-        DispatchQueue.main.async {
-            self.searchService.cellIdentifier = cellIdentifier
-            self.collectionView.reloadData()
-            self.activityIndicator.stopAnimating()
-            if cellIdentifier == .goods {
-                self.pinterestLayout = PinterestLayout()
-                self.pinterestLayout.delegate = self
-                self.collectionView.setCollectionViewLayout(self.pinterestLayout, animated: false)
-                self.collectionView.collectionViewLayout.invalidateLayout()
-            } else {
-                self.centerAlignLayout = CenterAlignedCollectionViewFlowLayout()
-                self.collectionView.setCollectionViewLayout(self.centerAlignLayout, animated: false)
-                self.collectionView.collectionViewLayout.invalidateLayout()
+        if searchService.itemStart > 20 {
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else {
+                    return
+                }
+                self.pinterestLayout.setCellPinterestLayout(indexPathRow: self.searchService.itemStart - 21) {
+                    self.collectionView.reloadData()
+                    self.searchService.isInserting = false
+                }
+            }
+        } else {
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else {
+                    return
+                }
+                self.searchService.cellIdentifier = cellIdentifier
+                self.collectionView.reloadData()
+                self.activityIndicator.stopAnimating()
+                if cellIdentifier == .goods {
+                    self.pinterestLayout = PinterestLayout()
+                    self.pinterestLayout.delegate = self
+                    self.collectionView.setCollectionViewLayout(self.pinterestLayout, animated: false)
+                    self.collectionView.collectionViewLayout.invalidateLayout()
+                } else {
+                    self.centerAlignLayout = CenterAlignedCollectionViewFlowLayout()
+                    self.collectionView.setCollectionViewLayout(self.centerAlignLayout, animated: false)
+                    self.collectionView.collectionViewLayout.invalidateLayout()
+                }
             }
         }
     }
