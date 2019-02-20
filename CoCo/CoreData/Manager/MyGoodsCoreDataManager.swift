@@ -78,10 +78,13 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
             request = NSFetchRequest(entityName: entityName)
         }
 
+        let predicate: NSPredicate
         if let pet = pet {
-            let predicate = NSPredicate(format: "pet = %@ AND isFavorite = true", pet)
-            request.predicate = predicate
+            predicate = NSPredicate(format: "pet = %@ AND isFavorite = %@", pet, NSNumber(booleanLiteral: true))
+        } else {
+            predicate = NSPredicate(format: "isFavorite = %@", NSNumber(booleanLiteral: true))
         }
+        request.predicate = predicate
 
         request.sortDescriptors = [sort]
 
