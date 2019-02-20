@@ -12,10 +12,11 @@ class MyGoodsViewController: UIViewController {
     // MARK: - Private properties
     private var service: MyGoodsService?
     private var enableEditing = false
-    
+    var timeIntervar = 0
+
     // MARK: - IBOutlets
     @IBOutlet weak var tableView: UITableView!
-    
+
     // MARK: - View lifecycles & override methods
     override func viewDidLoad() {
         service = MyGoodsService()
@@ -23,14 +24,14 @@ class MyGoodsViewController: UIViewController {
         extendedLayoutIncludesOpaqueBars = true
         setNavigationBar()
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         service?.fetchGoods()
-        tableView.reloadData()
+        tableView.reloadSections(Section.indexSet, with: .automatic)
         navigationController?.navigationBar.prefersLargeTitles = true
     }
-    
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
         if segue.identifier == Identifier.goToWebViewSegue {
@@ -43,7 +44,7 @@ class MyGoodsViewController: UIViewController {
             webVC.sendData(myGoodsData)
         }
     }
-    
+
     // MARK: - Navigation related methods
     private func setNavigationBar() {
         navigationController?.navigationBar.isTranslucent = false
@@ -54,24 +55,27 @@ class MyGoodsViewController: UIViewController {
         editButton.tintColor = AppColor.purple
         navigationItem.rightBarButtonItem = editButton
     }
-    
+
     // MARK: - TalbeView related methods
     private func setTableView() {
         tableView.delegate = self
         tableView.dataSource = self
     }
-    
+
     @objc private func startEditing() {
-        if let isEmpty = service?.dataIsEmpty, isEmpty {
+        guard let barButtonItem = navigationItem.rightBarButtonItem,
+            let isEmpty = service?.dataIsEmpty, !isEmpty else {
             return
         }
-        enableEditing = !enableEditing
-        if let item = navigationItem.rightBarButtonItem {
-            item.title = (enableEditing) ? "Done" : "Edit"
+        barButtonItem.isEnabled = !barButtonItem.isEnabled
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            barButtonItem.isEnabled = !barButtonItem.isEnabled
         }
-        tableView.reloadData()
+        enableEditing = !enableEditing
+        barButtonItem.title = (enableEditing) ? "Done" : "Edit"
+        tableView.reloadSections(Section.indexSet, with: .automatic)
     }
-    
+
     // MARK: - CollectionView related methods
     @objc func deleteAction(_ sender: UIButton) {
         let index = sender.tag
@@ -88,7 +92,7 @@ class MyGoodsViewController: UIViewController {
         }
         tableView.reloadSections(Section.indexSet, with: .automatic)
     }
-    
+
     func performSegue(withData data: MyGoodsData) {
         performSegue(withIdentifier: Identifier.goToWebViewSegue, sender: data)
     }
@@ -99,18 +103,18 @@ extension MyGoodsViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 1
     }
-    
+
     func numberOfSections(in tableView: UITableView) -> Int {
         return 2
     }
-    
+
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let cellWidth = Double((view.frame.size.width - 40) / 2)
         let cellContentHeight: Double = 3 + 35 + 3 + 20 + 5 + 5 + 20 + 5
         let cellHeight = cellWidth + 10 + 25 + 10 + cellContentHeight + 10 + 5
         return CGFloat(cellHeight)
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: Identifier.myGoodTableViewCell) as? MyGoodsTableViewCell, let service = service else {
             return UITableViewCell()
@@ -136,7 +140,7 @@ extension MyGoodsViewController: MyGoodsDataDelegate {
         }
         performSegue(withData: data)
     }
-    
+
     func receiveSender(_ sender: Any) {
         if let button = sender as? UIButton {
             button.isHidden = !enableEditing
@@ -154,7 +158,7 @@ extension MyGoodsViewController {
         static let webViewController = "WebViewController"
         static let goToWebViewSegue = "GoToWebViewController"
     }
-    
+
     private struct Section {
         static let indexSet = IndexSet(integersIn: recent ... favorite)
         static let recent = 0
