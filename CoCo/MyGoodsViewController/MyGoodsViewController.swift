@@ -28,7 +28,7 @@ class MyGoodsViewController: UIViewController {
         super.viewWillAppear(animated)
         service?.fetchGoods()
         tableView.reloadData()
-        setNavigationBar()
+        navigationController?.navigationBar.prefersLargeTitles = true
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

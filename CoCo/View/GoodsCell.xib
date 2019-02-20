@@ -69,13 +69,13 @@
                                 </constraints>
                             </imageView>
                             <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mue-VZ-rAj">
-                                <rect key="frame" x="195" y="8" width="20" height="20"/>
+                                <rect key="frame" x="190" y="8" width="25" height="25"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="S8S-ch-A9v">
-                                    <rect key="frame" x="0.0" y="0.0" width="20" height="20"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="25" height="25"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mg5-p9-Hnt">
-                                            <rect key="frame" x="4" y="4" width="12" height="12"/>
+                                            <rect key="frame" x="4" y="4" width="17" height="17"/>
                                             <state key="normal" image="cross"/>
                                         </button>
                                     </subviews>
@@ -86,9 +86,10 @@
                                         <constraint firstItem="mg5-p9-Hnt" firstAttribute="top" secondItem="S8S-ch-A9v" secondAttribute="top" constant="4" id="mNL-lW-HkO"/>
                                     </constraints>
                                 </view>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="20" id="I2o-3q-V0y"/>
-                                    <constraint firstAttribute="width" constant="20" id="NJG-ld-QSG"/>
+                                    <constraint firstAttribute="height" constant="25" id="I2o-3q-V0y"/>
+                                    <constraint firstAttribute="width" constant="25" id="NJG-ld-QSG"/>
                                 </constraints>
                                 <blurEffect style="extraLight"/>
                             </visualEffectView>
