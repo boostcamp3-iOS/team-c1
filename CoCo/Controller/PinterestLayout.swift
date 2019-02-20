@@ -9,25 +9,22 @@
 import UIKit
 
 protocol PinterestLayoutDelegate: class {
-    func collectionView(_ collectionView: UICollectionView, heightForPhotoAtIndexPath indexPath: IndexPath) -> CGFloat
+    func collectionView(_ collectionView: UICollectionView, heightForTitleIndexPath indexPath: IndexPath) -> CGFloat
     func headerFlexibleHeight(inCollectionView collectionView: UICollectionView, withLayout layout: UICollectionViewLayout, fixedDimension: CGFloat) -> CGFloat
 }
 
 class PinterestLayout: UICollectionViewFlowLayout {
-    weak var delegate: PinterestLayoutDelegate?
-
+    private var itemFixedDimension: CGFloat = 0
+    private var itemFlexibleDimension: CGFloat = 0
     fileprivate var numberOfColums =  2
     fileprivate var cellPadding: CGFloat = 6
     fileprivate var cellCache = [UICollectionViewLayoutAttributes]()
     fileprivate var headerCache = [UICollectionViewLayoutAttributes]()
-    private var itemFixedDimension: CGFloat = 0
-    private var itemFlexibleDimension: CGFloat = 0
-    // private var var headerFlexibleDimension: CGFloat = 0
-    var contentHeight: CGFloat = 0
     fileprivate var currentyOffset: CGFloat = 0
     fileprivate var yOffset = [CGFloat]()
     fileprivate var ycolum = 0
     fileprivate var extraCount = 0
+    fileprivate var contentHeight: CGFloat = 0
     fileprivate var contentWidth: CGFloat {
         guard let collectionView = collectionView else {
             return 0
@@ -35,28 +32,26 @@ class PinterestLayout: UICollectionViewFlowLayout {
         let inset = collectionView.contentInset
         return collectionView.bounds.width - (inset.left + inset.right)
     }
+    weak var delegate: PinterestLayoutDelegate?
+
     override var collectionViewContentSize: CGSize {
         return CGSize(width: contentWidth, height: contentHeight)
     }
 
     // called whenever the collection view's layout is invalidated
     override func prepare() {
-//        print("prepare")
-//        print("contentHeight \(contentHeight)")
         guard cellCache.isEmpty == true, headerCache.isEmpty == true, let collectionView = collectionView else {
-//            print("prepare out")
             return
         }
         guard let delegate = delegate else {
             return
         }
 
-        contentHeight = 0
+        self.contentHeight = 0
 
         let headerFlexibleDimension = delegate.headerFlexibleHeight(inCollectionView: collectionView, withLayout: self, fixedDimension: itemFixedDimension)
 
         for item in 0 ..< collectionView.numberOfItems(inSection: 0) {
-
             if headerFlexibleDimension > 0.0 && item == 0 {
                 let headerLayoutAttributes = UICollectionViewLayoutAttributes(forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, with: IndexPath(item: 0, section: item))
                 headerLayoutAttributes.frame = CGRect(x: 0, y: 0, width: contentWidth, height: headerFlexibleDimension)
@@ -81,14 +76,14 @@ class PinterestLayout: UICollectionViewFlowLayout {
         }
 
         if indexPathRow != 0 {
-            extraCount = 20
+            self.extraCount = 20
         }
 
         print("cell -- \(collectionView.numberOfItems(inSection: 0) + extraCount) ")
         for item in indexPathRow ..< collectionView.numberOfItems(inSection: 0) + extraCount {
             let indexPath = IndexPath(item: item, section: 0)
             print("cell -- \(indexPath)")
-            let flexibleHeight = delegate.collectionView(collectionView, heightForPhotoAtIndexPath: indexPath)
+            let flexibleHeight = delegate.collectionView(collectionView, heightForTitleIndexPath: indexPath)
             let height = cellPadding * 2 + flexibleHeight
             let frame = CGRect(x: xOffset[ycolum], y: yOffset[ycolum], width: columWith, height: height)
             let insertFrame = frame.insetBy(dx: cellPadding, dy: cellPadding)
@@ -102,13 +97,12 @@ class PinterestLayout: UICollectionViewFlowLayout {
             ycolum = ycolum < (numberOfColums - 1) ? (ycolum + 1) : 0
         }
         completion()
-//        print("contentHeight: \(cellCache.count)")
     }
 
     func setupInit() {
-        extraCount = 0
-        cellCache.removeAll()
-        headerCache.removeAll()
+        self.extraCount = 0
+        self.cellCache.removeAll()
+        self.headerCache.removeAll()
     }
 
     // collection view calls after prepare()

@@ -16,6 +16,7 @@ class CategoryController: UICollectionReusableView {
 
     private let cellId = "CategoryCell"
     let discoverService = DiscoverService()
+    let settingPetKeyword = SettingViewController()
     weak var categoryDelegate: CategoryControllerDelegate?
     lazy var largeTitle: LargeTitle = {
         guard let largeTitle = Bundle.main.loadNibNamed("LargeTitle", owner: self, options: nil)?.first as? LargeTitle else {
@@ -44,6 +45,7 @@ class CategoryController: UICollectionReusableView {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
+        settingPetKeyword.settingPetKeywordDelegate = self
         setupLargeTitle()
         setUpCollectionView()
     }
@@ -111,7 +113,6 @@ extension CategoryController: UICollectionViewDataSource, UICollectionViewDelega
         }
 
         cell.categoryImageView.image = categoryImage[indexPath.item]
-
         cell.categoryLabel.text = categoryTitle[indexPath.item]
         return cell
     }
@@ -148,4 +149,20 @@ extension CategoryController: UICollectionViewDataSource, UICollectionViewDelega
             categoryDelegate.goDiscoverDetail(indexPath: indexPath, pet: pet, category: category)
         }
     }
+}
+
+extension CategoryController: SettingPetKeywordDelegate {
+    func changePet() {
+        print("cell")
+        guard let cell = collectionView.cellForItem(at: IndexPath(row: 0, section: 0)) as? CategotyCell else {
+            return
+        }
+        if PetDefault.shared.pet == .cat {
+            cell.categoryImageView.image = UIImage(named: "cat")
+        } else {
+            cell.categoryImageView.image = UIImage(named: "dog")
+        }
+        collectionView.reloadData()
+    }
+
 }
