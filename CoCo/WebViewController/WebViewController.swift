@@ -45,6 +45,7 @@ class WebViewController: UIViewController {
         setWebView()
         setNavigationBar()
         setProgressView()
+        extendedLayoutIncludesOpaqueBars = true
     }
 
     override func viewWillAppear(_ animated: Bool) {

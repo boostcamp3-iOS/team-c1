@@ -35,6 +35,7 @@ class DiscoverViewController: UIViewController {
         layout = collectionView.collectionViewLayout as? PinterestLayout
         layout?.delegate = self
         loadData()
+        extendedLayoutIncludesOpaqueBars = true
     }
 
     override func viewWillAppear(_ animated: Bool) {
