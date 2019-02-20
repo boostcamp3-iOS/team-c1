@@ -20,7 +20,13 @@ import CoreData
 // 코어 데이터에 저장할때는 강아지 고양이 뺌
 // 검색할때는 검사해서 붙여줌
 
+protocol SearchServiceDelegate: class {
+    func delegateFailToLoad(error: NetworkErrors?)
+    func delegateReload(_ cellIdentifier: SearchService.CellIdentifier)
+}
+
 class SearchService {
+    // MARK: - Private Properties
     private let searchCoreDataManager: SearchWordCoreDataManagerType
     private let petKeywordCoreDataManager: PetKeywordCoreDataManagerType
     private let networkManager: NetworkManagerType
@@ -28,12 +34,21 @@ class SearchService {
 
     private(set) var recentSearched: String?
     private(set) var keyword = [String]()
-    private(set) var colorChips = [UIColor(red: 1.0, green: 189.0 / 255.0, blue: 239.0 / 255.0, alpha: 1.0), UIColor(red: 186.0 / 255.0, green: 166.0 / 255.0, blue: 238.0 / 255.0, alpha: 1.0), UIColor(red: 250.0 / 255.0, green: 165.0 / 255.0, blue: 165.0 / 255.0, alpha: 1.0), UIColor(red: 166.0 / 255.0, green: 183.0 / 255.0, blue: 238.0 / 255.0, alpha: 1.0)]
+    private(set) var colorChips = [UIColor(red: 1.0, green: 189.0 / 255.0, blue: 239.0 / 255.0, alpha: 1.0), UIColor(red: 186.0 / 255.0, green: 166.0 / 255.0, blue: 238.0 / 255.0, alpha: 1.0), UIColor(red: 250.0 / 255.0, green: 165.0 / 255.0, blue: 165.0 / 255.0, alpha: 1.0), UIColor(red: 166.0 / 255.0, green: 183.0 / 255.0, blue: 238.0 / 255.0, alpha: 1.0), UIColor(red: 199.0 / 255.0, green: 227.0 / 255.0, blue: 218.0 / 255.0, alpha: 1.0), UIColor(red: 250.0 / 255.0, green: 232.0 / 255.0, blue: 158.0 / 255.0, alpha: 1.0)]
+
+    enum CellIdentifier: String {
+        case searchKeyword = "SearchKeywordCell"
+        case goods = "GoodsCell"
+    }
+
+    var cellIdentifier = CellIdentifier.searchKeyword
 
     var dataLists = [MyGoodsData]()
     var sortOption: SortOption = .similar
     var itemStart = 1
     var pet: Pet = PetDefault.shared.pet
+    weak var delegate: SearchServiceDelegate?
+    var isInserting = false
 
     init(serachCoreData: SearchWordCoreDataManagerType, petCoreData: PetKeywordCoreDataManagerType, network: NetworkManagerType, algorithm: Algorithm) {
         searchCoreDataManager = serachCoreData
@@ -126,6 +141,47 @@ class SearchService {
             _ = try self.searchCoreDataManager.insert(searchWord)
         } catch let err {
             print(err)
+        }
+    }
+
+    func sortChanged(sort: SortOption) {
+        sortOption = sort
+        itemStart = 1
+        getShoppingData(search: recentSearched ?? "")
+    }
+
+    func searchButtonClicked(_ search: String) {
+        sortOption = .similar
+        itemStart = 1
+        insert(recentSearchWord: search)
+        getShoppingData(search: search)
+    }
+
+    func getShoppingData(search: String) {
+        getShoppingData(search: search) { [weak self] isSuccess, err in
+            guard let self = self else {
+                return
+            }
+            if isSuccess {
+                self.delegate?.delegateReload(.goods)
+            } else {
+                self.delegate?.delegateFailToLoad(error: err)
+            }
+        }
+    }
+    func pagination() {
+        if !isInserting {
+            isInserting = true
+            itemStart += 20
+            getShoppingData(search: recentSearched ?? "")
+        }
+    }
+    func cancelButtonClicked() {
+        dataLists.removeAll()
+        itemStart = 1
+        isInserting = false
+        if cellIdentifier == .goods {
+            self.delegate?.delegateReload(.searchKeyword)
         }
     }
 }
