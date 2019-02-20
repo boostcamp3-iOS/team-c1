@@ -223,7 +223,7 @@ extension SearchViewController: UICollectionViewDelegate {
                 }
             })
         }
-        if scrollPosition > 0 && scrollPosition < scrollView.contentSize.height * 0.1 {
+        if cellIdentifier == .goods, scrollPosition > 0, scrollPosition < scrollView.contentSize.height * 0.1 {
 
             if !isInserting {
                 isInserting = true
