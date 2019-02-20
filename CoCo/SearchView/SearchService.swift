@@ -21,9 +21,8 @@ import CoreData
 // 검색할때는 검사해서 붙여줌
 
 protocol SearchServiceDelegate: class {
-    func delegateReload()
     func delegateFailToLoad(error: NetworkErrors?)
-    func delegateReloads(_ cellIdentifier: SearchService.CellIdentifier)
+    func delegateReload(_ cellIdentifier: SearchService.CellIdentifier)
 }
 
 class SearchService {
@@ -164,7 +163,7 @@ class SearchService {
                 return
             }
             if isSuccess {
-                self.delegate?.delegateReloads(.goods)
+                self.delegate?.delegateReload(.goods)
             } else {
                 self.delegate?.delegateFailToLoad(error: err)
             }
@@ -182,7 +181,7 @@ class SearchService {
         itemStart = 1
         isInserting = false
         if cellIdentifier == .goods {
-            self.delegate?.delegateReloads(.searchKeyword)
+            self.delegate?.delegateReload(.searchKeyword)
         }
     }
 }

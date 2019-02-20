@@ -82,28 +82,10 @@ class SearchViewController: UIViewController {
                     return
                 }
                 let search = cell.titleLabel.text ?? ""
+                navigationSearchBar.text = search
                 self.activityIndicator.startAnimating()
                 delegate?.delegateTapKeywordCell(keyword: search)
-                navigationSearchBar.text = search
-                searchService.sortOption = .similar
-                searchService.insert(recentSearchWord: search)
-                searchService.getShoppingData(search: search) { [weak self] isSuccess, err in
-                    guard let self = self else {
-                        return
-                    }
-                    if isSuccess {
-                        self.reload(.goods)
-                    } else {
-                        if err == NetworkErrors.noData {
-                            self.alert("데이터가 없습니다. 다른 검색어를 입력해보세요")
-                        } else {
-                            self.alert("네트워크 연결이 끊어졌습니다.")
-                        }
-                    }
-                    DispatchQueue.main.async {
-                        self.activityIndicator.stopAnimating()
-                    }
-                }
+                self.searchService.searchButtonClicked(search)
             case .goods:
                 performSegue(withIdentifier: "searchToWeb", sender: indexPath)
             }
@@ -113,25 +95,6 @@ class SearchViewController: UIViewController {
     }
     @IBAction func actionChangeSortRule(_ sender: UIButton) {
         addSortActionSheet()
-    }
-
-    // MARK: - Methods
-    func reload(_ cell: SearchService.CellIdentifier) {
-        DispatchQueue.main.async {
-            self.searchService.cellIdentifier = cell
-            self.collectionView.reloadData()
-            self.activityIndicator.stopAnimating()
-            if cell == .goods {
-                self.pinterestLayout = PinterestLayout()
-                self.pinterestLayout.delegate = self
-                self.collectionView.setCollectionViewLayout(self.pinterestLayout, animated: false)
-                self.collectionView.collectionViewLayout.invalidateLayout()
-            } else {
-                self.centerAlignLayout = CenterAlignedCollectionViewFlowLayout()
-                self.collectionView.setCollectionViewLayout(self.centerAlignLayout, animated: false)
-                self.collectionView.collectionViewLayout.invalidateLayout()
-            }
-        }
     }
 
     // MARK: - Navigation
@@ -297,7 +260,6 @@ extension SearchViewController: SearchCollectionReusableViewDelegate {
     func delegateTextDidChanged(_ search: String) {
         navigationSearchBar.text = search
     }
-
     func delegateSearchButtonClicked(_ search: String) {
         navigationSearchBar.text = search
         searchButtonClicked(search)
@@ -319,7 +281,6 @@ extension SearchViewController: SearchCollectionReusableViewDelegate {
     }
     func addSortActionSheet() {
         let actionSheet = UIAlertController(title: nil, message: "정렬 방식을 선택해주세요", preferredStyle: .actionSheet)
-
         let sortSim = UIAlertAction(title: "유사도순", style: .default) { _ in
             self.sortChanged(sort: .similar)
         }
@@ -363,9 +324,6 @@ extension SearchViewController: PinterestLayoutDelegate {
 }
 
 extension SearchViewController: SearchServiceDelegate {
-    func delegateReload() {
-        self.reload(.goods)
-    }
 
     func delegateFailToLoad(error: NetworkErrors?) {
         DispatchQueue.main.async {
@@ -378,7 +336,7 @@ extension SearchViewController: SearchServiceDelegate {
         }
     }
 
-    func delegateReloads(_ cellIdentifier: SearchService.CellIdentifier) {
+    func delegateReload(_ cellIdentifier: SearchService.CellIdentifier) {
         if searchService.itemStart > 20 {
             DispatchQueue.main.async { [weak self] in
                 guard let self = self else {
