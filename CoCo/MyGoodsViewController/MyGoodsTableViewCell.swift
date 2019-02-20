@@ -81,6 +81,16 @@ extension MyGoodsTableViewCell: UICollectionViewDelegate, UICollectionViewDataSo
     }
 }
 
+// MARK: - UICollectionViewDataSourcePrefetching
+extension MyGoodsTableViewCell: UICollectionViewDataSourcePrefetching {
+    func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
+        for indexPath in indexPaths {
+            let url = data[indexPath.row].image
+            ImageManager.shared.cacheImage(url: url, isDisk: true) { _ in }
+        }
+    }
+}
+
 // MARK: UICollectionViewDelegateFlowLayout
 extension MyGoodsTableViewCell: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {

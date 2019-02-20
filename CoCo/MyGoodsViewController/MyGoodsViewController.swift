@@ -12,6 +12,7 @@ class MyGoodsViewController: UIViewController {
     // MARK: - Private properties
     private var service: MyGoodsService?
     private var enableEditing = false
+    var timeIntervar = 0
 
     // MARK: - IBOutlets
     @IBOutlet weak var tableView: UITableView!
@@ -62,13 +63,16 @@ class MyGoodsViewController: UIViewController {
     }
 
     @objc private func startEditing() {
-        if let isEmpty = service?.dataIsEmpty, isEmpty {
+        guard let barButtonItem = navigationItem.rightBarButtonItem,
+            let isEmpty = service?.dataIsEmpty, !isEmpty else {
             return
         }
-        enableEditing = !enableEditing
-        if let item = navigationItem.rightBarButtonItem {
-            item.title = (enableEditing) ? "Done" : "Edit"
+        barButtonItem.isEnabled = !barButtonItem.isEnabled
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            barButtonItem.isEnabled = !barButtonItem.isEnabled
         }
+        enableEditing = !enableEditing
+        barButtonItem.title = (enableEditing) ? "Done" : "Edit"
         tableView.reloadSections(Section.indexSet, with: .automatic)
     }
 
