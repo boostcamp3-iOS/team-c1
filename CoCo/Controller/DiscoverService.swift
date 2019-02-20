@@ -14,7 +14,6 @@ class DiscoverService {
     private let petKeywordCoreDataManagerType: PetKeywordCoreDataManagerType?
     private let searchWordDoreDataManagerType: SearchWordCoreDataManagerType?
     private let myGoodsCoreDataManagerType: MyGoodsCoreDataManagerType?
-
     private var recommandGoods = [String]()
     private var myGoods = [MyGoodsData]()
     private var searches = [String]()
@@ -38,7 +37,6 @@ class DiscoverService {
         guard  let petKeywordCoreDataManagerType = petKeywordCoreDataManagerType else {
             return
         }
-
         do {
             let pet = try petKeywordCoreDataManagerType.fetchOnlyPet()
             if pet == "강아지" {
@@ -124,7 +122,7 @@ class DiscoverService {
             return
         }
         let param = ShoppingParams(search: search, count: 20, start: 1, sort: .similar)
-        DispatchQueue.main.async { [weak self] in
+        DispatchQueue.global().async { [weak self] in
             guard let self = self else {
                 return
             }

@@ -71,6 +71,5 @@ class DiscoverDetailService {
                 completion(true, nil)
             }) {_ in completion(false, NetworkErrors.badInput)}
         }
-        print("itemStart:  \(itemStart)")
     }
 }
