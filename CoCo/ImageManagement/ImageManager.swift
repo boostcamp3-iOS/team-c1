@@ -29,7 +29,10 @@ extension UIImage {
 
 extension UIImageView {
     func setImage(url: String, isDisk: Bool = false) {
-        ImageManager.shared.cacheImage(url: url, isDisk: isDisk) { image in
+        ImageManager.shared.cacheImage(url: url, isDisk: isDisk) { [weak self] image in
+            guard let self = self else {
+                return
+            }
             DispatchQueue.main.async {
                 UIView.transition(with: self, duration: 0.2, options: .transitionCrossDissolve, animations: { self.image = image }, completion: nil)
             }
@@ -52,7 +55,10 @@ class ImageManager {
             completion(image)
             return
         }
-        ShoppingNetworkManager.shared.getImageData(url: url) { data, _ in
+        ShoppingNetworkManager.shared.getImageData(url: url) { [weak self] data, _ in
+            guard let self = self else {
+                return
+            }
             guard let data = data else {
                 return
             }

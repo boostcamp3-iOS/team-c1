@@ -66,35 +66,6 @@ class SearchViewController: UIViewController {
 
         // Do any additional setup after loading the view.
     }
-//    func petkeyWordCoreDataPrint() {
-//        let petKeywordDataManager = PetKeywordCoreDataManager()
-//        let dummy = PetKeywordDummy().petkeys
-//
-//        do {
-//            for data in dummy {
-//                let insert = try petKeywordDataManager.insert(data)
-//            }
-//            let fetch = try petKeywordDataManager.fetchObjects()
-//            print(fetch)
-//        } catch let error {
-//            print(error)
-//        }
-//    }
-//
-//    struct PetKeywordDummy {
-//        let cat = "고양이"
-//        let dog = "강아지"
-//        var petkeys = [PetKeywordData]()
-//
-//        init() {
-//            let catKeyword = PetKeywordData(pet: self.cat, keywords: ["놀이", "배변", "스타일", "리빙"])
-//            let dogKeyword = PetKeywordData(pet: self.dog, keywords: ["헬스", "외출", "배변", "리빙"])
-//
-//            petkeys.append(catKeyword)
-//            petkeys.append(dogKeyword)
-//        }
-//    }
-
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationController?.navigationBar.isHidden = true
@@ -115,7 +86,10 @@ class SearchViewController: UIViewController {
                 navigationSearchBar.text = search
                 searchService.sortOption = .similar
                 searchService.insert(recentSearchWord: search)
-                searchService.getShoppingData(search: search) { isSuccess, err in
+                searchService.getShoppingData(search: search) { [weak self] isSuccess, err in
+                    guard let self = self else {
+                        return
+                    }
                     if isSuccess {
                         self.reload(.goods)
                     } else {
@@ -354,7 +328,10 @@ extension SearchViewController: SearchCollectionReusableViewDelegate {
         searchService.sortOption = .similar
         searchService.insert(recentSearchWord: search)
         searchService.itemStart = 1
-        searchService.getShoppingData(search: search) { isSuccess, err in
+        searchService.getShoppingData(search: search) { [weak self] isSuccess, err in
+            guard let self = self else {
+                return
+            }
             if isSuccess {
                 self.reload(.goods)
             } else {
@@ -412,7 +389,10 @@ extension SearchViewController: SearchCollectionReusableViewDelegate {
         self.searchService.sortOption = sort
         self.searchService.itemStart = 1
         self.activityIndicator.startAnimating()
-        self.searchService.getShoppingData(search: self.searchService.recentSearched ?? "") { isSuccess, err in
+        self.searchService.getShoppingData(search: self.searchService.recentSearched ?? "") { [weak self] isSuccess, err in
+            guard let self = self else {
+                return
+            }
             if isSuccess {
                 self.reload(.goods)
             } else {
