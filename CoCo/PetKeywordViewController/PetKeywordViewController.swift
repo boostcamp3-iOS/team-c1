@@ -88,6 +88,3 @@ extension PetKeywordViewController: AnimationType {
         }
     }
 }
-
-// MARK: - ErrorHandlerType
-extension PetKeywordViewController: ErrorHandlerType { }

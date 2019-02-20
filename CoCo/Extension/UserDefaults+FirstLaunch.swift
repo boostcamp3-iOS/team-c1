@@ -16,14 +16,4 @@ extension UserDefaults {
         }
         return true
     }
-
-}
-
-extension UIViewController {
-    static func presentPetKeywordViewController() {
-        if UserDefaults.isFirstLaunch(),
-            let petKeywordNavigationVC = UIStoryboard(name: "PetKeyword", bundle: nil).instantiateViewController(withIdentifier: "PetKeywordNavigationController") as? UINavigationController {
-            UIApplication.shared.keyWindow?.rootViewController = petKeywordNavigationVC
-        }
-    }
 }
