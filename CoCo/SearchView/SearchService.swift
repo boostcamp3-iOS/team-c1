@@ -33,14 +33,13 @@ class SearchService {
     var dataLists = [MyGoodsData]()
     var sortOption: SortOption = .similar
     var itemStart = 1
-    var pet: Pet = .dog
+    var pet: Pet = PetDefault.shared.pet
 
     init(serachCoreData: SearchWordCoreDataManagerType, petCoreData: PetKeywordCoreDataManagerType, network: NetworkManagerType, algorithm: Algorithm) {
         searchCoreDataManager = serachCoreData
         petKeywordCoreDataManager = petCoreData
         networkManager = network
         algorithmManager = algorithm
-        algorithmManager.setPagination(once: 20, maximum: 500)
     }
 
     func getShoppingData(search: String, completion: @escaping (_ isSuccess: Bool, NetworkErrors?) -> Void) {
@@ -48,7 +47,10 @@ class SearchService {
         let searchWord = algorithmManager.combinePet(pet, and: word)
         let params = ShoppingParams(search: searchWord, count: 20, start: itemStart, sort: sortOption)
         DispatchQueue.global().async {
-            self.networkManager.getAPIData(params, completion: { data in
+            self.networkManager.getAPIData(params, completion: { [weak self] data in
+                guard let self = self else {
+                    return
+                }
                 if data.items.isEmpty {
                     completion(false, NetworkErrors.noData)
                     return
@@ -70,14 +72,20 @@ class SearchService {
         let queue = DispatchQueue.main
         var recommandWords: PetKeywordData?
         var recentSearchWords = [String]()
-        fetchRecommandWords(queue, group: group) { words in
+        fetchRecommandWords(queue, group: group) { [weak self] words in
+            guard let self = self else {
+                return
+            }
             recommandWords = PetKeywordData(pet: self.pet.rawValue, keywords: words)
         }
         fetchRecentSearchWords(queue, group: group) { words in
             recentSearchWords = words
         }
 
-        group.notify(queue: DispatchQueue.main) {
+        group.notify(queue: DispatchQueue.main) { [weak self] in
+            guard let self = self else {
+                return
+            }
             guard let recommandWords = recommandWords else {
                 return
             }
@@ -118,19 +126,6 @@ class SearchService {
             _ = try self.searchCoreDataManager.insert(searchWord)
         } catch let err {
             print(err)
-        }
-    }
-    func paginations(index: Int, completion: @escaping (_ isSuccess: Bool, NetworkErrors?) -> Void) {
-        algorithmManager.pagination(index: index) { isPaging, itemStart in
-            print(index)
-            if isPaging {
-                self.itemStart = itemStart ?? 0
-                self.getShoppingData(search: self.recentSearched ?? "", completion: { isSuccess, networkError in
-                    completion(isSuccess, networkError)
-                })
-            } else {
-                completion(false, NetworkErrors.noData)
-            }
         }
     }
 }

@@ -9,10 +9,10 @@
 import UIKit
 
 protocol SearchCollectionReusableViewDelegate: class {
-    func searchButtonClicked(_ search: String)
-    func cancelButtonClicked()
-    func searchBarBeginEditing()
-    func sortButtonTapped()
+    func delegateSearchButtonClicked(_ search: String)
+    func delegateCancelButtonClicked()
+    func delegateSortButtonTapped()
+    func delegateTextDidChanged(_ search: String)
 }
 
 class SearchCollectionReusableView: UICollectionReusableView {
@@ -40,31 +40,39 @@ class SearchCollectionReusableView: UICollectionReusableView {
 
     // MARK: - IBActions
     @IBAction func actionChangeSortRule(_ sender: UIButton) {
-        delegate?.sortButtonTapped()
+        delegate?.delegateSortButtonTapped()
     }
 }
 
 extension SearchCollectionReusableView: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         searchBar.setShowsCancelButton(false, animated: true)
-        delegate?.searchButtonClicked(searchBar.text ?? "")
+        delegate?.delegateSearchButtonClicked(searchBar.text ?? "")
     }
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         searchBar.text?.removeAll()
         searchBar.setShowsCancelButton(false, animated: true)
-        delegate?.cancelButtonClicked()
+        delegate?.delegateCancelButtonClicked()
     }
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         searchBar.setShowsCancelButton(true, animated: true)
-        delegate?.searchBarBeginEditing()
     }
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
         searchBar.setShowsCancelButton(false, animated: true)
     }
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        delegate?.delegateTextDidChanged(searchText)
+    }
 }
 
 extension SearchCollectionReusableView: SearchViewControllerDelegate {
-    func tapKeywordCell(keyword: String) {
+    func delegateTextDidChanged(_ search: String) {
+        searchBar.text = search
+    }
+    func delegateTapKeywordCell(keyword: String) {
         searchBar.text = keyword
+    }
+    func delegateCancelButtonTapped() {
+        searchBar.text?.removeAll()
     }
 }

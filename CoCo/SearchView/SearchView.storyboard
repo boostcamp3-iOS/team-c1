@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -83,6 +84,7 @@
                                                 </label>
                                                 <searchBar contentMode="redraw" searchBarStyle="minimal" text="" placeholder="Search" translatesAutoresizingMaskIntoConstraints="NO" id="0bZ-K6-7Lx">
                                                     <rect key="frame" x="0.0" y="124" width="375" height="56"/>
+                                                    <color key="tintColor" name="lavender"/>
                                                     <color key="barTintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <textInputTraits key="textInputTraits"/>
                                                     <scopeButtonTitles>
@@ -136,6 +138,41 @@
                                     <outletCollection property="gestureRecognizers" destination="KoA-G6-oEF" appends="YES" id="fTg-pN-Bu8"/>
                                 </connections>
                             </collectionView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zFb-kV-NUP">
+                                <rect key="frame" x="0.0" y="44" width="375" height="44"/>
+                                <subviews>
+                                    <searchBar contentMode="redraw" searchBarStyle="minimal" text="" placeholder="Search" translatesAutoresizingMaskIntoConstraints="NO" id="lYl-Z8-x5x">
+                                        <rect key="frame" x="0.0" y="0.0" width="334" height="44"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <color key="tintColor" name="lavender"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                        <scopeButtonTitles>
+                                            <string>Title</string>
+                                        </scopeButtonTitles>
+                                    </searchBar>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OIo-sN-Aup">
+                                        <rect key="frame" x="342" y="9.6666666666666643" width="25" height="25"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="25" id="MEo-sJ-cMq"/>
+                                            <constraint firstAttribute="width" secondItem="OIo-sN-Aup" secondAttribute="height" id="RjI-9m-7gg"/>
+                                        </constraints>
+                                        <state key="normal" image="list"/>
+                                        <connections>
+                                            <action selector="actionChangeSortRule:" destination="nQM-QO-aXz" eventType="touchUpInside" id="ZrA-Qz-9Vd"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="OIo-sN-Aup" secondAttribute="trailing" constant="8" id="GpX-FQ-O7u"/>
+                                    <constraint firstItem="OIo-sN-Aup" firstAttribute="centerY" secondItem="zFb-kV-NUP" secondAttribute="centerY" id="Ivf-mk-Zfg"/>
+                                    <constraint firstItem="lYl-Z8-x5x" firstAttribute="top" secondItem="zFb-kV-NUP" secondAttribute="top" id="NWY-3o-KDc"/>
+                                    <constraint firstItem="OIo-sN-Aup" firstAttribute="leading" secondItem="lYl-Z8-x5x" secondAttribute="trailing" constant="8" id="YLr-CH-enc"/>
+                                    <constraint firstAttribute="bottom" secondItem="lYl-Z8-x5x" secondAttribute="bottom" id="lIE-ND-PVz"/>
+                                    <constraint firstAttribute="height" constant="44" id="r9V-ys-rEs"/>
+                                    <constraint firstItem="lYl-Z8-x5x" firstAttribute="leading" secondItem="zFb-kV-NUP" secondAttribute="leading" id="shB-VY-oaK"/>
+                                </constraints>
+                            </view>
                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="TBE-jo-36k">
                                 <rect key="frame" x="177.66666666666666" y="376.66666666666669" width="20" height="20"/>
                             </activityIndicatorView>
@@ -143,8 +180,11 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <gestureRecognizers/>
                         <constraints>
+                            <constraint firstItem="zFb-kV-NUP" firstAttribute="top" secondItem="Gm6-eA-5ma" secondAttribute="top" id="0x4-uL-ZRl"/>
+                            <constraint firstItem="zFb-kV-NUP" firstAttribute="trailing" secondItem="Gm6-eA-5ma" secondAttribute="trailing" id="7gP-Xy-soC"/>
                             <constraint firstItem="1GP-jN-mBX" firstAttribute="top" secondItem="Gm6-eA-5ma" secondAttribute="top" id="9gt-48-sMe"/>
                             <constraint firstItem="Gm6-eA-5ma" firstAttribute="trailing" secondItem="1GP-jN-mBX" secondAttribute="trailing" id="9l4-zq-Hic"/>
+                            <constraint firstItem="zFb-kV-NUP" firstAttribute="leading" secondItem="Gm6-eA-5ma" secondAttribute="leading" id="A50-T3-VB9"/>
                             <constraint firstItem="1GP-jN-mBX" firstAttribute="leading" secondItem="nLH-KC-z5V" secondAttribute="leading" id="rgt-ML-peu"/>
                             <constraint firstItem="Gm6-eA-5ma" firstAttribute="bottom" secondItem="1GP-jN-mBX" secondAttribute="bottom" id="tda-18-7Vs"/>
                             <constraint firstItem="TBE-jo-36k" firstAttribute="centerX" secondItem="Gm6-eA-5ma" secondAttribute="centerX" id="tqU-rr-YCF"/>
@@ -156,6 +196,9 @@
                     <connections>
                         <outlet property="activityIndicator" destination="TBE-jo-36k" id="1gS-BJ-DW4"/>
                         <outlet property="collectionView" destination="1GP-jN-mBX" id="q1h-kY-S3d"/>
+                        <outlet property="navigationSearchBar" destination="lYl-Z8-x5x" id="BcQ-HU-Bt3"/>
+                        <outlet property="navigationView" destination="zFb-kV-NUP" id="IZQ-lN-ZRQ"/>
+                        <outlet property="sortButton" destination="OIo-sN-Aup" id="pIi-6u-24u"/>
                         <segue destination="XCU-J6-gso" kind="show" identifier="searchToWeb" id="BTd-bw-3nL"/>
                     </connections>
                 </viewController>
@@ -199,5 +242,8 @@
     <resources>
         <image name="list" width="60" height="60"/>
         <image name="search" width="60" height="60"/>
+        <namedColor name="lavender">
+            <color red="0.63137254901960782" green="0.49019607843137253" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
     </resources>
 </document>
