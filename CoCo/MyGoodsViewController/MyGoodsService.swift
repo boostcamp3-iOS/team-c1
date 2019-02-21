@@ -82,9 +82,11 @@ class MyGoodsService {
         }
         // 최근 상품과 찜한 상품이 중복될 경우 제외시킨다.
         result = result.filter { !$0.isFavorite }
-        if result.count > 10 {
-            print(result.count)
-            result.removeSubrange(10 ..< result.count)
+        while result.count > 10 {
+            if var data = result.popLast() {
+                data.isLatest = false
+                let _ = deleteObject(data)
+            }
         }
         return result
     }
@@ -116,6 +118,7 @@ class MyGoodsService {
             return false
         }
         var removedData = favoriteGoods.remove(at: index)
+        removedData.isLatest = false
         removedData.isFavorite = false
         return deleteObject(removedData)
     }
