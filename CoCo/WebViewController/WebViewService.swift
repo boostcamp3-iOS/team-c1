@@ -11,32 +11,28 @@ import Foundation
 /**
  WebViewConroller에서 사용되는 비즈니스 모델을 처리한다.
  
- 사용자의 찜 선택 여부에 따른 변경사항을 CoreData에 저장한다.
+ 최근 본 상품을 CoreData에 추가하며 사용자의 찜 선택 여부에 따른 변경사항을 CoreData에 저장한다.
  
- MyGoodsData와 함께 초기화, MyGoodsData 프로퍼티에 접근하여 데이터 변경
+ MyGoodsData와 함께 초기화한다.
  ```
  init(data: MyGoodsData)
- var myGoodsData: MyGoodsData
- ```
- 변경 내역을 CoreData에 저장
- ```
- func updateObject() -> Bool
  ```
  - Author: [최영준](https://github.com/0jun0815)
  */
 class WebViewService {
     // MARK: - Data
     private(set) var myGoodsData: MyGoodsData
-
+    
     // MARK: - Manager
     private lazy var manager = MyGoodsCoreDataManager()
-
+    
     // MARK: - Initializer
     init(data: MyGoodsData) {
         myGoodsData = data
     }
-
+    
     // MARK: - Public methods
+    /// MyGoodsData를 코어 데이터에 저장(또는 업데이트)한다.
     @discardableResult func insert() -> Bool {
         myGoodsData.isLatest = true
         myGoodsData.date = myGoodsData.createDate()
@@ -47,7 +43,7 @@ class WebViewService {
         }
         return false
     }
-
+    /// preductID로 이미 코어데이터에 저장된 데이터인지 확인한다.
     func fetchData() {
         if let data = manager.fetchProductID(productID: myGoodsData.productID) {
             var newData = MyGoodsData()
@@ -55,7 +51,7 @@ class WebViewService {
             myGoodsData = newData
         }
     }
-
+    /// 상품의 좋아요(찜) 변경을 반영한다.
     func updateFavorite(_ isFavorite: Bool) {
         myGoodsData.isFavorite = isFavorite
         // 이미 같은 productID의 상품이 존재한다면 manager 내부에서 update를 호출함
