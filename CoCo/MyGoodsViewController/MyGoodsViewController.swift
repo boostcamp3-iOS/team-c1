@@ -12,10 +12,11 @@ class MyGoodsViewController: UIViewController {
     // MARK: - Private properties
     private var service: MyGoodsService?
     private var enableEditing = false
-    
+    var timeIntervar = 0
+
     // MARK: - IBOutlets
     @IBOutlet weak var tableView: UITableView!
-    
+
     // MARK: - View lifecycles & override methods
     override func viewDidLoad() {
         service = MyGoodsService()
@@ -23,14 +24,14 @@ class MyGoodsViewController: UIViewController {
         extendedLayoutIncludesOpaqueBars = true
         setNavigationBar()
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        service?.fetchGoods()
-        tableView.reloadData()
         navigationController?.navigationBar.prefersLargeTitles = true
+        service?.fetchGoods()
+        reloadTableView()
     }
-    
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
         if segue.identifier == Identifier.goToWebViewSegue {
@@ -43,7 +44,7 @@ class MyGoodsViewController: UIViewController {
             webVC.sendData(myGoodsData)
         }
     }
-    
+
     // MARK: - Navigation related methods
     private func setNavigationBar() {
         navigationController?.navigationBar.isTranslucent = false
@@ -54,25 +55,44 @@ class MyGoodsViewController: UIViewController {
         editButton.tintColor = AppColor.purple
         navigationItem.rightBarButtonItem = editButton
     }
-    
+
     // MARK: - TalbeView related methods
     private func setTableView() {
         tableView.delegate = self
         tableView.dataSource = self
     }
-    
+
+    func reloadTableView() {
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else {
+                return
+            }
+            self.tableView.reloadData()
+            let topIndexPath = IndexPath(row: 0, section: 0)
+            self.tableView.scrollToRow(at: topIndexPath, at: .top, animated: true)
+        }
+    }
+
+    // MARK: - CollectionView related methods
+    func performSegue(withData data: MyGoodsData) {
+        performSegue(withIdentifier: Identifier.goToWebViewSegue, sender: data)
+    }
+
+    // MARK: - Action methods
     @objc private func startEditing() {
-        if let isEmpty = service?.dataIsEmpty, isEmpty {
-            return
+        guard let barButtonItem = navigationItem.rightBarButtonItem,
+            let isEmpty = service?.dataIsEmpty, !isEmpty else {
+                return
+        }
+        barButtonItem.isEnabled = !barButtonItem.isEnabled
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+            barButtonItem.isEnabled = !barButtonItem.isEnabled
         }
         enableEditing = !enableEditing
-        if let item = navigationItem.rightBarButtonItem {
-            item.title = (enableEditing) ? "Done" : "Edit"
-        }
-        tableView.reloadData()
+        barButtonItem.title = (enableEditing) ? "Done" : "Edit"
+        reloadTableView()
     }
-    
-    // MARK: - CollectionView related methods
+
     @objc func deleteAction(_ sender: UIButton) {
         let index = sender.tag
         // 최근 본 상품
@@ -86,11 +106,7 @@ class MyGoodsViewController: UIViewController {
         if let isEmpty = service?.dataIsEmpty, isEmpty, let item = navigationItem.rightBarButtonItem {
             item.title = "Edit"
         }
-        tableView.reloadSections(Section.indexSet, with: .automatic)
-    }
-    
-    func performSegue(withData data: MyGoodsData) {
-        performSegue(withIdentifier: Identifier.goToWebViewSegue, sender: data)
+        reloadTableView()
     }
 }
 
@@ -99,18 +115,18 @@ extension MyGoodsViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 1
     }
-    
+
     func numberOfSections(in tableView: UITableView) -> Int {
         return 2
     }
-    
+
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let cellWidth = Double((view.frame.size.width - 40) / 2)
         let cellContentHeight: Double = 3 + 35 + 3 + 20 + 5 + 5 + 20 + 5
         let cellHeight = cellWidth + 10 + 25 + 10 + cellContentHeight + 10 + 5
         return CGFloat(cellHeight)
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: Identifier.myGoodTableViewCell) as? MyGoodsTableViewCell, let service = service else {
             return UITableViewCell()
@@ -136,7 +152,7 @@ extension MyGoodsViewController: MyGoodsDataDelegate {
         }
         performSegue(withData: data)
     }
-    
+
     func receiveSender(_ sender: Any) {
         if let button = sender as? UIButton {
             button.isHidden = !enableEditing
@@ -154,7 +170,7 @@ extension MyGoodsViewController {
         static let webViewController = "WebViewController"
         static let goToWebViewSegue = "GoToWebViewController"
     }
-    
+
     private struct Section {
         static let indexSet = IndexSet(integersIn: recent ... favorite)
         static let recent = 0

@@ -13,20 +13,21 @@ class MyGoodsTableViewCell: UITableViewCell {
     private var data = [MyGoodsData]()
     private var enableEditing = false
     weak var delegate: MyGoodsDataDelegate?
-
+    
     // MARK: - IBOutlets
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet private weak var collectionView: UICollectionView!
     @IBOutlet private weak var empmtyLabel: UILabel!
-
+    
     // MARK: - Lifecycles
     override func awakeFromNib() {
         super.awakeFromNib()
         collectionView.register(UINib(nibName: Identifier.goodsCell, bundle: nil), forCellWithReuseIdentifier: Identifier.goodsCell)
         collectionView.delegate = self
         collectionView.dataSource = self
+        collectionView.prefetchDataSource = self
     }
-
+    
     override func prepareForReuse() {
         super .prepareForReuse()
         titleLabel.text = nil
@@ -34,7 +35,7 @@ class MyGoodsTableViewCell: UITableViewCell {
         empmtyLabel.isHidden = true
         collectionView.isHidden = false
     }
-
+    
     // MARK: - Setting methods
     func updateContents(_ data: [MyGoodsData], direction: UICollectionView.ScrollDirection = .horizontal) {
         if data.isEmpty {
@@ -46,7 +47,7 @@ class MyGoodsTableViewCell: UITableViewCell {
         setScrollDirection(direction)
         collectionView.reloadData()
     }
-
+    
     private func setScrollDirection(_ direction: UICollectionView.ScrollDirection) {
         if let layout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
             layout.scrollDirection = direction
@@ -59,7 +60,7 @@ extension MyGoodsTableViewCell: UICollectionViewDelegate, UICollectionViewDataSo
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return data.count
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Identifier.goodsCell, for: indexPath) as? GoodsCell else {
             return UICollectionViewCell()
@@ -68,15 +69,26 @@ extension MyGoodsTableViewCell: UICollectionViewDelegate, UICollectionViewDataSo
         cell.deleteButton.tag = tag + indexPath.row
         cell.goodsTitleLabel.numberOfLines = 1
         cell.goodsTitleLabel.lineBreakMode = .byTruncatingTail
+        cell.goodsImageView.image = nil
         delegate?.receiveSender(cell.deleteButton)
         delegate?.receiveSender(cell.deleteButtonBackgroundView)
         cell.isLike = (tag < 10) ? false : true
         return cell
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if let goods = data[safeIndex: indexPath.row] {
             delegate?.receiveData(goods)
+        }
+    }
+}
+
+// MARK: - UICollectionViewDataSourcePrefetching
+extension MyGoodsTableViewCell: UICollectionViewDataSourcePrefetching {
+    func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
+        for indexPath in indexPaths {
+            let url = data[indexPath.row].image
+            ImageManager.shared.cacheImage(url: url, isDisk: true) { _ in }
         }
     }
 }
