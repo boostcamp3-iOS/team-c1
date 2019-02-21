@@ -69,6 +69,10 @@ class ImageManager {
         }
     }
 
+    func cancelCacheImage(url: String) {
+        ShoppingNetworkManager.shared.cancelImageData(url: url)
+    }
+
     func removeAll() {
         imageCache.removeAll()
     }

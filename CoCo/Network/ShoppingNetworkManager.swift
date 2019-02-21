@@ -39,6 +39,7 @@ class ShoppingNetworkManager: NetworkManagerType {
     // MARK: - Private Properties
     private let host = "https://openapi.naver.com/v1/search/shop.json?"
     lazy private var environment = Environment(host: host)
+    private var tasks = [String: NetworkDispatcher]()
 
     // MARK: - Initializer
     static let shared = ShoppingNetworkManager()
@@ -73,14 +74,24 @@ class ShoppingNetworkManager: NetworkManagerType {
 
     func getImageData(url: String, completion: @escaping (Data?, Error?) -> Void) {
         let environment = Environment(host: url)
-        let dispatcher = NetworkDispatcher(environment: environment).makeNetworkProvider()
+        let dispatcher = NetworkDispatcher(environment: environment)
+        tasks.updateValue(dispatcher, forKey: url)
         let request = APIRequest.requestAPI()
         do {
-            try dispatchAPI(in: dispatcher, request: request) { data in
+            try dispatchAPI(in: dispatcher.makeNetworkProvider(), request: request) { data in
                 completion(data, nil)
+                self.tasks.removeValue(forKey: url)
             }
         } catch let err {
             completion(nil, err)
         }
+    }
+
+    func cancelImageData(url: String) {
+        if let dispatcher = tasks[url] {
+            dispatcher.cancel()
+            tasks.removeValue(forKey: url)
+        }
+
     }
 }
