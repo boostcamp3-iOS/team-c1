@@ -46,6 +46,7 @@ class SearchViewController: UIViewController {
 
         collectionView.delegate = self
         collectionView.dataSource = self
+        collectionView.prefetchDataSource = self
         navigationSearchBar.delegate = self
         searchService.delegate = self
 
@@ -140,6 +141,9 @@ extension SearchViewController: UICollectionViewDataSource {
                 return UICollectionViewCell()
             }
             cell.myGoods = searchService.dataLists[indexPath.row]
+//            if let visibleCell = collectionView.cellForItem(at: indexPath) as? GoodsCell {
+//                visibleCell.goodsImageView.setImage(url: searchService.dataLists[indexPath.row].image)
+//            }
             cell.isLike = false
             cell.isEditing = false
             return cell
@@ -221,9 +225,22 @@ extension SearchViewController: UICollectionViewDelegateFlowLayout {
 extension SearchViewController: UICollectionViewDataSourcePrefetching {
 
     func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
-        indexPaths.forEach { indexPath in
-            let url = searchService.dataLists[indexPath.row].image
-            ImageManager.shared.cacheImage(url: url, isDisk: false) {_ in}
+        if searchService.cellIdentifier == .goods {
+            indexPaths.forEach { indexPath in
+                let url = searchService.dataLists[indexPath.row].image
+                ImageManager.shared.cacheImage(url: url, isDisk: false) {_ in}
+            }
+        }
+    }
+    func collectionView(_ collectionView: UICollectionView, cancelPrefetchingForItemsAt indexPaths: [IndexPath]) {
+        if searchService.cellIdentifier == .goods {
+            indexPaths.forEach { indexPath in
+                if searchService.dataLists.count < indexPath.row {
+                    return
+                }
+                let url = searchService.dataLists[indexPath.row].image
+                ImageManager.shared.cancelCacheImage(url: url)
+            }
         }
     }
 }
@@ -342,7 +359,7 @@ extension SearchViewController: SearchServiceDelegate {
                 guard let self = self else {
                     return
                 }
-                self.pinterestLayout.setCellPinterestLayout(indexPathRow: self.searchService.itemStart - 21) {
+                self.pinterestLayout.setCellPinterestLayout(indexPathRow: self.searchService.itemStart - 1) {
                     self.collectionView.reloadData()
                     self.searchService.isInserting = false
                 }
