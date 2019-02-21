@@ -137,6 +137,7 @@ class WebViewController: UIViewController {
     private func setProgressView() {
         progressView.backgroundColor = AppColor.purple
     }
+  
     /// ProgressView 업데이트 메서드
     private func updateProgressView(_ value: CGFloat) {
         progressView.frame.size.width = value * view.frame.width
