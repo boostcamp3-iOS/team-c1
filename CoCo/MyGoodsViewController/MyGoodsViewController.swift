@@ -8,18 +8,20 @@
 
 import UIKit
 
+/**
+ 최근 본 상품, 좋아요 누른 상품을 확인 또는 삭제할 수 있는 컨트롤러
+ 
+ - Author: [최영준](https://github.com/0jun0815)
+ */
 class MyGoodsViewController: UIViewController {
     // MARK: - Private properties
-    private var service: MyGoodsService?
-    private var enableEditing = false
-    var timeIntervar = 0
+    private var service = MyGoodsService()
 
     // MARK: - IBOutlets
     @IBOutlet weak var tableView: UITableView!
 
     // MARK: - View lifecycles & override methods
     override func viewDidLoad() {
-        service = MyGoodsService()
         setTableView()
         extendedLayoutIncludesOpaqueBars = true
         setNavigationBar()
@@ -28,7 +30,7 @@ class MyGoodsViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.navigationBar.prefersLargeTitles = true
-        service?.fetchGoods()
+        service.fetchGoods()
         reloadTableView()
     }
 
@@ -43,6 +45,10 @@ class MyGoodsViewController: UIViewController {
             }
             webVC.sendData(myGoodsData)
         }
+    }
+
+    func performSegue(withData data: MyGoodsData) {
+        performSegue(withIdentifier: Identifier.goToWebViewSegue, sender: data)
     }
 
     // MARK: - Navigation related methods
@@ -73,40 +79,31 @@ class MyGoodsViewController: UIViewController {
         }
     }
 
-    // MARK: - CollectionView related methods
-    func performSegue(withData data: MyGoodsData) {
-        performSegue(withIdentifier: Identifier.goToWebViewSegue, sender: data)
-    }
-
     // MARK: - Action methods
     @objc private func startEditing() {
         guard let barButtonItem = navigationItem.rightBarButtonItem,
-            let isEmpty = service?.dataIsEmpty, !isEmpty else {
+            !service.dataIsEmpty else {
                 return
         }
         barButtonItem.isEnabled = !barButtonItem.isEnabled
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
             barButtonItem.isEnabled = !barButtonItem.isEnabled
         }
-        enableEditing = !enableEditing
-        barButtonItem.title = (enableEditing) ? "Done" : "Edit"
+        service.startEditing = !service.startEditing
+        barButtonItem.title = (service.startEditing) ? "Done" : "Edit"
         reloadTableView()
     }
 
     @objc func deleteAction(_ sender: UIButton) {
         let index = sender.tag
-        // 최근 본 상품
-        if index < 10, let data = service?.recentGoods[safeIndex: index] {
-            service?.deleteRecentGoods(data)
-            // 찜한 목록
-        } else if let data = service?.favoriteGoods[safeIndex: index - 10] {
-            service?.deleteFavoriteGoods(data)
+        service.deleteGoods(index: index) { [weak self] in
+            guard let self = self else { return }
+            self.service.fetchGoods()
+            if self.service.dataIsEmpty, let item = self.navigationItem.rightBarButtonItem {
+                item.title = "Edit"
+            }
+            self.reloadTableView()
         }
-        service?.fetchGoods()
-        if let isEmpty = service?.dataIsEmpty, isEmpty, let item = navigationItem.rightBarButtonItem {
-            item.title = "Edit"
-        }
-        reloadTableView()
     }
 }
 
@@ -121,14 +118,14 @@ extension MyGoodsViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let cellWidth = Double((view.frame.size.width - 40) / 2)
-        let cellContentHeight: Double = 3 + 35 + 3 + 20 + 5 + 5 + 20 + 5
-        let cellHeight = cellWidth + 10 + 25 + 10 + cellContentHeight + 10 + 5
-        return CGFloat(cellHeight)
+        let contentsCellWidth = Double((view.frame.size.width - 40) / 2)
+        // 각 셀 내부 뷰들의 레이아웃 간격 및 높이 계산한 값
+        let contentsCellHeight = contentsCellWidth + 10 + 25 + 10 + (3 + 35 + 3 + 20 + 5 + 5 + 20 + 5) + 10 + 5
+        return CGFloat(contentsCellHeight)
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: Identifier.myGoodTableViewCell) as? MyGoodsTableViewCell, let service = service else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: Identifier.myGoodTableViewCell) as? MyGoodsTableViewCell else {
             return UITableViewCell()
         }
         cell.delegate = self
@@ -147,7 +144,7 @@ extension MyGoodsViewController: ErrorHandlerType { }
 // MARK: - MyGoodsDataDelegate
 extension MyGoodsViewController: MyGoodsDataDelegate {
     func receiveData(_ data: MyGoodsData) {
-        guard !enableEditing else {
+        guard !service.startEditing else {
             return
         }
         performSegue(withData: data)
@@ -155,10 +152,10 @@ extension MyGoodsViewController: MyGoodsDataDelegate {
 
     func receiveSender(_ sender: Any) {
         if let button = sender as? UIButton {
-            button.isHidden = !enableEditing
+            button.isHidden = !service.startEditing
             button.addTarget(self, action: #selector(deleteAction(_:)), for: .touchUpInside)
         } else if let view = sender as? UIVisualEffectView {
-            view.isHidden = !enableEditing
+            view.isHidden = !service.startEditing
         }
     }
 }
