@@ -27,9 +27,9 @@ class MyGoodsViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        service?.fetchGoods()
-        tableView.reloadSections(Section.indexSet, with: .automatic)
         navigationController?.navigationBar.prefersLargeTitles = true
+        service?.fetchGoods()
+        reloadTableView()
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -62,21 +62,37 @@ class MyGoodsViewController: UIViewController {
         tableView.dataSource = self
     }
 
+    func reloadTableView() {
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else {
+                return
+            }
+            self.tableView.reloadData()
+            let topIndexPath = IndexPath(row: 0, section: 0)
+            self.tableView.scrollToRow(at: topIndexPath, at: .top, animated: true)
+        }
+    }
+
+    // MARK: - CollectionView related methods
+    func performSegue(withData data: MyGoodsData) {
+        performSegue(withIdentifier: Identifier.goToWebViewSegue, sender: data)
+    }
+
+    // MARK: - Action methods
     @objc private func startEditing() {
         guard let barButtonItem = navigationItem.rightBarButtonItem,
             let isEmpty = service?.dataIsEmpty, !isEmpty else {
-            return
+                return
         }
         barButtonItem.isEnabled = !barButtonItem.isEnabled
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
             barButtonItem.isEnabled = !barButtonItem.isEnabled
         }
         enableEditing = !enableEditing
         barButtonItem.title = (enableEditing) ? "Done" : "Edit"
-        tableView.reloadSections(Section.indexSet, with: .automatic)
+        reloadTableView()
     }
 
-    // MARK: - CollectionView related methods
     @objc func deleteAction(_ sender: UIButton) {
         let index = sender.tag
         // 최근 본 상품
@@ -90,11 +106,7 @@ class MyGoodsViewController: UIViewController {
         if let isEmpty = service?.dataIsEmpty, isEmpty, let item = navigationItem.rightBarButtonItem {
             item.title = "Edit"
         }
-        tableView.reloadSections(Section.indexSet, with: .automatic)
-    }
-
-    func performSegue(withData data: MyGoodsData) {
-        performSegue(withIdentifier: Identifier.goToWebViewSegue, sender: data)
+        reloadTableView()
     }
 }
 

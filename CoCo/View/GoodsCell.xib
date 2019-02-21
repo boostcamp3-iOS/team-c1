@@ -22,7 +22,7 @@
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uq8-g1-OWV">
                         <rect key="frame" x="0.0" y="0.0" width="223" height="320"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="EN6-86-GZV">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="placeholder" translatesAutoresizingMaskIntoConstraints="NO" id="EN6-86-GZV">
                                 <rect key="frame" x="0.0" y="0.0" width="223" height="223"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="EN6-86-GZV" secondAttribute="height" multiplier="1:1" id="RaK-IQ-tvC"/>
@@ -144,5 +144,6 @@
     <resources>
         <image name="cross" width="36.765956878662109" height="36.765956878662109"/>
         <image name="like_fill" width="38.400001525878906" height="38.400001525878906"/>
+        <image name="placeholder" width="29" height="29"/>
     </resources>
 </document>
