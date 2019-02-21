@@ -8,30 +8,42 @@
 
 import SpriteKit
 
-protocol AnimationType: class {
-    func animation(_ animation: Animation, didSelect node: AnimationNode)
-    func animation(_ animation: Animation, didDeselect node: AnimationNode)
-}
-
+/**
+ PetKeywordViewController에서 사용되는 애니메이션 동작.
+ 
+ AnimationNode를 생성한 후, addChild(_:) 또는 addChildPetNode(_:)에 추가하여 사용한다.
+ ```
+ func addChild(_ node: SKNode)
+ func addChildPetNode(_ node: AnimationNode)
+ ```
+ 
+ 터치 이벤트를 오버라이드하여서 노드의 이동 및 선택 동작을 즉시 반영하여 보여준다.
+ 
+ - Author: [최영준](https://github.com/0jun0815)
+ */
 class Animation: SKScene {
+    // MARK: - Properties
+    /// true: 다중 선택 가능, false: 단일 선택만 가능
     var isMultipleTouchEnabled: Bool = true
-    var selectedNode: [AnimationNode] {
-        return children.compactMap { $0 as? AnimationNode }.filter { $0.isSelected }.filter { !petNode.contains($0) }
+    /// 선택된 노드 리스트(펫 노드는 제외)
+    var selectedNodes: [AnimationNode] {
+        return children.compactMap { $0 as? AnimationNode }.filter { $0.isSelected }.filter { !petNodes.contains($0) }
     }
-    var petNode = [AnimationNode]()
+    /// 펫 노드 리스트
+    var petNodes = [AnimationNode]()
+    /// AnimationType 델리게이트
     weak var animationDelegate: AnimationType?
-
-    private(set) var fieldNode: SKFieldNode?
-    private var strength: Float = 0.0
-    private lazy var radius: Float = 0.0
-    private var isMoving: Bool = false
-
     override var size: CGSize {
         didSet {
             setProperties()
         }
     }
 
+    // MARK: - Private properties
+    private var fieldNode: SKFieldNode?
+    private var isMoving: Bool = false
+
+    // MARK: - Initialiers
     override init(size: CGSize) {
         super.init(size: size)
         scaleMode = .aspectFill
@@ -45,20 +57,22 @@ class Animation: SKScene {
         super.init(coder: aDecoder)
     }
 
+    // MARK: Set methods
+    /// 속성들을 생성 및 수정한다.
     private func setProperties() {
-        strength = Float(max(size.width, size.height))
-        radius = strength.squareRoot() * 100
+        let strength = Float(max(size.width, size.height))
+        let radius = strength.squareRoot() * 100
         updatePhycisBody(rect: self.frame, radius: CGFloat(radius))
         updateFieldNode(strength: strength, radius: radius)
     }
-
+    /// physicsBody 생성 작업 수행
     private func updatePhycisBody(rect: CGRect, radius: CGFloat) {
         var rect = rect
         rect.size.width = radius
         rect.origin.x -= rect.size.width / 2
         physicsBody = SKPhysicsBody(edgeLoopFrom: rect)
     }
-
+    /// fieldNode 생성 작업 수행
     private func updateFieldNode(strength: Float, radius: Float) {
         fieldNode = SKFieldNode.radialGravityField()
         if let fieldNode = fieldNode {
@@ -70,6 +84,7 @@ class Animation: SKScene {
         fieldNode?.position = CGPoint(x: size.width / 2, y: size.height / 2)
     }
 
+    // MARK: - Add node methods
     override func addChild(_ node: SKNode) {
         // 상하 좌우 랜덤으로 등장
         let x = CGFloat.random(in: -node.frame.width ... frame.width + node.frame.width)
@@ -77,9 +92,9 @@ class Animation: SKScene {
         node.position = CGPoint(x: x, y: y)
         super.addChild(node)
     }
-
+    /// 펫 노드 추가 메서드
     func addChildPetNode(_ node: AnimationNode) {
-        petNode.append(node)
+        petNodes.append(node)
         addChild(node)
     }
 }
@@ -99,6 +114,7 @@ extension Animation {
         isMoving = true
         let x = location.x - previous.x
         let y = location.y - previous.y
+        // 전체 노드들을 이동시킨다.
         for node in children {
             let distance = hypot(location.x - node.position.x, location.y - node.position.y)
             let acceleration: CGFloat = 3 * pow(distance, 1/2)
@@ -125,8 +141,8 @@ extension Animation {
             return
         }
         // 펫 노드에 적용
-        if petNode.contains(node) {
-            for other in petNode {
+        if petNodes.contains(node) {
+            for other in petNodes {
                 if !other.isSelected || other === node {
                     continue
                 }
@@ -138,7 +154,7 @@ extension Animation {
         if node.isSelected {
             node.isSelected = false
             animationDelegate?.animation(self, didDeselect: node)
-        } else if !isMultipleTouchEnabled, let selectedNode = selectedNode.first {
+        } else if !isMultipleTouchEnabled, let selectedNode = selectedNodes.first {
             selectedNode.isSelected = false
             animationDelegate?.animation(self, didDeselect: selectedNode)
         } else {
