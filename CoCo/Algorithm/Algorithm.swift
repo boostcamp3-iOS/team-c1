@@ -231,6 +231,7 @@ extension Algorithm {
      - Parameter string: 개행을 반영할 문자열
      */
     func replaceNewLine(from string: String) -> String {
+        // 개행대신 스페이스로 대체하기로 수정.
         return string.replacingOccurrences(of: "</b>", with: " ")
     }
     /**
