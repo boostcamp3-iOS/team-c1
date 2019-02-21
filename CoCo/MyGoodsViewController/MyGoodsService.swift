@@ -93,7 +93,7 @@ class MyGoodsService {
     
     // MARK: - Delete methods
     /// index에 해당하는 MyGoodsData를 삭제한다. 컨트롤러에서 호출하여 사용한다.
-    func deleteGoods(index: Int, completion: @escaping () -> Void) {
+    func deleteGoods(index: Int, completion: (() -> Void)? = nil) {
         // 최근 본 상품
         if index < 10, let data = recentGoods[safeIndex: index] {
             deleteRecentGoods(data)
@@ -101,7 +101,7 @@ class MyGoodsService {
         } else if let data = favoriteGoods[safeIndex: index - 10] {
             deleteFavoriteGoods(data)
         }
-        completion()
+        completion?()
     }
     /// 최근 본 상품을 삭제한다.
     @discardableResult private func deleteRecentGoods(_ data: MyGoodsData) -> Bool {
