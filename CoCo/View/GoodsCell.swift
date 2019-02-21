@@ -54,7 +54,7 @@ class GoodsCell: UICollectionViewCell {
     }
 
     override func prepareForReuse() {
-        goodsImageView.image = nil
+        goodsImageView.image = UIImage(named: "placeholder")
     }
 
     func settupGoodsCell() {
