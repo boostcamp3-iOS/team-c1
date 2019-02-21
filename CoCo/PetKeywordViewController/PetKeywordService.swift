@@ -8,6 +8,13 @@
 
 import SpriteKit
 
+/**
+ PetKeywordViewController를 위한 서비스 클래스
+ 
+ 사용자 관심 반려동물과 키워드를 코어데이터에 저장하며 애니메이션 동작을 처리한다.
+ 
+ - Author: [최영준](https://github.com/0jun0815)
+ */
 class PetKeywordService {
     var pet: Pet?
     private lazy var manager = PetKeywordCoreDataManager()
@@ -19,15 +26,16 @@ class PetKeywordService {
     private var colors: [UIColor] {
         return AppColor.list
     }
-
+    /// 애니메이션 관련 설정 메서드
     func setAnimation(in view: SKView, delegate: AnimationType) {
         let scene = Animation(size: view.bounds.size)
         view.presentScene(scene)
         animation = scene
         animation?.animationDelegate = delegate
     }
-
+    /// 애니메이션을 시작한다.
     func startAnimation() {
+        // 펫 노드들을 추가
         for pet in Pet.allCases {
             let image = (pet == .dog) ?
                 UIImage(imageLiteralResourceName: "dogcolor") :
@@ -41,6 +49,7 @@ class PetKeywordService {
                 self.animation?.addChildPetNode(node)
             }
         }
+        // 키워드 노드들을 추가
         for keyword in keywords {
             let index = Int.random(in: 0 ..< colors.count)
             let node = AnimationNode(text: keyword.rawValue, fillColor: colors[index])
@@ -52,25 +61,25 @@ class PetKeywordService {
             }
         }
     }
-
+    /// 선택된 노드 리스트를 가져온다
     func getSelectedNodes() -> [SKNode] {
-        if let selectedNodes = animation?.selectedNode {
+        if let selectedNodes = animation?.selectedNodes {
             return selectedNodes
         }
         return []
     }
-
+    /// 선택된 펫 노드들을 가져온다
     func getSelectedPetNode() -> SKNode? {
-        if let node = animation?.petNode.filter({ $0.isSelected }).first {
+        if let node = animation?.petNodes.filter({ $0.isSelected }).first {
             return node
         }
         return nil
     }
-
+    
     func removeAnimation() {
         animation?.removeAllChildren()
     }
-
+    /// 코어데이터에 펫, 키워드를 추가한다.
     @discardableResult func insertPetKeyword() -> Bool {
         guard let pet = pet else {
             return false
