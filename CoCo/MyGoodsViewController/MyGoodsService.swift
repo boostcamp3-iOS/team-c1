@@ -28,23 +28,22 @@ class MyGoodsService {
     var startEditing = false
     private(set) var recentGoods = [MyGoodsData]()
     private(set) var favoriteGoods = [MyGoodsData]()
-
+    
     // MARK: - Manager
-    private lazy var manager = MyGoodsCoreDataManager()
+    private var manager: MyGoodsCoreDataManagerType = MyGoodsCoreDataManager()
     private var pet: Pet?
-
-
-    var dataIsEmpty: Bool {
-        return recentGoods.isEmpty && favoriteGoods.isEmpty
-    }
-  
+    
     // MARK: - Initializer
     init() {
         if let data = try? PetKeywordCoreDataManager().fetchOnlyPet(), let string = data {
             pet = Pet(rawValue: string)
         }
     }
-
+    
+    func setMyGoodsCoreDataManager(_ manager: MyGoodsCoreDataManagerType) {
+        self.manager = manager
+    }
+    
     // MARK: - Fetch methods
     /// 상품을 불러와 각 배열에 할당한다.
     func fetchGoods() {
@@ -53,13 +52,12 @@ class MyGoodsService {
         recentGoods = fetchRecentGoods()
         favoriteGoods = fetchFavoriteGoods()
     }
-
     /// 좋아요(찜) 상품을 코어데이터에서 가져온다.
     private func fetchFavoriteGoods() -> [MyGoodsData] {
         var result = [MyGoodsData]()
         if let pet = pet, let data = try? manager.fetchFavoriteGoods(pet: pet.rawValue), let goods = data {
             result = goods
-        } else if let data = try? manager.fetchFavoriteGoods(), let goods = data {
+        } else if let data = try? manager.fetchFavoriteGoods(pet: nil), let goods = data {
             result = goods
         }
         // 최근 본 상품 순서로 정렬한다.
@@ -71,7 +69,6 @@ class MyGoodsService {
         }
         return result
     }
-
     /// 최근 상품을 코어데이터에서 가져온다.
     private func fetchRecentGoods() -> [MyGoodsData] {
         var result = [MyGoodsData]()
@@ -79,7 +76,7 @@ class MyGoodsService {
             let data = try? manager.fetchLatestGoods(pet: pet.rawValue, isLatest: true, ascending: false),
             let goods = data {
             result = goods
-        } else if let data = try? manager.fetchLatestGoods(isLatest: true, ascending: false),
+        } else if let data = try? manager.fetchLatestGoods(pet: nil, isLatest: true, ascending: false),
             let goods = data {
             result = goods
         }
@@ -91,7 +88,7 @@ class MyGoodsService {
         }
         return result
     }
-
+    
     // MARK: - Delete methods
     /// index에 해당하는 MyGoodsData를 삭제한다. 컨트롤러에서 호출하여 사용한다.
     func deleteGoods(index: Int, completion: @escaping () -> Void) {
@@ -113,7 +110,6 @@ class MyGoodsService {
         removedData.isLatest = false
         return deleteObject(removedData)
     }
-
     /// 좋아요(찜) 상품을 삭제한다.
     @discardableResult private func deleteFavoriteGoods(_ data: MyGoodsData) -> Bool {
         guard favoriteGoods.contains(data), let index = favoriteGoods.firstIndex(of: data) else {
@@ -123,8 +119,6 @@ class MyGoodsService {
         removedData.isFavorite = false
         return deleteObject(removedData)
     }
-
-
     /// 실제 코어데이터에서 삭제 처리하는 메서드. 삭제 처리는 앱 종료 시점에 처리 된다. (isFavorite, isLatest 둘다 false면 제거)
     private func deleteObject(_ data: MyGoodsData) -> Bool {
         if let result = try? manager.updateObject(data), result {
