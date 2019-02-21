@@ -12,22 +12,22 @@ class MyGoodsService {
     // MARK: - Data
     private(set) var recentGoods = [MyGoodsData]()
     private(set) var favoriteGoods = [MyGoodsData]()
-    
+
     // MARK: - Manager
     private lazy var manager = MyGoodsCoreDataManager()
     private var pet: Pet?
-    
+
     var dataIsEmpty: Bool {
         return recentGoods.isEmpty && favoriteGoods.isEmpty
     }
-    
+
     // MARK: - Initializer
     init() {
         if let data = try? PetKeywordCoreDataManager().fetchOnlyPet(), let string = data {
             pet = Pet(rawValue: string)
         }
     }
-    
+
     // MARK: - Fetch methods
     func fetchGoods() {
         // TODO: return 결과에 따른 true, false 처리 어떻게 할지 생각해보기
@@ -36,7 +36,7 @@ class MyGoodsService {
         recentGoods = fetchRecentGoods()
         favoriteGoods = fetchFavoriteGoods()
     }
-    
+
     private func fetchFavoriteGoods() -> [MyGoodsData] {
         if let pet = pet, let data = try? manager.fetchFavoriteGoods(pet: pet.rawValue), let goods = data {
             return goods
@@ -45,7 +45,7 @@ class MyGoodsService {
         }
         return []
     }
-    
+
     private func fetchRecentGoods() -> [MyGoodsData] {
         var result = [MyGoodsData]()
         if let pet = pet,
@@ -62,7 +62,7 @@ class MyGoodsService {
         }
         return result
     }
-    
+
     // MARK: - Delete methods
     @discardableResult func deleteRecentGoods(_ data: MyGoodsData) -> Bool {
         guard recentGoods.contains(data), let index = recentGoods.firstIndex(of: data) else {
@@ -72,7 +72,7 @@ class MyGoodsService {
         removedData.isLatest = false
         return deleteGoods(removedData)
     }
-    
+
     @discardableResult func deleteFavoriteGoods(_ data: MyGoodsData) -> Bool {
         guard favoriteGoods.contains(data), let index = favoriteGoods.firstIndex(of: data) else {
             return false
@@ -81,7 +81,7 @@ class MyGoodsService {
         removedData.isFavorite = false
         return deleteGoods(removedData)
     }
-    
+
     // 중요: 실제 코어데이터에서 삭제 처리는 앱이 종료 시점에 처리됌. (isFavorite, isLatest 둘다 false면 제거)
     private func deleteGoods(_ data: MyGoodsData) -> Bool {
         if let result = try? manager.updateObject(data), result {

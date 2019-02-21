@@ -7,6 +7,7 @@
 //
 
 import Foundation
+@testable import CoCo
 
 // MockData
 class MockShoppingNetworkManager: NetworkManagerType {
