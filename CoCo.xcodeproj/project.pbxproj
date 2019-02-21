@@ -300,13 +300,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		DA656C14AE9233B4CED22C2BCCCC9E1A /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		69070CDEAAFF4FD2D67AFCC49C516650 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -315,6 +308,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		C1CF99472B5B2811A2413557769AF035 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DA656C14AE9233B4CED22C2BCCCC9E1A /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -348,15 +348,6 @@
 				B1DD322E9F704370D74C3FA818E07CC4 /* privacy_policy.html */,
 			);
 			path = PrivacyPolicyView;
-			sourceTree = "<group>";
-		};
-		C5A2B080FB088CED852A5D7AC891B553 /* SearchServiceTests */ = {
-			isa = PBXGroup;
-			children = (
-				D21878E6B14A221BA6648B8099AF05A3 /* Info.plist */,
-				E8EB8A9B8F927995749EF8128297225D /* SearchServiceTests.swift */,
-			);
-			path = SearchServiceTests;
 			sourceTree = "<group>";
 		};
 		38EF5D7981CEBA1CD263A3C0606C8E93 /* Animation */ = {
@@ -600,6 +591,15 @@
 			path = NetworkTests;
 			sourceTree = "<group>";
 		};
+		C5A2B080FB088CED852A5D7AC891B553 /* SearchServiceTests */ = {
+			isa = PBXGroup;
+			children = (
+				D21878E6B14A221BA6648B8099AF05A3 /* Info.plist */,
+				E8EB8A9B8F927995749EF8128297225D /* SearchServiceTests.swift */,
+			);
+			path = SearchServiceTests;
+			sourceTree = "<group>";
+		};
 		D2F96F50BB4C9B5D9284D6EE09FF5597 /* AlgorithmTests */ = {
 			isa = PBXGroup;
 			children = (
@@ -828,14 +828,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		75E5AE892B2B24F83131B00E93C8A88E /* Resources */ = {
+		5503F2116FDFCD69664A67C58E05D8A4 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		5503F2116FDFCD69664A67C58E05D8A4 /* Resources */ = {
+		75E5AE892B2B24F83131B00E93C8A88E /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1073,15 +1073,15 @@
 			target = CA85F34779068A8B9B3CCFEF5C4A1D55 /* CoCo */;
 			targetProxy = 4B1EA8366425D21832B40AB475AA5745 /* PBXContainerItemProxy */;
 		};
-		97D02D9AEE97B387CB6CBC64A25C7B59 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = CA85F34779068A8B9B3CCFEF5C4A1D55 /* CoCo */;
-			targetProxy = 2B12DACEC0794CE0DB4C1BB7A7A4B986 /* PBXContainerItemProxy */;
-		};
 		886B2BB7502E2C339C196BC672D21C66 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = CA85F34779068A8B9B3CCFEF5C4A1D55 /* CoCo */;
 			targetProxy = CEF47E187EFBD8E9882829DF35B6A6A6 /* PBXContainerItemProxy */;
+		};
+		97D02D9AEE97B387CB6CBC64A25C7B59 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CA85F34779068A8B9B3CCFEF5C4A1D55 /* CoCo */;
+			targetProxy = 2B12DACEC0794CE0DB4C1BB7A7A4B986 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1116,25 +1116,6 @@
 			};
 			name = Debug;
 		};
-		0D48997C1E64420CB61A71971189E32A /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				INFOPLIST_FILE = DiscoverServiceTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = Junyoung.DiscoverServiceTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CoCo.app/CoCo";
-			};
-			name = Release;
-		};
 		0A4DBB8D774B12172675F55D2529FDDD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1152,22 +1133,22 @@
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CoCo.app/CoCo";
+				VALID_ARCHS = "arm64 arm64e armv7 armv7s x86_64";
 			};
 			name = Debug;
 		};
-		972626304F2F70B077DF038EC66C4454 /* Release */ = {
+		0D48997C1E64420CB61A71971189E32A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 4Y9G8Z76XC;
-				INFOPLIST_FILE = SearchServiceTests/Info.plist;
+				INFOPLIST_FILE = DiscoverServiceTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.leehochan.SearchServiceTests;
+				PRODUCT_BUNDLE_IDENTIFIER = Junyoung.DiscoverServiceTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1370,6 +1351,27 @@
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CoCo.app/CoCo";
 			};
 			name = Debug;
+		};
+		972626304F2F70B077DF038EC66C4454 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 4Y9G8Z76XC;
+				INFOPLIST_FILE = SearchServiceTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.leehochan.SearchServiceTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CoCo.app/CoCo";
+				VALID_ARCHS = "arm64 arm64e armv7 armv7s x86_64";
+			};
+			name = Release;
 		};
 		C6BC5947FB45630052D16001E3F2D104 /* Debug */ = {
 			isa = XCBuildConfiguration;

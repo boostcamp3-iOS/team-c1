@@ -73,11 +73,11 @@ class MockPetKeywordCoreDataManager: PetKeywordCoreDataManagerType {
     func fetchOnlyKeyword(pet: String) throws -> [String]? {
         return ["배변", "놀이", "뷰티", "스타일"]
     }
-    
+
     func fetchOnlyPet() throws -> String? {
         return "고양이"
     }
-    
+
     func deleteAllObjects(pet: String) throws -> Bool {
         if pet == "고양이" || pet == "강아지" {
             return true
@@ -85,7 +85,7 @@ class MockPetKeywordCoreDataManager: PetKeywordCoreDataManagerType {
             return false
         }
     }
-    
+
     func insert<T: CoreDataStructEntity>(_ coreDataStructType: T) throws -> Bool {
         if coreDataStructType is PetKeywordData {
             return true
@@ -93,24 +93,24 @@ class MockPetKeywordCoreDataManager: PetKeywordCoreDataManagerType {
             return false
         }
     }
-    
+
     func fetchObjects(pet: String?) throws -> [CoreDataStructEntity]? {
         if let pet = pet {
             return [PetKeywordData(pet: pet, keywords: ["배변", "뷰티", "놀이"])]
         } else {
-             return [PetKeywordData(pet:"강아지", keywords: ["배변", "뷰티", "놀이"]), PetKeywordData(pet: "고양이", keywords: ["배변", "뷰티", "놀이"])]
+             return [PetKeywordData(pet: "강아지", keywords: ["배변", "뷰티", "놀이"]), PetKeywordData(pet: "고양이", keywords: ["배변", "뷰티", "놀이"])]
         }
     }
-    
-    func updateObject<T: CoreDataStructEntity>(_ coreDataStructType: T) throws -> Bool  {
+
+    func updateObject<T: CoreDataStructEntity>(_ coreDataStructType: T) throws -> Bool {
         if coreDataStructType is PetKeywordData {
             return true
         } else {
             return false
         }
     }
-    
-    func deleteObject<T>(_ coreDataStructType: T) throws -> Bool where T : CoreDataStructEntity {
+
+    func deleteObject<T>(_ coreDataStructType: T) throws -> Bool where T: CoreDataStructEntity {
         if coreDataStructType is PetKeywordData {
             return true
         } else {
@@ -127,7 +127,7 @@ class MockMyGoodsCoreDataManager: MyGoodsCoreDataManagerType {
             return [MyGoodsData(pet: "강아지", title: "강아지옷", link: "www.naver.com", image: "www.naver.com", isFavorite: true, isLatest: false, price: "12000", productID: "999999", searchWord: "뷰티", shoppingmall: "네이버"), MyGoodsData(pet: "고양이", title: "고양이옷", link: "www.naver.com", image: "www.naver.com", isFavorite: true, isLatest: false, price: "12000", productID: "55555", searchWord: "뷰티", shoppingmall: "네이버")]
         }
     }
-    
+
     func fetchLatestGoods(pet: String?, isLatest: Bool, ascending: Bool) throws -> [MyGoodsData]? {
         if let pet = pet {
              return [MyGoodsData(pet: pet, title: "강아지샴푸", link: "www.naver.com", image: "www.naver.com", isFavorite: true, isLatest: true, price: "12000", productID: "54321", searchWord: "뷰티", shoppingmall: "네이버")]
@@ -135,7 +135,7 @@ class MockMyGoodsCoreDataManager: MyGoodsCoreDataManagerType {
             return [MyGoodsData(pet: "고양이", title: "고양이샴푸", link: "www.naver.com", image: "www.naver.com", isFavorite: true, isLatest: true, price: "12000", productID: "9875", searchWord: "뷰티", shoppingmall: "네이버"), MyGoodsData(pet: "강아지", title: "강아지샴푸", link: "www.naver.com", image: "www.naver.com", isFavorite: true, isLatest: true, price: "12000", productID: "58765", searchWord: "뷰티", shoppingmall: "네이버")]
         }
     }
-    
+
     func deleteFavoriteAllObjects(pet: String) throws -> Bool {
         if pet == "고양이" || pet == "강아지" {
             return true
@@ -143,7 +143,7 @@ class MockMyGoodsCoreDataManager: MyGoodsCoreDataManagerType {
             return false
         }
     }
-    
+
     func deleteLatestAllObjects(pet: String, isLatest: Bool) throws -> Bool {
         if pet == "고양이" || pet == "강아지" {
             if isLatest == true {
@@ -154,7 +154,7 @@ class MockMyGoodsCoreDataManager: MyGoodsCoreDataManagerType {
             return false
         }
     }
-    
+
     func insert<T: CoreDataStructEntity>(_ coreDataStructType: T) throws -> Bool {
         if coreDataStructType is MyGoodsData {
             return true
@@ -162,7 +162,7 @@ class MockMyGoodsCoreDataManager: MyGoodsCoreDataManagerType {
             return false
         }
     }
-    
+
     func fetchObjects(pet: String?) throws -> [CoreDataStructEntity]? {
         if let pet = pet {
             if pet == "고양이" || pet == "강아지" {
@@ -173,7 +173,7 @@ class MockMyGoodsCoreDataManager: MyGoodsCoreDataManagerType {
             return nil
         }
     }
-    
+
     func updateObject<T: CoreDataStructEntity>(_ coreDataStructType: T) throws -> Bool {
         if coreDataStructType is MyGoodsData {
             return true
@@ -181,7 +181,7 @@ class MockMyGoodsCoreDataManager: MyGoodsCoreDataManagerType {
             return false
         }
     }
-    
+
     func deleteObject<T: CoreDataStructEntity>(_ coreDataStructType: T) throws -> Bool {
         if coreDataStructType is MyGoodsData {
             return true
@@ -189,8 +189,7 @@ class MockMyGoodsCoreDataManager: MyGoodsCoreDataManagerType {
             return false
         }
     }
-    
-   
+
 }
 
 class CoreDataTests: XCTestCase {
@@ -224,11 +223,11 @@ class CoreDataTests: XCTestCase {
     }
 
     func testUpdateCoreData() {
-     
+
     }
 
     func testDeleteCoreData() {
-   
+
     }
 
     func testPerformanceExample() {

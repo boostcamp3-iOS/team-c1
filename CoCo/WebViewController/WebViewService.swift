@@ -22,15 +22,15 @@ import Foundation
 class WebViewService {
     // MARK: - Data
     private(set) var myGoodsData: MyGoodsData
-    
+
     // MARK: - Manager
     private lazy var manager = MyGoodsCoreDataManager()
-    
+
     // MARK: - Initializer
     init(data: MyGoodsData) {
         myGoodsData = data
     }
-    
+
     // MARK: - Public methods
     /// MyGoodsData를 코어 데이터에 저장(또는 업데이트)한다.
     @discardableResult func insert() -> Bool {

@@ -8,21 +8,18 @@
 
 import XCTest
 import CoreData
-@testable import CoreDataTests
 @testable import CoCo
 
 class DiscoverServiceTests: XCTestCase {
 
-    private let networkManagerType = ShoppingNetworkManager.shared
+    private let networkManagerType = MockShoppingNetworkManager.shared
     private let algorithmManager = Algorithm()
     private let searchWordCoreDataManager = MockSearchWordCoreDataManager()
     private var myGoodsCoreDataManager = MyGoods()
     private var petKeywordCoreDataManager = PetKeywordCoreDataManager()
-    
+
     let discoverService = DiscoverService(networkManagerType: networkManagerType, algorithmManagerType: algorithmManager, searchWordDoreDataManagerType: searchWordCoreDataManager, myGoodsCoreDataManagerType: myGoodsCoreDataManager, petKeywordCoreDataManagerType: petKeywordCoreDataManager)
-    
-    
-    
+
     override func setUp() {
         // Put setup code here. This method is called before the invocation of each test method in the class.
     }

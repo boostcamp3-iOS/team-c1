@@ -33,11 +33,6 @@ class MyGoodsService {
     private lazy var manager = MyGoodsCoreDataManager()
     private var pet: Pet?
 
-
-    var dataIsEmpty: Bool {
-        return recentGoods.isEmpty && favoriteGoods.isEmpty
-    }
-  
     // MARK: - Initializer
     init() {
         if let data = try? PetKeywordCoreDataManager().fetchOnlyPet(), let string = data {
@@ -123,7 +118,6 @@ class MyGoodsService {
         removedData.isFavorite = false
         return deleteObject(removedData)
     }
-
 
     /// 실제 코어데이터에서 삭제 처리하는 메서드. 삭제 처리는 앱 종료 시점에 처리 된다. (isFavorite, isLatest 둘다 false면 제거)
     private func deleteObject(_ data: MyGoodsData) -> Bool {

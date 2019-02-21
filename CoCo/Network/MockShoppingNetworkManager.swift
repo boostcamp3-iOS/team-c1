@@ -11,11 +11,11 @@ import Foundation
 
 // MockData
 class MockShoppingNetworkManager: NetworkManagerType {
-    
+
     // MARK: - Initializer
     static let shared = MockShoppingNetworkManager()
     private init() { }
-    
+
     // MARK: - Methods
     func getAPIData(_ params: ShoppingParams, completion: @escaping (APIResponseShoppingData) -> Void, errorHandler: @escaping (Error) -> Void) {
         let data = Data(MockShoppingNetworkManagerDummy.successDummyString.utf8)
@@ -27,15 +27,15 @@ class MockShoppingNetworkManager: NetworkManagerType {
             errorHandler(err)
         }
     }
-    
+
     func getImageData(url: String, completion: @escaping (Data?, Error?) -> Void) {
         completion(nil, nil)
     }
-    
+
     func cancelImageData(url: String) {
         print(url)
     }
-    
+
 }
 
 class MockShoppingNetworkManagerDummy {
@@ -271,4 +271,3 @@ class MockShoppingNetworkManagerDummy {
 }
 """
 }
-
