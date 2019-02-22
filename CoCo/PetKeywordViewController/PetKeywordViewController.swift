@@ -43,6 +43,25 @@ class PetKeywordViewController: UIViewController {
         super.viewWillDisappear(animated)
         service.removeAnimation()
     }
+    
+    // MARK: - Set method
+    func updateTextLabel() {
+        // 선택에 따른 textLabel 변경
+        if service.getSelectedNodes().count >= 2,
+            let _ = service.getSelectedPetNode() {
+            completionButton.isEnabled = true
+            textLabel.text = "서비스를 시작할 수 있습니다."
+        } else if service.getSelectedNodes().count >= 2 {
+            completionButton.isEnabled = false
+            textLabel.text = "반려동물을 선택해주세요."
+        } else if let _ = service.getSelectedPetNode() {
+            completionButton.isEnabled = false
+            textLabel.text = "2개 이상의 관심 키워드를 선택해주세요."
+        } else {
+            completionButton.isEnabled = false
+            textLabel.text = "반려동물과 2개 이상의 관심 키워드를\n선택해주세요."
+        }
+    }
 
     // MARK: - IBAction
     @IBAction func completionAction(_ sender: UIButton) {
@@ -63,34 +82,10 @@ extension PetKeywordViewController: AnimationType {
         if let petNode = service.getSelectedPetNode(), let name = petNode.name {
             service.pet = Pet(rawValue: name)
         }
-        // 선택에 따른 textLabel 변경
-        if service.getSelectedNodes().count >= 2,
-            let _ = service.getSelectedPetNode() {
-            completionButton.isEnabled = true
-            textLabel.text = "서비스를 시작할 수 있습니다."
-        } else if service.getSelectedNodes().count >= 2 {
-            completionButton.isEnabled = false
-            textLabel.text = "반려동물을 선택해주세요."
-        } else if let _ = service.getSelectedPetNode() {
-            completionButton.isEnabled = false
-            textLabel.text = "2개 이상의 관심 키워드를 선택해주세요."
-        } else {
-            completionButton.isEnabled = false
-            textLabel.text = "반려동물과 2개 이상의 관심 키워드를\n선택해주세요."
-        }
+        updateTextLabel()
     }
 
     func animation(_ animation: Animation, didDeselect node: AnimationNode) {
-        // 선택 해제에 따른 textLabel 변경
-        if let _ = service.getSelectedPetNode(), service.getSelectedNodes().count < 2 {
-            completionButton.isEnabled = false
-            textLabel.text = "2개 이상의 관심 키워드를 선택해주세요."
-        } else if service.getSelectedNodes().count < 2 {
-            completionButton.isEnabled = false
-            textLabel.text = "반려동물과 2개 이상의 관심 키워드를\n선택해주세요."
-        } else {
-            completionButton.isEnabled = false
-            textLabel.text = "반려동물을 선택해주세요."
-        }
+        updateTextLabel()
     }
 }
