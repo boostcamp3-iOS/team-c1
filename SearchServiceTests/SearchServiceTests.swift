@@ -15,7 +15,7 @@ class SearchServiceTests: XCTestCase {
 
     let searchService = SearchService(serachCoreData: MockSearchWordCoreDataManager(), petCoreData: MockPetKeywordCoreDataManager(), network: MockShoppingNetworkManager.shared, algorithm: Algorithm())
     let sortOpt = SortOption.date
-
+  
     override func setUp() {
         // Put setup code here. This method is called before the invocation of each test method in the class.
     }

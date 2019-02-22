@@ -28,7 +28,7 @@ class MyGoodsService {
     var startEditing = false
     private(set) var recentGoods = [MyGoodsData]()
     private(set) var favoriteGoods = [MyGoodsData]()
-    
+
     // MARK: - Manager
     private var manager: MyGoodsCoreDataManagerType = MyGoodsCoreDataManager()
     private var pet: Pet?
@@ -39,11 +39,11 @@ class MyGoodsService {
             pet = Pet(rawValue: string)
         }
     }
-    
+
     func setMyGoodsCoreDataManager(_ manager: MyGoodsCoreDataManagerType) {
         self.manager = manager
     }
-    
+
     // MARK: - Fetch methods
     /// 상품을 불러와 각 배열에 할당한다.
     func fetchGoods() {
@@ -85,12 +85,12 @@ class MyGoodsService {
         while result.count > 10 {
             if var data = result.popLast() {
                 data.isLatest = false
-                let _ = deleteObject(data)
+                _ = deleteObject(data)
             }
         }
         return result
     }
-    
+
     // MARK: - Delete methods
     /// index에 해당하는 MyGoodsData를 삭제한다. 컨트롤러에서 호출하여 사용한다.
     func deleteGoods(index: Int, completion: (() -> Void)? = nil) {
