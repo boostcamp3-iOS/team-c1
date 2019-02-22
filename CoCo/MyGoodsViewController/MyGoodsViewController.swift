@@ -101,6 +101,7 @@ class MyGoodsViewController: UIViewController {
             self.service.fetchGoods()
             if self.service.dataIsEmpty, let item = self.navigationItem.rightBarButtonItem {
                 item.title = "Edit"
+                self.service.startEditing = false
             }
             self.reloadTableView()
         }
