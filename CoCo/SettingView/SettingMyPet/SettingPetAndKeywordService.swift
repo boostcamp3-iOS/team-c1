@@ -22,22 +22,28 @@ class SettingPetAndKeywordService {
     }
 
     func fetchPetKeywordData() {
-        do {
-            if let petKeyword = try petKeywordCoreDataManager.fetchObjects(pet: nil)?.first as? PetKeywordData {
-                self.petKeyword = petKeyword
-            }
-        } catch let err {
-            print(err)
+        if let petKeyword = try? petKeywordCoreDataManager.fetchObjects(pet: nil)?.first {
+            self.petKeyword = petKeyword as? PetKeywordData
         }
     }
 
-    func insertPetKeywordData() {
-        do {
-            let keyword = Array(Set(petKeyword?.keywords ?? [""]))
-            _ = try petKeywordCoreDataManager.insert(PetKeywordData(pet: petKeyword?.pet ?? "강아지", keywords: keyword))
+//    func insertPetKeywordData() {
+//        do {
+//            let keyword = Array(Set(petKeyword?.keywords ?? [""]))
+//            _ = try petKeywordCoreDataManager.insert(PetKeywordData(pet: petKeyword?.pet ?? "강아지", keywords: keyword))
+//            PetDefault.shared.pet = Pet(rawValue: petKeyword?.pet ?? "강아지") ?? .dog
+//        } catch let err {
+//            print(err)
+//        }
+//    }
+    @discardableResult func insertPetKeywordData() -> Bool {
+        let keyword = Array(Set(petKeyword?.keywords ?? [""]))
+        let result = try? petKeywordCoreDataManager.insert(PetKeywordData(pet: petKeyword?.pet ?? "강아지", keywords: keyword))
+        if let result = result {
             PetDefault.shared.pet = Pet(rawValue: petKeyword?.pet ?? "강아지") ?? .dog
-        } catch let err {
-            print(err)
+            return result
         }
+        return false
     }
+
 }
