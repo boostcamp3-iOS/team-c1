@@ -31,9 +31,6 @@ class PetKeywordViewController: UIViewController {
     // MARK: - View lifecycles
     override func viewDidLoad() {
         super.viewDidLoad()
-        if !UserDefaults.isFirstLaunch(), let tabBarController = UIStoryboard(name: "Discover", bundle: nil).instantiateViewController(withIdentifier: "tabBarcontroller") as? UITabBarController {
-            UIApplication.shared.keyWindow?.rootViewController = tabBarController
-        }
         service.setAnimation(in: animationView, delegate: self)
     }
     
