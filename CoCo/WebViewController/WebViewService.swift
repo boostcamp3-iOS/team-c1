@@ -53,6 +53,7 @@ class WebViewService {
     }
     /// 상품의 좋아요(찜) 변경을 반영한다.
     func updateFavorite(_ isFavorite: Bool) {
+        if isFavorite { myGoodsData.isLatest = false }
         myGoodsData.isFavorite = isFavorite
         // 이미 같은 productID의 상품이 존재한다면 manager 내부에서 update를 호출함
         insert()

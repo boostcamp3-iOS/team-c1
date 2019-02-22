@@ -16,7 +16,7 @@ class GoodsCell: UICollectionViewCell {
     weak var delegate: GoodsCellDelegate?
 
     @IBOutlet weak var container: UIView!
-    @IBOutlet weak var goodsImageView: UIImageView!
+    @IBOutlet weak var goodsImageView: CustomUIImageView!
     @IBOutlet weak var goodsTitleLabel: UILabel!
     @IBOutlet weak var goodsPriceLabel: UILabel!
     @IBOutlet weak var likeImageView: UIImageView!
@@ -39,7 +39,7 @@ class GoodsCell: UICollectionViewCell {
     var myGoods: MyGoodsData? {
         didSet {
             if let myGoods = myGoods {
-                goodsImageView.setImage(url: myGoods.image)
+                goodsImageView.setImage(urlString: myGoods.image)
                 goodsPriceLabel.text = myGoods.price
                 goodsTitleLabel.text = myGoods.title
                 goodsShoppingMallLabel.text = myGoods.shoppingmall
@@ -54,7 +54,7 @@ class GoodsCell: UICollectionViewCell {
     }
 
     override func prepareForReuse() {
-        goodsImageView.image = UIImage(named: "placeholder")
+        goodsImageView.image = nil
     }
 
     func settupGoodsCell() {
