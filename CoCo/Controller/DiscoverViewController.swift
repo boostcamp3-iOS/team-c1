@@ -70,7 +70,7 @@ class DiscoverViewController: UIViewController {
         if !isInserting {
             isInserting = true
             discoverService.request(completion: { [weak self]
-                (isSuccess, error) in
+                (isSuccess, error, _) in
                 guard let self = self else {
                     return
                 }
@@ -142,30 +142,54 @@ extension DiscoverViewController: UICollectionViewDelegate, UICollectionViewData
         self.performSegue(withIdentifier: toWebSegue, sender: indexPath)
     }
 
-    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        if scrollView.contentOffset.y >= scrollView.contentSize.height - scrollView.frame.size.height - 50 {
-            if !isInserting {
-                isInserting = true
-                discoverService?.request(completion: { [weak self]
-                    (isSuccess, error) in
-                    guard let self = self else {
-                        return
-                    }
-                    if error != nil {
-                        self.alert("데이터를 가져오지 못했습니다.")
-                    }
-                    if isSuccess {
-                        DispatchQueue.main.async {
-                            self.layout?.setCellPinterestLayout(indexPathRow: self.pagenationNum - 1) {
-                                self.collectionView.reloadData()
-                                self.pagenationNum += 20
-                            }
-                        }
-                        self.isInserting = false
-                    }
-                })
-            }
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let scrollPosition = scrollView.contentSize.height - scrollView.frame.size.height - scrollView.contentOffset.y
+
+        if scrollPosition > 0, scrollPosition < scrollView.contentSize.height * 0.1 {
+            pagination()
         }
+
+    }
+    
+    func pagination() {
+        if !isInserting {
+            isInserting = true
+            discoverService?.request(completion: { [weak self]
+                (isSuccess, error, newData) in
+                guard let self = self else {
+                    return
+                }
+                if error != nil {
+                    self.alert("데이터를 가져오지 못했습니다.")
+                }
+                guard let newData = newData else {
+                    return
+                }
+                if isSuccess {
+                    DispatchQueue.main.async {
+                        self.layout?.setCellPinterestLayout(indexPathRow: self.pagenationNum - 1) {
+                            self.collectionView.insertItems(at:
+                                self.getIndexPath(newData: newData))
+                            self.pagenationNum += 20
+                        }
+                    }
+                    self.isInserting = false
+                }
+            })
+        }
+    }
+
+    func getIndexPath(newData: Int) -> [IndexPath] {
+        guard let discoverService = discoverService else {
+            return []
+        }
+        var arrList = [IndexPath]()
+        let startCount = discoverService.fetchedMyGoods.count - newData
+        let endCount = startCount + newData
+        (startCount..<endCount).forEach {
+            arrList.append(IndexPath(item: $0, section: 0))
+        }
+        return arrList
     }
 }
 
@@ -178,10 +202,10 @@ extension DiscoverViewController: PinterestLayoutDelegate {
         guard let discoverService = discoverService else {
             return 0
         }
-        let itemSize = (collectionView.frame.width - (collectionView.contentInset.left + collectionView.contentInset.right + 10)) / 2
+        let itemSize = (collectionView.frame.width / 2) - 40
         let title = discoverService.fetchedMyGoods[indexPath.item].title
-        let option = NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin)
         let attribute = [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13)]
+        let option = NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin)
         let estimateFrame = NSString(string: title).boundingRect(with: CGSize(width: itemSize, height: 1000), options: option, attributes: attribute, context: nil)
         return estimateFrame.height + view.frame.width*2/3
     }

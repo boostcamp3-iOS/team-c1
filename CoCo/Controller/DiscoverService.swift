@@ -117,7 +117,7 @@ class DiscoverService {
     }
 
     // (6) 네트워트에서 섞은 검색어 Request
-    func request(completion: @escaping (Bool, Error?) -> Void) {
+    func request(completion: @escaping (Bool, Error?, Int?) -> Void) {
         guard let search = mixedletSearches.popLast() else {
             return
         }
@@ -128,7 +128,7 @@ class DiscoverService {
             }
             self.networkManagerType?.getAPIData(param, completion: { (datas) in
                     if datas.items.isEmpty {
-                        completion(false, nil)
+                        completion(false, nil, nil)
                     }
                     for data in datas.items {
                         guard let shopItemToMyGoods = self.shopItemToMyGoods(item: data, searchWord: search) else {
@@ -136,9 +136,9 @@ class DiscoverService {
                         }
                         self.fetchedMyGoods.append(shopItemToMyGoods)
                     }
-                completion(true, nil)
+                completion(true, nil, datas.items.count)
             }, errorHandler: { (error) in
-                completion(false, error)
+                completion(false, error, nil)
                 print(error)
             })
         }
@@ -174,7 +174,7 @@ class DiscoverService {
       algorithmManagerType.recommendedPagination(index: indexPathRow) {
             (isSuccess, startIndex, search) in
             if isSuccess, let startIndex = startIndex, let search = search {
-                self.request(completion: { (isSuccess, error) in
+                self.request(completion: { (isSuccess, error, _) in
                     if let error = error {
                         completion(false, error)
                     }

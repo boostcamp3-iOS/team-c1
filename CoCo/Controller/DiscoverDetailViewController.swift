@@ -115,8 +115,8 @@ class DiscoverDetailViewController: UIViewController {
 
         if !isInserting {
             isInserting = true
-            discoverDetailService?.getShoppingData(start: pagenationNum, search: searchWord, completion: { [weak self]
-                (isSuccess, _) in
+            discoverDetailService?.getShoppingData(start: pagenationNum - 1, search: searchWord, completion: { [weak self]
+                (isSuccess, _, _) in
                 guard let self = self else {
                     return
                 }
@@ -160,10 +160,16 @@ class DiscoverDetailViewController: UIViewController {
 
     func sortChanged(sort: SortOption) {
         discoverDetailService?.sortOption = sort
-        discoverDetailService?.getShoppingData(start: 1, search: searchWord ?? "") { isSuccess, err in
+        pagenationNum = 1
+        self.discoverDetailService?.dataLists.removeAll()
+        discoverDetailService?.getShoppingData(start: pagenationNum, search: searchWord ?? "") { isSuccess, err, _ in
             if isSuccess {
                 DispatchQueue.main.async {
+                    self.layout?.setupInit()
+                    self.layout?.invalidateLayout()
                     self.collectionView.reloadData()
+                    self.collectionView.setContentOffset(CGPoint.zero, animated: false)
+                    self.pagenationNum += 20
                 }
             } else {
                 if err == NetworkErrors.noData {
@@ -206,31 +212,55 @@ extension DiscoverDetailViewController: UICollectionViewDataSource, UICollection
         navigationController?.pushViewController(webViewController, animated: true)
     }
 
-    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        if scrollView.contentOffset.y >= scrollView.contentSize.height - scrollView.frame.size.height - 50 {
-            if !isInserting {
-                isInserting = true
-                discoverDetailService?.getShoppingData(start: pagenationNum, search: searchWord, completion: { [weak self]
-                    (isSuccess, error) in
-                    if let error = error {
-                    }
-                    guard let self = self else {
-                        return
-                    }
-                    if isSuccess {
-                        DispatchQueue.main.async { [weak self] in
-                            guard let self = self else {
-                                return
-                            }
-                            self.layout?.setCellPinterestLayout(indexPathRow: self.pagenationNum - 1) {
-                            self.collectionView.reloadData()
-                            self.pagenationNum += 20
-                            }
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let scrollPosition = scrollView.contentSize.height - scrollView.frame.size.height - scrollView.contentOffset.y
+
+        if scrollPosition > 0, scrollPosition < scrollView.contentSize.height * 0.1 {
+            pagination()
+        }
+
+    }
+
+    func getIndexPath(newData: Int) -> [IndexPath] {
+        guard let discoverDetailService = discoverDetailService else {
+            return []
+        }
+        var arrList = [IndexPath]()
+        let startCount = discoverDetailService.dataLists.count - newData
+        let endCount = startCount + newData
+        (startCount..<endCount).forEach {
+            arrList.append(IndexPath(item: $0, section: 0))
+        }
+        return arrList
+    }
+
+    func pagination() {
+        if !isInserting {
+            isInserting = true
+            discoverDetailService?.getShoppingData(start: pagenationNum, search: searchWord, completion: { [weak self]
+                (isSuccess, error, newData) in
+                if let error = error {
+                    print(error)
+                }
+                guard let self = self else {
+                    return
+                }
+                guard let newData = newData else {
+                    return
+                }
+                if isSuccess {
+                    DispatchQueue.main.async { [weak self] in
+                        guard let self = self else {
+                            return
                         }
-                        self.isInserting = false
+                        self.layout?.setCellPinterestLayout(indexPathRow: self.pagenationNum - 1) {
+                            self.collectionView.insertItems(at: self.getIndexPath(newData: newData))
+                            self.pagenationNum += 20
+                        }
                     }
-                })
-            }
+                    self.isInserting = false
+                }
+            })
         }
     }
 }
@@ -238,12 +268,15 @@ extension DiscoverDetailViewController: UICollectionViewDataSource, UICollection
 extension DiscoverDetailViewController: PinterestLayoutDelegate {
     // MARK: - Delegate Methodes
     func collectionView(_ collectionView: UICollectionView, heightForTitleIndexPath indexPath: IndexPath) -> CGFloat {
-        let itemSize = (collectionView.frame.width - (collectionView.contentInset.left + collectionView.contentInset.right + 10)) / 2
-        let title = discoverDetailService?.dataLists[indexPath.item].title ?? ""
+        guard let discoverDetailService = discoverDetailService else {
+            return 0
+        }
+        let itemSize = (collectionView.frame.width / 2) - 40
+        let title = discoverDetailService.dataLists[indexPath.item].title
         let attribute = [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13)]
         let option = NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin)
         let estimateFrame = NSString(string: title).boundingRect(with: CGSize(width: itemSize, height: 1000), options: option, attributes: attribute, context: nil)
-        return estimateFrame.height + 250
+        return estimateFrame.height + view.frame.width*2/3
     }
 
     func headerFlexibleHeight(inCollectionView collectionView: UICollectionView, withLayout layout: UICollectionViewLayout, fixedDimension: CGFloat) -> CGFloat {
@@ -253,15 +286,17 @@ extension DiscoverDetailViewController: PinterestLayoutDelegate {
 
 extension DiscoverDetailViewController: DetailCategoryControllerDelegate {
     func showGoods(indexPath: IndexPath, pet: Pet, detailCategory: String) {
+        discoverDetailService?.dataLists.removeAll()
         searchWord = detailCategory
         pagenationNum = 1
-        discoverDetailService?.dataLists.removeAll()
-        discoverDetailService?.getShoppingData(start: 1, search: detailCategory) { [weak self] (isSuccess, _) in
+        discoverDetailService?.getShoppingData(start: 1, search: detailCategory) { [weak self] (isSuccess, _, _) in
             if isSuccess {
                 DispatchQueue.main.async { [weak self] in
                     self?.layout?.setupInit()
                     self?.layout?.invalidateLayout()
                     self?.collectionView.reloadData()
+                    self?.collectionView.setContentOffset(CGPoint.zero, animated: false)
+                    self?.pagenationNum += 20
                 }
             }
         }

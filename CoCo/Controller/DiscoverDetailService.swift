@@ -38,7 +38,7 @@ class DiscoverDetailService {
         self.pet = pet
     }
 
-    func getShoppingData(start: Int, search: String, completion: @escaping (_ isSuccess: Bool, NetworkErrors?) -> Void) {
+    func getShoppingData(start: Int, search: String, completion: @escaping (_ isSuccess: Bool, NetworkErrors?, _ newData: Int?) -> Void) {
         var itemStart = start
         if recentSearched != search {
             itemStart = 1
@@ -53,7 +53,7 @@ class DiscoverDetailService {
                     return
                 }
                 if data.items.isEmpty {
-                    completion(false, NetworkErrors.noData)
+                    completion(false, NetworkErrors.noData, nil)
                     return
                 }
                 if itemStart == 1 {
@@ -68,8 +68,8 @@ class DiscoverDetailService {
                     let price = self.algorithmManager.addComma(to: goods.lprice)
                     self.dataLists.append(MyGoodsData(pet: Pet.dog.rawValue, title: title, link: goods.link, image: goods.image, isFavorite: false, isLatest: true, price: price, productID: goods.productId, searchWord: search, shoppingmall: mallName))
                 }
-                completion(true, nil)
-            }) {_ in completion(false, NetworkErrors.badInput)}
+                completion(true, nil, data.items.count)
+            }) {_ in completion(false, NetworkErrors.badInput, nil)}
         }
     }
 }

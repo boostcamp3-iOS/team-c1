@@ -16,22 +16,13 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "F6E497F5FA5EA82ADFB27158A205F0F3"
-               BuildableName = "CoreDataTests.xctest"
-               BlueprintName = "CoreDataTests"
+               BlueprintIdentifier = "22A1CE0B149D8D0609778913864E2121"
+               BuildableName = "SearchServiceTests.xctest"
+               BlueprintName = "SearchServiceTests"
                ReferencedContainer = "container:CoCo.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "CA85F34779068A8B9B3CCFEF5C4A1D55"
-            BuildableName = "CoCo.app"
-            BlueprintName = "CoCo"
-            ReferencedContainer = "container:CoCo.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </TestAction>

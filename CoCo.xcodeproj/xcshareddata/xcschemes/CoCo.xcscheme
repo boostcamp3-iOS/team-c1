@@ -32,7 +32,7 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "51D9268B221E6F2F0021580E"
+               BlueprintIdentifier = "C3A02B37EBA00158D76D827A0CB2B26C"
                BuildableName = "DiscoverServiceTests.xctest"
                BlueprintName = "DiscoverServiceTests"
                ReferencedContainer = "container:CoCo.xcodeproj">
