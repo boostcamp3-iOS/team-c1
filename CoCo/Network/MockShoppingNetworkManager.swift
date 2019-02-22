@@ -39,7 +39,18 @@ class MockShoppingNetworkManager: NetworkManagerType {
 }
 
 class MockShoppingNetworkManagerDummy {
+    static let search = "강아지 간식"
+    static let failSearch = "실패"
     static let params = ShoppingParams(search: "강아지 간식", count: 20, start: 21, sort: .similar)
+    static let failDummyString = """
+{
+    "lastBuildDate": "Fri, 22 Feb 2019 17:25:55 +0900",
+    "total": 0,
+    "start": 21,
+    "display": 0,
+    "items": []
+}
+"""
     static let successDummyString = """
 {
 "lastBuildDate": "Thu, 21 Feb 2019 15:34:11 +0900",

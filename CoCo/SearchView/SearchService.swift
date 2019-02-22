@@ -56,8 +56,7 @@ class SearchService {
         networkManager = network
         algorithmManager = algorithm
     }
-
-    func getShoppingData(search: String, completion: @escaping (_ isSuccess: Bool, NetworkErrors?) -> Void) {
+    private func getShoppingData(search: String, completion: @escaping (_ isSuccess: Bool, NetworkErrors?) -> Void) {
         let word = algorithmManager.removePet(from: search)
         let searchWord = algorithmManager.combinePet(pet, and: word)
         let params = ShoppingParams(search: searchWord, count: 20, start: itemStart, sort: sortOption)
@@ -82,30 +81,16 @@ class SearchService {
             }) {_ in completion(false, NetworkErrors.badInput)}
         }
     }
-    func fetchRecommandSearchWord(completion: @escaping () -> Void) {
-        let group = DispatchGroup()
-        let queue = DispatchQueue.main
-        var recommandWords: PetKeywordData?
-        var recentSearchWords = [String]()
-        fetchRecommandWords(queue, group: group) { [weak self] words in
+    private func getShoppingData(search: String) {
+        getShoppingData(search: search) { [weak self] isSuccess, err in
             guard let self = self else {
                 return
             }
-            recommandWords = PetKeywordData(pet: self.pet.rawValue, keywords: words)
-        }
-        fetchRecentSearchWords(queue, group: group) { words in
-            recentSearchWords = words
-        }
-
-        group.notify(queue: DispatchQueue.main) { [weak self] in
-            guard let self = self else {
-                return
+            if isSuccess {
+                self.delegate?.delegateReload(.goods)
+            } else {
+                self.delegate?.delegateFailToLoad(error: err)
             }
-            guard let recommandWords = recommandWords else {
-                return
-            }
-            self.keyword = self.algorithmManager.makeRecommendedSearchWords(with: recentSearchWords, petKeyword: recommandWords, count: 20)
-            completion()
         }
     }
     // 추천검색 키워드
@@ -132,7 +117,7 @@ class SearchService {
             }
         }
     }
-    func insert(recentSearchWord: String) {
+    private func insert(recentSearchWord: String) {
         // "강아지", "고양이" 키워드를 제거하고 코어데이터에 저장
         let word = algorithmManager.removePet(from: recentSearchWord)
         self.recentSearched = word
@@ -144,30 +129,42 @@ class SearchService {
         }
     }
 
+    func fetchRecommandSearchWord(completion: @escaping () -> Void) {
+        let group = DispatchGroup()
+        let queue = DispatchQueue.main
+        var recommandWords: PetKeywordData?
+        var recentSearchWords = [String]()
+        fetchRecommandWords(queue, group: group) { [weak self] words in
+            guard let self = self else {
+                return
+            }
+            recommandWords = PetKeywordData(pet: self.pet.rawValue, keywords: words)
+        }
+        fetchRecentSearchWords(queue, group: group) { words in
+            recentSearchWords = words
+        }
+
+        group.notify(queue: DispatchQueue.main) { [weak self] in
+            guard let self = self else {
+                return
+            }
+            guard let recommandWords = recommandWords else {
+                return
+            }
+            self.keyword = self.algorithmManager.makeRecommendedSearchWords(with: recentSearchWords, petKeyword: recommandWords, count: 20)
+            completion()
+        }
+    }
     func sortChanged(sort: SortOption) {
         sortOption = sort
         itemStart = 1
         getShoppingData(search: recentSearched ?? "")
     }
-
     func searchButtonClicked(_ search: String) {
         sortOption = .similar
         itemStart = 1
         insert(recentSearchWord: search)
         getShoppingData(search: search)
-    }
-
-    func getShoppingData(search: String) {
-        getShoppingData(search: search) { [weak self] isSuccess, err in
-            guard let self = self else {
-                return
-            }
-            if isSuccess {
-                self.delegate?.delegateReload(.goods)
-            } else {
-                self.delegate?.delegateFailToLoad(error: err)
-            }
-        }
     }
     func pagination() {
         if !isInserting {
