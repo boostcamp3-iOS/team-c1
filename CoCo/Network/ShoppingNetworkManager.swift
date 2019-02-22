@@ -39,7 +39,7 @@ class ShoppingNetworkManager: NetworkManagerType {
     // MARK: - Private Properties
     private let host = "https://openapi.naver.com/v1/search/shop.json?"
     lazy private var environment = Environment(host: host)
-    private var tasks = [String: NetworkDispatcher]()
+    var tasks = [String: NetworkDispatcher]()
 
     // MARK: - Initializer
     static let shared = ShoppingNetworkManager()
