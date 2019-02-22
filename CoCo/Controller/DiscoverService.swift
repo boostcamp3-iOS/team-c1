@@ -144,27 +144,11 @@ class DiscoverService {
         }
     }
 
-    func setPet() {
-        if PetDefault.shared.pet == .dog {
-            self.pet = .dog
-        } else {
-            self.pet = .cat
-        }
-    }
-
-    func chagePet() {
-        if pet == Pet.dog {
-            self.pet = Pet.cat
-        } else {
-            self.pet = Pet.dog
-        }
-    }
-
     func setPagenation() {
         guard let algorithmManagerType = algorithmManagerType else {
             return
         }
-        algorithmManagerType.setRecommendedPagination(words: recommandGoods, once: 20, maximum: 200)
+    algorithmManagerType.setRecommendedPagination(words: recommandGoods, once: 20, maximum: 200)
     }
 
     func recommandPagenation(indexPathRow: Int, completion: @escaping (Bool, Error?) -> Void) {

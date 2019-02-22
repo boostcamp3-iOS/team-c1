@@ -32,7 +32,7 @@ class DiscoverServiceTests: XCTestCase {
             return
         }
         discoverService.fetchPet()
-        XCTAssert(PetDefault.shared.pet == .cat, "펫정보가 없습니다.")
+        XCTAssert(PetDefault.shared.pet == .dog, "펫정보가 없습니다.")
     }
 
     func testFetchMyGoods() {
@@ -66,10 +66,24 @@ class DiscoverServiceTests: XCTestCase {
         guard let discoverService = discoverService else {
             return
         }
+        discoverService.fetchMyGoods()
+        discoverService.fetchSearchWord()
+        discoverService.fetchPetKeywords()
         let result = discoverService.mixedWord()
-        print(result)
+        print(result.count)
         XCTAssert(result.count != 0, "데이터를 섞는 데 실패했습니다.")
     }
+    
+    func testRequest() {
+        guard let discoverService = discoverService else {
+            return
+        }
+        discoverService.request { (isSuccess, error, _) in
+            XCTAssert(isSuccess, "쇼핑정보를 가져오지 못했습니다.")
+        }
+    }
+    
+    
 }
 
 // MockData
