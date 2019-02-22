@@ -36,18 +36,26 @@ class CategoryController: UICollectionReusableView {
         cv.delegate = self
         return cv
     }()
-    lazy var categoryImage: [UIImage?] = {
-        return setupCategotyImage()
-    }()
-    lazy var categoryTitle: [String] = {
-        return setupCategoryTitle()
-    }()
+    var categoryImage = [UIImage?]()
+    var categoryTitle = [String]()
     var pet = PetDefault.shared.pet
 
     override init(frame: CGRect) {
         super.init(frame: frame)
+        categoryTitle = setupCategoryTitle()
+        categoryImage = setupCategotyImage()
         setupLargeTitle()
         setUpCollectionView()
+    }
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        pet = PetDefault.shared.pet
+        categoryTitle = setupCategoryTitle()
+        categoryImage = setupCategotyImage()
+        setupLargeTitle()
+        setUpCollectionView()
+        collectionView.reloadData()
     }
 
     required init?(coder aDecoder: NSCoder) {

@@ -10,12 +10,12 @@ import XCTest
 @testable import CoCo
 
 class AlgorithmTests: XCTestCase {
-    
+
     var algorithmManager: AlgorithmType!
     var myGoods = [MyGoodsData]()
     var words = [String]()
     var petKeyword: PetKeywordData!
-    
+
     override func setUp() {
         algorithmManager = Algorithm()
         for i in 1 ... 10 {
@@ -27,14 +27,14 @@ class AlgorithmTests: XCTestCase {
         ]
         petKeyword = PetKeywordData(pet: Pet.dog.rawValue, keywords: [Keyword.beauty.rawValue, Keyword.style.rawValue, Keyword.food.rawValue])
     }
-    
+
     override func tearDown() {
         algorithmManager = nil
         myGoods.removeAll()
         words.removeAll()
         petKeyword = nil
     }
-    
+
     // MARK: WordType Test
     /*
      func petIncluded(in word: String) -> Bool
@@ -46,48 +46,48 @@ class AlgorithmTests: XCTestCase {
      func replaceNewLine(from string: String) -> String
      func addComma(to string: String) -> String
      */
-    
+
     func testPetIncluded() {
         let input = "고양이 집"
         let result = algorithmManager.petIncluded(in: input)
         XCTAssert(result, "testPetIncluded 실패")
     }
-    
+
     func testCombinePet() {
         let input = ["사료", "장난감", "집", "양말"]
         let expectedResult = ["고양이 사료", "고양이 장난감", "고양이 집", "고양이 양말"]
         let result = algorithmManager.combinePet(.cat, and: input)
         XCTAssert(expectedResult == result, "testCombinePet 실패")
     }
-    
+
     func testRemovePet() {
         let input = ["강아지 사료", "고양이 장난감", "강아지집", "고양이양말"]
         let expectedResult = ["사료", "장난감", "집", "양말"]
         let result = algorithmManager.removePet(from: input)
         XCTAssert(expectedResult == result, "testRemovePet 실패")
     }
-    
+
     func testRemoveHTML() {
         let input = "<span class=\"s1\"><b>Contact Us</b></span></p>"
         let expectedResult = "Contact Us"
         let result = algorithmManager.removeHTML(from: input)
         XCTAssert(expectedResult == result, "testRemoveHTML 실패")
     }
-    
+
     func testReplaceNewLine() {
         let input = "테스트</b>입니다."
         let expectedResult = "테스트 입니다."
         let result = algorithmManager.replaceNewLine(from: input)
         XCTAssert(expectedResult == result, "testReplaceNewLine 실패")
     }
-    
+
     func testAddComma() {
         let input = "10000000"
         let expectedResult = "10,000,000"
         let result = algorithmManager.addComma(to: input)
         XCTAssert(expectedResult == result, "testAddComma 실패")
     }
-    
+
     // MARK: - MakeSearchWordsType
     /*
      func makeRequestSearchWords(with myGoods: [MyGoodsData], words: [String], petKeyword: PetKeywordData, count: UInt?) -> [String]
@@ -96,32 +96,32 @@ class AlgorithmTests: XCTestCase {
      func makeSearchWords(_ word: String) -> [String]
      func makeCleanTitle(_ title: String, isReplacing: Bool) -> String
      */
-    
+
     func testMakeRequestSearchWords() {
         let count: UInt = 10
         let result = algorithmManager.makeRequestSearchWords(with: myGoods, words: words, petKeyword: petKeyword, count: count)
         XCTAssert(result.count == count, "testMakeRequestSearchWords 실패")
     }
-    
+
     func testMakeRecommendedSearchWords() {
         let count: UInt = 10
         let result = algorithmManager.makeRecommendedSearchWords(with: words, petKeyword: petKeyword, count: count)
         XCTAssert(result.count == count, "testMakeRecommendedSearchWords 실패")
     }
-    
+
     func testMakeSearchWords() {
         let count: UInt = 5
         let result = algorithmManager.makeSearchWords(in: words, count: count)
         XCTAssert(result.count == count, "testMakeSearchWords 실패")
     }
-    
+
     func testMakeCleanTitle() {
         let input = "<span class=\"s1\"><b>Contact Us</b></span></p><b>010-1111-1234</b>부스트캠프"
         let expectedResult = "Contact Us 010-1111-1234 부스트캠프"
         let result = algorithmManager.makeCleanTitle(input, isReplacing: true)
         XCTAssert(expectedResult == result, "testMakeCleanTitle 실패")
     }
-    
+
     // MARK: - PaginationType
     /*
      func setPagination(once: Int, maximum: Int)
@@ -129,7 +129,7 @@ class AlgorithmTests: XCTestCase {
      func pagination(index: Int, completion: @escaping (_ isSuccess: Bool, _ startIndex: Int?) -> Void)
      func recommendedPagination(index: Int, completion: @escaping (_ isSuccess: Bool, _ startIndex: Int?, _ words: String?) -> Void)
      */
-    
+
     func testPagination() {
         let once = 10
         let maximum = 100
@@ -144,7 +144,7 @@ class AlgorithmTests: XCTestCase {
             }
         }
     }
-    
+
     func testRecommendedPagination() {
         let once = 20
         let maximum = 100

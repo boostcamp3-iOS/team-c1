@@ -26,6 +26,7 @@ class DiscoverViewController: UIViewController {
     private var layout: PinterestLayout?
     fileprivate var pagenationNum = 1
     fileprivate var headerSize: CGFloat = 230
+    fileprivate var pet = PetDefault.shared.pet
 
     // 둘러보기
     override func viewDidLoad() {
@@ -35,13 +36,26 @@ class DiscoverViewController: UIViewController {
         layout = collectionView.collectionViewLayout as? PinterestLayout
         layout?.delegate = self
         loadData()
+        pet = PetDefault.shared.pet
         extendedLayoutIncludesOpaqueBars = true
+        print("pet: \(pet)")
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: false)
         tabBarController?.tabBar.isHidden = false
+        if pet != PetDefault.shared.pet {
+            print("PetDefault: \(PetDefault.shared.pet)")
+            pagenationNum = 1
+            self.layout?.setupInit()
+            self.layout?.invalidateLayout()
+            discoverService?.fetchedMyGoods.removeAll()
+            loadData()
+            pet = PetDefault.shared.pet
+            collectionView.reloadData()
+        }
+
     }
 
     func setupHeader() {
@@ -150,7 +164,7 @@ extension DiscoverViewController: UICollectionViewDelegate, UICollectionViewData
         }
 
     }
-    
+
     func pagination() {
         if !isInserting {
             isInserting = true
