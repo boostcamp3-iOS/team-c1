@@ -71,6 +71,14 @@ class SearchViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationController?.navigationBar.isHidden = true
+        if searchService.pet != PetDefault.shared.pet {
+            searchService.pet = PetDefault.shared.pet
+            searchService.fetchRecommandSearchWord {
+                if self.searchService.cellIdentifier == .searchKeyword {
+                    self.collectionView.reloadData()
+                }
+            }
+        }
     }
 
     // MARK: - IBActions
