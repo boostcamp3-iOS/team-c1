@@ -14,11 +14,11 @@ class DiscoverService {
     private let petKeywordCoreDataManagerType: PetKeywordCoreDataManagerType?
     private let searchWordDoreDataManagerType: SearchWordCoreDataManagerType?
     private let myGoodsCoreDataManagerType: MyGoodsCoreDataManagerType?
-    private var recommandGoods = [String]()
-    private var myGoods = [MyGoodsData]()
-    private var searches = [String]()
-    private var mixedletSearches = [String]()
-    private var keyword: PetKeywordData?
+    var recommandGoods = [String]()
+    var myGoods = [MyGoodsData]()
+    var searches = [String]()
+    var mixedletSearches = [String]()
+    var keyword: PetKeywordData?
     var fetchedMyGoods = [MyGoodsData]()
     var pageNumber = 1
     var pet = Pet.dog
@@ -109,7 +109,7 @@ class DiscoverService {
         guard let algorithmManagerType = algorithmManagerType else {
             return []
         }
-        let result = algorithmManagerType.makeRequestSearchWords(with: [], words: [], petKeyword: keyword, count: 4)
+        let result = algorithmManagerType.makeRequestSearchWords(with: myGoods, words: searches, petKeyword: keyword, count: 4)
         let mixedResult = result
         recommandGoods = mixedResult
         mixedletSearches = algorithmManagerType.combinePet(PetDefault.shared.pet, and: recommandGoods)
