@@ -75,7 +75,7 @@ class PetKeywordService {
         }
         return nil
     }
-    
+
     func removeAnimation() {
         animation?.removeAllChildren()
     }
