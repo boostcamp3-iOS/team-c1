@@ -136,13 +136,6 @@
 			remoteGlobalIDString = CA85F34779068A8B9B3CCFEF5C4A1D55;
 			remoteInfo = CoCo;
 		};
-		C3BAF5B02050AC7734794829208C1BBF /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FFDB4F0C26E30E9C3F3CC610E033F1AF /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = CA85F34779068A8B9B3CCFEF5C4A1D55;
-			remoteInfo = CoCo;
-		};
 		3BE5DC295417EE14378311673E4B77D9 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FFDB4F0C26E30E9C3F3CC610E033F1AF /* Project object */;
@@ -165,6 +158,13 @@
 			remoteInfo = CoCo;
 		};
 		A008FBF8FBBD1ABB972B93EC215BA2AC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FFDB4F0C26E30E9C3F3CC610E033F1AF /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CA85F34779068A8B9B3CCFEF5C4A1D55;
+			remoteInfo = CoCo;
+		};
+		C3BAF5B02050AC7734794829208C1BBF /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FFDB4F0C26E30E9C3F3CC610E033F1AF /* Project object */;
 			proxyType = 1;
@@ -335,14 +335,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		8008916C6D72486AFD866E5ADCEDED82 /* Frameworks */ = {
+		69070CDEAAFF4FD2D67AFCC49C516650 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		69070CDEAAFF4FD2D67AFCC49C516650 /* Frameworks */ = {
+		8008916C6D72486AFD866E5ADCEDED82 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -406,15 +406,6 @@
 			path = PrivacyPolicyView;
 			sourceTree = "<group>";
 		};
-		40739C8EC7E6EB58172B083C013C87DC /* DetailDiscoverTests */ = {
-			isa = PBXGroup;
-			children = (
-				606EB400043FD3EF66390B4F69E26DB9 /* DetailDiscoverTests.swift */,
-				6BF42CB4508CD866522C5CCE31292292 /* Info.plist */,
-			);
-			path = DetailDiscoverTests;
-			sourceTree = "<group>";
-		};
 		38EF5D7981CEBA1CD263A3C0606C8E93 /* Animation */ = {
 			isa = PBXGroup;
 			children = (
@@ -439,6 +430,15 @@
 				9676530759F2B3771F5EE3C6871E01D5 /* Queue.swift */,
 			);
 			path = Algorithm;
+			sourceTree = "<group>";
+		};
+		40739C8EC7E6EB58172B083C013C87DC /* DetailDiscoverTests */ = {
+			isa = PBXGroup;
+			children = (
+				606EB400043FD3EF66390B4F69E26DB9 /* DetailDiscoverTests.swift */,
+				6BF42CB4508CD866522C5CCE31292292 /* Info.plist */,
+			);
+			path = DetailDiscoverTests;
 			sourceTree = "<group>";
 		};
 		448427172D202A30BFE8B6833096C646 /* CoreData */ = {
@@ -994,13 +994,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		ABBCB68C1C473111BDF627B6B2E82428 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		5503F2116FDFCD69664A67C58E05D8A4 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1016,6 +1009,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		768A031CFCD7047E4AC66086DA3AFFD9 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		ABBCB68C1C473111BDF627B6B2E82428 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1112,14 +1112,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		413CEACE2E9271D42F5D5F398B753823 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				D89A8F6F8EBA8404052790FC8E42B0FD /* DetailDiscoverTests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		3B9A697F778C6240EE814A2C7DC09AE0 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1133,6 +1125,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				108AC56580A87DF0EC096F5C505ACB5E /* SearchServiceTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		413CEACE2E9271D42F5D5F398B753823 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D89A8F6F8EBA8404052790FC8E42B0FD /* DetailDiscoverTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1278,11 +1278,6 @@
 			target = CA85F34779068A8B9B3CCFEF5C4A1D55 /* CoCo */;
 			targetProxy = 4B1EA8366425D21832B40AB475AA5745 /* PBXContainerItemProxy */;
 		};
-		DFB06AD7911276154712F69E74E120CB /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = CA85F34779068A8B9B3CCFEF5C4A1D55 /* CoCo */;
-			targetProxy = C3BAF5B02050AC7734794829208C1BBF /* PBXContainerItemProxy */;
-		};
 		886B2BB7502E2C339C196BC672D21C66 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = CA85F34779068A8B9B3CCFEF5C4A1D55 /* CoCo */;
@@ -1302,6 +1297,11 @@
 			isa = PBXTargetDependency;
 			target = CA85F34779068A8B9B3CCFEF5C4A1D55 /* CoCo */;
 			targetProxy = 3BE5DC295417EE14378311673E4B77D9 /* PBXContainerItemProxy */;
+		};
+		DFB06AD7911276154712F69E74E120CB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CA85F34779068A8B9B3CCFEF5C4A1D55 /* CoCo */;
+			targetProxy = C3BAF5B02050AC7734794829208C1BBF /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1395,46 +1395,6 @@
 			};
 			name = Debug;
 		};
-		9D0987D452951505BFBAF1212319198F /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 4Y9G8Z76XC;
-				INFOPLIST_FILE = DetailDiscoverTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.leehochan.DetailDiscoverTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CoCo.app/CoCo";
-			};
-			name = Debug;
-		};
-		CC2DD138F25C597B7AC2B999B544AEF0 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 4Y9G8Z76XC;
-				INFOPLIST_FILE = DetailDiscoverTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.leehochan.DetailDiscoverTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CoCo.app/CoCo";
-			};
-			name = Release;
-		};
 		611C58E41884DBFDF3DAF6D8EC01D55C /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1498,6 +1458,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = CoreDataTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1537,6 +1498,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = CoreDataTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1691,6 +1653,26 @@
 			};
 			name = Release;
 		};
+		9D0987D452951505BFBAF1212319198F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 4Y9G8Z76XC;
+				INFOPLIST_FILE = DetailDiscoverTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.leehochan.DetailDiscoverTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CoCo.app/CoCo";
+			};
+			name = Debug;
+		};
 		C6BC5947FB45630052D16001E3F2D104 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1709,6 +1691,26 @@
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CoCo.app/CoCo";
 			};
 			name = Debug;
+		};
+		CC2DD138F25C597B7AC2B999B544AEF0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 4Y9G8Z76XC;
+				INFOPLIST_FILE = DetailDiscoverTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.leehochan.DetailDiscoverTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CoCo.app/CoCo";
+			};
+			name = Release;
 		};
 		F228A86AC0ACACC2F98CC33833123BAB /* Release */ = {
 			isa = XCBuildConfiguration;
@@ -1788,15 +1790,6 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		CE9719F66F2A1A40193A5D3C8258A351 /* Build configuration list for PBXNativeTarget "DetailDiscoverTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				9D0987D452951505BFBAF1212319198F /* Debug */,
-				CC2DD138F25C597B7AC2B999B544AEF0 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		3638FCE41F918E988AD5FA82DFEDD1DC /* Build configuration list for PBXNativeTarget "SearchServiceTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -1865,6 +1858,15 @@
 			buildConfigurations = (
 				02219C6609C8C57D1368292DA3CF506A /* Debug */,
 				6E59BCB238C8D969B98BDDE4E1B4CE31 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CE9719F66F2A1A40193A5D3C8258A351 /* Build configuration list for PBXNativeTarget "DetailDiscoverTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9D0987D452951505BFBAF1212319198F /* Debug */,
+				CC2DD138F25C597B7AC2B999B544AEF0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
