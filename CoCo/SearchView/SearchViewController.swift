@@ -70,7 +70,7 @@ class SearchViewController: UIViewController {
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.navigationController?.navigationBar.isHidden = true
+        navigationController?.setNavigationBarHidden(true, animated: false)
         if searchService.pet != PetDefault.shared.pet {
             searchService.pet = PetDefault.shared.pet
             searchService.fetchRecommandSearchWord {
