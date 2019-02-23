@@ -58,6 +58,26 @@
                ReferencedContainer = "container:CoCo.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "10DCD6F52221784800C3E8B4"
+               BuildableName = "WebViewServiceTest.xctest"
+               BlueprintName = "WebViewServiceTest"
+               ReferencedContainer = "container:CoCo.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "4C2B60C65BF4ED482EAD9A4BCC673401"
+               BuildableName = "DetailDiscoverTests.xctest"
+               BlueprintName = "DetailDiscoverTests"
+               ReferencedContainer = "container:CoCo.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
