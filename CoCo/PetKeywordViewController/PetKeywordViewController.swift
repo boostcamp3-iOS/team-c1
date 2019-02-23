@@ -43,7 +43,7 @@ class PetKeywordViewController: UIViewController {
         super.viewWillDisappear(animated)
         service.removeAnimation()
     }
-    
+
     // MARK: - Set method
     func updateTextLabel() {
         // 선택에 따른 textLabel 변경

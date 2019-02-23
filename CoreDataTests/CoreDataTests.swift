@@ -136,6 +136,27 @@ class MockMyGoodsCoreDataManager: MyGoodsCoreDataManagerType {
         }
     }
 
+    func fetchProductID(productID: String) -> MyGoods? {
+        let productIDs = ["12345", "54321"]
+        let myGoods = MyGoods()
+        myGoods.date = "2018-01-01"
+        myGoods.image = "www.naver.com"
+        myGoods.isFavorite = true
+        myGoods.isLatest = true
+        myGoods.link = "www.naver.com"
+        myGoods.pet = "고양이"
+        myGoods.price = "15,000"
+        myGoods.productID = productID
+        myGoods.searchWord = "장난감"
+        myGoods.shoppingmall = "네이버 쇼핑"
+        myGoods.title = "고양이 장난감"
+        if productIDs.contains(productID) {
+            return myGoods
+        } else {
+            return nil
+        }
+    }
+    
     func deleteFavoriteAllObjects(pet: String) throws -> Bool {
         if pet == "고양이" || pet == "강아지" {
             return true
@@ -193,7 +214,7 @@ class MockMyGoodsCoreDataManager: MyGoodsCoreDataManagerType {
 }
 
 class CoreDataTests: XCTestCase {
-
+    
     override func setUp() {
         // Put setup code here. This method is called before the invocation of each test method in the class.
     }
@@ -229,7 +250,7 @@ class CoreDataTests: XCTestCase {
     func testDeleteCoreData() {
 
     }
-
+    
     func testPerformanceExample() {
         // This is an example of a performance test case.
         self.measure {
