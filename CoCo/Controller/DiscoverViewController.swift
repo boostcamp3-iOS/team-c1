@@ -9,6 +9,10 @@
 import UIKit
 import CoreData
 
+protocol DiscoverViewControllerDelegate: class {
+    func petChanged(pet: Pet)
+}
+
 class DiscoverViewController: UIViewController {
 
     @IBOutlet weak var collectionView: UICollectionView!
@@ -27,6 +31,7 @@ class DiscoverViewController: UIViewController {
     fileprivate var pagenationNum = 1
     fileprivate var headerSize: CGFloat = 230
     fileprivate var pet = PetDefault.shared.pet
+    weak var delegate: DiscoverViewControllerDelegate?
 
     // 둘러보기
     override func viewDidLoad() {
@@ -53,6 +58,7 @@ class DiscoverViewController: UIViewController {
             discoverService?.fetchedMyGoods.removeAll()
             loadData()
             pet = PetDefault.shared.pet
+            delegate?.petChanged(pet: pet)
             collectionView.reloadData()
         }
 
@@ -149,6 +155,7 @@ extension DiscoverViewController: UICollectionViewDelegate, UICollectionViewData
             return UICollectionReusableView()
         }
         header.categoryDelegate = self
+        self.delegate = header
         return header
     }
 

@@ -156,7 +156,7 @@ class MockMyGoodsCoreDataManager: MyGoodsCoreDataManagerType {
             return nil
         }
     }
-    
+
     func deleteFavoriteAllObjects(pet: String) throws -> Bool {
         if pet == "고양이" || pet == "강아지" {
             return true
@@ -214,7 +214,7 @@ class MockMyGoodsCoreDataManager: MyGoodsCoreDataManagerType {
 }
 
 class CoreDataTests: XCTestCase {
-    
+
     override func setUp() {
         // Put setup code here. This method is called before the invocation of each test method in the class.
     }
@@ -250,7 +250,7 @@ class CoreDataTests: XCTestCase {
     func testDeleteCoreData() {
 
     }
-    
+
     func testPerformanceExample() {
         // This is an example of a performance test case.
         self.measure {

@@ -48,15 +48,15 @@ class CategoryController: UICollectionReusableView {
         setUpCollectionView()
     }
 
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        pet = PetDefault.shared.pet
-        categoryTitle = setupCategoryTitle()
-        categoryImage = setupCategotyImage()
-        setupLargeTitle()
-        setUpCollectionView()
-        collectionView.reloadData()
-    }
+//    override func prepareForReuse() {
+//        super.prepareForReuse()
+//        pet = PetDefault.shared.pet
+//        categoryTitle = setupCategoryTitle()
+//        categoryImage = setupCategotyImage()
+//        setupLargeTitle()
+//        setUpCollectionView()
+//        collectionView.reloadData()
+//    }
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -155,5 +155,16 @@ extension CategoryController: UICollectionViewDataSource, UICollectionViewDelega
             }
             categoryDelegate.goDiscoverDetail(indexPath: indexPath, pet: pet, category: category)
         }
+    }
+}
+
+extension CategoryController: DiscoverViewControllerDelegate {
+    func petChanged(pet: Pet) {
+        self.pet = pet
+        categoryTitle = setupCategoryTitle()
+        categoryImage = setupCategotyImage()
+        setupLargeTitle()
+        setUpCollectionView()
+        collectionView.reloadData()
     }
 }
