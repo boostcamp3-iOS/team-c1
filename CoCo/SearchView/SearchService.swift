@@ -89,7 +89,9 @@ class SearchService {
             if isSuccess {
                 self.delegate?.delegateReload(.goods)
             } else {
-                self.delegate?.delegateFailToLoad(error: err)
+                if self.itemStart == 1 {
+                    self.delegate?.delegateFailToLoad(error: err)
+                }
             }
         }
     }
