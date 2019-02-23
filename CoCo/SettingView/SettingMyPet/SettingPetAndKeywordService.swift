@@ -26,21 +26,14 @@ class SettingPetAndKeywordService {
             self.petKeyword = petKeyword as? PetKeywordData
         }
     }
-
-//    func insertPetKeywordData() {
-//        do {
-//            let keyword = Array(Set(petKeyword?.keywords ?? [""]))
-//            _ = try petKeywordCoreDataManager.insert(PetKeywordData(pet: petKeyword?.pet ?? "강아지", keywords: keyword))
-//            PetDefault.shared.pet = Pet(rawValue: petKeyword?.pet ?? "강아지") ?? .dog
-//        } catch let err {
-//            print(err)
-//        }
-//    }
+    
     @discardableResult func insertPetKeywordData() -> Bool {
-        let keyword = Array(Set(petKeyword?.keywords ?? [""]))
-        let result = try? petKeywordCoreDataManager.insert(PetKeywordData(pet: petKeyword?.pet ?? "강아지", keywords: keyword))
+        guard let keyword = petKeyword?.keywords, let pet = petKeyword?.pet else {
+            return false
+        }
+        let result = try? petKeywordCoreDataManager.insert(PetKeywordData(pet: pet, keywords: keyword))
         if let result = result {
-            PetDefault.shared.pet = Pet(rawValue: petKeyword?.pet ?? "강아지") ?? .dog
+            PetDefault.shared.pet = Pet(rawValue: pet) ?? .dog
             return result
         }
         return false

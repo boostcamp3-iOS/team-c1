@@ -43,6 +43,13 @@ class SettingPetAndKeywordServiceTests: XCTestCase {
         settingService.insertPetKeywordData()
         XCTAssert(PetDefault.shared.pet.rawValue == MockPetKeywordCoreDataDummy.petKeywordData.pet ?? "강아지", "강아지 인서트 오류")
     }
+
+    func testInsertPetKeywordDataNil() {
+        settingService.petKeyword?.pet = nil
+        settingService.petKeyword?.keywords = nil
+        settingService.insertPetKeywordData()
+        XCTAssert(PetDefault.shared.pet.rawValue == MockPetKeywordCoreDataDummy.petKeywordData.pet ?? "강아지", "강아지 인서트 오류")
+    }
 }
 
 class MockPetKeywordCoreDataManager: PetKeywordCoreDataManagerType {
