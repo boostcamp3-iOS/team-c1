@@ -73,17 +73,15 @@ class DiscoverServiceTests: XCTestCase {
         print(result.count)
         XCTAssert(result.count != 0, "데이터를 섞는 데 실패했습니다.")
     }
-    
+
     func testRequest() {
         guard let discoverService = discoverService else {
             return
         }
-        discoverService.request { (isSuccess, error, _) in
+        discoverService.request { (isSuccess, _, _) in
             XCTAssert(isSuccess, "쇼핑정보를 가져오지 못했습니다.")
         }
     }
-    
-    
 }
 
 // MockData

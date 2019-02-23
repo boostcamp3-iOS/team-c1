@@ -144,32 +144,6 @@ class DiscoverService {
         }
     }
 
-    func setPagenation() {
-        guard let algorithmManagerType = algorithmManagerType else {
-            return
-        }
-    algorithmManagerType.setRecommendedPagination(words: recommandGoods, once: 20, maximum: 200)
-    }
-
-    func recommandPagenation(indexPathRow: Int, completion: @escaping (Bool, Error?) -> Void) {
-        guard let algorithmManagerType = algorithmManagerType else {
-            return
-        }
-      algorithmManagerType.recommendedPagination(index: indexPathRow) {
-            (isSuccess, startIndex, search) in
-            if isSuccess, let startIndex = startIndex, let search = search {
-                self.request(completion: { (isSuccess, error, _) in
-                    if let error = error {
-                        completion(false, error)
-                    }
-                    if isSuccess {
-                        completion(true, nil)
-                    }
-                })
-            }
-        }
-    }
-
     private func shopItemToMyGoods(item: ShoppingItem, searchWord: String) -> MyGoodsData? {
         guard let algorithmManagerType = algorithmManagerType else {
             return nil
