@@ -9,47 +9,54 @@
 import UIKit
 import CoreData
 
-class PetKeywordCoreDataManager: PetKeywordCoreDataManagerType, CoreDataManagerFunctionImplementType {
+struct PetKeywordCoreDataManager: PetKeywordCoreDataManagerType, CoreDataManagerFunctionImplementType {
 
     // MARK: - Fetch Methodes
     /**
      PetKeyword의 모든 데이터를 오름차순으로 가져옴
      - Author: [강준영](https://github.com/lavaKangJun)
      - Parameter :
-        - pet: 해당하는 펫(고양이 또는 강아지)과 관련된 데이터를 가져오기 위한 파마리터.
-        기본값은 nil로, 값을 넣어주지 않으면 고양이와 강아지의 모든 데이터를 가져온다.
+     - pet: 해당하는 펫(고양이 또는 강아지)과 관련된 데이터를 가져오기 위한 파마리터.
+     기본값은 nil로, 값을 넣어주지 않으면 고양이와 강아지의 모든 데이터를 가져온다.
      */
     // 데이터 타입(Keyword, Pet)변경해서 리턴
-    func fetchObjects(pet: String? = nil) throws -> [CoreDataStructEntity]? {
-        guard let context = context else { return nil }
-        var petKeywordDatas = [PetKeywordData]()
-        let request: NSFetchRequest<PetKeyword>
-        let sort = NSSortDescriptor(key: #keyPath(PetKeyword.date), ascending: false)
-
-        if #available(iOS 10.0, *) {
-            let tmpRequest: NSFetchRequest<PetKeyword> = PetKeyword.fetchRequest()
-            request = tmpRequest
-        } else {
-            let entityName = String(describing: PetKeyword.self)
-            request = NSFetchRequest(entityName: entityName)
+    func fetchObjects(pet: String? = nil, completion: @escaping ([CoreDataStructEntity]?, Error?) -> Void) {
+        guard let container = container else {
+            return
         }
-        request.sortDescriptors = [sort]
-        if let pet = pet {
-            let predicate = NSPredicate(format: "pet = %@", pet)
-            request.predicate = predicate
-        }
-        let objects = try context.fetch(request)
+        container.performBackgroundTask { (context) in
+            var petKeywordDatas = [PetKeywordData]()
+            let request: NSFetchRequest<PetKeyword>
+            let sort = NSSortDescriptor(key: #keyPath(PetKeyword.date), ascending: false)
 
-        if !objects.isEmpty {
-            for object in objects {
-                var petKeyword = PetKeywordData()
-                petKeyword.mappinng(from: object)
-                petKeywordDatas.append(petKeyword)
+            if #available(iOS 10.0, *) {
+                let tmpRequest: NSFetchRequest<PetKeyword> = PetKeyword.fetchRequest()
+                request = tmpRequest
+            } else {
+                let entityName = String(describing: PetKeyword.self)
+                request = NSFetchRequest(entityName: entityName)
             }
-            return petKeywordDatas
-        } else {
-            return nil
-           // throw CoreDataError.fetch(message: "PetKeyword Entity has not data, So can not fetch data")
+            request.sortDescriptors = [sort]
+            if let pet = pet {
+                let predicate = NSPredicate(format: "pet = %@", pet)
+                request.predicate = predicate
+            }
+            do {
+                let objects = try context.fetch(request)
+
+                if !objects.isEmpty {
+                    for object in objects {
+                        var petKeyword = PetKeywordData()
+                        petKeyword.mappinng(from: object)
+                        petKeywordDatas.append(petKeyword)
+                    }
+                    completion(petKeywordDatas, nil)
+                } else {
+                    completion(nil, nil)
+                }
+            } catch let error {
+                completion(nil, error)
+            }
         }
     }
 
@@ -60,19 +67,15 @@ class PetKeywordCoreDataManager: PetKeywordCoreDataManagerType, CoreDataManagerF
      - Parameter :
      - pet: 해당하는 펫(고양이 또는 강아지)과 관련된 키워드를 가져오기 위한 파마리터.
      */
-    func fetchOnlyKeyword(pet: String) throws -> [String]? {
-        var keywords: [String]?
-        do {
-            guard let objects = try fetchObjects(pet: pet) else {
-                throw CoreDataError.fetch(message: "PetKeyword Entity has not  data, So can not fetch data")
+    func fetchOnlyKeyword(pet: String, completion: @escaping ([String]?) -> Void) {
+        fetchObjects(pet: pet) { (petKeywordDatas, _) in
+            guard let petKeywordDatas = petKeywordDatas as? [PetKeywordData] else {
+                return
             }
-            guard let petKeywordDatas = objects as? [PetKeywordData] else { return nil }
-            guard let petKeywordData = petKeywordDatas.first else { return nil }
-            keywords = petKeywordData.keywords
-            return keywords
-        } catch let error as NSError {
-            return nil
-          //  throw CoreDataError.fetch(message: "Can not fetch data \(error)")
+            guard let petKeywordData = petKeywordDatas.first else {
+                return
+            }
+            completion(petKeywordData.keywords)
         }
     }
 
@@ -81,34 +84,41 @@ class PetKeywordCoreDataManager: PetKeywordCoreDataManagerType, CoreDataManagerF
      특정펫의 펫정보만을 가져온다.
      - Author: [강준영](https://github.com/lavaKangJun)
      - Parameter :
-        - pet: 해당하는 펫(고양이 또는 강아지)과 관련된 펫정보를 가져오기 위한 파마리터.
+     - pet: 해당하는 펫(고양이 또는 강아지)과 관련된 펫정보를 가져오기 위한 파마리터.
      */
-    func fetchOnlyPet() throws -> String? {
-        guard let context = context else { return nil }
-        var petKeywordData = PetKeywordData()
-        let sort = NSSortDescriptor(key: #keyPath(PetKeyword.date), ascending: false)
-        let request: NSFetchRequest<PetKeyword>
-
-        if #available(iOS 10.0, *) {
-            let tmpRequest: NSFetchRequest<PetKeyword> = PetKeyword.fetchRequest()
-            request = tmpRequest
-        } else {
-            let entityName = String(describing: PetKeyword.self)
-            request = NSFetchRequest(entityName: entityName)
+    func fetchOnlyPet(completion: @escaping (String?, Error?) -> Void) {
+        guard let container = container else {
+            return
         }
-        request.sortDescriptors = [sort]
-        let objects = try context.fetch(request)
+        container.performBackgroundTask { (context) in
+            var petKeywordData = PetKeywordData()
+            let sort = NSSortDescriptor(key: #keyPath(PetKeyword.date), ascending: false)
+            let request: NSFetchRequest<PetKeyword>
 
-        if !objects.isEmpty {
-            guard let firstObject = objects.first else {
-                return nil
+            if #available(iOS 10.0, *) {
+                let tmpRequest: NSFetchRequest<PetKeyword> = PetKeyword.fetchRequest()
+                request = tmpRequest
+            } else {
+                let entityName = String(describing: PetKeyword.self)
+                request = NSFetchRequest(entityName: entityName)
             }
-            petKeywordData.mappinng(from: firstObject)
-            return petKeywordData.pet
-        } else {
-            return nil
-        }
+            request.sortDescriptors = [sort]
+            do {
+                let objects = try context.fetch(request)
 
+                if !objects.isEmpty {
+                    guard let firstObject = objects.first else {
+                        return
+                    }
+                    petKeywordData.mappinng(from: firstObject)
+                    completion(petKeywordData.pet, nil)
+                } else {
+                    completion(nil, nil)
+                }
+            } catch let error {
+                completion(nil, error)
+            }
+        }
     }
 
     // MARK: - Delete Method
@@ -116,24 +126,26 @@ class PetKeywordCoreDataManager: PetKeywordCoreDataManagerType, CoreDataManagerF
      특정펫의 데이터를 삭제한다.
      - Author: [강준영](https://github.com/lavaKangJun)
      - Parameters:
-        - pet: 특정 펫의 데이터를 지우기위한 파라미터.
+     - pet: 특정 펫의 데이터를 지우기위한 파라미터.
      */
-    @discardableResult func deleteAllObjects(pet: String) throws -> Bool {
-        guard let context = context else {
-            return false
+    func deleteAllObjects(pet: String, completion: @escaping (Bool, Error?) -> Void) {
+        guard let container = container else {
+            return
         }
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "PetKeyword")
-        let predicate = NSPredicate(format: "pet = %@", pet)
+        container.performBackgroundTask { (context) in
+            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "PetKeyword")
+            let predicate = NSPredicate(format: "pet = %@", pet)
 
-        fetchRequest.predicate = predicate
-        let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+            fetchRequest.predicate = predicate
+            let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
 
-        do {
-            try context.execute(batchDeleteRequest)
-            return true
+            do {
+                try context.execute(batchDeleteRequest)
+                completion(true, nil)
 
-        } catch {
-            throw CoreDataError.delete(message: "Can't delete data")
+            } catch {
+                completion(false, CoreDataError.delete(message: "Can't delete data"))
+            }
         }
     }
 }

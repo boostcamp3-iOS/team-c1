@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class SearchWordCoreDataManager: SearchWordCoreDataManagerType, CoreDataManagerFunctionImplementType {
+struct SearchWordCoreDataManager: SearchWordCoreDataManagerType, CoreDataManagerFunctionImplementType {
     // MARK: - Fetch Method
     /**
      SearchWord의 모든 데이터를 오름차순으로 가져옴
@@ -19,40 +19,45 @@ class SearchWordCoreDataManager: SearchWordCoreDataManagerType, CoreDataManagerF
      기본값은 nil로, 값을 넣어주지 않으면 고양이와 강아지의 모든 데이터를 가져온다.
      */
     // Fetch All of SearchKeyWordData
-    func fetchObjects(pet: String? = nil) throws -> [CoreDataStructEntity]? {
-        guard let context = context else {
-            return nil
+    func fetchObjects(pet: String? = nil, completion: @escaping ([CoreDataStructEntity]?, Error?) -> Void) {
+        guard let container = container else {
+            return
         }
-        var searchWordDatas = [SearchWordData]()
-        let sort = NSSortDescriptor(key: #keyPath(SearchWord.date), ascending: true)
-        let request: NSFetchRequest<SearchWord>
+        container.performBackgroundTask { (context) in
+            var searchWordDatas = [SearchWordData]()
+            let sort = NSSortDescriptor(key: #keyPath(SearchWord.date), ascending: true)
+            let request: NSFetchRequest<SearchWord>
 
-        if #available(iOS 10.0, *) {
-            let tmpRequest: NSFetchRequest<SearchWord> = SearchWord.fetchRequest()
-            request = tmpRequest
-        } else {
-            let entityName = String(describing: SearchWord.self)
-            request = NSFetchRequest(entityName: entityName)
-        }
-
-        if let pet = pet {
-            let predicate = NSPredicate(format: "pet = %@", pet)
-            request.predicate = predicate
-        }
-        request.returnsObjectsAsFaults = false
-        request.sortDescriptors = [sort]
-
-        let objects = try context.fetch(request)
-
-        if !objects.isEmpty {
-            for object in objects {
-                var searchWordData = SearchWordData()
-                searchWordData.mappinng(from: object)
-                searchWordDatas.append(searchWordData)
+            if #available(iOS 10.0, *) {
+                let tmpRequest: NSFetchRequest<SearchWord> = SearchWord.fetchRequest()
+                request = tmpRequest
+            } else {
+                let entityName = String(describing: SearchWord.self)
+                request = NSFetchRequest(entityName: entityName)
             }
-            return searchWordDatas
-        } else {
-            return nil
+
+            if let pet = pet {
+                let predicate = NSPredicate(format: "pet = %@", pet)
+                request.predicate = predicate
+            }
+            request.returnsObjectsAsFaults = false
+            request.sortDescriptors = [sort]
+
+            do {
+                let objects = try context.fetch(request)
+                if !objects.isEmpty {
+                    for object in objects {
+                        var searchWordData = SearchWordData()
+                        searchWordData.mappinng(from: object)
+                        searchWordDatas.append(searchWordData)
+                    }
+                    completion(searchWordDatas, nil)
+                } else {
+                    completion(nil, nil)
+                }
+            } catch let error {
+                completion(nil, error)
+            }
         }
     }
 
@@ -62,22 +67,16 @@ class SearchWordCoreDataManager: SearchWordCoreDataManagerType, CoreDataManagerF
      - Parameter :
      - pet: 해당하는 펫(고양이 또는 강아지)과 관련된 데이터를 가져오기 위한 파마리터.
      */
-    func fetchOnlySearchWord(pet: String) throws -> [String]? {
+    func fetchOnlySearchWord(pet: String, completion: @escaping ([String]?) -> Void) {
         var searchArrays = [String]()
-        do {
-            guard let objects = try fetchObjects(pet: pet) else {
-                throw CoreDataError.fetch(message: "SearchKeyword Entity has not search data, So can not fetch data")
-            }
-            guard  let searchKeywords = objects as? [SearchWordData] else {
-                return nil
+        fetchObjects(pet: pet) { (searchKeywords, _) in
+            guard  let searchKeywords = searchKeywords as? [SearchWordData] else {
+                return
             }
             for searchKeyword in searchKeywords {
                 searchArrays.append(searchKeyword.searchWord)
             }
-            return searchArrays
-        } catch let error as NSError {
-            return nil
-            //  throw CoreDataError.fetch(message: "Can't fetch data \(error)")
+            completion(searchArrays)
         }
     }
 
@@ -89,26 +88,20 @@ class SearchWordCoreDataManager: SearchWordCoreDataManagerType, CoreDataManagerF
      - pet: 해당하는 펫(고양이 또는 강아지)과 관련된 데이터를 가져오기 위한 파마리터.
      - searchWord: 확인하려는 검색어
      */
-    func fetchWord(_ searchWord: String, pet: String) throws -> SearchWordData? {
+    func fetchWord(_ searchWord: String, pet: String, completion: @escaping(SearchWordData?) -> Void) {
         var searchWordData: SearchWordData?
-        do {
-            guard let objects = try fetchObjects(pet: pet) else {
-                // 기존에 동일한 검색 데이터가 있는 지, 없는 지  확인해야 하기 때문에 오류를 던지지 않음
-                return nil
-            }
-            guard let searchWordDatas = objects as? [SearchWordData] else {
-                return nil
+
+        fetchObjects(pet: pet) { (searchWordDatas, _) in
+            guard let searchWordDatas = searchWordDatas as? [SearchWordData] else {
+                return
             }
             searchWordDatas.forEach { (data) in
                 if data.searchWord == searchWord {
                     searchWordData = data
                 }
+                completion(searchWordData)
             }
-        } catch let error as NSError {
-            return nil
-            // throw CoreDataError.fetch(message: "Can't fetch data \(error)")
         }
-        return searchWordData
     }
 
     /**
@@ -118,24 +111,20 @@ class SearchWordCoreDataManager: SearchWordCoreDataManagerType, CoreDataManagerF
      - searchWord : 날짜를 업데이트 할 특정 검색어
      - pet : 특정 펫의 데이터를 가져오기 위한 파라미터
      */
-    @discardableResult func updateObject(searchWord: String, pet: String) throws -> Bool {
-        guard let context = context else {
-            return false
+    func updateObject(searchWord: String, pet: String, completion: @escaping (Bool) -> Void ) {
+        guard let container = container else {
+            return
         }
-        do {
-            let object = try fetchWord(searchWord, pet: pet)
-            if var searchWordObject = object, let objectID = searchWordObject.objectID {
+        let context = container.viewContext
+        fetchWord(searchWord, pet: pet) { (searchWrodObject) in
+            if var searchWordObject = searchWrodObject, let objectID = searchWordObject.objectID {
                 let object = context.object(with: objectID)
                 searchWordObject.date = searchWordObject.createDate()
                 searchWordObject.mappinng(to: object)
-                afterOperation(context: context)
-                return true
+                self.afterOperation(context: context)
+                completion(true)
             }
-        } catch let error as NSError {
-            return false
-            // throw CoreDataError.fetch(message: "Can't fetch data \(error)")
         }
-        return false
     }
 
     // MARK: - Delete Method
@@ -145,20 +134,23 @@ class SearchWordCoreDataManager: SearchWordCoreDataManagerType, CoreDataManagerF
      - Parameter :
      - pet : 특정 펫에 대한 데이터만을 지우기 위한 파라미터.
      */
-    @discardableResult func deleteAllObjects(pet: String) throws -> Bool {
-        guard let context = context else { return false }
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "SearchWord")
-        let predicate = NSPredicate(format: "pet = %@", pet)
+    func deleteAllObjects(pet: String, completion: @escaping (Bool, Error?) -> Void) {
+        guard let container = container else {
+            return
+        }
+        container.performBackgroundTask { (context) in
+            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "SearchWord")
+            let predicate = NSPredicate(format: "pet = %@", pet)
 
-        fetchRequest.predicate = predicate
-        let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+            fetchRequest.predicate = predicate
+            let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
 
-        do {
-            try context.execute(batchDeleteRequest)
-            return true
-
-        } catch {
-            throw CoreDataError.delete(message: "Can't delete data")
+            do {
+                try context.execute(batchDeleteRequest)
+                completion(true, nil)
+            } catch {
+                completion(false, CoreDataError.delete(message: "Can't delete data"))
+            }
         }
     }
 }

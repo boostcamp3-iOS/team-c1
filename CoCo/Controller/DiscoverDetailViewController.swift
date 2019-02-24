@@ -9,7 +9,7 @@
 import UIKit
 
 class DiscoverDetailViewController: UIViewController {
-
+    
     private let goodsIdentifier = "GoodsCell"
     private let searchWorCoreDataManager = SearchWordCoreDataManager()
     private let petKeywordCoreDataManager = PetKeywordCoreDataManager()
@@ -42,7 +42,7 @@ class DiscoverDetailViewController: UIViewController {
     fileprivate var headerSize: CGFloat = 30
     var category: Category?
     var pet: Pet?
-
+    
     // 카테고리디테일
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -53,7 +53,7 @@ class DiscoverDetailViewController: UIViewController {
         loadData()
         extendedLayoutIncludesOpaqueBars = true
     }
-
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(false, animated: false)
@@ -63,13 +63,13 @@ class DiscoverDetailViewController: UIViewController {
         let buttonImage = UIImage(named: "list")?.withRenderingMode(.alwaysTemplate)
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: buttonImage, style: .plain, target: self, action: #selector(sortGoods))
     }
-
+    
     func setupNavigationView() {
         tabBarController?.tabBar.isHidden = true
         navigationItem.title = "COCO"
         navigationItem.largeTitleDisplayMode = .never
     }
-
+    
     func setupCollctionView() {
         view.addSubview(collectionView)
         let goodsCellView = UINib(nibName: "GoodsCell", bundle: nil)
@@ -88,7 +88,7 @@ class DiscoverDetailViewController: UIViewController {
         layout = collectionView.collectionViewLayout as? PinterestLayout
         layout?.delegate = self
     }
-
+    
     func setupHeader() {
         view.addSubview(headerView)
         NSLayoutConstraint.activate([
@@ -101,7 +101,7 @@ class DiscoverDetailViewController: UIViewController {
         headerView.category = category
         headerView.pet = pet
     }
-
+    
     func loadData() {
         discoverDetailService = DiscoverDetailService(serachCoreData: searchWorCoreDataManager, petCoreData: petKeywordCoreDataManager, network: networkManager, algorithm: algorithmManager)
         guard let pet = pet else {
@@ -112,7 +112,7 @@ class DiscoverDetailViewController: UIViewController {
         }
         discoverDetailService?.setPet(pet: pet)
         searchWord = search
-
+        
         if !isInserting {
             isInserting = true
             discoverDetailService?.getShoppingData(start: pagenationNum - 1, search: searchWord, completion: { [weak self]
@@ -131,10 +131,10 @@ class DiscoverDetailViewController: UIViewController {
             })
         }
     }
-
+    
     @objc func sortGoods() {
         let actionSheet = UIAlertController(title: nil, message: "정렬 방식을 선택해주세요", preferredStyle: .actionSheet)
-
+        
         let sortSim = UIAlertAction(title: "유사도순", style: .default) { _ in
             self.sortChanged(sort: .similar)
         }
@@ -148,16 +148,16 @@ class DiscoverDetailViewController: UIViewController {
             self.sortChanged(sort: .date)
         }
         let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-
+        
         actionSheet.addAction(sortSim)
         actionSheet.addAction(sortAscending)
         actionSheet.addAction(sortDescending)
         actionSheet.addAction(sortDate)
         actionSheet.addAction(cancel)
-
+        
         present(actionSheet, animated: true, completion: nil)
     }
-
+    
     func sortChanged(sort: SortOption) {
         discoverDetailService?.sortOption = sort
         pagenationNum = 1
@@ -189,7 +189,7 @@ extension DiscoverDetailViewController: UICollectionViewDataSource, UICollection
         }
         return dataCount
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: goodsIdentifier, for: indexPath) as? GoodsCell else {
             return UICollectionViewCell()
@@ -199,7 +199,7 @@ extension DiscoverDetailViewController: UICollectionViewDataSource, UICollection
         cell.isLike = false
         return cell
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let discoverDetailService = discoverDetailService else {
             return
@@ -211,16 +211,16 @@ extension DiscoverDetailViewController: UICollectionViewDataSource, UICollection
         webViewController.sendData(discoverDetailService.dataLists[indexPath.item])
         navigationController?.pushViewController(webViewController, animated: true)
     }
-
+    
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let scrollPosition = scrollView.contentSize.height - scrollView.frame.size.height - scrollView.contentOffset.y
-
+        
         if scrollPosition > 0, scrollPosition < scrollView.contentSize.height * 0.1 {
             pagination()
         }
-
+        
     }
-
+    
     func getIndexPath(newData: Int) -> [IndexPath] {
         guard let discoverDetailService = discoverDetailService else {
             return []
@@ -233,7 +233,7 @@ extension DiscoverDetailViewController: UICollectionViewDataSource, UICollection
         }
         return arrList
     }
-
+    
     func pagination() {
         if !isInserting {
             isInserting = true
@@ -278,7 +278,7 @@ extension DiscoverDetailViewController: PinterestLayoutDelegate {
         let estimateFrame = NSString(string: title).boundingRect(with: CGSize(width: itemSize, height: 1000), options: option, attributes: attribute, context: nil)
         return estimateFrame.height + view.frame.width*2/3
     }
-
+    
     func headerFlexibleHeight(inCollectionView collectionView: UICollectionView, withLayout layout: UICollectionViewLayout, fixedDimension: CGFloat) -> CGFloat {
         return 0
     }
