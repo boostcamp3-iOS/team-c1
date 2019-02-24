@@ -468,6 +468,7 @@ class MockPetKeywordCoreDataManager: PetKeywordCoreDataManagerType {
 }
 
 class MockMyGoodsCoreDataManager: MyGoodsCoreDataManagerType {
+
     func fetchFavoriteGoods(pet: String?) throws -> [MyGoodsData]? {
         if let pet = pet {
             return [MyGoodsData(pet: pet, title: "강아지옷", link: "www.naver.com", image: "www.naver.com", isFavorite: true, isLatest: false, price: "12000", productID: "12345", searchWord: "뷰티", shoppingmall: "네이버")]
@@ -481,6 +482,14 @@ class MockMyGoodsCoreDataManager: MyGoodsCoreDataManagerType {
             return [MyGoodsData(pet: pet, title: "강아지샴푸", link: "www.naver.com", image: "www.naver.com", isFavorite: true, isLatest: true, price: "12000", productID: "54321", searchWord: "뷰티", shoppingmall: "네이버")]
         } else {
             return [MyGoodsData(pet: "고양이", title: "고양이샴푸", link: "www.naver.com", image: "www.naver.com", isFavorite: true, isLatest: true, price: "12000", productID: "9875", searchWord: "뷰티", shoppingmall: "네이버"), MyGoodsData(pet: "강아지", title: "강아지샴푸", link: "www.naver.com", image: "www.naver.com", isFavorite: true, isLatest: true, price: "12000", productID: "58765", searchWord: "뷰티", shoppingmall: "네이버")]
+        }
+    }
+
+    func fetchProductID(productID: String) -> MyGoods? {
+        if productIDs.contains(productID) {
+            return MyGoods()
+        } else {
+            return nil
         }
     }
 
