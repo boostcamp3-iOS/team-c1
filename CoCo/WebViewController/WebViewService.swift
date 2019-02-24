@@ -24,11 +24,15 @@ class WebViewService {
     private(set) var myGoodsData: MyGoodsData
 
     // MARK: - Manager
-    private lazy var manager = MyGoodsCoreDataManager()
+    private var manager: MyGoodsCoreDataManagerType = MyGoodsCoreDataManager()
 
     // MARK: - Initializer
     init(data: MyGoodsData) {
         myGoodsData = data
+    }
+
+    func setMyGoodsCoreDataManager(_ manager: MyGoodsCoreDataManagerType) {
+        self.manager = manager
     }
 
     // MARK: - Public methods
@@ -44,12 +48,14 @@ class WebViewService {
         return false
     }
     /// preductID로 이미 코어데이터에 저장된 데이터인지 확인한다.
-    func fetchData() {
+    @discardableResult func fetchData() -> Bool {
         if let data = manager.fetchProductID(productID: myGoodsData.productID) {
             var newData = MyGoodsData()
             newData.mappinng(from: data)
             myGoodsData = newData
+            return true
         }
+        return false
     }
     /// 상품의 좋아요(찜) 변경을 반영한다.
     func updateFavorite(_ isFavorite: Bool) {
