@@ -22,7 +22,7 @@ class DiscoverService {
     var fetchedMyGoods = [MyGoodsData]()
     var pageNumber = 1
     var pet = Pet.dog
-
+    
     // MARK: - Initialize
     init(networkManagerType: NetworkManagerType? = nil, algorithmManagerType: AlgorithmType? = nil, searchWordDoreDataManagerType: SearchWordCoreDataManagerType? = nil, myGoodsCoreDataManagerType: MyGoodsCoreDataManagerType? = nil, petKeywordCoreDataManagerType: PetKeywordCoreDataManagerType? = nil) {
         self.networkManagerType = networkManagerType
@@ -31,91 +31,88 @@ class DiscoverService {
         self.myGoodsCoreDataManagerType = myGoodsCoreDataManagerType
         self.petKeywordCoreDataManagerType = petKeywordCoreDataManagerType
     }
-
+    
     // (1)코어데이터에서 펫정보 가져오기
-    @discardableResult func fetchPet() {
+    func fetchPet(completion: @escaping () -> Void) {
         guard  let petKeywordCoreDataManagerType = petKeywordCoreDataManagerType else {
             return
         }
-        do {
-            let pet = try petKeywordCoreDataManagerType.fetchOnlyPet()
-            if pet == "강아지" {
+        petKeywordCoreDataManagerType.fetchOnlyPet { (petValue, _) in
+            if petValue == "강아지" {
                 PetDefault.shared.pet = .dog
             } else {
                 PetDefault.shared.pet = .cat
             }
-        } catch let error {
-            print("Fail fetch pet: \(error)")
+            completion()
         }
     }
-
+    
     // (2) 코어데이터에서 최근본 상품, 찜상품 가져오기
-    @discardableResult func fetchMyGoods() -> [MyGoodsData] {
-        guard let myGoodsCoreDataManagerType = self.myGoodsCoreDataManagerType else {
-            return []
+    func fetchMyGoods(completion: @escaping () -> Void) {
+        guard let myGoodsCoreDataManagerType = self.myGoodsCoreDataManagerType
+            else {
+                return
         }
-
         do {
-            guard let result = try myGoodsCoreDataManagerType.fetchObjects(pet: PetDefault.shared.pet.rawValue) as? [MyGoodsData] else {
-                return []
+            try myGoodsCoreDataManagerType.fetchObjects(pet: PetDefault.shared.pet.rawValue) {
+                [weak self] (coreData, _) in
+                guard let self = self else {
+                    return
+                }
+                guard let myGoodsData = coreData as? [MyGoodsData] else {
+                    return
+                }
+                self.myGoods = myGoodsData
+                completion()
             }
-            myGoods = result
-            return result
         } catch let error {
-            print(error)
         }
-        return []
     }
-
+    
     // (3) 코어데이터에서 최근검색 가져오기
-    @discardableResult func fetchSearchWord() -> [String] {
+    func fetchSearchWord(completion: @escaping () -> Void) {
         guard let searchWordDoreDataManagerType = self.searchWordDoreDataManagerType else {
-            return []
+            return
         }
-        do {
-            guard let result = try searchWordDoreDataManagerType.fetchOnlySearchWord(pet: PetDefault.shared.pet.rawValue) else {
-                return []
+        searchWordDoreDataManagerType.fetchOnlySearchWord(pet: PetDefault.shared.pet.rawValue) { [weak self] (searchResult) in
+            if let searchResult = searchResult {
+                self?.searches = searchResult
             }
-            searches = result
-            return result
-        } catch let error {
-            print(error)
-            return []
+            completion()
         }
     }
-
+    
     // (4) 펫키워드 가져오기
-    @discardableResult func fetchPetKeywords() -> PetKeywordData? {
+    func fetchPetKeywords(completion: @escaping () -> Void) {
         guard let petKeywordCoreDataManagerType =  self.petKeywordCoreDataManagerType else {
-            return nil
+            return
         }
-        do {
-            guard let keywords = try petKeywordCoreDataManagerType.fetchObjects(pet: PetDefault.shared.pet.rawValue) as? [PetKeywordData] else {
-                return nil
+        petKeywordCoreDataManagerType.fetchObjects(pet: PetDefault.shared.pet.rawValue) { [weak self] (coreData, _) in
+            guard let keywords = coreData as? [PetKeywordData] else {
+                return
             }
-            let result = keywords.first
-            keyword = result
-            return result
-        } catch let error as NSError {
-            return nil
+            self?.keyword = keywords.first
+            completion()
         }
     }
-
+    
     // (5) 알고리즘으로 최근검색 키워드 섞기
-    @discardableResult func mixedWord() -> [String] {
-        guard let keyword = keyword else {
-            return []
-        }
+    func mixedWord(completion: @escaping () -> Void) {
         guard let algorithmManagerType = algorithmManagerType else {
-            return []
+            return
         }
-        let result = algorithmManagerType.makeRequestSearchWords(with: myGoods, words: searches, petKeyword: keyword, count: 4)
-        let mixedResult = result
-        recommandGoods = mixedResult
-        mixedletSearches = algorithmManagerType.combinePet(PetDefault.shared.pet, and: recommandGoods)
-        return mixedResult
+        
+        guard let keyword = self.keyword else {
+            return
+        }
+        print("5")
+        self.recommandGoods = algorithmManagerType.makeRequestSearchWords(with: self.myGoods, words: self.searches, petKeyword: keyword, count: 10)
+        self.mixedletSearches =  algorithmManagerType.combinePet(PetDefault.shared.pet, and: self.recommandGoods)
+        completion()
+        print(self.mixedletSearches)
+        
     }
-
+    
     // (6) 네트워트에서 섞은 검색어 Request
     func request(completion: @escaping (Bool, Error?, Int?) -> Void) {
         guard let search = mixedletSearches.popLast() else {
@@ -127,15 +124,15 @@ class DiscoverService {
                 return
             }
             self.networkManagerType?.getAPIData(param, completion: { (datas) in
-                    if datas.items.isEmpty {
-                        completion(false, nil, nil)
+                if datas.items.isEmpty {
+                    completion(false, nil, nil)
+                }
+                for data in datas.items {
+                    guard let shopItemToMyGoods = self.shopItemToMyGoods(item: data, searchWord: search) else {
+                        return
                     }
-                    for data in datas.items {
-                        guard let shopItemToMyGoods = self.shopItemToMyGoods(item: data, searchWord: search) else {
-                            return
-                        }
-                        self.fetchedMyGoods.append(shopItemToMyGoods)
-                    }
+                    self.fetchedMyGoods.append(shopItemToMyGoods)
+                }
                 completion(true, nil, datas.items.count)
             }, errorHandler: { (error) in
                 completion(false, error, nil)
@@ -143,7 +140,7 @@ class DiscoverService {
             })
         }
     }
-
+    
     private func shopItemToMyGoods(item: ShoppingItem, searchWord: String) -> MyGoodsData? {
         guard let algorithmManagerType = algorithmManagerType else {
             return nil

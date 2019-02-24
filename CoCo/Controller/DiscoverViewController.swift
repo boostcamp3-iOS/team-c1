@@ -9,21 +9,18 @@
 import UIKit
 import CoreData
 
-protocol DiscoverViewControllerDelegate: class {
-    func petChanged(pet: Pet)
-}
-
 class DiscoverViewController: UIViewController {
-
+    
     @IBOutlet weak var collectionView: UICollectionView!
-
+    
     private let goodsIdentifier = "GoodsCell"
     private let toWebSegue = "discoverToWeb"
     private var discoverService: DiscoverService?
     private let networkManager = ShoppingNetworkManager.shared
     private let algorithmManager = Algorithm()
     private let searchWordCoreDataManager = SearchWordCoreDataManager()
-    private var myGoodsCoreDataManager = MyGoodsCoreDataManager()
+    private let commonCoreDataManger = CommonCoreDataManager()
+    lazy var myGoodsCoreDataManager = MyGoodsCoreDataManager(commonCoreDataManagerType: commonCoreDataManger)
     private var petKeywordCoreDataManager = PetKeywordCoreDataManager()
     private let settingPetKeyword = SettingViewController()
     private var isInserting = false
@@ -31,8 +28,7 @@ class DiscoverViewController: UIViewController {
     fileprivate var pagenationNum = 1
     fileprivate var headerSize: CGFloat = 230
     fileprivate var pet = PetDefault.shared.pet
-    weak var delegate: DiscoverViewControllerDelegate?
-
+    
     // 둘러보기
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,7 +41,7 @@ class DiscoverViewController: UIViewController {
         extendedLayoutIncludesOpaqueBars = true
         print("pet: \(pet)")
     }
-
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: false)
@@ -58,16 +54,15 @@ class DiscoverViewController: UIViewController {
             discoverService?.fetchedMyGoods.removeAll()
             loadData()
             pet = PetDefault.shared.pet
-            delegate?.petChanged(pet: pet)
             collectionView.reloadData()
         }
-
+        
     }
-
+    
     func setupHeader() {
         collectionView.register(CategoryController.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "categoryView")
     }
-
+    
     func setupCollctionView() {
         collectionView.delegate = self
         collectionView.dataSource = self
@@ -76,40 +71,56 @@ class DiscoverViewController: UIViewController {
         collectionView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         collectionView.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
     }
-
+    
     func loadData() {
         discoverService = DiscoverService(networkManagerType: networkManager, algorithmManagerType: algorithmManager, searchWordDoreDataManagerType: searchWordCoreDataManager, myGoodsCoreDataManagerType: myGoodsCoreDataManager, petKeywordCoreDataManagerType: petKeywordCoreDataManager)
         guard let discoverService = discoverService else {
             return
         }
-        discoverService.fetchPet()
-        discoverService.fetchPetKeywords()
-        discoverService.fetchSearchWord()
-        discoverService.fetchMyGoods()
-        discoverService.mixedWord()
-        if !isInserting {
-            isInserting = true
-            discoverService.request(completion: { [weak self]
-                (isSuccess, error, _) in
+        let dispatchGroup = DispatchGroup()
+        dispatchGroup.enter()
+        discoverService.fetchPet {
+            dispatchGroup.leave()
+        }
+        dispatchGroup.enter()
+        discoverService.fetchMyGoods {
+            dispatchGroup.leave()
+        }
+        dispatchGroup.enter()
+        discoverService.fetchSearchWord {
+            dispatchGroup.leave()
+        }
+        dispatchGroup.enter()
+        discoverService.fetchPetKeywords {
+            dispatchGroup.leave()
+        }
+        dispatchGroup.notify(queue: .global()) { [weak self] in
+            discoverService.mixedWord { [weak self] in
                 guard let self = self else {
                     return
                 }
-                if error != nil {
-                    self.alert("데이터를 가져오지 못했습니다.")
-                }
-                if isSuccess {
-                    DispatchQueue.main.async {
-                        self.layout?.setCellPinterestLayout(indexPathRow: self.pagenationNum - 1) {
-                            self.collectionView.reloadData()
-                            self.pagenationNum += 20
+                if !self.isInserting {
+                    self.isInserting = true
+                    discoverService.request(completion: {
+                        (isSuccess, error, _) in
+                        if error != nil {
+                            self.alert("데이터를 가져오지 못했습니다.")
                         }
-                    }
-                    self.isInserting = false
+                        if isSuccess {
+                            DispatchQueue.main.async {
+                                self.layout?.setCellPinterestLayout(indexPathRow: self.pagenationNum - 1) {
+                                    self.collectionView.reloadData()
+                                    self.pagenationNum += 20
+                                }
+                            }
+                            self.isInserting = false
+                        }
+                    })
                 }
-            })
+            }
         }
     }
-
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard let webViewController: WebViewController  = segue.destination as? WebViewController else {
             return
@@ -128,14 +139,14 @@ extension DiscoverViewController: UICollectionViewDelegate, UICollectionViewData
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         guard  let discoverService = discoverService else {
             return 0
         }
         return discoverService.fetchedMyGoods.count
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: goodsIdentifier, for: indexPath) as? GoodsCell else {
             return UICollectionViewCell()
@@ -145,33 +156,32 @@ extension DiscoverViewController: UICollectionViewDelegate, UICollectionViewData
         cell.isLike = false
         return cell
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 0
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "categoryView", for: indexPath) as? CategoryController else {
             return UICollectionReusableView()
         }
         header.categoryDelegate = self
-        self.delegate = header
         return header
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         self.performSegue(withIdentifier: toWebSegue, sender: indexPath)
     }
-
+    
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let scrollPosition = scrollView.contentSize.height - scrollView.frame.size.height - scrollView.contentOffset.y
-
+        
         if scrollPosition > 0, scrollPosition < scrollView.contentSize.height * 0.1 {
             pagination()
         }
-
+        
     }
-
+    
     func pagination() {
         if !isInserting {
             isInserting = true
@@ -199,7 +209,7 @@ extension DiscoverViewController: UICollectionViewDelegate, UICollectionViewData
             })
         }
     }
-
+    
     func getIndexPath(newData: Int) -> [IndexPath] {
         guard let discoverService = discoverService else {
             return []
@@ -218,7 +228,7 @@ extension DiscoverViewController: PinterestLayoutDelegate {
     func headerFlexibleHeight(inCollectionView collectionView: UICollectionView, withLayout layout: UICollectionViewLayout, fixedDimension: CGFloat) -> CGFloat {
         return headerSize
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, heightForTitleIndexPath indexPath: IndexPath) -> CGFloat {
         guard let discoverService = discoverService else {
             return 0
