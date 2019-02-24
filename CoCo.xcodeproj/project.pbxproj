@@ -130,13 +130,6 @@
 			remoteGlobalIDString = CA85F34779068A8B9B3CCFEF5C4A1D55;
 			remoteInfo = CoCo;
 		};
-		CC032CC1D9C103C22F1801E6D6EDE01E /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FFDB4F0C26E30E9C3F3CC610E033F1AF /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = CA85F34779068A8B9B3CCFEF5C4A1D55;
-			remoteInfo = CoCo;
-		};
 		2B12DACEC0794CE0DB4C1BB7A7A4B986 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FFDB4F0C26E30E9C3F3CC610E033F1AF /* Project object */;
@@ -173,6 +166,13 @@
 			remoteInfo = CoCo;
 		};
 		C3BAF5B02050AC7734794829208C1BBF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FFDB4F0C26E30E9C3F3CC610E033F1AF /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CA85F34779068A8B9B3CCFEF5C4A1D55;
+			remoteInfo = CoCo;
+		};
+		CC032CC1D9C103C22F1801E6D6EDE01E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FFDB4F0C26E30E9C3F3CC610E033F1AF /* Project object */;
 			proxyType = 1;
@@ -339,13 +339,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		A520370097EE9A8709F99A5049F98898 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		16FC0FBBC38DE21F95A51842F0402200 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -361,6 +354,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		8008916C6D72486AFD866E5ADCEDED82 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A520370097EE9A8709F99A5049F98898 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -772,24 +772,6 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		6C47D96554B0F3C0686BDF14F54FAAA7 /* WebViewServiceTest */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 94560F7A73DC8209187A2FF85902DB09 /* Build configuration list for PBXNativeTarget "WebViewServiceTest" */;
-			buildPhases = (
-				BD186AB3B0304969E523364756993C74 /* Sources */,
-				A520370097EE9A8709F99A5049F98898 /* Frameworks */,
-				D86EE313B31EFAAE49C0A6FAB80DD276 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				B1924B6403458425E9565CCD15196E80 /* PBXTargetDependency */,
-			);
-			name = WebViewServiceTest;
-			productName = WebViewServiceTest;
-			productReference = B0A33036C384C0C2C594ED1F6BA04D65 /* WebViewServiceTest.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
 		1161DD9D3A8C00CB5E1CFE6475FE4F07 /* SettingPetAndKeywordServiceTests */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8D832750DC3709C667DAACAC0AF0DBBC /* Build configuration list for PBXNativeTarget "SettingPetAndKeywordServiceTests" */;
@@ -842,6 +824,24 @@
 			name = DetailDiscoverTests;
 			productName = DetailDiscoverTests;
 			productReference = 4C5268E6D5D7BC35AF47E439847ED78B /* DetailDiscoverTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		6C47D96554B0F3C0686BDF14F54FAAA7 /* WebViewServiceTest */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 94560F7A73DC8209187A2FF85902DB09 /* Build configuration list for PBXNativeTarget "WebViewServiceTest" */;
+			buildPhases = (
+				BD186AB3B0304969E523364756993C74 /* Sources */,
+				A520370097EE9A8709F99A5049F98898 /* Frameworks */,
+				D86EE313B31EFAAE49C0A6FAB80DD276 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				B1924B6403458425E9565CCD15196E80 /* PBXTargetDependency */,
+			);
+			name = WebViewServiceTest;
+			productName = WebViewServiceTest;
+			productReference = B0A33036C384C0C2C594ED1F6BA04D65 /* WebViewServiceTest.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		7DB34EA3FD07FDC07CD867677D585701 /* MyGoodsServiceTest */ = {
@@ -963,10 +963,6 @@
 				LastUpgradeCheck = 1010;
 				ORGANIZATIONNAME = "Team CoCo";
 				TargetAttributes = {
-					6C47D96554B0F3C0686BDF14F54FAAA7 = {
-						CreatedOnToolsVersion = 10.1;
-						TestTargetID = CA85F34779068A8B9B3CCFEF5C4A1D55;
-					};
 					1161DD9D3A8C00CB5E1CFE6475FE4F07 = {
 						CreatedOnToolsVersion = 10.1;
 						TestTargetID = CA85F34779068A8B9B3CCFEF5C4A1D55;
@@ -976,6 +972,10 @@
 						TestTargetID = CA85F34779068A8B9B3CCFEF5C4A1D55;
 					};
 					4C2B60C65BF4ED482EAD9A4BCC673401 = {
+						CreatedOnToolsVersion = 10.1;
+						TestTargetID = CA85F34779068A8B9B3CCFEF5C4A1D55;
+					};
+					6C47D96554B0F3C0686BDF14F54FAAA7 = {
 						CreatedOnToolsVersion = 10.1;
 						TestTargetID = CA85F34779068A8B9B3CCFEF5C4A1D55;
 					};
@@ -1046,13 +1046,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		D86EE313B31EFAAE49C0A6FAB80DD276 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		5503F2116FDFCD69664A67C58E05D8A4 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1075,6 +1068,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		ABBCB68C1C473111BDF627B6B2E82428 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D86EE313B31EFAAE49C0A6FAB80DD276 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1162,14 +1162,6 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		BD186AB3B0304969E523364756993C74 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				343754CBACAE1EE4A9A8614CD9AC65D8 /* WebViewServiceTest.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		2D5C78F06B8E47C6C063490486A52C01 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1311,6 +1303,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		BD186AB3B0304969E523364756993C74 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				343754CBACAE1EE4A9A8614CD9AC65D8 /* WebViewServiceTest.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		D6E382C502F4731A204AA8EEE2314B3F /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1345,11 +1345,6 @@
 			target = CA85F34779068A8B9B3CCFEF5C4A1D55 /* CoCo */;
 			targetProxy = 4B1EA8366425D21832B40AB475AA5745 /* PBXContainerItemProxy */;
 		};
-		B1924B6403458425E9565CCD15196E80 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = CA85F34779068A8B9B3CCFEF5C4A1D55 /* CoCo */;
-			targetProxy = CC032CC1D9C103C22F1801E6D6EDE01E /* PBXContainerItemProxy */;
-		};
 		886B2BB7502E2C339C196BC672D21C66 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = CA85F34779068A8B9B3CCFEF5C4A1D55 /* CoCo */;
@@ -1364,6 +1359,11 @@
 			isa = PBXTargetDependency;
 			target = CA85F34779068A8B9B3CCFEF5C4A1D55 /* CoCo */;
 			targetProxy = A008FBF8FBBD1ABB972B93EC215BA2AC /* PBXContainerItemProxy */;
+		};
+		B1924B6403458425E9565CCD15196E80 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CA85F34779068A8B9B3CCFEF5C4A1D55 /* CoCo */;
+			targetProxy = CC032CC1D9C103C22F1801E6D6EDE01E /* PBXContainerItemProxy */;
 		};
 		B4925F5DC743FF24231D28819AFAA252 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -1440,44 +1440,6 @@
 					"@loader_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = Junyoung.DiscoverServiceTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CoCo.app/CoCo";
-			};
-			name = Release;
-		};
-		EF2F5C23A72F88D058EFD4F2FAF20348 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				INFOPLIST_FILE = WebViewServiceTest/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.teamc1.CoCo.WebViewServiceTest;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CoCo.app/CoCo";
-			};
-			name = Debug;
-		};
-		7EAACB4E2CE3E7B7EC93FEE97EDA1EB8 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				INFOPLIST_FILE = WebViewServiceTest/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.teamc1.CoCo.WebViewServiceTest;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1640,6 +1602,25 @@
 				PROVISIONING_PROFILE_SPECIFIER = TeamCoco;
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		7EAACB4E2CE3E7B7EC93FEE97EDA1EB8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = WebViewServiceTest/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.teamc1.CoCo.WebViewServiceTest;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CoCo.app/CoCo";
 			};
 			name = Release;
 		};
@@ -1822,6 +1803,25 @@
 			};
 			name = Release;
 		};
+		EF2F5C23A72F88D058EFD4F2FAF20348 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = WebViewServiceTest/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.teamc1.CoCo.WebViewServiceTest;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CoCo.app/CoCo";
+			};
+			name = Debug;
+		};
 		F228A86AC0ACACC2F98CC33833123BAB /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1900,15 +1900,6 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		94560F7A73DC8209187A2FF85902DB09 /* Build configuration list for PBXNativeTarget "WebViewServiceTest" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				EF2F5C23A72F88D058EFD4F2FAF20348 /* Debug */,
-				7EAACB4E2CE3E7B7EC93FEE97EDA1EB8 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		3638FCE41F918E988AD5FA82DFEDD1DC /* Build configuration list for PBXNativeTarget "SearchServiceTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -1959,6 +1950,15 @@
 			buildConfigurations = (
 				7BC4C18435B8D54317FAB52787AE0ECC /* Debug */,
 				73F7BE109B82830A53D891F0982FE7B6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		94560F7A73DC8209187A2FF85902DB09 /* Build configuration list for PBXNativeTarget "WebViewServiceTest" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EF2F5C23A72F88D058EFD4F2FAF20348 /* Debug */,
+				7EAACB4E2CE3E7B7EC93FEE97EDA1EB8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
