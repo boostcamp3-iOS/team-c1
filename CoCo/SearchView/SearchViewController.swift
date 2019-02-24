@@ -70,6 +70,7 @@ class SearchViewController: UIViewController {
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        view.endEditing(true)
         navigationController?.setNavigationBarHidden(true, animated: false)
         if searchService.pet != PetDefault.shared.pet {
             searchService.pet = PetDefault.shared.pet
@@ -149,9 +150,6 @@ extension SearchViewController: UICollectionViewDataSource {
                 return UICollectionViewCell()
             }
             cell.myGoods = searchService.dataLists[indexPath.row]
-//            if let visibleCell = collectionView.cellForItem(at: indexPath) as? GoodsCell {
-//                visibleCell.goodsImageView.setImage(url: searchService.dataLists[indexPath.row].image)
-//            }
             cell.isLike = false
             cell.isEditing = false
             return cell
@@ -368,7 +366,8 @@ extension SearchViewController: SearchServiceDelegate {
                     return
                 }
                 self.pinterestLayout.setCellPinterestLayout(indexPathRow: self.searchService.itemStart - 1) {
-                    self.collectionView.reloadData()
+                    let itemsCount = self.searchService.dataLists.count
+                    self.collectionView.insertItems(at: (itemsCount - 20..<itemsCount).map { IndexPath(item: $0, section: 0) })
                     self.searchService.isInserting = false
                 }
             }

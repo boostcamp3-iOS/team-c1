@@ -31,23 +31,23 @@ class SearchService {
     private let petKeywordCoreDataManager: PetKeywordCoreDataManagerType
     private let networkManager: NetworkManagerType
     private let algorithmManager: Algorithm
+    private var isLast = false
 
     private(set) var recentSearched: String?
     private(set) var keyword = [String]()
     private(set) var colorChips = [UIColor(red: 1.0, green: 189.0 / 255.0, blue: 239.0 / 255.0, alpha: 1.0), UIColor(red: 186.0 / 255.0, green: 166.0 / 255.0, blue: 238.0 / 255.0, alpha: 1.0), UIColor(red: 250.0 / 255.0, green: 165.0 / 255.0, blue: 165.0 / 255.0, alpha: 1.0), UIColor(red: 166.0 / 255.0, green: 183.0 / 255.0, blue: 238.0 / 255.0, alpha: 1.0), UIColor(red: 199.0 / 255.0, green: 227.0 / 255.0, blue: 218.0 / 255.0, alpha: 1.0), UIColor(red: 250.0 / 255.0, green: 232.0 / 255.0, blue: 158.0 / 255.0, alpha: 1.0)]
+    private(set) var dataLists = [MyGoodsData]()
+    private(set) var sortOption: SortOption = .similar
+    private(set) var itemStart = 1
 
     enum CellIdentifier: String {
         case searchKeyword = "SearchKeywordCell"
         case goods = "GoodsCell"
     }
 
-    var cellIdentifier = CellIdentifier.searchKeyword
-
-    var dataLists = [MyGoodsData]()
-    var sortOption: SortOption = .similar
-    var itemStart = 1
-    var pet: Pet = PetDefault.shared.pet
     weak var delegate: SearchServiceDelegate?
+    var cellIdentifier = CellIdentifier.searchKeyword
+    var pet: Pet = PetDefault.shared.pet
     var isInserting = false
 
     init(serachCoreData: SearchWordCoreDataManagerType, petCoreData: PetKeywordCoreDataManagerType, network: NetworkManagerType, algorithm: Algorithm) {
@@ -66,7 +66,9 @@ class SearchService {
                     return
                 }
                 if data.items.isEmpty {
-                    completion(false, NetworkErrors.noData)
+                    if self.itemStart > 1 {
+                        self.isLast = true
+                    }
                     return
                 }
                 if self.itemStart == 1 {
@@ -82,6 +84,9 @@ class SearchService {
         }
     }
     private func getShoppingData(search: String) {
+        if itemStart > 980 {
+            isLast = true
+        }
         getShoppingData(search: search) { [weak self] isSuccess, err in
             guard let self = self else {
                 return
@@ -160,16 +165,18 @@ class SearchService {
     func sortChanged(sort: SortOption) {
         sortOption = sort
         itemStart = 1
+        isLast = false
         getShoppingData(search: recentSearched ?? "")
     }
     func searchButtonClicked(_ search: String) {
         sortOption = .similar
         itemStart = 1
+        isLast = false
         insert(recentSearchWord: search)
         getShoppingData(search: search)
     }
     func pagination() {
-        if !isInserting {
+        if !isInserting, isLast == false {
             isInserting = true
             itemStart += 20
             getShoppingData(search: recentSearched ?? "")
