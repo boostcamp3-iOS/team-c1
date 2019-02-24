@@ -21,23 +21,23 @@ class DiscoverDetailService {
     private let petKeywordCoreDataManager: PetKeywordCoreDataManagerType
     private let networkManager: NetworkManagerType
     private let algorithmManager: Algorithm
-    
+
     private(set) var recentSearched: String?
     var dataLists = [MyGoodsData]()
     var sortOption: SortOption = .similar
     var pet: Pet = .dog
-    
+
     init(serachCoreData: SearchWordCoreDataManagerType, petCoreData: PetKeywordCoreDataManagerType, network: NetworkManagerType, algorithm: Algorithm) {
         searchCoreDataManager = serachCoreData
         petKeywordCoreDataManager = petCoreData
         networkManager = network
         algorithmManager = algorithm
     }
-    
+
     func setPet(pet: Pet) {
         self.pet = pet
     }
-    
+
     func getShoppingData(start: Int, search: String, completion: @escaping (_ isSuccess: Bool, NetworkErrors?, _ newData: Int?) -> Void) {
         var itemStart = start
         if recentSearched != search {
@@ -46,7 +46,7 @@ class DiscoverDetailService {
         recentSearched = search
         let searchWord = algorithmManager.combinePet(pet, and: search)
         let params = ShoppingParams(search: searchWord, count: 20, start: itemStart, sort: sortOption)
-        
+
         DispatchQueue.global().async {
             self.networkManager.getAPIData(params, completion: { [weak self] data in
                 guard let self = self else {

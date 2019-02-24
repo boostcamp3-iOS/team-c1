@@ -20,7 +20,7 @@ protocol CommonCoreDataManagerType {
 // MARK: - MyGoodsCoreDataManagerType
 protocol MyGoodsCoreDataManagerType {
     // MARK: - Methodes
-    func fetchObjects(pet: String?, completion: @escaping ([CoreDataStructEntity]?, Error?) -> Void) throws
+    func fetchObjects(pet: String?, completion: @escaping ([CoreDataStructEntity]?, Error?) -> Void) 
     func fetchFavoriteGoods(pet: String?, completion: @escaping ([MyGoodsData]?, Error?) -> Void)
     func fetchLatestGoods(pet: String?, isLatest: Bool, ascending: Bool, completion: @escaping ([MyGoodsData]?, Error?) -> Void)
     func fetchProductID(productID: String, completion: @escaping (MyGoods?, Error?) -> Void)

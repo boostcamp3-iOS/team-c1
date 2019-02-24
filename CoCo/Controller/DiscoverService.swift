@@ -22,7 +22,7 @@ class DiscoverService {
     var fetchedMyGoods = [MyGoodsData]()
     var pageNumber = 1
     var pet = Pet.dog
-    
+
     // MARK: - Initialize
     init(networkManagerType: NetworkManagerType? = nil, algorithmManagerType: AlgorithmType? = nil, searchWordDoreDataManagerType: SearchWordCoreDataManagerType? = nil, myGoodsCoreDataManagerType: MyGoodsCoreDataManagerType? = nil, petKeywordCoreDataManagerType: PetKeywordCoreDataManagerType? = nil) {
         self.networkManagerType = networkManagerType
@@ -31,7 +31,7 @@ class DiscoverService {
         self.myGoodsCoreDataManagerType = myGoodsCoreDataManagerType
         self.petKeywordCoreDataManagerType = petKeywordCoreDataManagerType
     }
-    
+
     // (1)코어데이터에서 펫정보 가져오기
     func fetchPet(completion: @escaping () -> Void) {
         guard  let petKeywordCoreDataManagerType = petKeywordCoreDataManagerType else {
@@ -46,7 +46,7 @@ class DiscoverService {
             completion()
         }
     }
-    
+
     // (2) 코어데이터에서 최근본 상품, 찜상품 가져오기
     func fetchMyGoods(completion: @escaping () -> Void) {
         guard let myGoodsCoreDataManagerType = self.myGoodsCoreDataManagerType
@@ -68,7 +68,7 @@ class DiscoverService {
         } catch let error {
         }
     }
-    
+
     // (3) 코어데이터에서 최근검색 가져오기
     func fetchSearchWord(completion: @escaping () -> Void) {
         guard let searchWordDoreDataManagerType = self.searchWordDoreDataManagerType else {
@@ -81,7 +81,7 @@ class DiscoverService {
             completion()
         }
     }
-    
+
     // (4) 펫키워드 가져오기
     func fetchPetKeywords(completion: @escaping () -> Void) {
         guard let petKeywordCoreDataManagerType =  self.petKeywordCoreDataManagerType else {
@@ -95,13 +95,13 @@ class DiscoverService {
             completion()
         }
     }
-    
+
     // (5) 알고리즘으로 최근검색 키워드 섞기
     func mixedWord(completion: @escaping () -> Void) {
         guard let algorithmManagerType = algorithmManagerType else {
             return
         }
-        
+
         guard let keyword = self.keyword else {
             return
         }
@@ -110,9 +110,9 @@ class DiscoverService {
         self.mixedletSearches =  algorithmManagerType.combinePet(PetDefault.shared.pet, and: self.recommandGoods)
         completion()
         print(self.mixedletSearches)
-        
+
     }
-    
+
     // (6) 네트워트에서 섞은 검색어 Request
     func request(completion: @escaping (Bool, Error?, Int?) -> Void) {
         guard let search = mixedletSearches.popLast() else {
@@ -140,7 +140,7 @@ class DiscoverService {
             })
         }
     }
-    
+
     private func shopItemToMyGoods(item: ShoppingItem, searchWord: String) -> MyGoodsData? {
         guard let algorithmManagerType = algorithmManagerType else {
             return nil
