@@ -1,11 +1,3 @@
-//
-//  WebViewController.swift
-//  CoCo
-//
-//  Created by 최영준 on 08/02/2019.
-//  Copyright © 2019 Team CoCo. All rights reserved.
-//
-
 import UIKit
 import WebKit
 
@@ -30,6 +22,16 @@ class WebViewController: UIViewController {
     @IBOutlet private weak var webView: WKWebView!
     @IBOutlet private weak var progressView: UIView!
     @IBOutlet private weak var favoriteButton: UIBarButtonItem!
+    @IBOutlet private weak var goBackButton: UIBarButtonItem! {
+        didSet {
+            goBackButton.tintColor = .lightGray
+        }
+    }
+    @IBOutlet private weak var goForwardButton: UIBarButtonItem! {
+        didSet {
+            goForwardButton.tintColor = .lightGray
+        }
+    }
 
     // MARK: - Required call methods
     /// 웹 뷰 호출시 데이터를 전달한다. (필수)
@@ -201,6 +203,8 @@ extension WebViewController: WKNavigationDelegate {
             guard let self = self else {
                 return
             }
+            self.goBackButton.tintColor = (webView.canGoBack) ? AppColor.purple : .lightGray
+            self.goForwardButton.tintColor = (webView.canGoForward) ? AppColor.purple : .lightGray
             // 웹뷰 로딩이 안료되면 progressView와 네트워크 인디케이터를 숨긴다.
             UIApplication.shared.isNetworkActivityIndicatorVisible = false
             self.progressView.isHidden = true

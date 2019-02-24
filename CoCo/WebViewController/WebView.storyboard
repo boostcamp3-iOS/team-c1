@@ -91,6 +91,8 @@
                     <navigationItem key="navigationItem" title="Title" id="xDr-Pq-8KV"/>
                     <connections>
                         <outlet property="favoriteButton" destination="WHr-gF-akI" id="nsb-HO-YFy"/>
+                        <outlet property="goBackButton" destination="Bct-fE-d7m" id="wxq-KY-8Da"/>
+                        <outlet property="goForwardButton" destination="TH0-OZ-kyM" id="R03-bI-fjd"/>
                         <outlet property="progressView" destination="hcT-wU-ec2" id="ybl-bY-607"/>
                         <outlet property="webView" destination="R4B-Vh-hBF" id="PWe-ew-ylT"/>
                     </connections>
