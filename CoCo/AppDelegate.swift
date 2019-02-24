@@ -15,7 +15,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        if UserDefaults.isFirstLaunch() {
+        if true {
             let storyboard = UIStoryboard(name: "PetKeyword", bundle: nil)
             if let petKeywordVC = storyboard.instantiateViewController(withIdentifier: "PetKeywordViewController") as? PetKeywordViewController {
                 self.window?.rootViewController = petKeywordVC
