@@ -32,8 +32,8 @@ class DiscoverService {
         self.petKeywordCoreDataManagerType = petKeywordCoreDataManagerType
     }
 
-    // (1)코어데이터에서 펫정보 가져오기
-    @discardableResult func fetchPet() {
+    //MARK: - Methodes
+   func fetchPet() {
         guard  let petKeywordCoreDataManagerType = petKeywordCoreDataManagerType else {
             return
         }
@@ -49,7 +49,6 @@ class DiscoverService {
         }
     }
 
-    // (2) 코어데이터에서 최근본 상품, 찜상품 가져오기
     @discardableResult func fetchMyGoods() -> [MyGoodsData] {
         guard let myGoodsCoreDataManagerType = self.myGoodsCoreDataManagerType else {
             return []
@@ -67,7 +66,6 @@ class DiscoverService {
         return []
     }
 
-    // (3) 코어데이터에서 최근검색 가져오기
     @discardableResult func fetchSearchWord() -> [String] {
         guard let searchWordDoreDataManagerType = self.searchWordDoreDataManagerType else {
             return []
@@ -84,7 +82,6 @@ class DiscoverService {
         }
     }
 
-    // (4) 펫키워드 가져오기
     @discardableResult func fetchPetKeywords() -> PetKeywordData? {
         guard let petKeywordCoreDataManagerType =  self.petKeywordCoreDataManagerType else {
             return nil
@@ -101,7 +98,6 @@ class DiscoverService {
         }
     }
 
-    // (5) 알고리즘으로 최근검색 키워드 섞기
     @discardableResult func mixedWord() -> [String] {
         guard let keyword = keyword else {
             return []
@@ -116,7 +112,6 @@ class DiscoverService {
         return mixedResult
     }
 
-    // (6) 네트워트에서 섞은 검색어 Request
     func request(completion: @escaping (Bool, Error?, Int?) -> Void) {
         guard let search = mixedletSearches.popLast() else {
             return

@@ -13,7 +13,6 @@ protocol DetailCategoryControllerDelegate: class {
 }
 
 class DetailCategoryController: UIView {
-
     // MARK: - Properties
     private let detailCellId = "DetailCategoryCell"
     lazy var collectionView: UICollectionView = {
@@ -34,6 +33,7 @@ class DetailCategoryController: UIView {
     var pet: Pet?
     var category: Category?
 
+    // MARK: - Initializer
     override init(frame: CGRect) {
         super.init(frame: frame)
         setUpCollectionView()
@@ -43,6 +43,7 @@ class DetailCategoryController: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
+    // MARK: - Setup Methodes
     func setupCategoryTitle() -> [String] {
         var categorys = [String]()
         guard let pet = pet, let category =  category else {

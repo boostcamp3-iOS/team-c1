@@ -52,7 +52,6 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
             return myGoodsDatas
         } else {
             return nil
-            //    throw CoreDataError.fetch(message: "MyGoods Entity has not data, So can not fetch data")
         }
     }
 
@@ -100,7 +99,6 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
             return myGoodsDatas
         } else {
             return nil
-            //throw CoreDataError.fetch(message: "MyGoods Entity has not Favorite data, So can not fetch data)")
         }
     }
 
@@ -147,7 +145,6 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
             return myGoodsDatas
         } else {
             return nil
-            //throw CoreDataError.fetch(message: "MyGoods Entity has not data, So can not fetch data")
         }
     }
 
@@ -179,6 +176,7 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
             }
             return firstObject
         } catch let error as NSError {
+            print(error.localizedDescription)
             return nil
         }
     }
@@ -203,8 +201,8 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
             try context.execute(batchDeleteRequest)
             return true
         } catch {
+            print(error.localizedDescription)
             return false
-            // throw CoreDataError.delete(message: "Can't delete data")
         }
     }
 
@@ -227,8 +225,8 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
             print("Delete!")
             return true
         } catch {
+            print(error.localizedDescription)
             return false
-            //  throw CoreDataError.delete(message: "Can't delete data")
         }
     }
 
@@ -251,7 +249,7 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctio
                 }
             }
         } catch let error as NSError {
-            // throw CoreDataError.fetch(message: "Can not fetch data: \(error)")
+            print(error.localizedDescription)
         }
     }
 }

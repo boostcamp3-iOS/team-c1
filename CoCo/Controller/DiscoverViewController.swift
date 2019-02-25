@@ -15,8 +15,8 @@ protocol DiscoverViewControllerDelegate: class {
 
 class DiscoverViewController: UIViewController {
 
+    // MARK: - Propertise
     @IBOutlet weak var collectionView: UICollectionView!
-
     private let goodsIdentifier = "GoodsCell"
     private let toWebSegue = "discoverToWeb"
     private let networkManager = ShoppingNetworkManager.shared
@@ -34,7 +34,7 @@ class DiscoverViewController: UIViewController {
     fileprivate var pet = PetDefault.shared.pet
     weak var delegate: DiscoverViewControllerDelegate?
 
-    // 둘러보기
+    // MARK: - Methodes
     override func viewDidLoad() {
         super.viewDidLoad()
         setupCollctionView()
@@ -63,7 +63,6 @@ class DiscoverViewController: UIViewController {
             delegate?.petChanged(pet: pet)
             collectionView.reloadData()
         }
-
     }
 
     func setupIndicator() {
