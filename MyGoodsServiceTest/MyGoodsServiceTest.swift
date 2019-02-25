@@ -10,17 +10,18 @@ import XCTest
 @testable import CoCo
 
 class MyGoodsServiceTest: XCTestCase {
-
-    let service = MyGoodsService()
-
+    
+    var service: MyGoodsService!
+    
     override func setUp() {
         let manager = MockMyGoodsCoreDataManager()
-        service.setMyGoodsCoreDataManager(manager)
+        service = MyGoodsService(manager: manager)
     }
-
+    
     override func tearDown() {
+        service = nil
     }
-
+    
     /*
      func fetchGoods()
      - private func fetchFavoriteGoods() -> [MyGoodsData]
@@ -30,14 +31,15 @@ class MyGoodsServiceTest: XCTestCase {
      - private func deleteFavoriteGoods(_ data: MyGoodsData) -> Bool
      - private func deleteObject(_ data: MyGoodsData) -> Bool
      */
-
+    
     func testFetchFavoriteGoods() {
         service.fetchGoods()
         XCTAssert(!service.dataIsEmpty, "testFetchFavoriteGoods 실패")
     }
-
+    
     func testDeleteGoods() {
         service.fetchGoods()
+        print(service.recentGoods, service.favoriteGoods)
         for _ in 0 ..< service.recentGoods.count {
             service.deleteGoods(index: 0)
         }
@@ -52,46 +54,93 @@ class MyGoodsServiceTest: XCTestCase {
 class MockMyGoodsCoreDataManager: MyGoodsCoreDataManagerType {
     func fetchFavoriteGoods(pet: String?) throws -> [MyGoodsData]? {
         var result = [MyGoodsData]()
-        for i in 0 ..< 10 {
-            let goods = MyGoodsData(pet: "강아지", title: "찜한 상품 \(i)", link: "", image: "", isFavorite: true, isLatest: false, price: "", productID: "\(i)", searchWord: "찜 검색어 \(i)", shoppingmall: "")
-            result.append(goods)
+        if let pet = pet {
+            for i in 0 ..< 10 {
+                let data = MyGoodsData(pet: pet, title: "강아지옷\(i)", link: "www.naver.com", image: "www.naver.com", isFavorite: true, isLatest: true, price: "12000", productID: "\(i)9875", searchWord: "뷰티", shoppingmall: "네이버")
+                result.append(data)
+            }
+        } else {
+            for i in 0 ..< 10 {
+                let data = MyGoodsData(pet: "고양이", title: "고양이옷\(i)", link: "www.naver.com", image: "www.naver.com", isFavorite: true, isLatest: true, price: "12000", productID: "\(i)9875", searchWord: "뷰티", shoppingmall: "네이버")
+                result.append(data)
+            }
         }
         return result
     }
-
+    
     func fetchLatestGoods(pet: String?, isLatest: Bool, ascending: Bool) throws -> [MyGoodsData]? {
         var result = [MyGoodsData]()
-        for i in 10 ..< 20 {
-            let goods = MyGoodsData(pet: "강아지", title: "최근본 상품 \(i) ", link: "http://search.shopping.naver.com/gate.nhn?id=17518707732", image: "https://shopping-phinf.pstatic.net/main_1751870/17518707732.jpg", isFavorite: false, isLatest: true, price: "9,230", productID: "17518707732", searchWord: "최근 검색어 \(i)", shoppingmall: "민들레상회")
-            result.append(goods)
+        if let pet = pet {
+            for i in 0 ..< 15 {
+                let data = MyGoodsData(pet: pet, title: "강아지샴푸\(i)", link: "www.naver.com", image: "www.naver.com", isFavorite: false, isLatest: true, price: "12000", productID: "\(i)9875", searchWord: "뷰티", shoppingmall: "네이버")
+                result.append(data)
+            }
+        } else {
+            for i in 0 ..< 15 {
+                let data = MyGoodsData(pet: "고양이", title: "고양이샴푸\(i)", link: "www.naver.com", image: "www.naver.com", isFavorite: false, isLatest: true, price: "12000", productID: "\(i)9875", searchWord: "뷰티", shoppingmall: "네이버")
+                result.append(data)
+            }
         }
+        let data = MyGoodsData(pet: "고양이", title: "고양이샴푸16", link: "www.naver.com", image: "www.naver.com", isFavorite: true, isLatest: true, price: "12000", productID: "169875", searchWord: "뷰티", shoppingmall: "네이버")
+        result.append(data)
         return result
     }
-
-    func deleteFavoriteAllObjects(pet: String) throws -> Bool {
-        return false
-    }
-    func deleteLatestAllObjects(pet: String, isLatest: Bool) throws -> Bool {
-        return false
-    }
-
-    func insert<T>(_ coreDataStructType: T) throws -> Bool {
-        return false
-    }
-
-    func fetchObjects(pet: String? = nil) throws -> [CoreDataStructEntity]? {
+    
+    func fetchProductID(productID: String) -> MyGoods? {
         return nil
     }
-
-    func updateObject<T>(_ coreDataStructType: T) throws -> Bool {
-        return false
+    
+    func deleteFavoriteAllObjects(pet: String) throws -> Bool {
+        if pet == "고양이" || pet == "강아지" {
+            return true
+        } else {
+            return false
+        }
     }
-
-    func deleteObject<T>(_ coreDataStructType: T) throws -> Bool {
-        return false
+    
+    func deleteLatestAllObjects(pet: String, isLatest: Bool) throws -> Bool {
+        if pet == "고양이" || pet == "강아지" {
+            if isLatest == true {
+                return true
+            }
+            return false
+        } else {
+            return false
+        }
     }
-
-    @discardableResult func deleteFavoriteAllObjects(pet: String, isFavorite: Bool) throws -> Bool {
-        return false
+    
+    func insert<T: CoreDataStructEntity>(_ coreDataStructType: T) throws -> Bool {
+        if coreDataStructType is MyGoodsData {
+            return true
+        } else {
+            return false
+        }
+    }
+    
+    func fetchObjects(pet: String?) throws -> [CoreDataStructEntity]? {
+        if let pet = pet {
+            if pet == "고양이" || pet == "강아지" {
+                return [MyGoodsData(pet: pet, title: "강아지간식", link: "www.naver.com", image: "www.naver.com", isFavorite: true, isLatest: true, price: "12000", productID: "66666", searchWord: "푸드", shoppingmall: "네이버")]
+            }
+            return nil
+        } else {
+            return nil
+        }
+    }
+    
+    func updateObject<T: CoreDataStructEntity>(_ coreDataStructType: T) throws -> Bool {
+        if coreDataStructType is MyGoodsData {
+            return true
+        } else {
+            return false
+        }
+    }
+    
+    func deleteObject<T: CoreDataStructEntity>(_ coreDataStructType: T) throws -> Bool {
+        if coreDataStructType is MyGoodsData {
+            return true
+        } else {
+            return false
+        }
     }
 }
