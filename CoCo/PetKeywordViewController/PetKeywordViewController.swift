@@ -18,7 +18,7 @@ import SpriteKit
 class PetKeywordViewController: UIViewController {
     // MARK: - Private properties
     private var service: PetKeywordService?
-    
+
     // MARK: - IBOulets
     @IBOutlet private weak var animationView: SKView!
     @IBOutlet private weak var completionButton: UIButton!
@@ -27,7 +27,7 @@ class PetKeywordViewController: UIViewController {
             textLabel.text = "반려동물과 2개 이상의 관심 키워드를\n선택해주세요."
         }
     }
-    
+
     // MARK: - View lifecycles
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,17 +35,17 @@ class PetKeywordViewController: UIViewController {
         service = PetKeywordService(manager: manager)
         service?.setAnimation(in: animationView, delegate: self)
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         service?.startAnimation()
     }
-    
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         service?.removeAnimation()
     }
-    
+
     // MARK: - Set method
     func updateTextLabel() {
         guard let service = service else {
@@ -67,7 +67,7 @@ class PetKeywordViewController: UIViewController {
             textLabel.text = "반려동물과 2개 이상의 관심 키워드를\n선택해주세요."
         }
     }
-    
+
     // MARK: - IBAction
     @IBAction func completionAction(_ sender: UIButton) {
         if let tabBarController = UIStoryboard(name: "Discover", bundle: nil).instantiateViewController(withIdentifier: "tabBarcontroller") as? UITabBarController {
@@ -89,7 +89,7 @@ extension PetKeywordViewController: AnimationType {
         }
         updateTextLabel()
     }
-    
+
     func animation(_ animation: Animation, didDeselect node: AnimationNode) {
         updateTextLabel()
     }

@@ -65,7 +65,7 @@ class DiscoverDetailViewController: UIViewController {
         let buttonImage = UIImage(named: "list")?.withRenderingMode(.alwaysTemplate)
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: buttonImage, style: .plain, target: self, action: #selector(sortGoods))
     }
-    
+
     func setupIndicator() {
         activityIndicatorView.color = UIColor.gray
         self.view.addSubview(activityIndicatorView)

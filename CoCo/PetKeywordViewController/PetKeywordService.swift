@@ -26,11 +26,11 @@ class PetKeywordService {
     private var colors: [UIColor] {
         return AppColor.list
     }
-    
+
     init(manager: PetKeywordCoreDataManagerType) {
         self.manager = manager
     }
-    
+
     /// 애니메이션 관련 설정 메서드
     func setAnimation(in view: SKView, delegate: AnimationType) {
         let scene = Animation(size: view.bounds.size)
@@ -80,7 +80,7 @@ class PetKeywordService {
         }
         return nil
     }
-    
+
     func removeAnimation() {
         animation?.removeAllChildren()
     }
