@@ -82,6 +82,15 @@ class DiscoverServiceTests: XCTestCase {
             XCTAssert(isSuccess, "쇼핑정보를 가져오지 못했습니다.")
         }
     }
+    
+    func testShopItemToMyGoods() {
+        discoverService?.mixedletSearches.removeAll()
+        discoverService?.request(completion: { (isSuccess, error, _) in
+        })
+        sleep(1)
+       
+    }
+    
 }
 
 // MockData

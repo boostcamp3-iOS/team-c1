@@ -111,33 +111,6 @@ class SearchWordCoreDataManager: SearchWordCoreDataManagerType, CoreDataManagerF
         return searchWordData
     }
 
-    /**
-     코어데이타에 저장된 특정 검색어의 날짜만 업데이트 한다.
-     - Author: [강준영](https://github.com/lavaKangJun)
-     - Parameter :
-     - searchWord : 날짜를 업데이트 할 특정 검색어
-     - pet : 특정 펫의 데이터를 가져오기 위한 파라미터
-     */
-    @discardableResult func updateObject(searchWord: String, pet: String) throws -> Bool {
-        guard let context = context else {
-            return false
-        }
-        do {
-            let object = try fetchWord(searchWord, pet: pet)
-            if var searchWordObject = object, let objectID = searchWordObject.objectID {
-                let object = context.object(with: objectID)
-                searchWordObject.date = searchWordObject.createDate()
-                searchWordObject.mappinng(to: object)
-                afterOperation(context: context)
-                return true
-            }
-        } catch let error as NSError {
-            return false
-            // throw CoreDataError.fetch(message: "Can't fetch data \(error)")
-        }
-        return false
-    }
-
     // MARK: - Delete Method
     /**
      코어데이타에 저장된 SearchWord의 모든 데이터를 삭제한다.

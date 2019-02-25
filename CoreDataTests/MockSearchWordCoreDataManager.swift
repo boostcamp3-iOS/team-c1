@@ -11,7 +11,7 @@ import Foundation
 
 class MockSearchWordCoreDataManager: SearchWordCoreDataManagerType {
 
-    @discardableResult func insert<T: CoreDataStructEntity>(_ coreDataStructType: T) throws -> Bool {
+    func insert<T: CoreDataStructEntity>(_ coreDataStructType: T) throws -> Bool {
         if coreDataStructType is SearchWordData {
             return true
         } else {
@@ -37,14 +37,6 @@ class MockSearchWordCoreDataManager: SearchWordCoreDataManagerType {
 
     func updateObject<T: CoreDataStructEntity>(_ coreDataStructType: T) throws -> Bool {
         if coreDataStructType is SearchWordData {
-            return true
-        } else {
-            return false
-        }
-    }
-
-    @discardableResult func updateObject(searchWord: String, pet: String) throws -> Bool {
-        if pet == "고양이" || pet == "강아지" {
             return true
         } else {
             return false

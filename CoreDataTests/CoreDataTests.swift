@@ -12,7 +12,6 @@ import CoreData
 
 class MyGoodsCoreDataTests: XCTestCase {
     let myGoodsManager = MockMyGoodsCoreDataManager()
-    let searchWordManager = MockSearchWordCoreDataManager()
 
     override func setUp() {
         // Put setup code here. This method is called before the invocation of each test method in the class.
@@ -146,11 +145,8 @@ class MyGoodsCoreDataTests: XCTestCase {
 
 class PetKeywordCoreDataTests: XCTestCase {
     let petKeywordManager = MockPetKeywordCoreDataManager()
-    // func deleteAllObjects(pet: String) throws -> Bool
-    // func updateObject<T: CoreDataStructEntity>(_ coreDataStructType: T) throws -> Bool
-    // func deleteObject<T>(_ coreDataStructType: T) throws -> Bool where T: CoreDataStructEntity
-    override func setUp() {
 
+    override func setUp() {
     }
 
     func testInsert() {
@@ -220,6 +216,77 @@ class PetKeywordCoreDataTests: XCTestCase {
         do {
             let result = try petKeywordManager.deleteAllObjects(pet: PetDefault.shared.pet.rawValue)
             XCTAssert(result, "delete fail")
+        } catch let error {
+            print(error.localizedDescription)
+        }
+    }
+}
+
+class SearchWordCoreDataTests: XCTestCase {
+     let searchWordManager = MockSearchWordCoreDataManager()
+
+    //func updateObject<T: CoreDataStructEntity>(_ coreDataStructType: T) throws -> Bool
+    override func setUp() {
+
+    }
+
+    func testInsert() {
+        let searchWordData = SearchWordData(pet: PetDefault.shared.pet.rawValue, searchWord: "\(PetDefault.shared.pet.rawValue) 옷")
+        do {
+            let result = try searchWordManager.insert(searchWordData)
+            XCTAssert(result, "Indsert Fail")
+        } catch let error {
+            print(error.localizedDescription)
+        }
+
+    }
+
+    func testFetchObjects() {
+        do {
+            guard let result = try searchWordManager.fetchObjects(pet: PetDefault.shared.pet.rawValue) else {
+                return
+            }
+            XCTAssert(result.count > 0, "Fetch Fail")
+        } catch let error {
+            print(error.localizedDescription)
+        }
+    }
+
+    func testFetchOnlySearchWord() {
+        do {
+            guard let result = try searchWordManager.fetchOnlySearchWord(pet: PetDefault.shared.pet.rawValue) else {
+                return
+            }
+            XCTAssert(result.count >= 2, "Fetch Fail")
+        } catch let error {
+            print(error.localizedDescription)
+        }
+    }
+
+    func testUpdate() {
+        let searchWordData = SearchWordData(pet: PetDefault.shared.pet.rawValue, searchWord: "\(PetDefault.shared.pet.rawValue) 옷")
+        do {
+            let result = try searchWordManager.updateObject(searchWordData)
+            XCTAssert(result, "Update Fail")
+        } catch let error {
+            print(error.localizedDescription)
+        }
+    }
+
+    func testDeleta() {
+        let searchWordData = SearchWordData(pet: PetDefault.shared.pet.rawValue, searchWord: "\(PetDefault.shared.pet.rawValue) 옷")
+        do {
+            let result = try searchWordManager.updateObject(searchWordData)
+            XCTAssert(result, "Delete Fail")
+        } catch let error {
+            print(error.localizedDescription)
+        }
+    }
+
+    func testDeleteAll() {
+        do {
+            let result = try searchWordManager.deleteAllObjects(pet: PetDefault.shared.pet.rawValue)
+            XCTAssert(result, "Delete Fail")
         } catch let error {
             print(error.localizedDescription)
         }
