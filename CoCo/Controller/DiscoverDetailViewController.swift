@@ -34,6 +34,7 @@ class DiscoverDetailViewController: UIViewController {
         headerView.translatesAutoresizingMaskIntoConstraints = false
         return headerView
     }()
+    private var activityIndicatorView = UIActivityIndicatorView(style: .whiteLarge)
     fileprivate var discoverDetailService: DiscoverDetailService?
     fileprivate var searchWord = ""
     fileprivate var layout: PinterestLayout?
@@ -50,6 +51,7 @@ class DiscoverDetailViewController: UIViewController {
         setupNavigationView()
         setupHeader()
         setupCollctionView()
+        setupIndicator()
         loadData()
         extendedLayoutIncludesOpaqueBars = true
     }
@@ -62,6 +64,14 @@ class DiscoverDetailViewController: UIViewController {
         self.navigationController?.navigationBar.shadowImage = UIImage()
         let buttonImage = UIImage(named: "list")?.withRenderingMode(.alwaysTemplate)
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: buttonImage, style: .plain, target: self, action: #selector(sortGoods))
+    }
+    
+    func setupIndicator() {
+        activityIndicatorView.color = UIColor.gray
+        self.view.addSubview(activityIndicatorView)
+        activityIndicatorView.frame = self.view.frame
+        activityIndicatorView.center = self.view.center
+        activityIndicatorView.startAnimating()
     }
 
     func setupNavigationView() {
@@ -122,6 +132,7 @@ class DiscoverDetailViewController: UIViewController {
                 }
                 if isSuccess {
                     DispatchQueue.main.async {
+                        self.activityIndicatorView.stopAnimating()
                         self.layout?.setCellPinterestLayout(indexPathRow: self.pagenationNum - 1) {}
                         self.collectionView.reloadData()
                         self.pagenationNum += 20
@@ -159,12 +170,17 @@ class DiscoverDetailViewController: UIViewController {
     }
 
     func sortChanged(sort: SortOption) {
+        activityIndicatorView.startAnimating()
         discoverDetailService?.sortOption = sort
         pagenationNum = 1
         self.discoverDetailService?.dataLists.removeAll()
-        discoverDetailService?.getShoppingData(start: pagenationNum, search: searchWord ?? "") { isSuccess, err, _ in
+        discoverDetailService?.getShoppingData(start: pagenationNum, search: searchWord ?? "") { [weak self](isSuccess, err, _) in
+            guard let self = self else {
+                return
+            }
             if isSuccess {
                 DispatchQueue.main.async {
+                    self.activityIndicatorView.stopAnimating()
                     self.layout?.setupInit()
                     self.layout?.invalidateLayout()
                     self.collectionView.reloadData()
@@ -218,7 +234,6 @@ extension DiscoverDetailViewController: UICollectionViewDataSource, UICollection
         if scrollPosition > 0, scrollPosition < scrollView.contentSize.height * 0.1 {
             pagination()
         }
-
     }
 
     func getIndexPath(newData: Int) -> [IndexPath] {
