@@ -32,7 +32,8 @@ class DiscoverServiceTests: XCTestCase {
             return
         }
         discoverService.fetchPet()
-        XCTAssert(PetDefault.shared.pet == .dog, "펫정보가 없습니다.")
+        XCTAssertEqual(PetDefault.shared.pet, discoverService.pet)
+        XCTAssert(discoverService.pet.rawValue != "고양이")
     }
 
     func testFetchMyGoods() {
@@ -41,7 +42,7 @@ class DiscoverServiceTests: XCTestCase {
         }
         let result =  discoverService.fetchMyGoods()
         print(result)
-        XCTAssert(result.count != 0, "최근본 상품과 즐겨찾기 한 상품이 없습니다.")
+        XCTAssert(discoverService.myGoods.count != 0, "최근본 상품과 즐겨찾기 한 상품이 없습니다.")
     }
 
     func testFetchSearchword() {
@@ -66,20 +67,35 @@ class DiscoverServiceTests: XCTestCase {
         guard let discoverService = discoverService else {
             return
         }
+        // keyword guard
+        discoverService.keyword = nil
+        let result = discoverService.mixedWord()
+        XCTAssert(result.count == 0)
+        
+        // 정상작동
         discoverService.fetchMyGoods()
         discoverService.fetchSearchWord()
         discoverService.fetchPetKeywords()
-        let result = discoverService.mixedWord()
-        print(result.count)
-        XCTAssert(result.count != 0, "데이터를 섞는 데 실패했습니다.")
+        discoverService.mixedWord()
+        XCTAssert(discoverService.mixedletSearches.count > 0, "데이터를 섞는 데 실패했습니다.")
+        
+        
     }
 
     func testRequest() {
         guard let discoverService = discoverService else {
             return
         }
-        discoverService.request { (isSuccess, _, _) in
-            XCTAssert(isSuccess, "쇼핑정보를 가져오지 못했습니다.")
+
+        var result = false
+        discoverService.fetchMyGoods()
+        discoverService.fetchSearchWord()
+        discoverService.fetchPetKeywords()
+        discoverService.mixedWord()
+        discoverService.request { (isSuccess, error, count) in
+            print(count)
+            XCTAssertEqual(count, 20)
+            XCTAssertEqual(isSuccess, true)
         }
     }
 }

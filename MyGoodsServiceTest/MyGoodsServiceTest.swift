@@ -10,18 +10,18 @@ import XCTest
 @testable import CoCo
 
 class MyGoodsServiceTest: XCTestCase {
-    
+
     var service: MyGoodsService!
-    
+
     override func setUp() {
         let manager = MockMyGoodsCoreDataManager()
         service = MyGoodsService(manager: manager)
     }
-    
+
     override func tearDown() {
         service = nil
     }
-    
+
     /*
      func fetchGoods()
      - private func fetchFavoriteGoods() -> [MyGoodsData]
@@ -31,12 +31,12 @@ class MyGoodsServiceTest: XCTestCase {
      - private func deleteFavoriteGoods(_ data: MyGoodsData) -> Bool
      - private func deleteObject(_ data: MyGoodsData) -> Bool
      */
-    
+
     func testFetchFavoriteGoods() {
         service.fetchGoods()
         XCTAssert(!service.dataIsEmpty, "testFetchFavoriteGoods 실패")
     }
-    
+
     func testDeleteGoods() {
         service.fetchGoods()
         print(service.recentGoods, service.favoriteGoods)
@@ -67,7 +67,7 @@ class MockMyGoodsCoreDataManager: MyGoodsCoreDataManagerType {
         }
         return result
     }
-    
+
     func fetchLatestGoods(pet: String?, isLatest: Bool, ascending: Bool) throws -> [MyGoodsData]? {
         var result = [MyGoodsData]()
         if let pet = pet {
@@ -85,11 +85,11 @@ class MockMyGoodsCoreDataManager: MyGoodsCoreDataManagerType {
         result.append(data)
         return result
     }
-    
+
     func fetchProductID(productID: String) -> MyGoods? {
         return nil
     }
-    
+
     func deleteFavoriteAllObjects(pet: String) throws -> Bool {
         if pet == "고양이" || pet == "강아지" {
             return true
@@ -97,7 +97,7 @@ class MockMyGoodsCoreDataManager: MyGoodsCoreDataManagerType {
             return false
         }
     }
-    
+
     func deleteLatestAllObjects(pet: String, isLatest: Bool) throws -> Bool {
         if pet == "고양이" || pet == "강아지" {
             if isLatest == true {
@@ -108,7 +108,7 @@ class MockMyGoodsCoreDataManager: MyGoodsCoreDataManagerType {
             return false
         }
     }
-    
+
     func insert<T: CoreDataStructEntity>(_ coreDataStructType: T) throws -> Bool {
         if coreDataStructType is MyGoodsData {
             return true
@@ -116,7 +116,7 @@ class MockMyGoodsCoreDataManager: MyGoodsCoreDataManagerType {
             return false
         }
     }
-    
+
     func fetchObjects(pet: String?) throws -> [CoreDataStructEntity]? {
         if let pet = pet {
             if pet == "고양이" || pet == "강아지" {
@@ -127,7 +127,7 @@ class MockMyGoodsCoreDataManager: MyGoodsCoreDataManagerType {
             return nil
         }
     }
-    
+
     func updateObject<T: CoreDataStructEntity>(_ coreDataStructType: T) throws -> Bool {
         if coreDataStructType is MyGoodsData {
             return true
@@ -135,7 +135,7 @@ class MockMyGoodsCoreDataManager: MyGoodsCoreDataManagerType {
             return false
         }
     }
-    
+
     func deleteObject<T: CoreDataStructEntity>(_ coreDataStructType: T) throws -> Bool {
         if coreDataStructType is MyGoodsData {
             return true
