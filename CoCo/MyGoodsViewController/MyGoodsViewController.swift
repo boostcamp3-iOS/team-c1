@@ -15,7 +15,7 @@ import UIKit
  */
 class MyGoodsViewController: UIViewController {
     // MARK: - Private properties
-    private var service = MyGoodsService()
+    private var service: MyGoodsService?
 
     // MARK: - IBOutlets
     @IBOutlet weak var tableView: UITableView!
@@ -25,12 +25,14 @@ class MyGoodsViewController: UIViewController {
         setTableView()
         extendedLayoutIncludesOpaqueBars = true
         setNavigationBar()
+        let manager = MyGoodsCoreDataManager()
+        service = MyGoodsService(manager: manager)
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.navigationBar.prefersLargeTitles = true
-        service.fetchGoods()
+        service?.fetchGoods()
         reloadTableView()
     }
 
@@ -81,7 +83,7 @@ class MyGoodsViewController: UIViewController {
 
     // MARK: - Action methods
     @objc private func startEditing() {
-        guard let barButtonItem = navigationItem.rightBarButtonItem,
+        guard let service = service, let barButtonItem = navigationItem.rightBarButtonItem,
             !service.dataIsEmpty else {
                 return
         }
@@ -95,13 +97,16 @@ class MyGoodsViewController: UIViewController {
     }
 
     @objc func deleteAction(_ sender: UIButton) {
+        guard let service = service else {
+            return
+        }
         let index = sender.tag
         service.deleteGoods(index: index) { [weak self] in
             guard let self = self else { return }
-            self.service.fetchGoods()
-            if self.service.dataIsEmpty, let item = self.navigationItem.rightBarButtonItem {
+            service.fetchGoods()
+            if service.dataIsEmpty, let item = self.navigationItem.rightBarButtonItem {
                 item.title = "Edit"
-                self.service.startEditing = false
+                service.startEditing = false
             }
             self.reloadTableView()
         }
@@ -126,7 +131,7 @@ extension MyGoodsViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: Identifier.myGoodTableViewCell) as? MyGoodsTableViewCell else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: Identifier.myGoodTableViewCell) as? MyGoodsTableViewCell, let service = service else {
             return UITableViewCell()
         }
         cell.delegate = self
@@ -145,13 +150,16 @@ extension MyGoodsViewController: ErrorHandlerType { }
 // MARK: - MyGoodsDataDelegate
 extension MyGoodsViewController: MyGoodsDataDelegate {
     func receiveData(_ data: MyGoodsData) {
-        guard !service.startEditing else {
+        guard let service = service, !service.startEditing else {
             return
         }
         performSegue(withData: data)
     }
 
     func receiveSender(_ sender: Any) {
+        guard let service = service else {
+            return
+        }
         if let button = sender as? UIButton {
             button.isHidden = !service.startEditing
             button.addTarget(self, action: #selector(deleteAction(_:)), for: .touchUpInside)

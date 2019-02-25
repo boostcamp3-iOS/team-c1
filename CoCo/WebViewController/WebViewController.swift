@@ -1,3 +1,11 @@
+//
+//  WebViewController.swift
+//  CoCo
+//
+//  Created by 최영준 on 13/02/2019.
+//  Copyright © 2019 Team CoCo. All rights reserved.
+//
+
 import UIKit
 import WebKit
 
@@ -36,7 +44,8 @@ class WebViewController: UIViewController {
     // MARK: - Required call methods
     /// 웹 뷰 호출시 데이터를 전달한다. (필수)
     func sendData(_ data: MyGoodsData) {
-        service = WebViewService(data: data)
+        let manager = MyGoodsCoreDataManager()
+        service = WebViewService(data: data, manager: manager)
     }
 
     // MARK: - View lifecycle

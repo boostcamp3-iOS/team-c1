@@ -24,31 +24,33 @@ class WebViewService {
     private(set) var myGoodsData: MyGoodsData
 
     // MARK: - Manager
-    private var manager: MyGoodsCoreDataManagerType = MyGoodsCoreDataManager()
+    private var manager: MyGoodsCoreDataManagerType?
 
     // MARK: - Initializer
-    init(data: MyGoodsData) {
+    init(data: MyGoodsData, manager: MyGoodsCoreDataManagerType) {
         myGoodsData = data
-    }
-
-    func setMyGoodsCoreDataManager(_ manager: MyGoodsCoreDataManagerType) {
         self.manager = manager
     }
 
     // MARK: - Public methods
     /// MyGoodsData를 코어 데이터에 저장(또는 업데이트)한다.
     @discardableResult func insert() -> Bool {
+        guard let manager = manager else {
+            return false
+        }
         myGoodsData.isLatest = true
         myGoodsData.date = myGoodsData.createDate()
         // 이미 같은 productID의 상품이 존재한다면 manager 내부에서 update를 호출함
-        let result = try? manager.insert(myGoodsData)
-        if let result = result {
+        if let result = try? manager.insert(myGoodsData) {
             return result
         }
         return false
     }
     /// preductID로 이미 코어데이터에 저장된 데이터인지 확인한다.
     @discardableResult func fetchData() -> Bool {
+        guard let manager = manager else {
+            return false
+        }
         if let data = manager.fetchProductID(productID: myGoodsData.productID) {
             var newData = MyGoodsData()
             newData.mappinng(from: data)
