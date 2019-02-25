@@ -17,7 +17,7 @@ import SpriteKit
  */
 class PetKeywordService {
     var pet: Pet?
-    private lazy var manager = PetKeywordCoreDataManager()
+    private var manager: PetKeywordCoreDataManagerType?
     private var animation: Animation?
     private var keywords: [Keyword] {
         let keywords = Keyword.allCases
@@ -26,6 +26,11 @@ class PetKeywordService {
     private var colors: [UIColor] {
         return AppColor.list
     }
+    
+    init(manager: PetKeywordCoreDataManagerType) {
+        self.manager = manager
+    }
+    
     /// 애니메이션 관련 설정 메서드
     func setAnimation(in view: SKView, delegate: AnimationType) {
         let scene = Animation(size: view.bounds.size)
@@ -75,13 +80,13 @@ class PetKeywordService {
         }
         return nil
     }
-
+    
     func removeAnimation() {
         animation?.removeAllChildren()
     }
     /// 코어데이터에 펫, 키워드를 추가한다.
     @discardableResult func insertPetKeyword() -> Bool {
-        guard let pet = pet else {
+        guard let pet = pet, let manager = manager else {
             return false
         }
         var selectedKeywords = [String]()
