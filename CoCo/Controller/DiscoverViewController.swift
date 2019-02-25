@@ -19,15 +19,16 @@ class DiscoverViewController: UIViewController {
 
     private let goodsIdentifier = "GoodsCell"
     private let toWebSegue = "discoverToWeb"
-    private var discoverService: DiscoverService?
     private let networkManager = ShoppingNetworkManager.shared
     private let algorithmManager = Algorithm()
+    private let settingPetKeyword = SettingViewController()
     private let searchWordCoreDataManager = SearchWordCoreDataManager()
+    private var discoverService: DiscoverService?
     private var myGoodsCoreDataManager = MyGoodsCoreDataManager()
     private var petKeywordCoreDataManager = PetKeywordCoreDataManager()
-    private let settingPetKeyword = SettingViewController()
     private var isInserting = false
     private var layout: PinterestLayout?
+    private var activityIndicatorView = UIActivityIndicatorView(style: .whiteLarge)
     fileprivate var pagenationNum = 1
     fileprivate var headerSize: CGFloat = 230
     fileprivate var pet = PetDefault.shared.pet
@@ -38,6 +39,7 @@ class DiscoverViewController: UIViewController {
         super.viewDidLoad()
         setupCollctionView()
         setupHeader()
+        setupIndicator()
         layout = collectionView.collectionViewLayout as? PinterestLayout
         layout?.delegate = self
         loadData()
@@ -62,6 +64,14 @@ class DiscoverViewController: UIViewController {
             collectionView.reloadData()
         }
 
+    }
+
+    func setupIndicator() {
+        activityIndicatorView.color = UIColor.gray
+        self.view.addSubview(activityIndicatorView)
+        activityIndicatorView.frame = self.view.frame
+        activityIndicatorView.center = self.view.center
+        activityIndicatorView.startAnimating()
     }
 
     func setupHeader() {
@@ -99,6 +109,7 @@ class DiscoverViewController: UIViewController {
                 }
                 if isSuccess {
                     DispatchQueue.main.async {
+                        self.activityIndicatorView.stopAnimating()
                         self.layout?.setCellPinterestLayout(indexPathRow: self.pagenationNum - 1) {
                             self.collectionView.reloadData()
                             self.pagenationNum += 20
