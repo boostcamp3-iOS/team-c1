@@ -9,7 +9,7 @@
 import UIKit
 
 class DiscoverDetailViewController: UIViewController {
-
+    // MARK: - Propertise
     private let goodsIdentifier = "GoodsCell"
     private let searchWorCoreDataManager = SearchWordCoreDataManager()
     private let petKeywordCoreDataManager = PetKeywordCoreDataManager()
@@ -21,7 +21,7 @@ class DiscoverDetailViewController: UIViewController {
         collectionView.backgroundColor = .white
         return collectionView
     }()
-    lazy var largeTitle: LargeTitle = {
+    private lazy var largeTitle: LargeTitle = {
         guard let largeTitle = Bundle.main.loadNibNamed("LargeTitle", owner: self, options: nil)?.first as? LargeTitle else {
             return LargeTitle()
         }
@@ -44,7 +44,6 @@ class DiscoverDetailViewController: UIViewController {
     var category: Category?
     var pet: Pet?
 
-    // 카테고리디테일
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor.white
@@ -53,19 +52,17 @@ class DiscoverDetailViewController: UIViewController {
         setupCollctionView()
         setupIndicator()
         loadData()
+        tabBarController?.tabBar.isHidden = true
         extendedLayoutIncludesOpaqueBars = true
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(false, animated: false)
-        self.navigationController?.navigationBar.tintColor = AppColor.purple
-        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
-        self.navigationController?.navigationBar.shadowImage = UIImage()
-        let buttonImage = UIImage(named: "list")?.withRenderingMode(.alwaysTemplate)
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: buttonImage, style: .plain, target: self, action: #selector(sortGoods))
+        setupNaviItemButton()
     }
 
+    // MARK: - Setup Methodes
     func setupIndicator() {
         activityIndicatorView.color = UIColor.gray
         self.view.addSubview(activityIndicatorView)
@@ -75,9 +72,17 @@ class DiscoverDetailViewController: UIViewController {
     }
 
     func setupNavigationView() {
-        tabBarController?.tabBar.isHidden = true
         navigationItem.title = "COCO"
         navigationItem.largeTitleDisplayMode = .never
+        self.navigationController?.navigationBar.tintColor = AppColor.purple
+        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
+        self.navigationController?.navigationBar.shadowImage = UIImage()
+        
+    }
+    
+    func setupNaviItemButton() {
+        let buttonImage = UIImage(named: "list")?.withRenderingMode(.alwaysTemplate)
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: buttonImage, style: .plain, target: self, action: #selector(sortGoods))
     }
 
     func setupCollctionView() {
@@ -112,6 +117,7 @@ class DiscoverDetailViewController: UIViewController {
         headerView.pet = pet
     }
 
+    // MARKL - DataLoad Method
     func loadData() {
         discoverDetailService = DiscoverDetailService(serachCoreData: searchWorCoreDataManager, petCoreData: petKeywordCoreDataManager, network: networkManager, algorithm: algorithmManager)
         guard let pet = pet else {
@@ -143,6 +149,7 @@ class DiscoverDetailViewController: UIViewController {
         }
     }
 
+    // MARK: - SortMethodes
     @objc func sortGoods() {
         let actionSheet = UIAlertController(title: nil, message: "정렬 방식을 선택해주세요", preferredStyle: .actionSheet)
 

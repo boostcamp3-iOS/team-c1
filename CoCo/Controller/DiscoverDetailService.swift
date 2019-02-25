@@ -8,25 +8,18 @@
 
 import UIKit
 
-/*
- 상품 카테고리 눌렀을 경우 데이터 받아오기
- 데이터 받아서 인덱스에 저장
- 소트 형식 저장
- 상세 카테고리 정보 가져오기
- 
- */
-
 class DiscoverDetailService {
+    // MARK: - Propertise
     private let searchCoreDataManager: SearchWordCoreDataManagerType
     private let petKeywordCoreDataManager: PetKeywordCoreDataManagerType
     private let networkManager: NetworkManagerType
     private let algorithmManager: Algorithm
-
     private(set) var recentSearched: String?
     var dataLists = [MyGoodsData]()
     var sortOption: SortOption = .similar
     var pet: Pet = .dog
 
+    // MARK: - Initializer
     init(serachCoreData: SearchWordCoreDataManagerType, petCoreData: PetKeywordCoreDataManagerType, network: NetworkManagerType, algorithm: Algorithm) {
         searchCoreDataManager = serachCoreData
         petKeywordCoreDataManager = petCoreData

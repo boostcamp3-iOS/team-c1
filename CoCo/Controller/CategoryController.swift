@@ -13,33 +13,34 @@ protocol CategoryControllerDelegate: class {
 }
 
 class CategoryController: UICollectionReusableView {
-
+    // MARK: - Properties
     private let cellId = "CategoryCell"
-    let discoverService = DiscoverService()
-    weak var categoryDelegate: CategoryControllerDelegate?
-    lazy var largeTitle: LargeTitle = {
-        guard let largeTitle = Bundle.main.loadNibNamed("LargeTitle", owner: self, options: nil)?.first as? LargeTitle else {
+    private let discoverService = DiscoverService()
+    private var categoryImage = [UIImage?]()
+    private var categoryTitle = [String]()
+    private var pet = PetDefault.shared.pet
+    private lazy var largeTitle: LargeTitle = {
+        guard let largeTitle = Bundle.main.loadNibNamed(
+            "LargeTitle", owner: self, options: nil)?.first as? LargeTitle else {
             return LargeTitle()
         }
         largeTitle.translatesAutoresizingMaskIntoConstraints = false
         largeTitle.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         return largeTitle
     }()
-
-    lazy var collectionView: UICollectionView = {
+    private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
-        let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        cv.showsHorizontalScrollIndicator = false
-        cv.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
-        cv.dataSource = self
-        cv.delegate = self
-        return cv
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.showsHorizontalScrollIndicator = false
+        collectionView.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+        collectionView.dataSource = self
+        collectionView.delegate = self
+        return collectionView
     }()
-    var categoryImage = [UIImage?]()
-    var categoryTitle = [String]()
-    var pet = PetDefault.shared.pet
+    weak var categoryDelegate: CategoryControllerDelegate?
 
+    // MARK: - Initializer
     override init(frame: CGRect) {
         super.init(frame: frame)
         categoryTitle = setupCategoryTitle()
@@ -48,20 +49,11 @@ class CategoryController: UICollectionReusableView {
         setUpCollectionView()
     }
 
-//    override func prepareForReuse() {
-//        super.prepareForReuse()
-//        pet = PetDefault.shared.pet
-//        categoryTitle = setupCategoryTitle()
-//        categoryImage = setupCategotyImage()
-//        setupLargeTitle()
-//        setUpCollectionView()
-//        collectionView.reloadData()
-//    }
-
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
+    // MARK: - Setup Methodes
     func setupCategoryTitle() -> [String] {
         var categorys = [String]()
         if pet.rawValue == "강아지" {

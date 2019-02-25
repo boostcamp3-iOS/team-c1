@@ -48,8 +48,8 @@ class PetKeywordCoreDataManager: PetKeywordCoreDataManagerType, CoreDataManagerF
             }
             return petKeywordDatas
         } else {
+            print(error.localizedDescription)
             return nil
-           // throw CoreDataError.fetch(message: "PetKeyword Entity has not data, So can not fetch data")
         }
     }
 
@@ -71,8 +71,8 @@ class PetKeywordCoreDataManager: PetKeywordCoreDataManagerType, CoreDataManagerF
             keywords = petKeywordData.keywords
             return keywords
         } catch let error as NSError {
+            print(error.localizedDescription)
             return nil
-          //  throw CoreDataError.fetch(message: "Can not fetch data \(error)")
         }
     }
 

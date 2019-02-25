@@ -14,5 +14,4 @@ enum CoreDataError: Error {
     case delete(message: String)
     case fetch(message: String)
     case notFoundEntity(message: String)
-    // context, appDelegate는 어떤 오류처리?
 }

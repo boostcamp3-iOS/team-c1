@@ -71,15 +71,14 @@ class DiscoverServiceTests: XCTestCase {
         discoverService.keyword = nil
         let result = discoverService.mixedWord()
         XCTAssert(result.count == 0)
-        
+
         // 정상작동
         discoverService.fetchMyGoods()
         discoverService.fetchSearchWord()
         discoverService.fetchPetKeywords()
         discoverService.mixedWord()
         XCTAssert(discoverService.mixedletSearches.count > 0, "데이터를 섞는 데 실패했습니다.")
-        
-        
+
     }
 
     func testRequest() {
@@ -92,7 +91,7 @@ class DiscoverServiceTests: XCTestCase {
         discoverService.fetchSearchWord()
         discoverService.fetchPetKeywords()
         discoverService.mixedWord()
-        discoverService.request { (isSuccess, error, count) in
+        discoverService.request { (isSuccess, _, count) in
             print(count)
             XCTAssertEqual(count, 20)
             XCTAssertEqual(isSuccess, true)

@@ -14,6 +14,7 @@ protocol PinterestLayoutDelegate: class {
 }
 
 class PinterestLayout: UICollectionViewFlowLayout {
+    // MARK: - Propertise
     private var itemFixedDimension: CGFloat = 0
     private var itemFlexibleDimension: CGFloat = 0
     fileprivate var numberOfColums =  2
@@ -38,7 +39,7 @@ class PinterestLayout: UICollectionViewFlowLayout {
         return CGSize(width: contentWidth, height: contentHeight)
     }
 
-    // called whenever the collection view's layout is invalidated
+    // MARK: - Methodes
     override func prepare() {
         guard cellCache.isEmpty == true, headerCache.isEmpty == true, let collectionView = collectionView else {
             return
@@ -104,7 +105,6 @@ class PinterestLayout: UICollectionViewFlowLayout {
         self.headerCache.removeAll()
     }
 
-    // collection view calls after prepare()
     override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
         let header = headerCache.filter {
             $0.frame.intersects(rect)
@@ -115,7 +115,6 @@ class PinterestLayout: UICollectionViewFlowLayout {
         return header + visibleLayoutAttributes
     }
 
-    // Returns the layout attributes for the item at the specified index path
     override func layoutAttributesForItem(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
         return cellCache[indexPath.item]
     }

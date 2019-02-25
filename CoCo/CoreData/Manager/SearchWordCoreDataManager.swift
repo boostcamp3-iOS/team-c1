@@ -76,8 +76,8 @@ class SearchWordCoreDataManager: SearchWordCoreDataManagerType, CoreDataManagerF
             }
             return searchArrays
         } catch let error as NSError {
+            print(error.localizedDescription)
             return nil
-            //  throw CoreDataError.fetch(message: "Can't fetch data \(error)")
         }
     }
 
@@ -106,7 +106,7 @@ class SearchWordCoreDataManager: SearchWordCoreDataManagerType, CoreDataManagerF
             }
         } catch let error as NSError {
             return nil
-            // throw CoreDataError.fetch(message: "Can't fetch data \(error)")
+            print(error.localizedDescription)
         }
         return searchWordData
     }
@@ -132,8 +132,8 @@ class SearchWordCoreDataManager: SearchWordCoreDataManagerType, CoreDataManagerF
                 return true
             }
         } catch let error as NSError {
+            print(error.localizedDescription)
             return false
-            // throw CoreDataError.fetch(message: "Can't fetch data \(error)")
         }
         return false
     }
