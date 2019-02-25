@@ -17,8 +17,8 @@ import SpriteKit
  */
 class PetKeywordViewController: UIViewController {
     // MARK: - Private properties
-    private var service = PetKeywordService()
-
+    private var service: PetKeywordService?
+    
     // MARK: - IBOulets
     @IBOutlet private weak var animationView: SKView!
     @IBOutlet private weak var completionButton: UIButton!
@@ -27,25 +27,30 @@ class PetKeywordViewController: UIViewController {
             textLabel.text = "반려동물과 2개 이상의 관심 키워드를\n선택해주세요."
         }
     }
-
+    
     // MARK: - View lifecycles
     override func viewDidLoad() {
         super.viewDidLoad()
-        service.setAnimation(in: animationView, delegate: self)
+        let manager = PetKeywordCoreDataManager()
+        service = PetKeywordService(manager: manager)
+        service?.setAnimation(in: animationView, delegate: self)
     }
-
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        service.startAnimation()
+        service?.startAnimation()
     }
-
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        service.removeAnimation()
+        service?.removeAnimation()
     }
-
+    
     // MARK: - Set method
     func updateTextLabel() {
+        guard let service = service else {
+            return
+        }
         // 선택에 따른 textLabel 변경
         if service.getSelectedNodes().count >= 2,
             let _ = service.getSelectedPetNode() {
@@ -62,14 +67,14 @@ class PetKeywordViewController: UIViewController {
             textLabel.text = "반려동물과 2개 이상의 관심 키워드를\n선택해주세요."
         }
     }
-
+    
     // MARK: - IBAction
     @IBAction func completionAction(_ sender: UIButton) {
         if let tabBarController = UIStoryboard(name: "Discover", bundle: nil).instantiateViewController(withIdentifier: "tabBarcontroller") as? UITabBarController {
             if UserDefaults.isFirstLaunch() {
                 UserDefaults.standard.set(true, forKey: UserDefaults.launchedBefore)
             }
-            service.insertPetKeyword()
+            service?.insertPetKeyword()
             UIApplication.shared.keyWindow?.rootViewController = tabBarController
         }
     }
@@ -79,12 +84,12 @@ class PetKeywordViewController: UIViewController {
 extension PetKeywordViewController: AnimationType {
     func animation(_ animation: Animation, didSelect node: AnimationNode) {
         // 반려동물 선택은 1개만 가능하다. 이미 선택되었을 경우 이전 노드를 해제시키고 새로운 노드로 변경한다.
-        if let petNode = service.getSelectedPetNode(), let name = petNode.name {
-            service.pet = Pet(rawValue: name)
+        if let petNode = service?.getSelectedPetNode(), let name = petNode.name {
+            service?.pet = Pet(rawValue: name)
         }
         updateTextLabel()
     }
-
+    
     func animation(_ animation: Animation, didDeselect node: AnimationNode) {
         updateTextLabel()
     }
