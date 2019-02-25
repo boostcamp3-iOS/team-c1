@@ -26,9 +26,18 @@ class MockPetKeywordCoreDataManager: PetKeywordCoreDataManagerType {
         }
     }
 
-    func insert<T: CoreDataStructEntity>(_ coreDataStructType: T) throws -> Bool {
+    func insert<T: CoreDataStructEntity>(_ coreDataStructType: T)
+        throws -> Bool {
         if coreDataStructType is PetKeywordData {
-            return true
+            if let petKeyword = coreDataStructType as? PetKeywordData {
+                guard let keyword = petKeyword.keywords else {
+                    return false
+                }
+                if keyword.count >= 2 {
+                    return true
+                }
+            }
+            return false
         } else {
             return false
         }
@@ -42,7 +51,8 @@ class MockPetKeywordCoreDataManager: PetKeywordCoreDataManagerType {
         }
     }
 
-    func updateObject<T: CoreDataStructEntity>(_ coreDataStructType: T) throws -> Bool {
+    func updateObject<T: CoreDataStructEntity>(_ coreDataStructType: T)
+        throws -> Bool {
         if coreDataStructType is PetKeywordData {
             return true
         } else {
@@ -50,7 +60,8 @@ class MockPetKeywordCoreDataManager: PetKeywordCoreDataManagerType {
         }
     }
 
-    func deleteObject<T>(_ coreDataStructType: T) throws -> Bool where T: CoreDataStructEntity {
+    func deleteObject<T: CoreDataStructEntity>(_ coreDataStructType: T)
+        throws -> Bool {
         if coreDataStructType is PetKeywordData {
             return true
         } else {

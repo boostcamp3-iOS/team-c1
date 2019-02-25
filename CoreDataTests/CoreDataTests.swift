@@ -12,7 +12,6 @@ import CoreData
 
 class MyGoodsCoreDataTests: XCTestCase {
     let myGoodsManager = MockMyGoodsCoreDataManager()
-    let petKeywordManager = MockPetKeywordCoreDataManager()
     let searchWordManager = MockSearchWordCoreDataManager()
 
     override func setUp() {
@@ -141,6 +140,88 @@ class MyGoodsCoreDataTests: XCTestCase {
         // This is an example of a performance test case.
         self.measure {
             // Put the code you want to measure the time of here.
+        }
+    }
+}
+
+class PetKeywordCoreDataTests: XCTestCase {
+    let petKeywordManager = MockPetKeywordCoreDataManager()
+    // func deleteAllObjects(pet: String) throws -> Bool
+    // func updateObject<T: CoreDataStructEntity>(_ coreDataStructType: T) throws -> Bool
+    // func deleteObject<T>(_ coreDataStructType: T) throws -> Bool where T: CoreDataStructEntity
+    override func setUp() {
+
+    }
+
+    func testInsert() {
+        let petKeywordData = PetKeywordData(pet: PetDefault.shared.pet.rawValue, keywords: ["스타일", "뷰티", "리빙"])
+        do {
+            let result = try petKeywordManager.insert(petKeywordData)
+            XCTAssert(result, "Insert Fail")
+        } catch let error {
+            print(error.localizedDescription)
+        }
+    }
+
+    func testFetchObjects() {
+        do {
+            guard let result = try petKeywordManager.fetchObjects(pet: nil) else {
+                return
+            }
+            XCTAssert(result.count >= 2, "FetchFail")
+        } catch let error {
+            print(error.localizedDescription)
+        }
+    }
+
+    func testFetchOnlyPet() {
+        do {
+            let result = try petKeywordManager.fetchOnlyPet()
+            XCTAssertNotNil(result, "Fetch Fail")
+        } catch let error {
+             print(error.localizedDescription)
+        }
+    }
+
+    func testFetchOnlyKeyword() {
+
+        do {
+            guard let result = try petKeywordManager.fetchOnlyKeyword(pet: PetDefault.shared.pet.rawValue) else {
+            return
+            }
+            XCTAssertNotNil(result, "Fetch Fail")
+        } catch let error {
+            print(error.localizedDescription)
+        }
+    }
+
+    func testUpdate() {
+        let petKeywordData = PetKeywordData(pet: PetDefault.shared.pet.rawValue, keywords: ["스타일", "뷰티", "리빙"])
+        do {
+            let result = try petKeywordManager.updateObject(petKeywordData)
+            XCTAssert(result, "update Fail")
+        } catch let error {
+            print(error.localizedDescription)
+        }
+    }
+
+    func testDelete() {
+        let petKeywordData = PetKeywordData(pet: PetDefault.shared.pet.rawValue, keywords: ["스타일", "뷰티", "리빙"])
+        do {
+            let result = try petKeywordManager.deleteObject(petKeywordData)
+            XCTAssert(result, "delete fail")
+        } catch let error {
+            print(error.localizedDescription)
+        }
+    }
+
+    func testDeleteAll() {
+        let petKeywordData = PetKeywordData(pet: PetDefault.shared.pet.rawValue, keywords: ["스타일", "뷰티", "리빙"])
+        do {
+            let result = try petKeywordManager.deleteAllObjects(pet: PetDefault.shared.pet.rawValue)
+            XCTAssert(result, "delete fail")
+        } catch let error {
+            print(error.localizedDescription)
         }
     }
 }
