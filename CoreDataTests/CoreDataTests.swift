@@ -10,7 +10,10 @@ import XCTest
 import CoreData
 @testable import CoCo
 
-class CoreDataTests: XCTestCase {
+class MyGoodsCoreDataTests: XCTestCase {
+    let myGoodsManager = MockMyGoodsCoreDataManager()
+    let petKeywordManager = MockPetKeywordCoreDataManager()
+    let searchWordManager = MockSearchWordCoreDataManager()
 
     override func setUp() {
         // Put setup code here. This method is called before the invocation of each test method in the class.
@@ -20,32 +23,118 @@ class CoreDataTests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
 
-    func testInsertPetKeyword() {
+    func testInsertMyGoods() {
+        let myGoodsData = MyGoodsData(pet: PetDefault.shared.pet.rawValue,
+                                      title: "강아지 옷", link: "www.naver,com",
+                                      image: "www.naver.com", isFavorite: true,
+                                      isLatest: true, price: "12,000",
+                                      productID: "12345", searchWord: "강아지 옷",
+                                      shoppingmall: "네이버 쇼핑")
+        do {
+            let result = try myGoodsManager.insert(myGoodsData)
+             XCTAssert(result, "데이터를 저장할 수 없습니다.")
+        } catch let error {
+            print(error.localizedDescription)
+        }
+    }
+
+    func testFetchFavoriteGoods() {
+        do {
+            guard let petResult = try myGoodsManager.fetchFavoriteGoods(pet:
+                PetDefault.shared.pet.rawValue) else {
+                return
+            }
+            XCTAssert(petResult.count > 0, "데이터가 존재하지 않습니다.")
+            guard let nonPetresult = try myGoodsManager.fetchFavoriteGoods(pet:
+                nil) else {
+                return
+            }
+            XCTAssert(nonPetresult.count > 0, "데이터가 존재하지 않습니다.")
+        } catch let error {
+            print(error.localizedDescription)
+        }
+    }
+
+    func testFetchLatestGoods() {
+        do {
+            guard let result = try myGoodsManager.fetchLatestGoods(pet:
+                PetDefault.shared.pet.rawValue, isLatest: true, ascending: false) else {
+                return
+            }
+            let count = result.filter { $0.isLatest == true}.count
+            XCTAssert(count > 0, "Fetch Fatil")
+        } catch let error {
+            print(error.localizedDescription)
+        }
+    }
+
+    func testFetchProductID() {
+        let result = myGoodsManager.fetchProductID(productID: "123456")
+        XCTAssertNotNil(result, "Fetch Fail")
 
     }
 
-    func testFetchCoreData() {
-        // given
-        let pet = "강아지"
-
-        // when
-//        let result = service.fetchRecentSearchWord(pet: pet)
-//
-//        let count = mockSearchInfo.mockSearchWord.filter { $0.searchWord.contains(pet)
-//        }.count
-//        // then
-//        XCTAssert(result!.count == count, "Fetch Fail")
-    }
-
-    func testInsert() {
-    }
-
-    func testUpdateCoreData() {
+    func testDeleteFavoriteAllObjects() {
+        do {
+            let result = try myGoodsManager.deleteFavoriteAllObjects(pet:
+                PetDefault.shared.pet.rawValue)
+            XCTAssert(result == true, "Delete Fail")
+        } catch let error {
+            print(error.localizedDescription)
+        }
 
     }
 
-    func testDeleteCoreData() {
+    func testDeleteLatestAllObjects() {
+        do {
+            let result = try myGoodsManager.deleteLatestAllObjects(pet:
+                PetDefault.shared.pet.rawValue, isLatest: false)
+            XCTAssert(result, "Delete Fail")
+        } catch let error {
+            print(error.localizedDescription)
+        }
+    }
 
+    func testFetchObjects() {
+        do {
+            guard let result = try myGoodsManager.fetchObjects(pet:
+                PetDefault.shared.pet.rawValue) else {
+                return
+            }
+            XCTAssert(result.count > 0, "Fetch Fail")
+        } catch let error {
+            print(error.localizedDescription)
+        }
+    }
+
+    func testUpdateObject() {
+        let myGoodsData = MyGoodsData(pet: PetDefault.shared.pet.rawValue,
+                                      title: "강아지 옷", link: "www.naver,com",
+                                      image: "www.naver.com", isFavorite: true,
+                                      isLatest: true, price: "12,000",
+                                      productID: "12345", searchWord: "강아지 옷",
+                                      shoppingmall: "네이버 쇼핑")
+        do {
+            let result = try myGoodsManager.updateObject(myGoodsData)
+            XCTAssertNotNil(result, "Update Fail")
+        } catch let error {
+            print(error.localizedDescription)
+        }
+    }
+
+    func testDeleteObject() {
+        let myGoodsData = MyGoodsData(pet: PetDefault.shared.pet.rawValue,
+                                      title: "강아지 옷", link: "www.naver,com",
+                                      image: "www.naver.com", isFavorite: true,
+                                      isLatest: true, price: "12,000",
+                                      productID: "12345", searchWord: "강아지 옷",
+                                      shoppingmall: "네이버 쇼핑")
+        do {
+            let result = try myGoodsManager.deleteObject(myGoodsData)
+            XCTAssert(result, "Delete Fail")
+        } catch let error {
+            print(error.localizedDescription)
+        }
     }
 
     func testPerformanceExample() {
