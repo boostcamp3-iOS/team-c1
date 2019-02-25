@@ -486,7 +486,7 @@ class MockMyGoodsCoreDataManager: MyGoodsCoreDataManagerType {
     }
 
     func fetchProductID(productID: String) -> MyGoods? {
-        if productIDs.contains(productID) {
+        if productID.contains(productID) {
             return MyGoods()
         } else {
             return nil
