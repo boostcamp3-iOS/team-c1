@@ -424,67 +424,6 @@
 			path = Controller;
 			sourceTree = "<group>";
 		};
-		F8A3CBEB5EB600E26B809BB22596D31D /* Resource */ = {
-			isa = PBXGroup;
-			children = (
-				2BEAE133AC84BD67016FB63F66D20D02 /* Assets.xcassets */,
-				2D9E59B2C2B5CE0A894F6D7D3FAF30A9 /* Category.xcassets */,
-				85EC16D63FD7DAAC58D997BE0E3EBF4B /* privacy_policy.html */,
-			);
-			path = Resource;
-			sourceTree = "<group>";
-		};
-		87FCA307FA0CE72558D2138331C18F51 /* Service */ = {
-			isa = PBXGroup;
-			children = (
-				88B0D0E9BB64AD74CD98FCCC61ECF6F9 /* DiscoverDetailService.swift */,
-				2C844FE23FB63ACC5CDDA527CCE98DEA /* DiscoverService.swift */,
-				FBBC5487CB1AFDC73083D03546F74CEF /* MyGoodsService.swift */,
-				B4856400B5C7186778B0EB96288C6516 /* PetKeywordService.swift */,
-				66A86C54B0F2CF062B90FD820D96ADD8 /* SearchService.swift */,
-				1305180C3EA10FF95E0D4A2FC6CC3845 /* SettingPetAndKeywordService.swift */,
-				16D2DC97BF3A7B9EC31E463E9E59D9CD /* WebViewService.swift */,
-			);
-			path = Service;
-			sourceTree = "<group>";
-		};
-		97CCAD0979106DFBE63068DCF8F73B05 /* Storyboard */ = {
-			isa = PBXGroup;
-			children = (
-				DB9992A1FB6B093B32C93D577A54BF01 /* DetailCategoryCell.xib */,
-				C239F6BE36AF8F2FE90D2925AE28D69D /* Discover.storyboard */,
-				8599DD0D15B583A6F984BFF1EEE005A2 /* DiscoverDetail.storyboard */,
-				58635535C10A4954A9F985EC652A387F /* LaunchScreen.storyboard */,
-				2A27A05043723C201F1A5A4CC12D0745 /* MyGoods.storyboard */,
-				4CC91FF2AB7E7B022DCFB923AFC28B2E /* PetKeyword.storyboard */,
-				02D9252F65E0A649324CE30D752EEBA4 /* PrivacyPolicy.storyboard */,
-				31B0435FC4C025C851DA0A77C6C3B9C0 /* SearchView.storyboard */,
-				23844D0560F5A4432A2AAB427B2C0D07 /* Setting.storyboard */,
-				5A60BD9BBB9C4193E922EDE7DD25A017 /* SettingPetAndKeyword.storyboard */,
-				443AB696BD3DB711403862E141DFB83E /* WebView.storyboard */,
-			);
-			path = Storyboard;
-			sourceTree = "<group>";
-		};
-		4E18348CE972B8BC2EC625E2EC6ED4B9 /* Layout */ = {
-			isa = PBXGroup;
-			children = (
-				86D77355BF5748FDEF9B05E833B254A2 /* CenterAlignedCollectionFlowLayout.swift */,
-				C5D13B419FD8F052034A9960F61BF77D /* PinterestLayout.swift */,
-			);
-			path = Layout;
-			sourceTree = "<group>";
-		};
-		5F383D7F3FEB57CFDED477A4557F2712 /* Xib */ = {
-			isa = PBXGroup;
-			children = (
-				C9E4ADB89AE949B9A4DBECC6685E361C /* CategoryCell.xib */,
-				DFFE15F05B0C0D3C6FE1C215A46F6176 /* GoodsCell.xib */,
-				5E59F21D599CA53E6A0462AE15CF9F08 /* LargeTitle.xib */,
-			);
-			path = Xib;
-			sourceTree = "<group>";
-		};
 		38EF5D7981CEBA1CD263A3C0606C8E93 /* Animation */ = {
 			isa = PBXGroup;
 			children = (
@@ -530,6 +469,15 @@
 			path = CoreData;
 			sourceTree = "<group>";
 		};
+		4E18348CE972B8BC2EC625E2EC6ED4B9 /* Layout */ = {
+			isa = PBXGroup;
+			children = (
+				86D77355BF5748FDEF9B05E833B254A2 /* CenterAlignedCollectionFlowLayout.swift */,
+				C5D13B419FD8F052034A9960F61BF77D /* PinterestLayout.swift */,
+			);
+			path = Layout;
+			sourceTree = "<group>";
+		};
 		5236980AD849F0C380B8AF281536FA96 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
@@ -554,6 +502,16 @@
 				B0A33036C384C0C2C594ED1F6BA04D65 /* WebViewServiceTest.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		5F383D7F3FEB57CFDED477A4557F2712 /* Xib */ = {
+			isa = PBXGroup;
+			children = (
+				C9E4ADB89AE949B9A4DBECC6685E361C /* CategoryCell.xib */,
+				DFFE15F05B0C0D3C6FE1C215A46F6176 /* GoodsCell.xib */,
+				5E59F21D599CA53E6A0462AE15CF9F08 /* LargeTitle.xib */,
+			);
+			path = Xib;
 			sourceTree = "<group>";
 		};
 		5FDB9BB08C869F4A79C367DE95503E91 /* CoreDataTests */ = {
@@ -624,6 +582,20 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		87FCA307FA0CE72558D2138331C18F51 /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				88B0D0E9BB64AD74CD98FCCC61ECF6F9 /* DiscoverDetailService.swift */,
+				2C844FE23FB63ACC5CDDA527CCE98DEA /* DiscoverService.swift */,
+				FBBC5487CB1AFDC73083D03546F74CEF /* MyGoodsService.swift */,
+				B4856400B5C7186778B0EB96288C6516 /* PetKeywordService.swift */,
+				66A86C54B0F2CF062B90FD820D96ADD8 /* SearchService.swift */,
+				1305180C3EA10FF95E0D4A2FC6CC3845 /* SettingPetAndKeywordService.swift */,
+				16D2DC97BF3A7B9EC31E463E9E59D9CD /* WebViewService.swift */,
+			);
+			path = Service;
+			sourceTree = "<group>";
+		};
 		88330C097F1F14C4DFA5641ED75BFD16 /* DiscoverServiceTests */ = {
 			isa = PBXGroup;
 			children = (
@@ -631,6 +603,24 @@
 				D51C53AB45CE4A91125DCFCD651E83BC /* Info.plist */,
 			);
 			path = DiscoverServiceTests;
+			sourceTree = "<group>";
+		};
+		97CCAD0979106DFBE63068DCF8F73B05 /* Storyboard */ = {
+			isa = PBXGroup;
+			children = (
+				DB9992A1FB6B093B32C93D577A54BF01 /* DetailCategoryCell.xib */,
+				C239F6BE36AF8F2FE90D2925AE28D69D /* Discover.storyboard */,
+				8599DD0D15B583A6F984BFF1EEE005A2 /* DiscoverDetail.storyboard */,
+				58635535C10A4954A9F985EC652A387F /* LaunchScreen.storyboard */,
+				2A27A05043723C201F1A5A4CC12D0745 /* MyGoods.storyboard */,
+				4CC91FF2AB7E7B022DCFB923AFC28B2E /* PetKeyword.storyboard */,
+				02D9252F65E0A649324CE30D752EEBA4 /* PrivacyPolicy.storyboard */,
+				31B0435FC4C025C851DA0A77C6C3B9C0 /* SearchView.storyboard */,
+				23844D0560F5A4432A2AAB427B2C0D07 /* Setting.storyboard */,
+				5A60BD9BBB9C4193E922EDE7DD25A017 /* SettingPetAndKeyword.storyboard */,
+				443AB696BD3DB711403862E141DFB83E /* WebView.storyboard */,
+			);
+			path = Storyboard;
 			sourceTree = "<group>";
 		};
 		997154EF22250E413503B022AE919E1E /* Network */ = {
@@ -748,6 +738,16 @@
 				0C79BFEFECFE2C0B69691F3489312AC8 /* SettingPetAndKeywordServiceTests.swift */,
 			);
 			path = SettingPetAndKeywordServiceTests;
+			sourceTree = "<group>";
+		};
+		F8A3CBEB5EB600E26B809BB22596D31D /* Resource */ = {
+			isa = PBXGroup;
+			children = (
+				2BEAE133AC84BD67016FB63F66D20D02 /* Assets.xcassets */,
+				2D9E59B2C2B5CE0A894F6D7D3FAF30A9 /* Category.xcassets */,
+				85EC16D63FD7DAAC58D997BE0E3EBF4B /* privacy_policy.html */,
+			);
+			path = Resource;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
