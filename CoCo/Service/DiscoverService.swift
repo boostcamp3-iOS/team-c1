@@ -32,7 +32,7 @@ class DiscoverService {
         self.petKeywordCoreDataManagerType = petKeywordCoreDataManagerType
     }
 
-    //MARK: - Methodes
+    // MARK: - Methodes
    func fetchPet() {
         guard  let petKeywordCoreDataManagerType = petKeywordCoreDataManagerType else {
             return

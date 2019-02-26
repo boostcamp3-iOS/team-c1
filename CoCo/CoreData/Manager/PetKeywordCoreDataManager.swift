@@ -48,7 +48,6 @@ class PetKeywordCoreDataManager: PetKeywordCoreDataManagerType, CoreDataManagerF
             }
             return petKeywordDatas
         } else {
-            print(error.localizedDescription)
             return nil
         }
     }

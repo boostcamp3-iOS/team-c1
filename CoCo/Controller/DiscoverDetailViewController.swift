@@ -77,9 +77,9 @@ class DiscoverDetailViewController: UIViewController {
         self.navigationController?.navigationBar.tintColor = AppColor.purple
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
-        
+
     }
-    
+
     func setupNaviItemButton() {
         let buttonImage = UIImage(named: "list")?.withRenderingMode(.alwaysTemplate)
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: buttonImage, style: .plain, target: self, action: #selector(sortGoods))
@@ -117,7 +117,7 @@ class DiscoverDetailViewController: UIViewController {
         headerView.pet = pet
     }
 
-    // MARKL - DataLoad Method
+    // MARK: - DataLoad Method
     func loadData() {
         discoverDetailService = DiscoverDetailService(serachCoreData: searchWorCoreDataManager, petCoreData: petKeywordCoreDataManager, network: networkManager, algorithm: algorithmManager)
         guard let pet = pet else {
