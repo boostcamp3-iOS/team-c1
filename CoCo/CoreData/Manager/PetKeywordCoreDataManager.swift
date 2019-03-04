@@ -76,21 +76,11 @@ class PetKeywordCoreDataManager: PetKeywordCoreDataManagerType {
         - pet: 해당하는 펫(고양이 또는 강아지)과 관련된 펫정보를 가져오기 위한 파마리터.
      */
     func fetchOnlyPet() throws -> String? {
-        guard let context = context else { return nil }
         var petKeywordData = PetKeywordData()
         let sort = NSSortDescriptor(key: #keyPath(PetKeyword.date), ascending: false)
-        let request: NSFetchRequest<PetKeyword>
-
-        if #available(iOS 10.0, *) {
-            let tmpRequest: NSFetchRequest<PetKeyword> = PetKeyword.fetchRequest()
-            request = tmpRequest
-        } else {
-            let entityName = String(describing: PetKeyword.self)
-            request = NSFetchRequest(entityName: entityName)
+        guard let objects = try fetchObjects(PetKeyword.self, sortBy: [sort], predicate: nil) else {
+            return nil
         }
-        request.sortDescriptors = [sort]
-        let objects = try context.fetch(request)
-
         if !objects.isEmpty {
             guard let firstObject = objects.first else {
                 return nil
