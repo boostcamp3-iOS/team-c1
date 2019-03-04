@@ -51,33 +51,19 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType {
      - pet: 해당하는 펫(고양이 또는 강아지)과 관련된 데이터를 가져오기 위한 파마리터.
      */
     func fetchFavoriteGoods(pet: String? = nil) throws -> [MyGoodsData]? {
-        guard let context = context else {
-            return nil
-        }
-        let request: NSFetchRequest<MyGoods>
         let sort = NSSortDescriptor(key: #keyPath(MyGoods.date), ascending: true)
         var myGoodsDatas: [MyGoodsData] = []
+        var predicate: NSPredicate?
 
-        if #available(iOS 10.0, *) {
-            let tmpRequest: NSFetchRequest<MyGoods> = MyGoods.fetchRequest()
-            request = tmpRequest
-        } else {
-            let entityName = String(describing: MyGoods.self)
-            request = NSFetchRequest(entityName: entityName)
-        }
-
-        let predicate: NSPredicate
         if let pet = pet {
             predicate = NSPredicate(format: "pet = %@ AND isFavorite = %@", pet, NSNumber(booleanLiteral: true))
         } else {
             predicate = NSPredicate(format: "isFavorite = %@", NSNumber(booleanLiteral: true))
         }
-        request.predicate = predicate
 
-        request.sortDescriptors = [sort]
-
-        let objects = try context.fetch(request)
-        print(objects)
+        guard let objects = try fetchObjects(MyGoods.self, sortBy: [sort], predicate: predicate) else {
+            return nil
+        }
 
         if !objects.isEmpty {
             for object in objects {
@@ -99,31 +85,19 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType {
      - isLatest: 데이터를 오름차순, 또는 내림차순으로 가져오기 위한 파라미터
      */
     func fetchLatestGoods(pet: String? = nil, isLatest: Bool, ascending: Bool) throws -> [MyGoodsData]? {
-        guard let context = context else {
-            return nil
-        }
         let sort = NSSortDescriptor(key: #keyPath(MyGoods.date), ascending: ascending)
         var myGoodsDatas: [MyGoodsData] = []
-        let request: NSFetchRequest<MyGoods>
-        let predicate: NSPredicate
-        if #available(iOS 10.0, *) {
-            let tmpRequest: NSFetchRequest<MyGoods> = MyGoods.fetchRequest()
-            request = tmpRequest
-        } else {
-            let entityName = String(describing: MyGoods.self)
-            request = NSFetchRequest(entityName: entityName)
-        }
+        var predicate: NSPredicate?
+
         if let pet = pet {
              predicate = NSPredicate(format: "pet = %@ AND isLatest = %@", pet, NSNumber(booleanLiteral: isLatest))
         } else {
             predicate = NSPredicate(format: "isLatest = %@", NSNumber(booleanLiteral: isLatest))
         }
 
-        request.returnsObjectsAsFaults = false
-        request.predicate = predicate
-        request.sortDescriptors = [sort]
-
-        let objects = try context.fetch(request)
+        guard let objects = try fetchObjects(MyGoods.self, sortBy: [sort], predicate: predicate) else {
+            return nil
+        }
 
         if !objects.isEmpty {
             for object in objects {
@@ -144,22 +118,13 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType {
      - productId: 상품들마다 가지고 있는 고유 productId.
      */
     func fetchProductID(productID: String) -> MyGoods? {
-        guard let context = context else { return nil }
-        let request: NSFetchRequest<MyGoods>
-
-        if #available(iOS 10.0, *) {
-            let tmpRequest: NSFetchRequest<MyGoods> = MyGoods.fetchRequest()
-            request = tmpRequest
-        } else {
-            let entityName = String(describing: MyGoods.self)
-            request = NSFetchRequest(entityName: entityName)
-        }
-
-        request.returnsObjectsAsFaults = false
-        request.predicate = NSPredicate(format: "productID = %@", productID)
+        var predicate: NSPredicate?
+        predicate = NSPredicate(format: "productID = %@", productID)
 
         do {
-            let object = try context.fetch(request)
+            guard let object = try fetchObjects(MyGoods.self, sortBy: nil, predicate: predicate) else {
+                return nil
+            }
             guard let firstObject = object.first else {
                 throw CoreDataError.fetch(message: "MyGoods Entity has not \(productID) data, So can not fetch data")
             }

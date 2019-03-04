@@ -150,8 +150,15 @@ extension CoreDataManagerType {
         request.predicate = predicate
         request.sortDescriptors = sortBy
 
-        let fetchedResult = try context.fetch(request)
-        return fetchedResult
+        do {
+            let fetchedResult = try context.fetch(request)
+            print("fetchedResult: \(fetchedResult)")
+            return fetchedResult
+        } catch let error {
+            print(error)
+            return nil
+        }
+        
     }
 }
 
