@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class PetKeywordCoreDataManager: PetKeywordCoreDataManagerType, CoreDataManagerFunctionImplementType {
+class PetKeywordCoreDataManager: PetKeywordCoreDataManagerType {
 
     // MARK: - Fetch Methodes
     /**

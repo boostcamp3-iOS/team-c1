@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import CoreData
 
-class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType, CoreDataManagerFunctionImplementType {
+class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType {
 
     // MARK: - Fetch Methodes
     /**
