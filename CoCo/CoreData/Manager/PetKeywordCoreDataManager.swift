@@ -21,24 +21,17 @@ class PetKeywordCoreDataManager: PetKeywordCoreDataManagerType {
      */
     // 데이터 타입(Keyword, Pet)변경해서 리턴
     func fetchObjects(pet: String? = nil) throws -> [CoreDataStructEntity]? {
-        guard let context = context else { return nil }
         var petKeywordDatas = [PetKeywordData]()
-        let request: NSFetchRequest<PetKeyword>
+        var predicate: NSPredicate?
         let sort = NSSortDescriptor(key: #keyPath(PetKeyword.date), ascending: false)
 
-        if #available(iOS 10.0, *) {
-            let tmpRequest: NSFetchRequest<PetKeyword> = PetKeyword.fetchRequest()
-            request = tmpRequest
-        } else {
-            let entityName = String(describing: PetKeyword.self)
-            request = NSFetchRequest(entityName: entityName)
-        }
-        request.sortDescriptors = [sort]
         if let pet = pet {
-            let predicate = NSPredicate(format: "pet = %@", pet)
-            request.predicate = predicate
+            predicate = NSPredicate(format: "pet = %@", pet)
         }
-        let objects = try context.fetch(request)
+
+        guard let objects = try fetchObjects(PetKeyword.self, sortBy: [sort], predicate: predicate) else {
+            return nil
+        }
 
         if !objects.isEmpty {
             for object in objects {

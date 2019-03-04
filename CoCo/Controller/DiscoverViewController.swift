@@ -45,7 +45,6 @@ class DiscoverViewController: UIViewController {
         loadData()
         pet = PetDefault.shared.pet
         extendedLayoutIncludesOpaqueBars = true
-        print("pet: \(pet)")
     }
 
     override func viewWillAppear(_ animated: Bool) {

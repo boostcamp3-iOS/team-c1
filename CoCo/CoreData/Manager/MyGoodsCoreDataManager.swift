@@ -21,28 +21,17 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType {
      기본값은 nil로, 값을 넣어주지 않으면 고양이와 강아지의 모든 데이터를 가져온다.
      */
     func fetchObjects(pet: String? = nil) throws -> [CoreDataStructEntity]? {
-        guard let context = context else { return nil }
         let sort = NSSortDescriptor(key: #keyPath(MyGoods.date), ascending: true)
         var myGoodsDatas: [MyGoodsData] = []
-        let request: NSFetchRequest<MyGoods>
-
-        if #available(iOS 10.0, *) {
-            let tmpRequest: NSFetchRequest<MyGoods> = MyGoods.fetchRequest()
-            request = tmpRequest
-        } else {
-            let entityName = String(describing: MyGoods.self)
-            request = NSFetchRequest(entityName: entityName)
-        }
+        var predicate: NSPredicate?
 
         if let pet = pet {
-            let predicate = NSPredicate(format: "pet = %@", pet)
-            request.predicate = predicate
+            predicate = NSPredicate(format: "pet = %@", pet)
         }
 
-        request.sortDescriptors = [sort]
-
-        let objects = try context.fetch(request)
-        print("All fetch count: \(objects.count)")
+        guard let objects = try fetchObjects(MyGoods.self, sortBy: [sort], predicate: predicate) else {
+            return nil
+        }
         if !objects.isEmpty {
             for object in objects {
                 var myGoodsData = MyGoodsData()

@@ -20,29 +20,18 @@ class SearchWordCoreDataManager: SearchWordCoreDataManagerType {
      */
     // Fetch All of SearchKeyWordData
     func fetchObjects(pet: String? = nil) throws -> [CoreDataStructEntity]? {
-        guard let context = context else {
-            return nil
-        }
-        var searchWordDatas = [SearchWordData]()
         let sort = NSSortDescriptor(key: #keyPath(SearchWord.date), ascending: true)
-        let request: NSFetchRequest<SearchWord>
-
-        if #available(iOS 10.0, *) {
-            let tmpRequest: NSFetchRequest<SearchWord> = SearchWord.fetchRequest()
-            request = tmpRequest
-        } else {
-            let entityName = String(describing: SearchWord.self)
-            request = NSFetchRequest(entityName: entityName)
-        }
+        var searchWordDatas = [SearchWordData]()
+        var predicate: NSPredicate?
 
         if let pet = pet {
-            let predicate = NSPredicate(format: "pet = %@", pet)
-            request.predicate = predicate
-        }
-        request.returnsObjectsAsFaults = false
-        request.sortDescriptors = [sort]
+            predicate = NSPredicate(format: "pet = %@", pet)
 
-        let objects = try context.fetch(request)
+        }
+
+        guard let objects = try fetchObjects(SearchWord.self, sortBy: [sort], predicate: predicate) else {
+            return nil
+        }
 
         if !objects.isEmpty {
             for object in objects {

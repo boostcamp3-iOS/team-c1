@@ -16,7 +16,7 @@ protocol CoreDataManagerType {
     // MARK: Methodes
     func afterOperation(context: NSManagedObjectContext?)
     func insert<T: CoreDataStructEntity>(_ coreDataStructType: T) throws -> Bool
-    func fetchObjects(pet: String?) throws -> [CoreDataStructEntity]?
+    func fetchObjects<T: NSManagedObject>(_ entityClass: T.Type, sortBy: [NSSortDescriptor]?, predicate: NSPredicate?) throws -> [T]?
     func updateObject<T: CoreDataStructEntity>(_ coreDataStructType: T) throws -> Bool
     func deleteObject<T: CoreDataStructEntity>(_ coreDataStructType: T) throws -> Bool
 }
@@ -24,6 +24,7 @@ protocol CoreDataManagerType {
 // MARK: - MyGoodsCoreDataManagerType
 protocol MyGoodsCoreDataManagerType: CoreDataManagerType {
     // MARK: - Methodes
+    func fetchObjects(pet: String?) throws -> [CoreDataStructEntity]?
     func fetchFavoriteGoods(pet: String?) throws -> [MyGoodsData]?
     func fetchLatestGoods(pet: String?, isLatest: Bool, ascending: Bool) throws -> [MyGoodsData]?
     func fetchProductID(productID: String) -> MyGoods?
@@ -34,6 +35,7 @@ protocol MyGoodsCoreDataManagerType: CoreDataManagerType {
 // MARK: - PetKeywordCoreDataManagerType
 protocol PetKeywordCoreDataManagerType: CoreDataManagerType {
     // MARK: - Methodes
+    func fetchObjects(pet: String?) throws -> [CoreDataStructEntity]?
     func fetchOnlyKeyword(pet: String) throws -> [String]?
     func fetchOnlyPet() throws -> String?
     func deleteAllObjects(pet: String) throws -> Bool
@@ -42,6 +44,7 @@ protocol PetKeywordCoreDataManagerType: CoreDataManagerType {
 // MARK: - SearchWordCoreDataManagerType
 protocol SearchWordCoreDataManagerType: CoreDataManagerType {
     // MARK: - Methodes// MARK: - Methodes
+    func fetchObjects(pet: String?) throws -> [CoreDataStructEntity]?
     func fetchOnlySearchWord(pet: String) throws -> [String]?
     func updateObject(searchWord: String, pet: String) throws -> Bool
     func deleteAllObjects(pet: String) throws -> Bool
@@ -128,6 +131,27 @@ extension CoreDataManagerType {
         default:
             return false
         }
+    }
+}
+
+extension CoreDataManagerType {
+    func fetchObjects<T: NSManagedObject>(_ entityClass: T.Type, sortBy: [NSSortDescriptor]?, predicate: NSPredicate?) throws -> [T]? {
+        guard let context = context else {
+            return  nil
+        }
+        let request: NSFetchRequest<T>
+        if #available(iOS 10.0, *) {
+            guard let tmpRequest = entityClass.fetchRequest() as? NSFetchRequest<T> else { return nil }
+            request = tmpRequest
+        } else {
+            let entityName = String(describing: entityClass)
+            request = NSFetchRequest(entityName: entityName)
+        }
+        request.predicate = predicate
+        request.sortDescriptors = sortBy
+
+        let fetchedResult = try context.fetch(request)
+        return fetchedResult
     }
 }
 
