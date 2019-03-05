@@ -47,7 +47,9 @@ class MyGoodsService {
         recentGoods.removeAll()
         favoriteGoods.removeAll()
         recentGoods = fetchRecentGoods()
+        print(recentGoods)
         favoriteGoods = fetchFavoriteGoods()
+        print(favoriteGoods)
     }
     /// 좋아요(찜) 상품을 코어데이터에서 가져온다.
     private func fetchFavoriteGoods() -> [MyGoodsData] {
@@ -55,7 +57,7 @@ class MyGoodsService {
             return []
         }
         var result = [MyGoodsData]()
-        if let data = try? manager.fetchFavoriteGoods(pet: pet?.rawValue), let goods = data {
+        if let data = try? manager.fetchFavoriteGoods(pet: nil), let goods = data {
             result = goods
         }
         // 최근 본 상품 순서로 정렬한다.
@@ -73,7 +75,7 @@ class MyGoodsService {
             return []
         }
         var result = [MyGoodsData]()
-        if let data = try? manager.fetchLatestGoods(pet: pet?.rawValue, isLatest: true, ascending: false),
+        if let data = try? manager.fetchLatestGoods(pet: nil, isLatest: true, ascending: false),
             let goods = data {
             result = goods
         }

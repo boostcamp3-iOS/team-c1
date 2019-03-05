@@ -40,6 +40,7 @@ class WebViewService {
         }
         myGoodsData.isLatest = true
         myGoodsData.date = myGoodsData.createDate()
+        myGoodsData.pet = PetDefault.shared.pet.rawValue
         // 이미 같은 productID의 상품이 존재한다면 manager 내부에서 update를 호출함
         if let result = try? manager.insert(myGoodsData) {
             return result
@@ -63,6 +64,7 @@ class WebViewService {
     func updateFavorite(_ isFavorite: Bool) {
         if isFavorite { myGoodsData.isLatest = false }
         myGoodsData.isFavorite = isFavorite
+        myGoodsData.pet = PetDefault.shared.pet.rawValue
         // 이미 같은 productID의 상품이 존재한다면 manager 내부에서 update를 호출함
         insert()
     }
