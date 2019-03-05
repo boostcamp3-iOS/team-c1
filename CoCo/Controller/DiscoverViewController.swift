@@ -52,7 +52,6 @@ class DiscoverViewController: UIViewController {
         navigationController?.setNavigationBarHidden(true, animated: false)
         tabBarController?.tabBar.isHidden = false
         if pet != PetDefault.shared.pet {
-            print("PetDefault: \(PetDefault.shared.pet)")
             pagenationNum = 1
             self.layout?.setupInit()
             self.layout?.invalidateLayout()
