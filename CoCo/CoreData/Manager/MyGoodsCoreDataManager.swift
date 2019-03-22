@@ -11,7 +11,6 @@ import UIKit
 import CoreData
 
 class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType {
-
     // MARK: - Fetch Methodes
     /**
      MyGoods의 모든 데이터를 오름차순으로 가져온다.
@@ -20,7 +19,7 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType {
      - pet: 해당하는 펫(고양이 또는 강아지)과 관련된 데이터를 가져오기 위한 파마리터.
      기본값은 nil로, 값을 넣어주지 않으면 고양이와 강아지의 모든 데이터를 가져온다.
      */
-    func fetchObjects(pet: String? = nil) throws -> [CoreDataStructEntity]? {
+    func fetchObjects(pet: String? = nil, completion:@escaping ([CoreDataStructEntity]?, Error?) -> Void) {
         let sort = NSSortDescriptor(key: #keyPath(MyGoods.date), ascending: true)
         var myGoodsDatas: [MyGoodsData] = []
         var predicate: NSPredicate?
@@ -29,18 +28,21 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType {
             predicate = NSPredicate(format: "pet = %@", pet)
         }
 
-        guard let objects = try fetchObjects(MyGoods.self, sortBy: [sort], predicate: predicate) else {
-            return nil
-        }
-        if !objects.isEmpty {
-            for object in objects {
-                var myGoodsData = MyGoodsData()
-                myGoodsData.mappinng(from: object)
-                myGoodsDatas.append(myGoodsData)
+        fetchObjects(MyGoods.self, sortBy: [sort], predicate: predicate) { (fetchResult, error) in
+            if let error = error {
+                completion(nil, error)
             }
-            return myGoodsDatas
-        } else {
-            return nil
+            guard let objects = fetchResult else {
+                return
+            }
+            if !objects.isEmpty {
+                for object in objects {
+                    var myGoodsData = MyGoodsData()
+                    myGoodsData.mappinng(from: object)
+                    myGoodsDatas.append(myGoodsData)
+                }
+                completion(myGoodsDatas, nil)
+            }
         }
     }
 
@@ -50,7 +52,7 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType {
      - Parameter :
      - pet: 해당하는 펫(고양이 또는 강아지)과 관련된 데이터를 가져오기 위한 파마리터.
      */
-    func fetchFavoriteGoods(pet: String? = nil) throws -> [MyGoodsData]? {
+    func fetchFavoriteGoods(pet: String? = nil, completion: @escaping ([MyGoodsData]?, Error?) -> Void) {
         let sort = NSSortDescriptor(key: #keyPath(MyGoods.date), ascending: true)
         var myGoodsDatas: [MyGoodsData] = []
         var predicate: NSPredicate?
@@ -61,19 +63,21 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType {
             predicate = NSPredicate(format: "isFavorite = %@", NSNumber(booleanLiteral: true))
         }
 
-        guard let objects = try fetchObjects(MyGoods.self, sortBy: [sort], predicate: predicate) else {
-            return nil
-        }
-
-        if !objects.isEmpty {
-            for object in objects {
-                var myGoodsData = MyGoodsData()
-                myGoodsData.mappinng(from: object)
-                myGoodsDatas.append(myGoodsData)
+        fetchObjects(MyGoods.self, sortBy: [sort], predicate: predicate) { (fetchResult, error) in
+            if let error = error {
+                completion(nil, error)
             }
-            return myGoodsDatas
-        } else {
-            return nil
+            guard let objects = fetchResult else {
+                return
+            }
+            if !objects.isEmpty {
+                for object in objects {
+                    var myGoodsData = MyGoodsData()
+                    myGoodsData.mappinng(from: object)
+                    myGoodsDatas.append(myGoodsData)
+                }
+                completion(myGoodsDatas, nil)
+            }
         }
     }
 
@@ -84,7 +88,7 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType {
      - pet: 해당하는 펫(고양이 또는 강아지)과 관련된 데이터를 가져오기 위한 파마리터.
      - isLatest: 데이터를 오름차순, 또는 내림차순으로 가져오기 위한 파라미터
      */
-    func fetchLatestGoods(pet: String? = nil, isLatest: Bool, ascending: Bool) throws -> [MyGoodsData]? {
+    func fetchLatestGoods(pet: String? = nil, isLatest: Bool, ascending: Bool, completion: @escaping ([MyGoodsData]?, Error?) -> Void) {
         let sort = NSSortDescriptor(key: #keyPath(MyGoods.date), ascending: ascending)
         var myGoodsDatas: [MyGoodsData] = []
         var predicate: NSPredicate?
@@ -95,19 +99,21 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType {
             predicate = NSPredicate(format: "isLatest = %@", NSNumber(booleanLiteral: isLatest))
         }
 
-        guard let objects = try fetchObjects(MyGoods.self, sortBy: [sort], predicate: predicate) else {
-            return nil
-        }
-
-        if !objects.isEmpty {
-            for object in objects {
-                var myGoodsData = MyGoodsData()
-                myGoodsData.mappinng(from: object)
-                myGoodsDatas.append(myGoodsData)
+        fetchObjects(MyGoods.self, sortBy: [sort], predicate: predicate) { (fetchResut, error) in
+            if let error = error {
+                completion(nil, error)
             }
-            return myGoodsDatas
-        } else {
-            return nil
+            guard let objects = fetchResut else {
+                return
+            }
+            if !objects.isEmpty {
+                for object in objects {
+                    var myGoodsData = MyGoodsData()
+                    myGoodsData.mappinng(from: object)
+                    myGoodsDatas.append(myGoodsData)
+                }
+                completion(myGoodsDatas, nil)
+            }
         }
     }
 
@@ -117,21 +123,17 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType {
      - Parameter :
      - productId: 상품들마다 가지고 있는 고유 productId.
      */
-    func fetchProductID(productID: String) -> MyGoods? {
+    func fetchProductID(productID: String, completion: @escaping (MyGoods?, Error?) -> Void) {
         var predicate: NSPredicate?
         predicate = NSPredicate(format: "productID = %@", productID)
-
-        do {
-            guard let object = try fetchObjects(MyGoods.self, sortBy: nil, predicate: predicate) else {
-                return nil
+        fetchObjects(MyGoods.self, sortBy: nil, predicate: predicate) { (fetchResult, error) in
+            if let error = error {
+                completion(nil, error)
             }
-            guard let firstObject = object.first else {
-                throw CoreDataError.fetch(message: "MyGoods Entity has not \(productID) data, So can not fetch data")
+            guard let objects = fetchResult else {
+                return
             }
-            return firstObject
-        } catch let error as NSError {
-            print(error.localizedDescription)
-            return nil
+            completion(objects.first, nil)
         }
     }
 
@@ -190,20 +192,22 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType {
      - Parameters:
      - pet: 특정 펫의 데이터를 지우기위한 파라미터.
      */
-    func latestGoodsToFalse(pet: String) throws {
-        do {
-            guard var objects = try fetchLatestGoods(pet: pet, isLatest: true, ascending: false) else {
-                throw CoreDataError.fetch(message: "Can not fetch data")
+    func latestGoodsToFalse(pet: String, completion: @escaping(Error?) -> Void) throws {
+        fetchLatestGoods(pet: pet, isLatest: true, ascending: false) { [weak self] (fetchResult, error) in
+            if let error = error {
+                completion(error)
+            }
+            guard var objects = fetchResult else {
+                return
             }
             if objects.count > 10 {
                 for index in 10..<objects.count {
                     objects[index].isLatest = false
                     print(index)
-                    try updateObject(objects[index])
+                    self?.updateObject(objects[index]) { (_) in }
                 }
             }
-        } catch let error as NSError {
-            print(error.localizedDescription)
+            completion(nil)
         }
     }
 }

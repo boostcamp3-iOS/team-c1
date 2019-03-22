@@ -12,8 +12,6 @@ import CoreData
 
 class MyGoodsCoreDataTests: XCTestCase {
     let myGoodsManager = MockMyGoodsCoreDataManager()
-    let searchWordManager = MockSearchWordCoreDataManager()
-
     override func setUp() {
         // Put setup code here. This method is called before the invocation of each test method in the class.
     }
@@ -29,48 +27,41 @@ class MyGoodsCoreDataTests: XCTestCase {
                                       isLatest: true, price: "12,000",
                                       productID: "12345", searchWord: "강아지 옷",
                                       shoppingmall: "네이버 쇼핑")
-        do {
-            let result = try myGoodsManager.insert(myGoodsData)
-             XCTAssert(result, "데이터를 저장할 수 없습니다.")
-        } catch let error {
-            print(error.localizedDescription)
-        }
+
+        myGoodsManager.insert(myGoodsData, completion: { (result, error) in
+            if let error = error {
+                XCTAssertNil(error, "에러가 발생했습니다.")
+            } else {
+                XCTAssert(result, "데이터를 저장할 수 없습니다.")
+            }
+            })
     }
 
     func testFetchFavoriteGoods() {
-        do {
-            guard let petResult = try myGoodsManager.fetchFavoriteGoods(pet:
-                PetDefault.shared.pet.rawValue) else {
-                return
-            }
-            XCTAssert(petResult.count > 0, "데이터가 존재하지 않습니다.")
-            guard let nonPetresult = try myGoodsManager.fetchFavoriteGoods(pet:
-                nil) else {
-                return
-            }
-            XCTAssert(nonPetresult.count > 0, "데이터가 존재하지 않습니다.")
-        } catch let error {
-            print(error.localizedDescription)
+        myGoodsManager.fetchFavoriteGoods(pet: PetDefault.shared.pet.rawValue) { (myGoods, _) in
+            XCTAssert(myGoods!.count > 0, "데이터가 존재하지 않습니다.")
+        }
+
+        myGoodsManager.fetchFavoriteGoods(pet: nil) { (myGoods, _) in
+            XCTAssert(myGoods!.count > 0, "데이터가 존재하지 않습니다.")
         }
     }
 
     func testFetchLatestGoods() {
-        do {
-            guard let result = try myGoodsManager.fetchLatestGoods(pet:
-                PetDefault.shared.pet.rawValue, isLatest: true, ascending: false) else {
-                return
-            }
-            let count = result.filter { $0.isLatest == true}.count
-            XCTAssert(count > 0, "Fetch Fatil")
-        } catch let error {
-            print(error.localizedDescription)
+        myGoodsManager.fetchLatestGoods(pet:
+            PetDefault.shared.pet.rawValue, isLatest: true, ascending: false) { (myGoodsData, _) in
+                guard let myGoodsData = myGoodsData else {
+                    return
+                }
+                let count = myGoodsData.filter { $0.isLatest == true}.count
+                XCTAssert(count > 0, "Fetch Fatil")
         }
     }
 
     func testFetchProductID() {
-        let result = myGoodsManager.fetchProductID(productID: "123456")
-        XCTAssertNotNil(result, "Fetch Fail")
-
+        myGoodsManager.fetchProductID(productID: "123456") { (myGoods, _) in
+            XCTAssertNotNil(myGoods, "Fetch Fail")
+        }
     }
 
     func testDeleteFavoriteAllObjects() {
@@ -95,14 +86,11 @@ class MyGoodsCoreDataTests: XCTestCase {
     }
 
     func testFetchObjects() {
-        do {
-            guard let result = try myGoodsManager.fetchObjects(pet:
-                PetDefault.shared.pet.rawValue) else {
+        myGoodsManager.fetchObjects(pet: PetDefault.shared.pet.rawValue) { (myGoodsData, _) in
+            guard let myGoodsData = myGoodsData else {
                 return
             }
-            XCTAssert(result.count > 0, "Fetch Fail")
-        } catch let error {
-            print(error.localizedDescription)
+             XCTAssert(myGoodsData.count > 0, "Fetch Fail")
         }
     }
 
@@ -113,12 +101,11 @@ class MyGoodsCoreDataTests: XCTestCase {
                                       isLatest: true, price: "12,000",
                                       productID: "12345", searchWord: "강아지 옷",
                                       shoppingmall: "네이버 쇼핑")
-        do {
-            let result = try myGoodsManager.updateObject(myGoodsData)
-            XCTAssertNotNil(result, "Update Fail")
-        } catch let error {
-            print(error.localizedDescription)
+
+        myGoodsManager.updateObject(myGoodsData) { (result) in
+            XCTAssert(result, "데이터르 업데이트 할 수 없습니다.")
         }
+
     }
 
     func testDeleteObject() {
@@ -146,62 +133,45 @@ class MyGoodsCoreDataTests: XCTestCase {
 
 class PetKeywordCoreDataTests: XCTestCase {
     let petKeywordManager = MockPetKeywordCoreDataManager()
-    // func deleteAllObjects(pet: String) throws -> Bool
-    // func updateObject<T: CoreDataStructEntity>(_ coreDataStructType: T) throws -> Bool
-    // func deleteObject<T>(_ coreDataStructType: T) throws -> Bool where T: CoreDataStructEntity
-    override func setUp() {
 
-    }
+    override func setUp() { }
 
     func testInsert() {
         let petKeywordData = PetKeywordData(pet: PetDefault.shared.pet.rawValue, keywords: ["스타일", "뷰티", "리빙"])
-        do {
-            let result = try petKeywordManager.insert(petKeywordData)
-            XCTAssert(result, "Insert Fail")
-        } catch let error {
-            print(error.localizedDescription)
-        }
+        petKeywordManager.insert(petKeywordData, completion: { (result, error) in
+            if let error = error {
+                XCTAssertNil(error, "에러가 발생했습니다.")
+            } else {
+                XCTAssert(result, "데이터를 저장할 수 없습니다.")
+            }
+        })
     }
 
     func testFetchObjects() {
-        do {
-            guard let result = try petKeywordManager.fetchObjects(pet: nil) else {
+        petKeywordManager.fetchObjects(pet: nil) { (petKeyword, _) in
+            guard let petKeyword = petKeyword else {
                 return
             }
-            XCTAssert(result.count >= 2, "FetchFail")
-        } catch let error {
-            print(error.localizedDescription)
+             XCTAssert(petKeyword.count >= 2, "FetchFail")
         }
     }
 
     func testFetchOnlyPet() {
-        do {
-            let result = try petKeywordManager.fetchOnlyPet()
-            XCTAssertNotNil(result, "Fetch Fail")
-        } catch let error {
-             print(error.localizedDescription)
+        petKeywordManager.fetchOnlyPet { (pet, _) in
+             XCTAssertNotNil(pet, "Fetch Fail")
         }
     }
 
     func testFetchOnlyKeyword() {
-
-        do {
-            guard let result = try petKeywordManager.fetchOnlyKeyword(pet: PetDefault.shared.pet.rawValue) else {
-            return
-            }
-            XCTAssertNotNil(result, "Fetch Fail")
-        } catch let error {
-            print(error.localizedDescription)
+        petKeywordManager.fetchOnlyKeyword(pet: PetDefault.shared.pet.rawValue) { (keyword, _) in
+            XCTAssertNotNil(keyword, "Fetch Fail")
         }
     }
 
     func testUpdate() {
         let petKeywordData = PetKeywordData(pet: PetDefault.shared.pet.rawValue, keywords: ["스타일", "뷰티", "리빙"])
-        do {
-            let result = try petKeywordManager.updateObject(petKeywordData)
-            XCTAssert(result, "update Fail")
-        } catch let error {
-            print(error.localizedDescription)
+        petKeywordManager.updateObject(petKeywordData) { (result) in
+            XCTAssert(result, "데이터르 업데이트 할 수 없습니다.")
         }
     }
 
@@ -222,6 +192,102 @@ class PetKeywordCoreDataTests: XCTestCase {
             XCTAssert(result, "delete fail")
         } catch let error {
             print(error.localizedDescription)
+        }
+    }
+}
+
+class SerarchWordCoreDataTests: XCTestCase {
+    let searchWordManager = MockSearchWordCoreDataManager()
+
+    override func setUp() {
+    }
+
+    func testInsertMyGoods() {
+        let searchWord = SearchWordData(pet: PetDefault.shared.pet.rawValue, searchWord: "장난감")
+
+        searchWordManager.insert(searchWord, completion: { (result, error) in
+            if let error = error {
+                XCTAssertNil(error, "에러가 발생했습니다.")
+            } else {
+                XCTAssert(result, "데이터를 저장할 수 없습니다.")
+            }
+        })
+    }
+
+    func testUpdate() {
+        let searchWord = SearchWordData(pet: PetDefault.shared.pet.rawValue, searchWord: "화장실")
+        searchWordManager.updateObject(searchWord) { (result) in
+            XCTAssert(result, "데이터르 업데이트 할 수 없습니다.")
+        }
+    }
+
+    func testPetUpdate() {
+        let searchWord = SearchWordData(pet: PetDefault.shared.pet.rawValue, searchWord: "화장실")
+        searchWordManager.updateObject(searchWord: searchWord.searchWord, pet: searchWord.pet ?? PetDefault.shared.pet.rawValue) { (result, error) in
+            if let error = error {
+                XCTAssertNil(error, "Update Error!! \(error)")
+            } else {
+                XCTAssert(result, "Update Fail")
+            }
+        }
+    }
+
+    func testFetchObject() {
+        searchWordManager.fetchObjects(pet: PetDefault.shared.pet.rawValue) { (searchWorddata, error) in
+            if let error = error {
+                XCTAssertNil(error, "Fetch Object Error!! \(error)")
+            } else {
+                XCTAssertNotNil(searchWorddata, "Fail Fetch Object")
+            }
+        }
+    }
+
+    func testFetchObjectWhenPetNill() {
+        searchWordManager.fetchObjects(pet: nil) { (searchWorddata, error) in
+            if let error = error {
+                XCTAssertNil(error, "Fetch Object Error!! \(error)")
+            } else {
+                XCTAssertNotNil(searchWorddata, "Fail Fetch Object")
+            }
+        }
+    }
+
+    func testFetchAllSearchWord() {
+        searchWordManager.fetchOnlySearchWord(pet: PetDefault.shared.pet.rawValue) { (searchWords, error) in
+            if let error = error {
+                XCTAssertNil(error, "Fetch SearchWord Error!! \(error)")
+            } else {
+                XCTAssertNotNil(searchWords, "Fail Fetch SearchWord!!")
+            }
+        }
+    }
+
+    func testFetchSearchWord() {
+        searchWordManager.fetchWord("고양이 옷", pet: "고양이") { (searchWordData, error) in
+            if let error = error {
+                XCTAssertNil(error, "Fetch Error!! \(error)")
+            } else {
+                XCTAssertNotNil(searchWordData, "Not found Data")
+            }
+        }
+    }
+
+    func testDelete() {
+        let searchWord = SearchWordData(pet: PetDefault.shared.pet.rawValue, searchWord: "화장실")
+        do {
+            let result = try searchWordManager.deleteObject(searchWord)
+            XCTAssert(result, "Delete fail")
+        } catch let error {
+            XCTAssertNil(error, "Delete Error!! \(error)")
+        }
+    }
+
+    func testAllDelete() {
+        do {
+            let result = try searchWordManager.deleteAllObjects(pet: PetDefault.shared.pet.rawValue)
+             XCTAssert(result, "Delete fail")
+        } catch let error {
+            XCTAssertNil(error, "Delete Error!! \(error)")
         }
     }
 }

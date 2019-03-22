@@ -25,6 +25,7 @@ struct PetKeywordData: CoreDataStructEntity {
         self.init()
         self.pet = pet
         self.keywords = keywords
+        self.date = createDate()
     }
 
     // MARK: Method

@@ -10,7 +10,6 @@ import UIKit
 import CoreData
 
 class PetKeywordCoreDataManager: PetKeywordCoreDataManagerType {
-
     // MARK: - Fetch Methodes
     /**
      PetKeyword의 모든 데이터를 오름차순으로 가져옴
@@ -20,7 +19,7 @@ class PetKeywordCoreDataManager: PetKeywordCoreDataManagerType {
         기본값은 nil로, 값을 넣어주지 않으면 고양이와 강아지의 모든 데이터를 가져온다.
      */
     // 데이터 타입(Keyword, Pet)변경해서 리턴
-    func fetchObjects(pet: String? = nil) throws -> [CoreDataStructEntity]? {
+    func fetchObjects(pet: String? = nil, completion: @escaping ([CoreDataStructEntity]?, Error?) -> Void) {
         var petKeywordDatas = [PetKeywordData]()
         var predicate: NSPredicate?
         let sort = NSSortDescriptor(key: #keyPath(PetKeyword.date), ascending: false)
@@ -29,20 +28,25 @@ class PetKeywordCoreDataManager: PetKeywordCoreDataManagerType {
             predicate = NSPredicate(format: "pet = %@", pet)
         }
 
-        guard let objects = try fetchObjects(PetKeyword.self, sortBy: [sort], predicate: predicate) else {
-            return nil
+        fetchObjects(PetKeyword.self, sortBy: [sort], predicate: predicate) { (fetchResult, error) in
+            if let error = error {
+                completion(nil, error)
+            }
+            guard let objects = fetchResult else {
+                return
+            }
+            if !objects.isEmpty {
+                for object in objects {
+                    var petKeyword = PetKeywordData()
+                    petKeyword.mappinng(from: object)
+                    petKeywordDatas.append(petKeyword)
+                }
+                completion(petKeywordDatas, nil)
+            } else {
+               completion(nil, nil)
+            }
         }
 
-        if !objects.isEmpty {
-            for object in objects {
-                var petKeyword = PetKeywordData()
-                petKeyword.mappinng(from: object)
-                petKeywordDatas.append(petKeyword)
-            }
-            return petKeywordDatas
-        } else {
-            return nil
-        }
     }
 
     // Fetch Only Keyword Data
@@ -52,19 +56,18 @@ class PetKeywordCoreDataManager: PetKeywordCoreDataManagerType {
      - Parameter :
      - pet: 해당하는 펫(고양이 또는 강아지)과 관련된 키워드를 가져오기 위한 파마리터.
      */
-    func fetchOnlyKeyword(pet: String) throws -> [String]? {
-        var keywords: [String]?
-        do {
-            guard let objects = try fetchObjects(pet: pet) else {
-                throw CoreDataError.fetch(message: "PetKeyword Entity has not  data, So can not fetch data")
+    func fetchOnlyKeyword(pet: String, completion: @escaping (([String]?, Error?) -> Void)) {
+        fetchObjects(pet: pet) { (fetchResult, error) in
+            if let error = error {
+                completion(nil, error)
             }
-            guard let petKeywordDatas = objects as? [PetKeywordData] else { return nil }
-            guard let petKeywordData = petKeywordDatas.first else { return nil }
-            keywords = petKeywordData.keywords
-            return keywords
-        } catch let error as NSError {
-            print(error.localizedDescription)
-            return nil
+            guard let petKeywordDatas = fetchResult as? [PetKeywordData] else {
+                return
+            }
+            guard let petKeywordData = petKeywordDatas.first else {
+                return
+            }
+            completion(petKeywordData.keywords, nil)
         }
     }
 
@@ -75,22 +78,25 @@ class PetKeywordCoreDataManager: PetKeywordCoreDataManagerType {
      - Parameter :
         - pet: 해당하는 펫(고양이 또는 강아지)과 관련된 펫정보를 가져오기 위한 파마리터.
      */
-    func fetchOnlyPet() throws -> String? {
+    func fetchOnlyPet(completion: @escaping (String?, Error?) -> Void) {
         var petKeywordData = PetKeywordData()
         let sort = NSSortDescriptor(key: #keyPath(PetKeyword.date), ascending: false)
-        guard let objects = try fetchObjects(PetKeyword.self, sortBy: [sort], predicate: nil) else {
-            return nil
-        }
-        if !objects.isEmpty {
-            guard let firstObject = objects.first else {
-                return nil
+        fetchObjects(PetKeyword.self, sortBy: [sort], predicate: nil) {
+            (fetchResult, error) in
+            if let error = error {
+                completion(nil, error)
             }
-            petKeywordData.mappinng(from: firstObject)
-            return petKeywordData.pet
-        } else {
-            return nil
+            guard let objects = fetchResult else {
+                return
+            }
+            if !objects.isEmpty {
+                guard let firstObject = objects.first else {
+                    return
+                }
+                petKeywordData.mappinng(from: firstObject)
+                completion(petKeywordData.pet, nil)
+            }
         }
-
     }
 
     // MARK: - Delete Method

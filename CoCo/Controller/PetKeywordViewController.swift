@@ -74,7 +74,11 @@ class PetKeywordViewController: UIViewController {
             if UserDefaults.isFirstLaunch() {
                 UserDefaults.standard.set(true, forKey: UserDefaults.launchedBefore)
             }
-            service?.insertPetKeyword()
+            service?.insertPetKeyword { (error) in
+                if let error = error {
+                    print(error)
+                }
+            }
             UIApplication.shared.keyWindow?.rootViewController = tabBarController
         }
     }

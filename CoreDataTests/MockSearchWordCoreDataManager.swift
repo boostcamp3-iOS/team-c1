@@ -11,51 +11,53 @@ import Foundation
 
 class MockSearchWordCoreDataManager: SearchWordCoreDataManagerType {
 
-    @discardableResult func insert<T: CoreDataStructEntity>(_ coreDataStructType: T) throws -> Bool {
-        if coreDataStructType is SearchWordData {
-            return true
-        } else {
-            return false
-        }
-    }
-
-    func fetchOnlySearchWord(pet: String) throws -> [String]? {
+    func updateObject(searchWord: String, pet: String, completion: @escaping (Bool, Error?) -> Void) {
         if pet == "고양이" || pet == "강아지" {
-            return ["쿠션", "신발", "옷"]
+            completion(true, nil)
         } else {
-            return nil
+            completion(false, nil)
         }
     }
 
-    func fetchObjects(pet: String? = nil) throws -> [CoreDataStructEntity]? {
+    func fetchObjects(pet: String?, completion: @escaping ([CoreDataStructEntity]?, Error?) -> Void) {
         if let pet = pet {
-            return [SearchWordData(pet: pet, searchWord: "배변용품")]
+            completion([SearchWordData(pet: pet, searchWord: "배변용품")], nil)
         } else {
-            return [SearchWordData(pet: "고양이", searchWord: "배변용품"), SearchWordData(pet: "강아지", searchWord: "강아지간식")]
+            completion([SearchWordData(pet: "고양이", searchWord: "배변용품"), SearchWordData(pet: "강아지", searchWord: "강아지간식")], nil)
         }
     }
 
-    func updateObject<T: CoreDataStructEntity>(_ coreDataStructType: T) throws -> Bool {
-        if coreDataStructType is SearchWordData {
-            return true
-        } else {
-            return false
-        }
-    }
-
-    @discardableResult func updateObject(searchWord: String, pet: String) throws -> Bool {
+    func fetchOnlySearchWord(pet: String, completion: @escaping (([String]?, Error?) -> Void)) {
         if pet == "고양이" || pet == "강아지" {
-            return true
+            completion(["쿠션", "신발", "옷"], nil)
         } else {
-            return false
+            completion(nil, nil)
         }
     }
 
-    func deleteObject<T: CoreDataStructEntity>(_ coreDataStructType: T) throws -> Bool {
-        if coreDataStructType is SearchWordData {
-            return true
+    func fetchWord(_ searchWord: String, pet: String, completion: @escaping (SearchWordData?, Error?) -> Void) {
+        let searchWordData = SearchWordData(pet: "고양이", searchWord: "고양이 옷")
+        if (pet == searchWordData.pet) && (searchWord == searchWordData.searchWord) {
+            completion(searchWordData, nil)
         } else {
-            return false
+            completion(nil, nil)
+        }
+    }
+
+    func insert<T: CoreDataStructEntity>(_ coreDataStructType: T, completion: @escaping (Bool, Error?) -> Void) {
+        if coreDataStructType is SearchWordData {
+            completion(true, nil)
+        } else {
+            completion(false, nil)
+        }
+    }
+
+    func updateObject<T>(_ coreDataStructType: T, completion:@escaping
+        (Bool) -> Void) {
+        if coreDataStructType is SearchWordData {
+            completion(true)
+        } else {
+            completion(false)
         }
     }
 
@@ -65,5 +67,14 @@ class MockSearchWordCoreDataManager: SearchWordCoreDataManagerType {
         } else {
             return false
         }
+    }
+
+    func deleteObject<T: CoreDataStructEntity>(_ coreDataStructType: T)
+        throws -> Bool {
+            if coreDataStructType is SearchWordData {
+                return true
+            } else {
+                return false
+            }
     }
 }

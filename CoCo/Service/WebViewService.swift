@@ -34,31 +34,40 @@ class WebViewService {
 
     // MARK: - Public methods
     /// MyGoodsData를 코어 데이터에 저장(또는 업데이트)한다.
-    @discardableResult func insert() -> Bool {
+   func insert(completion: @escaping (Error?) -> Void) {
         guard let manager = manager else {
-            return false
+            return
         }
         myGoodsData.isLatest = true
         myGoodsData.date = myGoodsData.createDate()
         myGoodsData.pet = PetDefault.shared.pet.rawValue
         // 이미 같은 productID의 상품이 존재한다면 manager 내부에서 update를 호출함
-        if let result = try? manager.insert(myGoodsData) {
-            return result
+        manager.insert(myGoodsData) { (_, error) in
+            if let error =  error {
+                completion(error)
+            } else {
+                completion(nil)
+            }
         }
-        return false
     }
     /// preductID로 이미 코어데이터에 저장된 데이터인지 확인한다.
-    @discardableResult func fetchData() -> Bool {
+    func fetchData(completion: @escaping (Bool, Error?) -> Void) {
         guard let manager = manager else {
-            return false
+            return
         }
-        if let data = manager.fetchProductID(productID: myGoodsData.productID) {
-            var newData = MyGoodsData()
-            newData.mappinng(from: data)
-            myGoodsData = newData
-            return true
+        manager.fetchProductID(productID: myGoodsData.productID) { [weak self] (myGoods, error) in
+            if let error = error {
+                completion(false, error)
+            }
+            if let myGoods = myGoods {
+                var newData = MyGoodsData()
+                newData.mappinng(from: myGoods)
+                self?.myGoodsData = newData
+                completion(true, nil)
+            } else {
+                completion(false, nil)
+            }
         }
-        return false
     }
     /// 상품의 좋아요(찜) 변경을 반영한다.
     func updateFavorite(_ isFavorite: Bool) {
@@ -66,6 +75,10 @@ class WebViewService {
         myGoodsData.isFavorite = isFavorite
         myGoodsData.pet = PetDefault.shared.pet.rawValue
         // 이미 같은 productID의 상품이 존재한다면 manager 내부에서 update를 호출함
-        insert()
+        insert { (error) in
+            if let error  = error {
+                print(error)
+            }
+        }
     }
 }

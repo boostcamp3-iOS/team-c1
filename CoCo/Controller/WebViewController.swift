@@ -69,8 +69,16 @@ class WebViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        service?.fetchData()
-        service?.insert()
+        service?.fetchData { (_, error) in
+            if let error = error {
+                print(error)
+            }
+        }
+        service?.insert { (error) in
+            if let error = error {
+                print(error)
+            }
+        }
         if let favorite = service?.myGoodsData.isFavorite {
             isFavorite = favorite
         }

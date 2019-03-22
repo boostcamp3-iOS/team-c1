@@ -89,33 +89,37 @@ class DiscoverViewController: UIViewController {
         guard let discoverService = discoverService else {
             return
         }
-        discoverService.fetchPet()
-        discoverService.fetchPetKeywords()
-        discoverService.fetchSearchWord()
-        discoverService.fetchMyGoods()
-        discoverService.mixedWord()
-        if !isInserting {
-            isInserting = true
-            discoverService.request(completion: { [weak self]
-                (isSuccess, error, _) in
-                guard let self = self else {
-                    return
-                }
-                if error != nil {
-                    self.alert("데이터를 가져오지 못했습니다.")
-                }
-                if isSuccess {
-                    DispatchQueue.main.async {
-                        self.activityIndicatorView.stopAnimating()
-                        self.layout?.setCellPinterestLayout(indexPathRow: self.pagenationNum - 1) {
-                            self.collectionView.reloadData()
-                            self.pagenationNum += 20
-                        }
+        discoverService.fetchData { [weak self](error) in
+            guard let self = self else {
+                return
+            }
+            if let error = error {
+                print(error)
+            }
+            if !self.isInserting {
+                self.isInserting = true
+                discoverService.request(completion: { [weak self]
+                    (isSuccess, error, _) in
+                    guard let self = self else {
+                        return
                     }
-                    self.isInserting = false
-                }
-            })
+                    if error != nil {
+                        self.alert("데이터를 가져오지 못했습니다.")
+                    }
+                    if isSuccess {
+                        DispatchQueue.main.async {
+                            self.activityIndicatorView.stopAnimating()
+                            self.layout?.setCellPinterestLayout(indexPathRow: self.pagenationNum - 1) {
+                                self.collectionView.reloadData()
+                                self.pagenationNum += 20
+                            }
+                        }
+                        self.isInserting = false
+                    }
+                })
+            }
         }
+
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
