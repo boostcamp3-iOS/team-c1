@@ -88,9 +88,7 @@ class WebViewController: UIViewController {
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        if isFavorite != service?.myGoodsData.isFavorite {
-            service?.updateFavorite(isFavorite)
-        }
+        print("will dis")
         tabBarController?.tabBar.isHidden = false
         UIApplication.shared.isNetworkActivityIndicatorVisible = false
     }
@@ -198,6 +196,10 @@ class WebViewController: UIViewController {
     @IBAction private func actionFavorite(_ sender: Any) {
         isFavorite = !isFavorite
         setFavoriteButton()
+        if isFavorite != service?.myGoodsData.isFavorite {
+            service?.updateFavorite(isFavorite) { [weak self] _ in
+            }
+        }
     }
 }
 

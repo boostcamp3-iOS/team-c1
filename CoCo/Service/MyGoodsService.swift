@@ -52,28 +52,29 @@ class MyGoodsService {
     func fetchGoods(completion: @escaping (Error?) -> Void) {
         recentGoods.removeAll()
         favoriteGoods.removeAll()
+        let queueGroup = DispatchGroup()
+        queueGroup.enter()
         fetchRecentGoods { [weak self] (myGoods, error) in
             if let error = error {
                 completion(error)
             }
             if let myGoods = myGoods {
                  self?.recentGoods = myGoods
-                completion(nil)
-            } else {
-                completion(nil)
             }
-
+            queueGroup.leave()
         }
+        queueGroup.enter()
         fetchFavoriteGoods { [weak self] (myGoods, error) in
             if let error = error {
                 completion(error)
             }
             if let myGoods = myGoods {
                 self?.favoriteGoods = myGoods
-                completion(nil)
-            } else {
-               completion(nil)
             }
+            queueGroup.leave()
+        }
+        queueGroup.notify(queue: .main) {
+            completion(nil)
         }
     }
     /// 좋아요(찜) 상품을 코어데이터에서 가져온다.

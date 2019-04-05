@@ -37,29 +37,53 @@ class DiscoverViewController: UIViewController {
     // MARK: - Methodes
     override func viewDidLoad() {
         super.viewDidLoad()
+        discoverService = DiscoverService(networkManagerType: networkManager, algorithmManagerType: algorithmManager, searchWordDoreDataManagerType: searchWordCoreDataManager, myGoodsCoreDataManagerType: myGoodsCoreDataManager, petKeywordCoreDataManagerType: petKeywordCoreDataManager)
         setupCollctionView()
         setupHeader()
         setupIndicator()
         layout = collectionView.collectionViewLayout as? PinterestLayout
         layout?.delegate = self
-        loadData()
-        pet = PetDefault.shared.pet
+        loadData { [weak self] (_) in
+            self?.pet = PetDefault.shared.pet
+        }
         extendedLayoutIncludesOpaqueBars = true
+        print("Library Path: ", FileManager.default.urls(for: .libraryDirectory, in: .userDomainMask).last ?? "Not Found!")
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        print("Viewwill")
         navigationController?.setNavigationBarHidden(true, animated: false)
         tabBarController?.tabBar.isHidden = false
         if pet != PetDefault.shared.pet {
             pagenationNum = 1
             self.layout?.setupInit()
-            self.layout?.invalidateLayout()
+            self.pet = PetDefault.shared.pet
             discoverService?.fetchedMyGoods.removeAll()
-            loadData()
-            pet = PetDefault.shared.pet
-            delegate?.petChanged(pet: pet)
-            collectionView.reloadData()
+            self.layout?.invalidateLayout()
+            self.delegate?.petChanged(pet: self.pet)
+            self.collectionView.reloadData()
+            guard let discoverService = discoverService else {
+                return
+            }
+            discoverService.fetchData { [weak self] (isSuccess, error) in
+                guard let self = self else {
+                    return
+                }
+                if let error = error {
+                   print(error)
+                }
+                if isSuccess {
+                    DispatchQueue.main.async {
+                        self.layout?.invalidateLayout()
+                        self.activityIndicatorView.stopAnimating()
+                        self.layout?.setCellPinterestLayout(indexPathRow: self.pagenationNum - 1) {
+                            self.collectionView.reloadData()
+                            self.pagenationNum += 20
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -84,42 +108,32 @@ class DiscoverViewController: UIViewController {
         collectionView.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
     }
 
-    func loadData() {
-        discoverService = DiscoverService(networkManagerType: networkManager, algorithmManagerType: algorithmManager, searchWordDoreDataManagerType: searchWordCoreDataManager, myGoodsCoreDataManagerType: myGoodsCoreDataManager, petKeywordCoreDataManagerType: petKeywordCoreDataManager)
+    func loadData(completion: @escaping ((Error?) -> Void)) {
         guard let discoverService = discoverService else {
             return
         }
-        discoverService.fetchData { [weak self](error) in
+        discoverService.fetchData { [weak self] (isSuccess, error) in
             guard let self = self else {
                 return
             }
             if let error = error {
-                print(error)
+                completion(error)
             }
-            if !self.isInserting {
-                self.isInserting = true
-                discoverService.request(completion: { [weak self]
-                    (isSuccess, error, _) in
-                    guard let self = self else {
-                        return
+            if isSuccess {
+                DispatchQueue.main.async {
+                    self.activityIndicatorView.stopAnimating()
+                    self.layout?.setCellPinterestLayout(indexPathRow: self.pagenationNum - 1) {
+                        self.collectionView.reloadData()
+                        self.pagenationNum += 20
                     }
-                    if error != nil {
-                        self.alert("데이터를 가져오지 못했습니다.")
-                    }
-                    if isSuccess {
-                        DispatchQueue.main.async {
-                            self.activityIndicatorView.stopAnimating()
-                            self.layout?.setCellPinterestLayout(indexPathRow: self.pagenationNum - 1) {
-                                self.collectionView.reloadData()
-                                self.pagenationNum += 20
-                            }
-                        }
-                        self.isInserting = false
-                    }
-                })
+                }
+                completion(nil)
+
+            } else {
+                completion(nil)
+
             }
         }
-
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -181,7 +195,6 @@ extension DiscoverViewController: UICollectionViewDelegate, UICollectionViewData
         if scrollPosition > 0, scrollPosition < scrollView.contentSize.height * 0.1 {
             pagination()
         }
-
     }
 
     func pagination() {
@@ -240,6 +253,7 @@ extension DiscoverViewController: PinterestLayoutDelegate {
         let attribute = [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13)]
         let option = NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin)
         let estimateFrame = NSString(string: title).boundingRect(with: CGSize(width: itemSize, height: 1000), options: option, attributes: attribute, context: nil)
+
         return estimateFrame.height + view.frame.width*2/3
     }
 }

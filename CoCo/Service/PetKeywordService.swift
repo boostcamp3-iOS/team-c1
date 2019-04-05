@@ -93,7 +93,7 @@ class PetKeywordService {
         animation?.removeAllChildren()
     }
     /// 코어데이터에 펫, 키워드를 추가한다.
-    @discardableResult func insertPetKeyword(completion: @escaping (Error?) -> Void) {
+    func insertPetKeyword(completion: @escaping (Error?) -> Void) {
         setPet()
         guard let pet = pet, let manager = manager else {
             return

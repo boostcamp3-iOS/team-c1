@@ -110,19 +110,19 @@ class MockMyGoodsCoreDataManager: MyGoodsCoreDataManagerType {
         }
     }
 
-    func deleteFavoriteAllObjects(pet: String) throws -> Bool {
+    func deleteFavoriteAllObjects(pet: String, completion: @escaping (Bool, Error?) -> Void) {
         if pet == "고양이" || pet == "강아지" {
-            return true
+            completion(true, nil)
         } else {
-            return false
+            completion(false, nil)
         }
     }
 
-    func deleteLatestAllObjects(pet: String, isLatest: Bool) throws -> Bool {
+    func deleteLatestAllObjects(pet: String, isLatest: Bool, completion: @escaping (Bool, Error?) -> Void) {
         if pet == "고양이" || pet == "강아지" {
-            return true
+            completion(true, nil)
         } else {
-            return false
+            completion(false, nil)
         }
     }
 
@@ -143,12 +143,11 @@ class MockMyGoodsCoreDataManager: MyGoodsCoreDataManagerType {
         }
     }
 
-    func deleteObject<T: CoreDataStructEntity>(_ coreDataStructType: T) throws -> Bool {
+    func deleteObject<T: CoreDataStructEntity>(_ coreDataStructType: T, completion: @escaping (Bool) -> Void) {
         if coreDataStructType is MyGoodsData {
-            return true
+            completion(true)
         } else {
-            return false
+            completion(false)
         }
     }
-
 }

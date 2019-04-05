@@ -98,31 +98,6 @@ class SearchWordCoreDataManager: SearchWordCoreDataManagerType {
             }
     }
 
-    /**
-     코어데이타에 저장된 특정 검색어의 날짜만 업데이트 한다.
-     - Author: [강준영](https://github.com/lavaKangJun)
-     - Parameter :
-     - searchWord : 날짜를 업데이트 할 특정 검색어
-     - pet : 특정 펫의 데이터를 가져오기 위한 파라미터
-     */
-    func updateObject(searchWord: String, pet: String, completion:@escaping (Bool, Error?) -> Void) {
-        guard let context = context else {
-            return
-        }
-        fetchWord(searchWord, pet: pet) { [weak self] (fetchResult, error) in
-            if let error = error {
-                completion(false, error)
-            }
-            if var searchWordObject = fetchResult, let objectID = searchWordObject.objectID {
-                let object = context.object(with: objectID)
-                searchWordObject.date = searchWordObject.createDate()
-                searchWordObject.mappinng(to: object)
-                self?.afterOperation(context: context)
-            }
-            completion(true, nil)
-        }
-    }
-
     // MARK: - Delete Method
     /**
      코어데이타에 저장된 SearchWord의 모든 데이터를 삭제한다.
@@ -130,20 +105,25 @@ class SearchWordCoreDataManager: SearchWordCoreDataManagerType {
      - Parameter :
      - pet : 특정 펫에 대한 데이터만을 지우기 위한 파라미터.
      */
-    @discardableResult func deleteAllObjects(pet: String) throws -> Bool {
-        guard let context = context else { return false }
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "SearchWord")
-        let predicate = NSPredicate(format: "pet = %@", pet)
+    func deleteAllObjects(pet: String, completion: @escaping (Bool, Error?) -> Void) {
+        guard let container = container else {
+            return
+        }
+        container.performBackgroundTask { (context) in
+            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "SearchWord")
+            let predicate = NSPredicate(format: "pet = %@", pet)
 
-        fetchRequest.predicate = predicate
-        let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+            fetchRequest.predicate = predicate
+            let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
 
-        do {
-            try context.execute(batchDeleteRequest)
-            return true
+            do {
+                try context.execute(batchDeleteRequest)
+                completion(true, nil)
 
-        } catch {
-            throw CoreDataError.delete(message: "Can't delete data")
+            } catch {
+                completion(false, error)
+            }
+
         }
     }
 }

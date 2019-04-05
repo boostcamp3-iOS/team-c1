@@ -32,6 +32,7 @@ class MyGoodsViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.navigationBar.prefersLargeTitles = true
+        print("willap")
         service?.fetchGoods { [weak self] (error) in
             if let error = error {
                 print(error)

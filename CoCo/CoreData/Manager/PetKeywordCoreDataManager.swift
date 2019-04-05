@@ -43,10 +43,9 @@ class PetKeywordCoreDataManager: PetKeywordCoreDataManagerType {
                 }
                 completion(petKeywordDatas, nil)
             } else {
-               completion(nil, nil)
+                completion(nil, nil)
             }
         }
-
     }
 
     // Fetch Only Keyword Data
@@ -106,22 +105,25 @@ class PetKeywordCoreDataManager: PetKeywordCoreDataManagerType {
      - Parameters:
         - pet: 특정 펫의 데이터를 지우기위한 파라미터.
      */
-    @discardableResult func deleteAllObjects(pet: String) throws -> Bool {
-        guard let context = context else {
-            return false
+    func deleteAllObjects(pet: String, completion: @escaping (Bool, Error?) -> Void) {
+        guard let container = container else {
+            return
         }
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "PetKeyword")
-        let predicate = NSPredicate(format: "pet = %@", pet)
+        container.performBackgroundTask { (context) in
+            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "PetKeyword")
+            let predicate = NSPredicate(format: "pet = %@", pet)
 
-        fetchRequest.predicate = predicate
-        let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+            fetchRequest.predicate = predicate
+            let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
 
-        do {
-            try context.execute(batchDeleteRequest)
-            return true
+            do {
+                try context.execute(batchDeleteRequest)
+                completion(true, nil)
 
-        } catch {
-            throw CoreDataError.delete(message: "Can't delete data")
+            } catch {
+                completion(false, error)
+            }
         }
+
     }
 }

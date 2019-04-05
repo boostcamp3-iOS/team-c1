@@ -10,15 +10,6 @@ import Foundation
 @testable import CoCo
 
 class MockSearchWordCoreDataManager: SearchWordCoreDataManagerType {
-
-    func updateObject(searchWord: String, pet: String, completion: @escaping (Bool, Error?) -> Void) {
-        if pet == "고양이" || pet == "강아지" {
-            completion(true, nil)
-        } else {
-            completion(false, nil)
-        }
-    }
-
     func fetchObjects(pet: String?, completion: @escaping ([CoreDataStructEntity]?, Error?) -> Void) {
         if let pet = pet {
             completion([SearchWordData(pet: pet, searchWord: "배변용품")], nil)
@@ -52,6 +43,14 @@ class MockSearchWordCoreDataManager: SearchWordCoreDataManagerType {
         }
     }
 
+    func deleteAllObjects(pet: String, completion: @escaping (Bool, Error?) -> Void) {
+        if pet == "고양이" || pet == "강아지" {
+            completion(true, nil)
+        } else {
+            completion(false, nil)
+        }
+    }
+
     func updateObject<T>(_ coreDataStructType: T, completion:@escaping
         (Bool) -> Void) {
         if coreDataStructType is SearchWordData {
@@ -61,20 +60,11 @@ class MockSearchWordCoreDataManager: SearchWordCoreDataManagerType {
         }
     }
 
-    @discardableResult func deleteAllObjects(pet: String) throws ->  Bool {
-        if pet == "고양이" || pet == "강아지" {
-            return true
+    func deleteObject<T: CoreDataStructEntity>(_ coreDataStructType: T, completion: @escaping (Bool) -> Void) {
+        if coreDataStructType is SearchWordData {
+            completion(true)
         } else {
-            return false
+            completion(false)
         }
-    }
-
-    func deleteObject<T: CoreDataStructEntity>(_ coreDataStructType: T)
-        throws -> Bool {
-            if coreDataStructType is SearchWordData {
-                return true
-            } else {
-                return false
-            }
     }
 }

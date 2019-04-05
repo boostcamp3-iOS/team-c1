@@ -45,11 +45,10 @@ class WebViewServiceTest: XCTestCase {
 }
 
 class MockMyGoodsCoreDataManager: MyGoodsCoreDataManagerType {
-
     func fetchObjects(pet: String?, completion: @escaping ([CoreDataStructEntity]?, Error?) -> Void) {
         if let pet = pet {
             if pet == "고양이" || pet == "강아지" {
-                completion([MyGoodsData(pet: pet, title: "강아지간식", link: "www.naver.com", image: "www.naver.com", isFavorite: true, isLatest: true, price: "12000", productID: "12345", searchWord: "푸드", shoppingmall: "네이버")], nil)
+                completion([MyGoodsData(pet: pet, title: "강아지간식", link: "www.naver.com", image: "www.naver.com", isFavorite: true, isLatest: true, price: "12000", productID: "66666", searchWord: "푸드", shoppingmall: "네이버")], nil)
             }
         } else {
             completion(nil, nil)
@@ -73,28 +72,27 @@ class MockMyGoodsCoreDataManager: MyGoodsCoreDataManagerType {
     }
 
     func fetchProductID(productID: String, completion: @escaping (MyGoods?, Error?) -> Void) {
-
-        let productIDs = ["12345", "54321"]
+        let productIDs = ["654321", "123456"]
         if productIDs.contains(productID) {
-            completion(nil, nil)
+            completion(MyGoods(), nil)
         } else {
             completion(nil, nil)
         }
     }
 
-    func deleteFavoriteAllObjects(pet: String) throws -> Bool {
+    func deleteFavoriteAllObjects(pet: String, completion: @escaping (Bool, Error?) -> Void) {
         if pet == "고양이" || pet == "강아지" {
-            return true
+            completion(true, nil)
         } else {
-            return false
+            completion(false, nil)
         }
     }
 
-    func deleteLatestAllObjects(pet: String, isLatest: Bool) throws -> Bool {
+    func deleteLatestAllObjects(pet: String, isLatest: Bool, completion: @escaping (Bool, Error?) -> Void) {
         if pet == "고양이" || pet == "강아지" {
-            return true
+            completion(true, nil)
         } else {
-            return false
+            completion(false, nil)
         }
     }
 
@@ -115,11 +113,12 @@ class MockMyGoodsCoreDataManager: MyGoodsCoreDataManagerType {
         }
     }
 
-    func deleteObject<T: CoreDataStructEntity>(_ coreDataStructType: T) throws -> Bool {
+    func deleteObject<T: CoreDataStructEntity>(_ coreDataStructType: T, completion: @escaping (Bool) -> Void) {
         if coreDataStructType is MyGoodsData {
-            return true
+            completion(true)
         } else {
-            return false
+            completion(false)
         }
     }
+
 }

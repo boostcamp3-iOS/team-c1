@@ -144,21 +144,23 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType {
      - Parameters:
      - pet: 특정 펫의 데이터를 지우기위한 파라미터.
      */
-    @discardableResult func deleteFavoriteAllObjects(pet: String) throws -> Bool {
-        guard let context = context else {
-            return false
+    func deleteFavoriteAllObjects(pet: String, completion: @escaping (Bool, Error?) -> Void) {
+        guard let container = container else {
+            return
         }
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "MyGoods")
-        let predicate = NSPredicate(format: "pet = %@ AND isFavorite = true AND isLatest = false", pet)
+        container.performBackgroundTask { (context) in
+            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "MyGoods")
+            let predicate = NSPredicate(format: "pet = %@ AND isFavorite = true AND isLatest = false", pet)
 
-        fetchRequest.predicate = predicate
-        let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
-        do {
-            try context.execute(batchDeleteRequest)
-            return true
-        } catch {
-            print(error.localizedDescription)
-            return false
+            fetchRequest.predicate = predicate
+            let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+            do {
+                try context.execute(batchDeleteRequest)
+                completion(true, nil)
+            } catch {
+                print(error.localizedDescription)
+                completion(false, error)
+            }
         }
     }
 
@@ -168,21 +170,23 @@ class MyGoodsCoreDataManager: MyGoodsCoreDataManagerType {
      - Parameters:
      - pet: 특정 펫의 데이터를 지우기위한 파라미터.
      */
-    @discardableResult func deleteLatestAllObjects(pet: String, isLatest: Bool) throws -> Bool {
-        guard let context = context else {
-            return false
+    func deleteLatestAllObjects(pet: String, isLatest: Bool, completion: @escaping (Bool, Error?) -> Void) {
+        guard let container = container else {
+            return
         }
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "MyGoods")
-        let predicate = NSPredicate(format: "pet = %@ AND isLatest = %@ AND isFavorite = false", pet, NSNumber(booleanLiteral: isLatest))
-        fetchRequest.predicate = predicate
-        let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
-        do {
-            try context.execute(batchDeleteRequest)
-            print("Delete!")
-            return true
-        } catch {
-            print(error.localizedDescription)
-            return false
+        container.performBackgroundTask { (context) in
+            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "MyGoods")
+            let predicate = NSPredicate(format: "pet = %@ AND isLatest = %@ AND isFavorite = false", pet, NSNumber(booleanLiteral: isLatest))
+            fetchRequest.predicate = predicate
+            let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+            do {
+                try context.execute(batchDeleteRequest)
+                print("Delete!")
+                completion(true, nil)
+            } catch {
+                print(error.localizedDescription)
+                completion(false, error)
+            }
         }
     }
 

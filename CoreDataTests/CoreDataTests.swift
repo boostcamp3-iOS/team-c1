@@ -65,24 +65,18 @@ class MyGoodsCoreDataTests: XCTestCase {
     }
 
     func testDeleteFavoriteAllObjects() {
-        do {
-            let result = try myGoodsManager.deleteFavoriteAllObjects(pet:
-                PetDefault.shared.pet.rawValue)
-            XCTAssert(result == true, "Delete Fail")
-        } catch let error {
-            print(error.localizedDescription)
-        }
+        myGoodsManager.deleteFavoriteAllObjects(pet:
+            PetDefault.shared.pet.rawValue) { (result, _) in
+                XCTAssert(result == true, "Delete Fail")
+            }
 
     }
 
     func testDeleteLatestAllObjects() {
-        do {
-            let result = try myGoodsManager.deleteLatestAllObjects(pet:
-                PetDefault.shared.pet.rawValue, isLatest: false)
-            XCTAssert(result, "Delete Fail")
-        } catch let error {
-            print(error.localizedDescription)
-        }
+        myGoodsManager.deleteLatestAllObjects(pet:
+            PetDefault.shared.pet.rawValue, isLatest: false) { (result, _) in
+                XCTAssert(result, "Delete Fail")
+            }
     }
 
     func testFetchObjects() {
@@ -115,11 +109,8 @@ class MyGoodsCoreDataTests: XCTestCase {
                                       isLatest: true, price: "12,000",
                                       productID: "12345", searchWord: "강아지 옷",
                                       shoppingmall: "네이버 쇼핑")
-        do {
-            let result = try myGoodsManager.deleteObject(myGoodsData)
-            XCTAssert(result, "Delete Fail")
-        } catch let error {
-            print(error.localizedDescription)
+        myGoodsManager.deleteObject(myGoodsData) { (result) in
+                XCTAssert(result, "Delete Fail")
         }
     }
 
@@ -177,21 +168,17 @@ class PetKeywordCoreDataTests: XCTestCase {
 
     func testDelete() {
         let petKeywordData = PetKeywordData(pet: PetDefault.shared.pet.rawValue, keywords: ["스타일", "뷰티", "리빙"])
-        do {
-            let result = try petKeywordManager.deleteObject(petKeywordData)
-            XCTAssert(result, "delete fail")
-        } catch let error {
-            print(error.localizedDescription)
+        petKeywordManager.deleteObject(petKeywordData) {
+                (result) in
+                 XCTAssert(result, "delete fail")
         }
     }
 
     func testDeleteAll() {
         let petKeywordData = PetKeywordData(pet: PetDefault.shared.pet.rawValue, keywords: ["스타일", "뷰티", "리빙"])
-        do {
-            let result = try petKeywordManager.deleteAllObjects(pet: PetDefault.shared.pet.rawValue)
+        petKeywordManager.deleteAllObjects(pet: PetDefault.shared.pet.rawValue) {
+            (result, _) in
             XCTAssert(result, "delete fail")
-        } catch let error {
-            print(error.localizedDescription)
         }
     }
 }
@@ -218,17 +205,6 @@ class SerarchWordCoreDataTests: XCTestCase {
         let searchWord = SearchWordData(pet: PetDefault.shared.pet.rawValue, searchWord: "화장실")
         searchWordManager.updateObject(searchWord) { (result) in
             XCTAssert(result, "데이터르 업데이트 할 수 없습니다.")
-        }
-    }
-
-    func testPetUpdate() {
-        let searchWord = SearchWordData(pet: PetDefault.shared.pet.rawValue, searchWord: "화장실")
-        searchWordManager.updateObject(searchWord: searchWord.searchWord, pet: searchWord.pet ?? PetDefault.shared.pet.rawValue) { (result, error) in
-            if let error = error {
-                XCTAssertNil(error, "Update Error!! \(error)")
-            } else {
-                XCTAssert(result, "Update Fail")
-            }
         }
     }
 
@@ -274,20 +250,14 @@ class SerarchWordCoreDataTests: XCTestCase {
 
     func testDelete() {
         let searchWord = SearchWordData(pet: PetDefault.shared.pet.rawValue, searchWord: "화장실")
-        do {
-            let result = try searchWordManager.deleteObject(searchWord)
-            XCTAssert(result, "Delete fail")
-        } catch let error {
-            XCTAssertNil(error, "Delete Error!! \(error)")
+        searchWordManager.deleteObject(searchWord) { (result) in
+                XCTAssert(result, "Delete fail")
         }
     }
 
     func testAllDelete() {
-        do {
-            let result = try searchWordManager.deleteAllObjects(pet: PetDefault.shared.pet.rawValue)
-             XCTAssert(result, "Delete fail")
-        } catch let error {
-            XCTAssertNil(error, "Delete Error!! \(error)")
+        searchWordManager.deleteAllObjects(pet: PetDefault.shared.pet.rawValue) { (result, _) in
+                XCTAssert(result, "Delete fail")
         }
     }
 }

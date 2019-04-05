@@ -84,11 +84,11 @@ class MockPetKeywordCoreDataManager: PetKeywordCoreDataManagerType {
         completion("고양이", nil)
     }
 
-    func deleteAllObjects(pet: String) throws -> Bool {
+    func deleteAllObjects(pet: String, completion: @escaping (Bool, Error?) -> Void) {
         if pet == "고양이" || pet == "강아지" {
-            return true
+            completion(true, nil)
         } else {
-            return false
+            completion(false, nil)
         }
     }
 
@@ -116,13 +116,12 @@ class MockPetKeywordCoreDataManager: PetKeywordCoreDataManagerType {
         }
     }
 
-    func deleteObject<T: CoreDataStructEntity>(_ coreDataStructType: T)
-        throws -> Bool {
-            if coreDataStructType is PetKeywordData {
-                return true
-            } else {
-                return false
-            }
+    func deleteObject<T: CoreDataStructEntity>(_ coreDataStructType: T, completion: @escaping (Bool) -> Void) {
+        if coreDataStructType is PetKeywordData {
+            completion(true)
+        } else {
+            completion(false)
+        }
     }
 
 }
