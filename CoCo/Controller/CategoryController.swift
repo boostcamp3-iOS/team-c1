@@ -91,6 +91,7 @@ class CategoryController: UICollectionReusableView {
         self.addSubview(largeTitle)
         self.addConstraintsWithFormat("H:|[v0]|", views: largeTitle)
         self.addConstraintsWithFormat("V:|[v0(130)]", views: largeTitle)
+
     }
 
     func setUpCollectionView() {
@@ -98,6 +99,7 @@ class CategoryController: UICollectionReusableView {
         self.collectionView.register(UINib(nibName: "CategoryCell", bundle: nil), forCellWithReuseIdentifier: cellId)
         self.addConstraintsWithFormat("H:|-1-[v0]-1-|", views: collectionView)
         self.addConstraintsWithFormat("V:|-130-[v0]|", views: collectionView)
+
     }
 }
 

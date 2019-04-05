@@ -21,22 +21,33 @@ class SettingPetAndKeywordService {
         petKeywordCoreDataManager = petCoreData
     }
 
-    func fetchPetKeywordData() {
-        if let petKeyword = try? petKeywordCoreDataManager.fetchObjects(pet: nil)?.first {
-            self.petKeyword = petKeyword as? PetKeywordData
+    func fetchPetKeywordData(completion: @escaping (Error?) -> Void) {
+        petKeywordCoreDataManager.fetchObjects(pet: nil) { [weak self] (petKeyword, error) in
+            if let error = error {
+                completion(error)
+            }
+            if let petKeyword = petKeyword {
+                self?.petKeyword =  petKeyword.first as? PetKeywordData
+            }
+            completion(nil)
         }
     }
 
-    @discardableResult func insertPetKeywordData() -> Bool {
+    func insertPetKeywordData(completion: @escaping (Error?) -> Void) {
         guard let keyword = petKeyword?.keywords, let pet = petKeyword?.pet else {
-            return false
+            return
         }
-        let result = try? petKeywordCoreDataManager.insert(PetKeywordData(pet: pet, keywords: keyword))
-        if let result = result {
-            PetDefault.shared.pet = Pet(rawValue: pet) ?? .dog
-            return result
-        }
-        return false
-    }
+        petKeywordCoreDataManager.insert(PetKeywordData(pet: pet, keywords: keyword)) { (isSuccess, error) in
+            if let error = error {
+                completion(error)
+            }
 
+            if isSuccess {
+                PetDefault.shared.pet = Pet(rawValue: pet) ?? .dog
+                completion(nil)
+            } else {
+                completion(nil)
+            }
+        }
+    }
 }

@@ -32,8 +32,13 @@ class MyGoodsViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.navigationBar.prefersLargeTitles = true
-        service?.fetchGoods()
-        reloadTableView()
+        print("willap")
+        service?.fetchGoods { [weak self] (error) in
+            if let error = error {
+                print(error)
+            }
+            self?.reloadTableView()
+        }
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -103,12 +108,18 @@ class MyGoodsViewController: UIViewController {
         let index = sender.tag
         service.deleteGoods(index: index) { [weak self] in
             guard let self = self else { return }
-            service.fetchGoods()
-            if service.dataIsEmpty, let item = self.navigationItem.rightBarButtonItem {
-                item.title = "Edit"
-                service.startEditing = false
+            service.fetchGoods { (error) in
+                if let error = error {
+                    print(error)
+                }
+                DispatchQueue.main.async {
+                    if service.dataIsEmpty, let item = self.navigationItem.rightBarButtonItem {
+                        item.title = "Edit"
+                        service.startEditing = false
+                    }
+                    self.reloadTableView()
+                }
             }
-            self.reloadTableView()
         }
     }
 }

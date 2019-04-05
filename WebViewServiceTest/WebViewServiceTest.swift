@@ -36,100 +36,89 @@ class WebViewServiceTest: XCTestCase {
     }
 
     func testFetchData() {
-        service.fetchData()
+        service.fetchData { (_, error) in
+            if let error = error {
+                XCTAssertNil(error, "Fetch Error!! \(error)")
+            }
+        }
     }
 }
 
 class MockMyGoodsCoreDataManager: MyGoodsCoreDataManagerType {
-    func fetchFavoriteGoods(pet: String?) throws -> [MyGoodsData]? {
-        var result = [MyGoodsData]()
-        if let pet = pet {
-            for i in 0 ..< 10 {
-                let data = MyGoodsData(pet: pet, title: "강아지옷\(i)", link: "www.naver.com", image: "www.naver.com", isFavorite: true, isLatest: true, price: "12000", productID: "\(i)9875", searchWord: "뷰티", shoppingmall: "네이버")
-                result.append(data)
-            }
-        } else {
-            for i in 0 ..< 10 {
-                let data = MyGoodsData(pet: "고양이", title: "고양이옷\(i)", link: "www.naver.com", image: "www.naver.com", isFavorite: true, isLatest: true, price: "12000", productID: "\(i)9875", searchWord: "뷰티", shoppingmall: "네이버")
-                result.append(data)
-            }
-        }
-        return result
-    }
-
-    func fetchLatestGoods(pet: String?, isLatest: Bool, ascending: Bool) throws -> [MyGoodsData]? {
-        var result = [MyGoodsData]()
-        if let pet = pet {
-            for i in 0 ..< 15 {
-                let data = MyGoodsData(pet: pet, title: "강아지샴푸\(i)", link: "www.naver.com", image: "www.naver.com", isFavorite: false, isLatest: true, price: "12000", productID: "\(i)9875", searchWord: "뷰티", shoppingmall: "네이버")
-                result.append(data)
-            }
-        } else {
-            for i in 0 ..< 15 {
-                let data = MyGoodsData(pet: "고양이", title: "고양이샴푸\(i)", link: "www.naver.com", image: "www.naver.com", isFavorite: false, isLatest: true, price: "12000", productID: "\(i)9875", searchWord: "뷰티", shoppingmall: "네이버")
-                result.append(data)
-            }
-        }
-        let data = MyGoodsData(pet: "고양이", title: "고양이샴푸16", link: "www.naver.com", image: "www.naver.com", isFavorite: true, isLatest: true, price: "12000", productID: "169875", searchWord: "뷰티", shoppingmall: "네이버")
-        result.append(data)
-        return result
-    }
-
-    func fetchProductID(productID: String) -> MyGoods? {
-        return nil
-    }
-
-    func deleteFavoriteAllObjects(pet: String) throws -> Bool {
-        if pet == "고양이" || pet == "강아지" {
-            return true
-        } else {
-            return false
-        }
-    }
-
-    func deleteLatestAllObjects(pet: String, isLatest: Bool) throws -> Bool {
-        if pet == "고양이" || pet == "강아지" {
-            if isLatest == true {
-                return true
-            }
-            return false
-        } else {
-            return false
-        }
-    }
-
-    func insert<T: CoreDataStructEntity>(_ coreDataStructType: T) throws -> Bool {
-        if coreDataStructType is MyGoodsData {
-            return true
-        } else {
-            return false
-        }
-    }
-
-    func fetchObjects(pet: String?) throws -> [CoreDataStructEntity]? {
+    func fetchObjects(pet: String?, completion: @escaping ([CoreDataStructEntity]?, Error?) -> Void) {
         if let pet = pet {
             if pet == "고양이" || pet == "강아지" {
-                return [MyGoodsData(pet: pet, title: "강아지간식", link: "www.naver.com", image: "www.naver.com", isFavorite: true, isLatest: true, price: "12000", productID: "66666", searchWord: "푸드", shoppingmall: "네이버")]
+                completion([MyGoodsData(pet: pet, title: "강아지간식", link: "www.naver.com", image: "www.naver.com", isFavorite: true, isLatest: true, price: "12000", productID: "66666", searchWord: "푸드", shoppingmall: "네이버")], nil)
             }
-            return nil
         } else {
-            return nil
+            completion(nil, nil)
         }
     }
 
-    func updateObject<T: CoreDataStructEntity>(_ coreDataStructType: T) throws -> Bool {
-        if coreDataStructType is MyGoodsData {
-            return true
+    func fetchFavoriteGoods(pet: String?, completion: @escaping ([MyGoodsData]?, Error?) -> Void) {
+        if let pet = pet {
+            completion([MyGoodsData(pet: pet, title: "강아지옷", link: "www.naver.com", image: "www.naver.com", isFavorite: true, isLatest: false, price: "12000", productID: "12345", searchWord: "뷰티", shoppingmall: "네이버")], nil)
         } else {
-            return false
+            completion([MyGoodsData(pet: "강아지", title: "강아지옷", link: "www.naver.com", image: "www.naver.com", isFavorite: true, isLatest: false, price: "12000", productID: "999999", searchWord: "뷰티", shoppingmall: "네이버"), MyGoodsData(pet: "고양이", title: "고양이옷", link: "www.naver.com", image: "www.naver.com", isFavorite: true, isLatest: false, price: "12000", productID: "55555", searchWord: "뷰티", shoppingmall: "네이버")], nil)
         }
     }
 
-    func deleteObject<T: CoreDataStructEntity>(_ coreDataStructType: T) throws -> Bool {
-        if coreDataStructType is MyGoodsData {
-            return true
+    func fetchLatestGoods(pet: String?, isLatest: Bool, ascending: Bool, completion: @escaping ([MyGoodsData]?, Error?) -> Void) {
+        if let pet = pet {
+            completion([MyGoodsData(pet: pet, title: "강아지샴푸", link: "www.naver.com", image: "www.naver.com", isFavorite: true, isLatest: true, price: "12000", productID: "54321", searchWord: "뷰티", shoppingmall: "네이버"), MyGoodsData(pet: pet, title: "강아지샴푸", link: "www.naver.com", image: "www.naver.com", isFavorite: true, isLatest: false, price: "12000", productID: "54321", searchWord: "뷰티", shoppingmall: "네이버")], nil)
         } else {
-            return false
+            completion([MyGoodsData(pet: "고양이", title: "고양이샴푸", link: "www.naver.com", image: "www.naver.com", isFavorite: true, isLatest: true, price: "12000", productID: "9875", searchWord: "뷰티", shoppingmall: "네이버"), MyGoodsData(pet: "강아지", title: "강아지샴푸", link: "www.naver.com", image: "www.naver.com", isFavorite: true, isLatest: false, price: "12000", productID: "58765", searchWord: "뷰티", shoppingmall: "네이버")], nil)
         }
     }
+
+    func fetchProductID(productID: String, completion: @escaping (MyGoods?, Error?) -> Void) {
+        let productIDs = ["654321", "123456"]
+        if productIDs.contains(productID) {
+            completion(MyGoods(), nil)
+        } else {
+            completion(nil, nil)
+        }
+    }
+
+    func deleteFavoriteAllObjects(pet: String, completion: @escaping (Bool, Error?) -> Void) {
+        if pet == "고양이" || pet == "강아지" {
+            completion(true, nil)
+        } else {
+            completion(false, nil)
+        }
+    }
+
+    func deleteLatestAllObjects(pet: String, isLatest: Bool, completion: @escaping (Bool, Error?) -> Void) {
+        if pet == "고양이" || pet == "강아지" {
+            completion(true, nil)
+        } else {
+            completion(false, nil)
+        }
+    }
+
+    func insert<T: CoreDataStructEntity>(_ coreDataStructType: T, completion: @escaping (Bool, Error?) -> Void) {
+        if coreDataStructType is MyGoodsData {
+            completion(true, nil)
+        } else {
+            completion(false, nil)
+        }
+    }
+
+    func updateObject<T>(_ coreDataStructType: T, completion:@escaping
+        (Bool) -> Void) {
+        if coreDataStructType is MyGoodsData {
+            completion(true)
+        } else {
+            completion(false)
+        }
+    }
+
+    func deleteObject<T: CoreDataStructEntity>(_ coreDataStructType: T, completion: @escaping (Bool) -> Void) {
+        if coreDataStructType is MyGoodsData {
+            completion(true)
+        } else {
+            completion(false)
+        }
+    }
+
 }

@@ -51,7 +51,10 @@ class SearchViewController: UIViewController {
         searchService.delegate = self
 
         self.activityIndicator.stopAnimating()
-        searchService.fetchRecommandSearchWord {
+        searchService.fetchRecommandSearchWord { (error) in
+            if let error = error {
+                print(error)
+            }
             self.collectionView.reloadData()
         }
         extendedLayoutIncludesOpaqueBars = true
@@ -74,7 +77,10 @@ class SearchViewController: UIViewController {
         navigationController?.setNavigationBarHidden(true, animated: false)
         if searchService.pet != PetDefault.shared.pet {
             searchService.pet = PetDefault.shared.pet
-            searchService.fetchRecommandSearchWord {
+            searchService.fetchRecommandSearchWord { (error) in
+                if let error = error {
+                    print(error)
+                }
                 if self.searchService.cellIdentifier == .searchKeyword {
                     self.collectionView.reloadData()
                 }

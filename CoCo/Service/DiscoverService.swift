@@ -33,90 +33,185 @@ class DiscoverService {
     }
 
     // MARK: - Methodes
-   func fetchPet() {
+    func fetchData(completion:@escaping (Bool, Error?) -> Void) {
+        guard let petKeywordCoreDataManagerType = petKeywordCoreDataManagerType,
+            let myGoodsCoreDataManagerType = myGoodsCoreDataManagerType,
+            let searchWordDoreDataManagerType = searchWordDoreDataManagerType,
+            let algorithmManagerType = algorithmManagerType else {
+            return
+        }
+        let fetchGroup = DispatchGroup()
+        let queue = DispatchQueue.global()
+        queue.async(group: fetchGroup) {
+            petKeywordCoreDataManagerType.fetchOnlyPet { (petValue, error) in
+                print("Step 1")
+                if let error = error {
+                    completion(false, error)
+                }
+                print("fetchOnlyPet: \(petValue)")
+                if petValue == "강아지" {
+                    PetDefault.shared.pet = .dog
+                } else {
+                    PetDefault.shared.pet = .cat
+                }
+            }
+        }
+        queue.async(group: fetchGroup) {
+            myGoodsCoreDataManagerType.fetchObjects(pet: PetDefault.shared.pet.rawValue) { [weak self] (fetchResult, error) in
+                  print("Step 2")
+                if let error = error {
+                completion(false, error)
+                }
+                if let myGoods = fetchResult as? [MyGoodsData] {
+                    self?.myGoods = myGoods
+                    print("fetchObjects: \(myGoods)")
+                }
+            }
+        }
+       queue.async(group: fetchGroup) {
+            searchWordDoreDataManagerType.fetchOnlySearchWord(pet: PetDefault.shared.pet.rawValue) { [weak self] (searchWord, error) in
+                  print("Step 3")
+                if let error = error {
+                    completion(false, error)
+                }
+                if let searchWord = searchWord {
+                    self?.searches = searchWord
+                }
+                print("fetchOnlySearchWord: \(searchWord)")
+            }
+        }
+        queue.async(group: fetchGroup) {
+            petKeywordCoreDataManagerType.fetchObjects(pet: PetDefault.shared.pet.rawValue) { (petKeyword, error) in
+                  print("Step 4")
+                if let error = error {
+                    completion(false, error)
+                }
+                if let objects = petKeyword as? [PetKeywordData] {
+                    self.keyword = objects.first
+                    print("fetchObjects: \(objects.first) ")
+                }
+            }
+        }
+
+        fetchGroup.notify(queue: .main) { [weak self] in
+            print("Notify")
+            guard let self = self else {
+                return
+            }
+            guard let keyword = self.keyword else {
+                return
+            }
+            let result = algorithmManagerType.makeRequestSearchWords(with: self.myGoods, words: self.searches, petKeyword: keyword, count: 4)
+            self.recommandGoods = result
+            self.mixedletSearches = algorithmManagerType.combinePet(PetDefault.shared.pet, and: self.recommandGoods)
+            self.request {
+                (isSuccess, error, _) in
+                if let error = error {
+                    completion(false, error)
+                }
+                print("isSucess: \(isSuccess)")
+                if isSuccess {
+                    completion(true, nil)
+                } else {
+                    completion(false, nil)
+                }
+
+            }
+       }
+    }
+
+    func fetchPet(completion: @escaping (Error?) -> Void) {
         guard  let petKeywordCoreDataManagerType = petKeywordCoreDataManagerType else {
             return
         }
-        do {
-            let pet = try petKeywordCoreDataManagerType.fetchOnlyPet()
-            if pet == "강아지" {
+        petKeywordCoreDataManagerType.fetchOnlyPet { (petValue, error) in
+            if let error = error {
+                completion(error)
+            }
+            if petValue == "강아지" {
                 PetDefault.shared.pet = .dog
+                completion(nil)
             } else {
                 PetDefault.shared.pet = .cat
+                completion(nil)
             }
-        } catch let error {
-            print("Fail fetch pet: \(error)")
         }
     }
 
-    @discardableResult func fetchMyGoods() -> [MyGoodsData] {
+    func fetchMyGoods(completion: @escaping ([MyGoodsData]?, Error?) -> Void) {
         guard let myGoodsCoreDataManagerType = self.myGoodsCoreDataManagerType else {
-            return []
+            return
         }
 
-        do {
-            guard let result = try myGoodsCoreDataManagerType.fetchObjects(pet: PetDefault.shared.pet.rawValue) as? [MyGoodsData] else {
-                return []
+        myGoodsCoreDataManagerType.fetchObjects(pet: PetDefault.shared.pet.rawValue) { [weak self] (fetchResult, error) in
+            if let error = error {
+                completion(nil, error)
             }
-            myGoods = result
-            return result
-        } catch let error {
-            print(error)
+            if let myGoods = fetchResult as? [MyGoodsData] {
+                self?.myGoods = myGoods
+                completion(myGoods, nil)
+            } else {
+                completion(nil, nil)
+            }
         }
-        return []
     }
 
-    @discardableResult func fetchSearchWord() -> [String] {
+   func fetchSearchWord(completion: @escaping ([String]?, Error?) -> Void) {
         guard let searchWordDoreDataManagerType = self.searchWordDoreDataManagerType else {
-            return []
+            return
         }
-        do {
-            guard let result = try searchWordDoreDataManagerType.fetchOnlySearchWord(pet: PetDefault.shared.pet.rawValue) else {
-                return []
+
+        searchWordDoreDataManagerType.fetchOnlySearchWord(pet: PetDefault.shared.pet.rawValue) { [weak self] (searchWord, error) in
+            if let error = error {
+                completion(nil, error)
             }
-            searches = result
-            return result
-        } catch let error {
-            print(error)
-            return []
+            if let searchWord = searchWord {
+                self?.searches = searchWord
+                completion(searchWord, nil)
+            } else {
+                completion(nil, nil)
+            }
+
         }
     }
 
-    @discardableResult func fetchPetKeywords() -> PetKeywordData? {
+    func fetchPetKeywords(completion: @escaping (PetKeywordData?, Error?) -> Void) {
         guard let petKeywordCoreDataManagerType =  self.petKeywordCoreDataManagerType else {
-            return nil
+            return
         }
-        do {
-            guard let keywords = try petKeywordCoreDataManagerType.fetchObjects(pet: PetDefault.shared.pet.rawValue) as? [PetKeywordData] else {
-                return nil
+        petKeywordCoreDataManagerType.fetchObjects(pet: PetDefault.shared.pet.rawValue) { (petKeyword, error) in
+            if let error = error {
+                completion(nil, error)
             }
-            let result = keywords.first
-            keyword = result
-            return result
-        } catch let error as NSError {
-            return nil
+            if let objects = petKeyword as? [PetKeywordData] {
+                self.keyword = objects.first
+                completion(objects.first, nil)
+            } else {
+                completion(nil, nil)
+            }
+
         }
     }
 
-    @discardableResult func mixedWord() -> [String] {
+    func mixedWord() {
         guard let keyword = keyword else {
-            return []
+            return
         }
         guard let algorithmManagerType = algorithmManagerType else {
-            return []
+            return
         }
         let result = algorithmManagerType.makeRequestSearchWords(with: myGoods, words: searches, petKeyword: keyword, count: 4)
-        let mixedResult = result
-        recommandGoods = mixedResult
+        recommandGoods = result
         mixedletSearches = algorithmManagerType.combinePet(PetDefault.shared.pet, and: recommandGoods)
-        return mixedResult
     }
 
     func request(completion: @escaping (Bool, Error?, Int?) -> Void) {
+        print("in Request")
         guard let search = mixedletSearches.popLast() else {
             return
         }
         let param = ShoppingParams(search: search, count: 20, start: 1, sort: .similar)
+        print("params: \(param)")
         DispatchQueue.global().async { [weak self] in
             guard let self = self else {
                 return
@@ -131,6 +226,7 @@ class DiscoverService {
                         }
                         self.fetchedMyGoods.append(shopItemToMyGoods)
                     }
+                print("In Request data Item: \(datas.items)")
                 completion(true, nil, datas.items.count)
             }, errorHandler: { (error) in
                 completion(false, error, nil)

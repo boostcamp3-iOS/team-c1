@@ -10,62 +10,60 @@ import Foundation
 @testable import CoCo
 
 class MockPetKeywordCoreDataManager: PetKeywordCoreDataManagerType {
-    func fetchOnlyKeyword(pet: String) throws -> [String]? {
-        return ["배변", "놀이", "뷰티", "스타일"]
-    }
-
-    func fetchOnlyPet() throws -> String? {
-        return "고양이"
-    }
-
-    func deleteAllObjects(pet: String) throws -> Bool {
-        if pet == "고양이" || pet == "강아지" {
-            return true
-        } else {
-            return false
-        }
-    }
-
-    func insert<T: CoreDataStructEntity>(_ coreDataStructType: T)
-        throws -> Bool {
-        if coreDataStructType is PetKeywordData {
-            if let petKeyword = coreDataStructType as? PetKeywordData {
-                guard let keyword = petKeyword.keywords else {
-                    return false
-                }
-                if keyword.count >= 2 {
-                    return true
-                }
-            }
-            return false
-        } else {
-            return false
-        }
-    }
-
-    func fetchObjects(pet: String?) throws -> [CoreDataStructEntity]? {
+    func fetchObjects(pet: String?, completion: @escaping ([CoreDataStructEntity]?, Error?) -> Void) {
         if let pet = pet {
-            return [PetKeywordData(pet: pet, keywords: ["배변", "뷰티", "놀이"])]
+            completion([PetKeywordData(pet: pet, keywords: ["배변", "뷰티", "놀이"])], nil)
         } else {
-            return [PetKeywordData(pet: "강아지", keywords: ["배변", "뷰티", "놀이"]), PetKeywordData(pet: "고양이", keywords: ["배변", "뷰티", "놀이"])]
+            completion([PetKeywordData(pet: "강아지", keywords: ["배변", "뷰티", "놀이"]), PetKeywordData(pet: "고양이", keywords: ["배변", "뷰티", "놀이"])], nil)
         }
     }
 
-    func updateObject<T: CoreDataStructEntity>(_ coreDataStructType: T)
-        throws -> Bool {
-        if coreDataStructType is PetKeywordData {
-            return true
+    func fetchOnlyKeyword(pet: String, completion: @escaping (([String]?, Error?) -> Void)) {
+        completion(["배변", "놀이", "뷰티", "스타일"], nil)
+    }
+
+    func fetchOnlyPet(completion: @escaping (String?, Error?) -> Void) {
+        completion("고양이", nil)
+    }
+
+    func deleteAllObjects(pet: String, completion: @escaping (Bool, Error?) -> Void) {
+        if pet == "고양이" || pet == "강아지" {
+            completion(true, nil)
         } else {
-            return false
+            completion(false, nil)
         }
     }
 
-    func deleteObject<T: CoreDataStructEntity>(_ coreDataStructType: T)
-        throws -> Bool {
-        if coreDataStructType is PetKeywordData {
-            return true
+    func insert<T: CoreDataStructEntity>(_ coreDataStructType: T, completion: @escaping (Bool, Error?) -> Void) {
+        if let petKeyword = coreDataStructType as? PetKeywordData {
+            guard let keyword = petKeyword.keywords else {
+                return
+            }
+            if keyword.count >= 2 {
+                completion(true, nil)
+            } else {
+                completion(false, nil)
+            }
         } else {
-            return false
+            completion(false, nil)
         }
     }
+
+    func updateObject<T>(_ coreDataStructType: T, completion:@escaping
+        (Bool) -> Void) {
+        if coreDataStructType is PetKeywordData {
+           completion(true)
+        } else {
+            completion(false)
+        }
+    }
+
+    func deleteObject<T: CoreDataStructEntity>(_ coreDataStructType: T, completion: @escaping (Bool) -> Void) {
+        if coreDataStructType is PetKeywordData {
+            completion(true)
+        } else {
+            completion(false)
+        }
+    }
+
 }

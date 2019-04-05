@@ -81,13 +81,22 @@ class PetKeywordService {
         return nil
     }
 
+    func setPet() {
+        guard  let pet = getSelectedPetNode(), let name = pet.name else {
+            return
+        }
+        PetDefault.shared.pet = Pet(rawValue: name)!
+        self.pet = Pet(rawValue: name)
+    }
+
     func removeAnimation() {
         animation?.removeAllChildren()
     }
     /// 코어데이터에 펫, 키워드를 추가한다.
-    @discardableResult func insertPetKeyword() -> Bool {
+    func insertPetKeyword(completion: @escaping (Error?) -> Void) {
+        setPet()
         guard let pet = pet, let manager = manager else {
-            return false
+            return
         }
         var selectedKeywords = [String]()
         for node in getSelectedNodes() {
@@ -96,9 +105,12 @@ class PetKeywordService {
             }
         }
         let petKeywordData = PetKeywordData(pet: pet.rawValue, keywords: selectedKeywords)
-        if let result = try? manager.insert(petKeywordData) {
-            return result
+        manager.insert(petKeywordData) { (_, error) in
+            if let error = error {
+                completion(error)
+            } else {
+                completion(nil)
+            }
         }
-        return false
     }
 }

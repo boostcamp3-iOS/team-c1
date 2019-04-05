@@ -40,6 +40,8 @@
 		4A14A5020D0F643069C53EFD822312D0 /* MemoryStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9040C42214A7994FC9493A771AB81B2 /* MemoryStorage.swift */; };
 		506C3D97A7F54793F233D23B56B40649 /* MyGoodsServiceTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A80E59C82A814F28B6D8B4BEC5FB5458 /* MyGoodsServiceTest.swift */; };
 		50A16EBE91D73AECE8B00F54453B11FB /* SearchKeywordCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 188C2316639A688BB0C4FCD3473DF2C2 /* SearchKeywordCollectionViewCell.swift */; };
+		5159509B224CA85F00DCEC42 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5159509A224CA85E00DCEC42 /* WebKit.framework */; };
+		516CCE122244DD2F00DF15F6 /* SearchWordCoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC6F03D8D59BE9DFE87B127B595A44F6 /* SearchWordCoreDataManager.swift */; };
 		51772CBB2D3D0D34EB5B53DE6D3EC34F /* Array+SafeIndex.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF772360C9B54BCCA70F8F2F6111A24F /* Array+SafeIndex.swift */; };
 		539548FF899FFF29C1FA6E36939276A9 /* DiscoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C984DA9F2F6EFE7D3C379D5141C90B3F /* DiscoverViewController.swift */; };
 		5531EC164EBF2EEFD10341872977A7F2 /* CustomUIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28A8AF468CC3BF050ACCDA89671B8B84 /* CustomUIImageView.swift */; };
@@ -233,6 +235,7 @@
 		4CC91FF2AB7E7B022DCFB923AFC28B2E /* PetKeyword.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = PetKeyword.storyboard; sourceTree = "<group>"; };
 		4CD04F96E795DBBB783F875D081ADDF8 /* CoreDataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataTests.swift; sourceTree = "<group>"; };
 		50353EB28D97F7BD69B765FDDDEDDAD7 /* CoreDataStructEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStructEntity.swift; sourceTree = "<group>"; };
+		5159509A224CA85E00DCEC42 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		536DE4E76897E3C817A830527AEAED42 /* Category.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
 		556B629FA28FD63F54326D83E93B708C /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		586BFBB5704F855F6900DB9D049C2257 /* AnimtationType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimtationType.swift; sourceTree = "<group>"; };
@@ -332,6 +335,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5159509B224CA85F00DCEC42 /* WebKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -474,6 +478,14 @@
 				C5D13B419FD8F052034A9960F61BF77D /* PinterestLayout.swift */,
 			);
 			path = Layout;
+			sourceTree = "<group>";
+		};
+		51595099224CA85E00DCEC42 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				5159509A224CA85E00DCEC42 /* WebKit.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		5236980AD849F0C380B8AF281536FA96 /* Utility */ = {
@@ -703,6 +715,7 @@
 				C5A2B080FB088CED852A5D7AC891B553 /* SearchServiceTests */,
 				F36B4903EDBF9314F4C83DEFEEEEED2A /* SettingPetAndKeywordServiceTests */,
 				0EAE49F6302187351BBB142256120F6B /* WebViewServiceTest */,
+				51595099224CA85E00DCEC42 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1169,6 +1182,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				516CCE122244DD2F00DF15F6 /* SearchWordCoreDataManager.swift in Sources */,
 				D89A8F6F8EBA8404052790FC8E42B0FD /* DetailDiscoverTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

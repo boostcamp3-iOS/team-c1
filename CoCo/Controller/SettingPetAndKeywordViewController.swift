@@ -29,7 +29,11 @@ class SettingPetAndKeywordViewController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
 
-        settingPetAndKeywordService.fetchPetKeywordData()
+        settingPetAndKeywordService.fetchPetKeywordData { (error) in
+            if let error = error {
+                print(error)
+            }
+        }
 
         switch segue {
         case .pet:
@@ -44,7 +48,11 @@ class SettingPetAndKeywordViewController: UIViewController {
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        settingPetAndKeywordService.insertPetKeywordData()
+        settingPetAndKeywordService.insertPetKeywordData { (error) in
+            if let erorr = error {
+                print(error)
+            }
+        }
     }
 
     /*

@@ -101,26 +101,33 @@ class SearchService {
         }
     }
     // 추천검색 키워드
-    private func fetchRecommandWords(_ queue: DispatchQueue, group: DispatchGroup, completion: @escaping ([String]) -> Void) {
+    private func fetchRecommandWords(_ queue: DispatchQueue, group: DispatchGroup, completion: @escaping ([String]?, Error?) -> Void) {
         queue.async(group: group) {
-            do {
-                if let keyword = try self.petKeywordCoreDataManager.fetchOnlyKeyword(pet: self.pet.rawValue) {
-                    completion(keyword)
+            self.petKeywordCoreDataManager.fetchOnlyKeyword(pet: self.pet.rawValue) {
+                (keyword, error) in
+                if let error = error {
+                    completion(nil, error)
                 }
-            } catch let err {
-                print(err)
+                if let keyword = keyword {
+                    completion(keyword, nil)
+                } else {
+                    completion(nil, nil)
+                }
             }
         }
     }
     // 최근검색 키워드
-    private func fetchRecentSearchWords(_ queue: DispatchQueue, group: DispatchGroup, completion: @escaping ([String]) -> Void) {
+    private func fetchRecentSearchWords(_ queue: DispatchQueue, group: DispatchGroup, completion: @escaping ([String]?, Error?) -> Void) {
         queue.async(group: group) {
-            do {
-                if let searchWord = try self.searchCoreDataManager.fetchOnlySearchWord(pet: self.pet.rawValue) {
-                    completion(searchWord)
+            self.searchCoreDataManager.fetchOnlySearchWord(pet: self.pet.rawValue) { (searchWrod, error) in
+                if let error = error {
+                    completion(nil, error)
                 }
-            } catch let err {
-                print(err)
+                if let searchWrod = searchWrod {
+                    completion(searchWrod, nil)
+                } else {
+                    completion(nil, nil)
+                }
             }
         }
     }
@@ -129,25 +136,37 @@ class SearchService {
         let word = algorithmManager.removePet(from: recentSearchWord)
         self.recentSearched = word
         let searchWord = SearchWordData(pet: pet.rawValue, searchWord: word)
-        do {
-            _ = try self.searchCoreDataManager.insert(searchWord)
-        } catch let err {
-            print(err)
-        }
+        self.searchCoreDataManager.insert(searchWord) { (_, _) in }
+
     }
 
-    func fetchRecommandSearchWord(completion: @escaping () -> Void) {
+    func fetchRecommandSearchWord(completion: @escaping (Error?) -> Void) {
         let group = DispatchGroup()
-        let queue = DispatchQueue.main
+        let queue = DispatchQueue.global()
         var recommandWords: PetKeywordData?
         var recentSearchWords = [String]()
-        fetchRecommandWords(queue, group: group) { [weak self] words in
+
+        fetchRecommandWords(queue, group: group) { [weak self] (words, error) in
+            if let error = error {
+                completion(error)
+            }
             guard let self = self else {
                 return
             }
+            guard let words = words else {
+                return
+            }
+
             recommandWords = PetKeywordData(pet: self.pet.rawValue, keywords: words)
         }
-        fetchRecentSearchWords(queue, group: group) { words in
+
+        fetchRecentSearchWords(queue, group: group) { (words, error) in
+            if let error = error {
+                completion(error)
+            }
+            guard let words = words else {
+                return
+            }
             recentSearchWords = words
         }
 
@@ -159,7 +178,7 @@ class SearchService {
                 return
             }
             self.keyword = self.algorithmManager.makeRecommendedSearchWords(with: recentSearchWords, petKeyword: recommandWords, count: 20)
-            completion()
+            completion(nil)
         }
     }
     func sortChanged(sort: SortOption) {
